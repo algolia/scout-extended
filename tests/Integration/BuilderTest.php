@@ -9,11 +9,6 @@ use Tests\Models\User;
 
 final class BuilderTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testCount(): void
     {
         $this->assertEquals(UserSeeder::COUNT, User::search('')->count());
