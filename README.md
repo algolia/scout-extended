@@ -25,6 +25,7 @@ This package is **still in development**. It's not ready for use.
 - [ ] Aggregators - **Multiple models on the same index**, using the same approach already used on the Symfony bundle
 - [ ] Support to **multiple language indexes**. Implementation to be studied.
 - [ ] Advanced **Distinct** - Easy way leverage this feature
+- [ ] Set a default **UserAgent**
 
 ---
 - [ ] Nova tool
