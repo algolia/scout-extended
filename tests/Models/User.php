@@ -20,18 +20,4 @@ final class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
-    public function toSearchableArray()
-    {
-        $record = $this->toArray();
-
-        $record['_geoloc'] = [
-            'lat' => $record['latitude'],
-            'lng' => $record['longitude'],
-        ];
-
-        unset($record['latitude'], $record['longitude']);
-
-        return $record;
-    }
 }
