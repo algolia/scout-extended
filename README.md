@@ -2,8 +2,6 @@
 
 Laravel Scout Extended was created by, and is maintained by [Algolia](https://github.com/algolia), and extends [Laravel Scout](https://github.com/laravel/scout)'s Algolia driver adding **Algolia-specific features**.
 
-- This package is **still in development**. 
-
 ## Installation & Usage
 
 This package is **still in development**. It's not ready for use.
