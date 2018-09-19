@@ -16,7 +16,6 @@ namespace Algolia\LaravelScoutExtended;
 use Laravel\Scout\Builder;
 use Laravel\Scout\EngineManager;
 use Algolia\AlgoliaSearch\Client;
-use Algolia\AlgoliaSearch\Places;
 use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
