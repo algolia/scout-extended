@@ -1,0 +1,7 @@
+parameters:
+    level: max
+    paths:
+        - src
+    reportUnmatchedIgnoredErrors: false
+    excludes_analyse:
+    	- %rootDir%/../../../src/BuilderMacros.php
