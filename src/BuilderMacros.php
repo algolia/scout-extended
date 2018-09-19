@@ -29,7 +29,7 @@ final class BuilderMacros
      */
     public function count(): Closure
     {
-        /**
+        /*
          * Count the number of items in the search results.
          *
          * @return int
@@ -46,7 +46,7 @@ final class BuilderMacros
      */
     public function aroundLatLng(): Closure
     {
-        /**
+        /*
          * Search for entries around a given location.
          *
          * @link https://www.algolia.com/doc/guides/geo-search/geo-search-overview/
@@ -76,7 +76,7 @@ final class BuilderMacros
      */
     public function with(): Closure
     {
-        /**
+        /*
          * Customize the request with the provided options
          *
          * @param array $options Latitude of the center
@@ -105,7 +105,7 @@ final class BuilderMacros
      */
     public function hydrate(): Closure
     {
-        /**
+        /*
          * Create a collection of models from search results.
          *
          * @return \Illuminate\Support\Collection
@@ -122,7 +122,7 @@ final class BuilderMacros
             $hits = collect($results['hits']);
             $className = get_class($this->model);
 
-            /**
+            /*
              * If the model is fully guarded, we unguard it. Fully guarded is the default
              * configuration and it will result in error. If the `$guarded` attribute
              * exists on the model class, we will take it in consideration.
@@ -137,8 +137,7 @@ final class BuilderMacros
                 $hits->each(function ($item) use ($className, $models) {
                     $models->push(new $className($item));
                 });
-            }
-            finally {
+            } finally {
                 Model::reguard();
             }
 
