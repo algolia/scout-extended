@@ -43,7 +43,7 @@ final class LaravelScoutExtendedServiceProvider extends ServiceProvider
         $this->app->bind('algolia.analytics', function (): Analytics {
             return Analytics::create(config('scout.algolia.id'), config('scout.algolia.secret'));
         });
-        
+
         $this->app->bind('algolia.version', function (): string {
             return \Algolia\AlgoliaSearch\Algolia::VERSION;
         });
