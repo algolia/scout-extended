@@ -21,9 +21,20 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\LaravelScoutExtended\Console\ClearCommand;
+use Algolia\LaravelScoutExtended\Console\BackupCommand;
+use Algolia\LaravelScoutExtended\Settings\Synchronizer;
+use Algolia\LaravelScoutExtended\Contracts\Settings\SynchronizerContract;
 
 final class LaravelScoutExtendedServiceProvider extends ServiceProvider
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(): void
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'algolia');
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -58,10 +69,13 @@ final class LaravelScoutExtendedServiceProvider extends ServiceProvider
 
         $this->app->alias(Analytics::class, 'algolia.analytics');
 
+        $this->app->bind(SynchronizerContract::class, Synchronizer::class);
+
         Builder::mixin(new BuilderMacros);
 
         $this->commands([
             ClearCommand::class,
+            BackupCommand::class,
         ]);
     }
 }
