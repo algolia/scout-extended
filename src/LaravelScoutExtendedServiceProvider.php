@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Algolia\LaravelScoutExtended;
 
+use ReflectionClass;
 use Laravel\Scout\Builder;
 use Laravel\Scout\EngineManager;
-use Algolia\AlgoliaSearch\Client;
 use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
+use Algolia\LaravelScoutExtended\Console\ClearCommand;
 
 final class LaravelScoutExtendedServiceProvider extends ServiceProvider
 {
@@ -28,26 +29,39 @@ final class LaravelScoutExtendedServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('algolia', function () {
-            return $this->app->make(Algolia::class);
+        $this->app->bind(Algolia::class, function () {
+            return new Algolia($this->app);
         });
 
-        $this->app->bind('algolia.engine', function (): AlgoliaEngine {
+        $this->app->alias(Algolia::class, 'algolia');
+
+        $this->app->bind(AlgoliaEngine::class, function (): AlgoliaEngine {
             return $this->app->make(EngineManager::class)->createAlgoliaDriver();
         });
 
-        $this->app->bind('algolia.client', function (): ClientInterface {
-            return Client::create(config('scout.algolia.id'), config('scout.algolia.secret'));
+        $this->app->alias(AlgoliaEngine::class, 'algolia.engine');
+
+        $this->app->bind(ClientInterface::class, function (): ClientInterface {
+            $engine = $this->app->make('algolia.engine');
+            $reflection = new ReflectionClass(AlgoliaEngine::class);
+            $property = $reflection->getProperty('algolia');
+            $property->setAccessible(true);
+
+            return $property->getValue($engine);
         });
 
-        $this->app->bind('algolia.analytics', function (): Analytics {
+        $this->app->alias(ClientInterface::class, 'algolia.client');
+
+        $this->app->bind(Analytics::class, function (): Analytics {
             return Analytics::create(config('scout.algolia.id'), config('scout.algolia.secret'));
         });
 
-        $this->app->bind('algolia.version', function (): string {
-            return \Algolia\AlgoliaSearch\Algolia::VERSION;
-        });
+        $this->app->alias(Analytics::class, 'algolia.analytics');
 
         Builder::mixin(new BuilderMacros);
+
+        $this->commands([
+            ClearCommand::class,
+        ]);
     }
 }
