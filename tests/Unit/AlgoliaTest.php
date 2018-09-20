@@ -40,9 +40,4 @@ final class AlgoliaTest extends TestCase
     {
         $this->assertInstanceOf(Analytics::class, $this->algolia->analytics());
     }
-
-    public function testVersionGetter(): void
-    {
-        $this->assertEquals(\Algolia\AlgoliaSearch\Algolia::VERSION, $this->algolia->version());
-    }
 }

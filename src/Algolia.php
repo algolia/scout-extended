@@ -71,14 +71,4 @@ final class Algolia
     {
         return $this->container->get('algolia.analytics');
     }
-
-    /**
-     * Get the package version.
-     *
-     * @return string
-     */
-    public function version(): string
-    {
-        return $this->container->get('algolia.version');
-    }
 }

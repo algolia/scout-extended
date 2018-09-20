@@ -7,11 +7,6 @@ namespace Tests\Unit;
 use Mockery;
 use Tests\TestCase;
 use Tests\Models\User;
-use Mockery\MockInterface;
-use Algolia\AlgoliaSearch\Index;
-use Laravel\Scout\EngineManager;
-use Laravel\Scout\Engines\AlgoliaEngine;
-use Algolia\LaravelScoutExtended\Facades\Algolia;
 
 final class BuilderTest extends TestCase
 {
@@ -26,14 +21,14 @@ final class BuilderTest extends TestCase
 
     public function testWith(): void
     {
-        $this->mockIndex()->expects('search')->with('foo', Mockery::subset(['aroundRadius' => 1]))->andReturn(['hits' => []]);
+        $this->mockIndex(User::class)->expects('search')->with('foo', Mockery::subset(['aroundRadius' => 1]))->andReturn(['hits' => []]);
 
         User::search('foo')->with(['aroundRadius' => 1])->get();
     }
 
     public function testAroundLatLng(): void
     {
-        $this->mockIndex()->expects('search')->with('bar', Mockery::subset(['aroundLatLng' => '48.8566,2.3522']))->andReturn(['hits' => []]);
+        $this->mockIndex(User::class)->expects('search')->with('bar', Mockery::subset(['aroundLatLng' => '48.8566,2.3522']))->andReturn(['hits' => []]);
 
         User::search('bar')->aroundLatLng(48.8566, 2.3522)->get();
     }
@@ -55,37 +50,5 @@ final class BuilderTest extends TestCase
         $this->assertInstanceOf(User::class, $users->first());
         $this->assertEquals('Foo', $users->first()->name);
         $this->assertEquals('bar@example.com', $users->first()->email);
-    }
-
-    private function mockEngine(): MockInterface
-    {
-        $engineMock = Mockery::mock(AlgoliaEngine::class)->makePartial()->shouldIgnoreMissing();
-
-        $managerMock = Mockery::mock(EngineManager::class)->makePartial()->shouldIgnoreMissing();
-
-        $managerMock->shouldReceive('driver')->andReturn($engineMock);
-
-        $this->swap(EngineManager::class, $managerMock);
-
-        return $engineMock;
-    }
-
-    private function mockIndex(): MockInterface
-    {
-        $indexMock = Mockery::mock(Index::class);
-
-        $clientMock = Mockery::mock(Algolia::client())->makePartial();
-
-        $clientMock->expects('initIndex')->andReturn($indexMock);
-
-        $engineMock = Mockery::mock(AlgoliaEngine::class, [$clientMock])->makePartial();
-
-        $managerMock = Mockery::mock(EngineManager::class)->makePartial();
-
-        $managerMock->shouldReceive('driver')->andReturn($engineMock);
-
-        $this->swap(EngineManager::class, $managerMock);
-
-        return $indexMock;
     }
 }

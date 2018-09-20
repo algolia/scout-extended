@@ -12,7 +12,7 @@ This package is **still in development**. It's not ready for use.
 - [x] Based on [Algolia's PHP Client v2](https://github.com/algolia/algoliasearch-client-php/tree/2.0)
 - [x] Contains **macros** from [github.com/algolia/laravel-scout-algolia-macros](https://github.com/algolia/laravel-scout-algolia-macros)
 - [x] **Facade** to provide a "static" interface to access clients, analytics
-- [ ] Consider improve Laravel Scout's `scout:clear` command
+- [x] Adds `scout:clear` command
 - [ ] Introduce **settings management**: Backups and easy synchronization
 - [ ] Manager - **Multiple connections** per project
 - [ ] **Extends Driver's Query Builder** adding more methods: whereIn, whereNotIn, whereNot, whereBetween, and others cases to be studied

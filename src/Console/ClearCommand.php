@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * This file is part of Laravel Scout Extended.
+ *
+ * (c) Algolia Team <contact@algolia.com>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
+namespace Algolia\LaravelScoutExtended\Console;
+
+use Illuminate\Console\Command;
+use Algolia\LaravelScoutExtended\Algolia;
+
+final class ClearCommand extends Command
+{
+    /**
+     * {@inheritdoc}
+     */
+    protected $signature = 'scout:clear {model}';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $description = "Clear all of the model's records from the index";
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(Algolia $algolia): void
+    {
+        $class = $this->argument('model');
+
+        $algolia->index($class)->clear();
+
+        $this->info('The ['.$class.'] index have been cleared.');
+    }
+}
