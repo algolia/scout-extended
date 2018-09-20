@@ -47,6 +47,13 @@
             "Algolia\\LaravelScoutExtended\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Algolia\\LaravelScoutExtended\\LaravelScoutExtendedServiceProvider"
+            ]
+        }
+    },
     "config": {
         "sort-packages": true,
         "preferred-install": "dist"
