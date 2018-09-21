@@ -87,8 +87,14 @@ final class Compiler
             }
         }
 
-        $viewParams['__indexChangedSettings'] = preg_replace('/^.+\n/', '', $this->encoder->encode($indexChangedSettings));
+        $viewParams['__indexChangedSettings'] = $this->encoder->encode($indexChangedSettings, ['array.base' => 0]);
 
+        if (empty($indexChangedSettings)) {
+            $viewParams['__indexChangedSettings'] = ']';
+        } else {
+            $viewParams['__indexChangedSettings'] = preg_replace('/^.+\n/', '', $viewParams['__indexChangedSettings']);
+        }
+        
         $this->files->put($path, '<?php
 
 '.$this->viewFactory->make('algolia::config', $viewParams)->render());
