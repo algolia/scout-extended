@@ -74,7 +74,7 @@ final class Settings
     public function changed(): array
     {
         return array_filter($this->all(), function ($value, $setting) {
-            return $value !== $this->defaults[$setting];
+            return ! array_key_exists($setting, $this->defaults) || $value !== $this->defaults[$setting];
         }, ARRAY_FILTER_USE_BOTH);
     }
 
