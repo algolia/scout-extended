@@ -20,8 +20,17 @@ use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 /**
  * @internal
  */
-final class DefaultSettingsDiscover
+final class SettingsDiscover
 {
+    /**
+     * Settings that may be know by other names.
+     *
+     * @var array
+     */
+    private static $aliases = [
+        'attributesToIndex' => 'searchableAttributes',
+    ];
+
     /**
      * @var \Algolia\AlgoliaSearch\Interfaces\ClientInterface
      */
@@ -44,7 +53,7 @@ final class DefaultSettingsDiscover
      *
      * @return array
      */
-    public function getDefaults(): array
+    public function defaults(): array
     {
         $indexName = 'temp-'.time();
 
@@ -55,6 +64,28 @@ final class DefaultSettingsDiscover
         $settings = $this->getSettings($index);
 
         $this->client->deleteIndex($indexName);
+
+        return $settings;
+    }
+
+    /**
+     * Get settings from the provided index.
+     *
+     * @param  \Algolia\AlgoliaSearch\Interfaces\IndexInterface $index
+     *
+     * @return array
+     */
+    public function from(IndexInterface $index): array
+    {
+        try {
+            $settings = $index->getSettings();
+        } catch (NotFoundException $e) {
+            $index->saveObject(['objectID' => 'temp']);
+        }
+
+        $settings = $this->getSettings($index);
+
+        $index->clear();
 
         return $settings;
     }
@@ -72,6 +103,13 @@ final class DefaultSettingsDiscover
             sleep(1);
 
             return $this->getSettings($index);
+        }
+
+        foreach (self::$aliases as $from => $to) {
+            if (array_key_exists($from, $settings)) {
+                $settings[$to] = $settings[$from];
+                unset($settings[$from]);
+            }
         }
 
         return $settings;

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Algolia\LaravelScoutExtended\Settings;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
 use Algolia\AlgoliaSearch\Interfaces\IndexInterface;
 use Algolia\LaravelScoutExtended\Contracts\Settings\SynchronizerContract;
 
@@ -26,22 +25,22 @@ final class Synchronizer implements SynchronizerContract
     private $compiler;
 
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\DefaultSettingsDiscover
+     * @var \Algolia\LaravelScoutExtended\Settings\SettingsDiscover
      */
-    private $defaultSettingsDiscover;
+    private $settingsDiscover;
 
     /**
      * Synchronizer constructor.
      *
      * @param \Algolia\LaravelScoutExtended\Settings\Compiler $compiler
-     * @param \Algolia\LaravelScoutExtended\Settings\DefaultSettingsDiscover $defaultSettingsDiscover
+     * @param \Algolia\LaravelScoutExtended\Settings\SettingsDiscover $settingsDiscover
      *
      * @return void
      */
-    public function __construct(Compiler $compiler, DefaultSettingsDiscover $defaultSettingsDiscover)
+    public function __construct(Compiler $compiler, SettingsDiscover $settingsDiscover)
     {
         $this->compiler = $compiler;
-        $this->defaultSettingsDiscover = $defaultSettingsDiscover;
+        $this->settingsDiscover = $settingsDiscover;
     }
 
     /**
@@ -49,7 +48,7 @@ final class Synchronizer implements SynchronizerContract
      */
     public function backup(IndexInterface $index): void
     {
-        $settings = new Settings($index->getSettings(), $this->defaultSettingsDiscover->getDefaults());
+        $settings = new Settings($this->settingsDiscover->from($index), $this->settingsDiscover->defaults());
 
         $name = 'scout-'.Str::lower($index->getIndexName()).'.php';
 
