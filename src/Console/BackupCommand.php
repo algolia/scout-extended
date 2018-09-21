@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Algolia\LaravelScoutExtended\Console;
 
+use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 use Illuminate\Console\Command;
 use Algolia\LaravelScoutExtended\Algolia;
 use Algolia\LaravelScoutExtended\Contracts\Settings\SynchronizerContract;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class BackupCommand extends Command
 {
@@ -32,12 +34,19 @@ final class BackupCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(Algolia $algolia, SynchronizerContract $synchronizer): void
+    public function handle(Algolia $algolia, SynchronizerContract $synchronizer)
     {
         $class = $this->argument('model');
 
-        $synchronizer->backup($algolia->index($class));
+        $io = new SymfonyStyle($this->input, $this->output);
 
-        $this->info('The ['.$class.'] index settings have been backed up.');
+        try {
+            $synchronizer->backup($algolia->index($class));
+        } catch (NotFoundException $e) {
+            $io->error($e->getMessage());
+            return 1;
+        }
+
+        $io->success('The ['.$class.'] index settings have been backed up.');
     }
 }
