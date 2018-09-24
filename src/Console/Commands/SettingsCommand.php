@@ -33,7 +33,7 @@ final class SettingsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = "Synchronize the local & remote settings of searchable models";
+    protected $description = 'Synchronize the local & remote settings of searchable models';
 
     /**
      * {@inheritdoc}
@@ -81,7 +81,7 @@ final class SettingsCommand extends Command
                     }
                     break;
                 case State::BOTH_GOT_UPDATED:
-                    $options = ['none', 'local', 'remote',];
+                    $options = ['none', 'local', 'remote'];
 
                     $choice = $io->choice('Remote & Local settings got updated. Which one you want to preserve?', $options, $this->option('keep'));
 

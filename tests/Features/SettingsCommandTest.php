@@ -29,7 +29,7 @@ final class SettingsCommandTest extends TestCase
     {
         $appMock = Mockery::mock(Application::class)->makePartial();
         $appMock->expects('getNamespace')->once()->andReturn('Tests\Models');
-        $appMock->expects('path')->once()->andReturn(__DIR__ . '/../');
+        $appMock->expects('path')->once()->andReturn(__DIR__.'/../');
 
         $this->swap(Application::class, $appMock);
 
@@ -118,7 +118,7 @@ final class SettingsCommandTest extends TestCase
     {
         $defaults = $this->getRemoteDefaultSettings();
         $localSettings = $this->getLocalSettings();
-        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true,]);
+        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true]);
 
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
@@ -142,7 +142,7 @@ final class SettingsCommandTest extends TestCase
     {
         $defaults = $this->getRemoteDefaultSettings();
         $localSettings = array_merge($this->getLocalSettings(), ['newSetting' => false]);
-        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true,]);
+        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true]);
 
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
@@ -164,7 +164,7 @@ final class SettingsCommandTest extends TestCase
     {
         $defaults = $this->getRemoteDefaultSettings();
         $localSettings = array_merge($this->getLocalSettings(), ['newSetting' => false]);
-        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true,]);
+        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true]);
 
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
@@ -192,7 +192,7 @@ final class SettingsCommandTest extends TestCase
     {
         $defaults = $this->getRemoteDefaultSettings();
         $localSettings = array_merge($this->getLocalSettings(), ['newSetting' => false]);
-        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true,]);
+        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true]);
 
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
