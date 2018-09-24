@@ -19,7 +19,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
- * {@internal}
+ * {@internal}.
  */
 final class Compiler
 {
@@ -77,7 +77,7 @@ final class Compiler
         $all = $settings->all();
         foreach ($viewVariables as $viewVariable) {
             if (array_key_exists($viewVariable, $all)) {
-                $viewParams[$viewVariable] = $this->encoder->encode($all[$viewVariable], ['array.base' => 4,]);
+                $viewParams[$viewVariable] = $this->encoder->encode($all[$viewVariable], ['array.base' => 4]);
             }
         }
 

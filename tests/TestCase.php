@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use Mockery;
+use function get_class;
 use Mockery\MockInterface;
 use Algolia\AlgoliaSearch\Index;
 use Laravel\Scout\EngineManager;
@@ -12,8 +13,6 @@ use Algolia\AlgoliaSearch\Client;
 use Laravel\Scout\Engines\AlgoliaEngine;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
-
-use function get_class;
 
 class TestCase extends BaseTestCase
 {
