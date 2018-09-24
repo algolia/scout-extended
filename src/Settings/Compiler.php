@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\LaravelScoutExtended\Settings;
 
+use Illuminate\Support\Facades\File;
 use Riimu\Kit\PHPEncoder\PHPEncoder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\View\Factory as ViewFactory;
@@ -70,7 +71,7 @@ final class Compiler
      */
     public function compile(Settings $settings, string $path): void
     {
-        $viewVariables = $this->getViewVariables();
+        $viewVariables = self::getViewVariables();
 
         $viewParams = [];
         $all = $settings->all();
@@ -94,7 +95,7 @@ final class Compiler
         } else {
             $viewParams['__indexChangedSettings'] = preg_replace('/^.+\n/', '', $viewParams['__indexChangedSettings']);
         }
-        
+
         $this->files->put($path, '<?php
 
 '.$this->viewFactory->make('algolia::config', $viewParams)->render());
@@ -105,11 +106,13 @@ final class Compiler
      *
      * @return array
      */
-    private function getViewVariables(): array
+    public static function getViewVariables(): array
     {
-        $contents = $this->files->get(__DIR__.'/../../resources/views/config.blade.php');
+        $contents = File::get(__DIR__.'/../../resources/views/config.blade.php');
         $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s(\r?\n)?/s', self::$rawTags[0], self::$rawTags[1]);
         preg_match_all($pattern, $contents, $matches);
+
+        array_pop($matches[2]);
 
         return array_map(function ($match) {
             return ltrim($match, '$');

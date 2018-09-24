@@ -15,6 +15,9 @@
          stopOnFailure="false"
          verbose="true"
 >
+    <php>
+        <const name="SCOUT_EXTENDED_PHPUNIT_IS_RUNNING" value="true"/>
+    </php>
     <testsuites>
         <testsuite name="Test Suite">
             <directory suffix="Test.php">./tests</directory>

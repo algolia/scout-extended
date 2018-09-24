@@ -20,10 +20,9 @@ use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
-use Algolia\LaravelScoutExtended\Console\ClearCommand;
-use Algolia\LaravelScoutExtended\Console\BackupCommand;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
-use Algolia\LaravelScoutExtended\Contracts\Settings\SynchronizerContract;
+use Algolia\LaravelScoutExtended\Console\Commands\ClearCommand;
+use Algolia\LaravelScoutExtended\Console\Commands\SettingsCommand;
 
 final class LaravelScoutExtendedServiceProvider extends ServiceProvider
 {
@@ -73,9 +72,11 @@ final class LaravelScoutExtendedServiceProvider extends ServiceProvider
 
         Builder::mixin(new BuilderMacros);
 
-        $this->commands([
-            ClearCommand::class,
-            BackupCommand::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ClearCommand::class,
+                SettingsCommand::class,
+            ]);
+        }
     }
 }

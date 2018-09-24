@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended\Console;
+namespace Algolia\LaravelScoutExtended\Console\Commands;
 
 use Illuminate\Console\Command;
 use Algolia\LaravelScoutExtended\Algolia;

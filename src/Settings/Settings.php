@@ -79,12 +79,27 @@ final class Settings
     }
 
     /**
+     * Get the changed items in the settings.
+     *
+     * @return array
+     */
+    public function compiled(): array
+    {
+        $viewVariables = Compiler::getViewVariables();
+        $changed = $this->changed();
+
+        return array_filter($this->all(), function ($value, $setting) use ($viewVariables, $changed) {
+            return in_array($setting, $viewVariables, true) || array_key_exists($setting, $changed);
+        }, ARRAY_FILTER_USE_BOTH);
+    }
+
+    /**
      * Get the hash.
      *
      * @return string
      */
-    public function hash(): string
+    public function previousHash(): string
     {
-        return $this->settings['userData'];
+        return $this->settings['userData'] ?? '';
     }
 }

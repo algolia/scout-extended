@@ -37,6 +37,11 @@ final class SettingsDiscover
     private $client;
 
     /**
+     * @var array
+     */
+    private $defaults;
+
+    /**
      * DefaultSettingsDiscover constructor.
      *
      * @param \Algolia\AlgoliaSearch\Interfaces\ClientInterface $client
@@ -55,17 +60,14 @@ final class SettingsDiscover
      */
     public function defaults(): array
     {
-        $indexName = 'temp-'.time();
+        if ($this->defaults === null) {
+            $indexName = 'temp-laravel-scout-extended';
+            $index = $this->client->initIndex($indexName);
+            $this->defaults = $this->getSettings($index);
+            $this->client->deleteIndex($indexName);
+        }
 
-        $index = $this->client->initIndex($indexName);
-
-        $index->saveObject(['objectID' => 'temp']);
-
-        $settings = $this->getSettings($index);
-
-        $this->client->deleteIndex($indexName);
-
-        return $settings;
+        return $this->defaults;
     }
 
     /**
@@ -77,17 +79,7 @@ final class SettingsDiscover
      */
     public function from(IndexInterface $index): array
     {
-        try {
-            $settings = $index->getSettings();
-        } catch (NotFoundException $e) {
-            $index->saveObject(['objectID' => 'temp']);
-        }
-
-        $settings = $this->getSettings($index);
-
-        $index->clear();
-
-        return $settings;
+        return $this->getSettings($index);
     }
 
     /**
@@ -100,9 +92,12 @@ final class SettingsDiscover
         try {
             $settings = $index->getSettings();
         } catch (NotFoundException $e) {
-            sleep(1);
-
-            return $this->getSettings($index);
+            $index->saveObject(['objectID' => 'temp']);
+            if (! (defined('SCOUT_EXTENDED_PHPUNIT_IS_RUNNING') && SCOUT_EXTENDED_PHPUNIT_IS_RUNNING)) {
+                sleep(1);
+            }
+            $settings = $this->getSettings($index);
+            $index->clear();
         }
 
         foreach (self::$aliases as $from => $to) {

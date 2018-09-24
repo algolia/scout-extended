@@ -8,13 +8,22 @@ use Mockery;
 use Mockery\MockInterface;
 use Algolia\AlgoliaSearch\Index;
 use Laravel\Scout\EngineManager;
+use Algolia\AlgoliaSearch\Client;
 use Laravel\Scout\Engines\AlgoliaEngine;
-use Algolia\LaravelScoutExtended\Facades\Algolia;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
+use function get_class;
+
 class TestCase extends BaseTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->swap('path.config', __DIR__.'/config');
+    }
+
     protected function getPackageProviders($app)
     {
         return [
@@ -47,9 +56,11 @@ class TestCase extends BaseTestCase
     {
         $indexMock = Mockery::mock(Index::class);
 
-        $clientMock = Mockery::mock(Algolia::client())->makePartial();
+        $client = $this->app->get(ClientInterface::class);
 
-        $clientMock->expects('initIndex')->with((new $model)->searchableAs())->andReturn($indexMock);
+        $clientMock = get_class($client) === 'Algolia\AlgoliaSearch\Client' ? Mockery::mock(Client::class) : $client;
+
+        $clientMock->expects('initIndex')->with(class_exists($model) ? (new $model)->searchableAs() : $model)->andReturn($indexMock);
 
         $engineMock = Mockery::mock(AlgoliaEngine::class, [$clientMock])->makePartial();
 
