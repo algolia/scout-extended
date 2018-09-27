@@ -21,12 +21,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 use Algolia\LaravelScoutExtended\Helpers\SearchableModelsFinder;
 
-final class SettingsCommand extends Command
+final class SyncCommand extends Command
 {
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:settings
+    protected $signature = 'scout:sync
                             {model? : The name of the searchable model}
                             {--keep=none} : In conflict keep the given option';
 

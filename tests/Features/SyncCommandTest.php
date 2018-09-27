@@ -29,7 +29,7 @@ final class SettingsCommandTest extends TestCase
         $synchronizerMock->shouldReceive('analyse')->with($this->mockIndex(User::class))->andThrow(FakeException::class);
         $this->swap(Synchronizer::class, $synchronizerMock);
 
-        $this->artisan('scout:settings')->run();
+        $this->artisan('scout:sync')->run();
     }
 
     public function testWhenLocalSettingsNotFound(): void
@@ -46,7 +46,7 @@ final class SettingsCommandTest extends TestCase
             'userData' => $this->getLocalSettingsMd5(),
         ]);
 
-        $this->artisan('scout:settings', ['model' => User::class])->run();
+        $this->artisan('scout:sync', ['model' => User::class])->run();
 
         $this->assertFileExists(config_path('scout-users.php'));
         $this->assertEquals($localSettings, require config_path('scout-users.php'));
@@ -64,7 +64,7 @@ final class SettingsCommandTest extends TestCase
             'userData' => $this->getLocalSettingsMd5(),
         ]));
 
-        $this->artisan('scout:settings', ['model' => User::class])->run();
+        $this->artisan('scout:sync', ['model' => User::class])->run();
     }
 
     public function testWhenSettingsAreTheSame(): void
@@ -77,7 +77,7 @@ final class SettingsCommandTest extends TestCase
         $usersIndex->expects('getSettings')->once()->andReturn(array_merge($defaults, $this->getLocalSettings(), [
             'userData' => $this->getLocalSettingsMd5(),
         ]));
-        $this->artisan('scout:settings', ['model' => User::class])->run();
+        $this->artisan('scout:sync', ['model' => User::class])->run();
     }
 
     public function testWhenLocalSettingsAreMostRecent(): void
@@ -99,7 +99,7 @@ final class SettingsCommandTest extends TestCase
             'userData' => md5(serialize($localSettings)),
         ]));
 
-        $this->artisan('scout:settings', ['model' => User::class, '--no-interaction' => true])->run();
+        $this->artisan('scout:sync', ['model' => User::class, '--no-interaction' => true])->run();
     }
 
     public function testWhenRemoteSettingsAreMostRecent(): void
@@ -121,7 +121,7 @@ final class SettingsCommandTest extends TestCase
             'userData' => md5(serialize($remoteWithoutDefaults)),
         ]);
 
-        $this->artisan('scout:settings', ['model' => User::class, '--no-interaction' => true])->run();
+        $this->artisan('scout:sync', ['model' => User::class, '--no-interaction' => true])->run();
         $this->assertEquals($remoteWithoutDefaults, require config_path('scout-users.php'));
     }
 
@@ -138,7 +138,7 @@ final class SettingsCommandTest extends TestCase
             'userData' => $this->getLocalSettingsMd5(),
         ]));
 
-        $this->artisan('scout:settings', [
+        $this->artisan('scout:sync', [
             'model' => User::class,
             '--no-interaction' => true,
             '--keep' => 'none',
@@ -165,7 +165,7 @@ final class SettingsCommandTest extends TestCase
             'userData' => md5(serialize($localSettings)),
         ]));
 
-        $this->artisan('scout:settings', [
+        $this->artisan('scout:sync', [
             'model' => User::class,
             '--no-interaction' => true,
             '--keep' => 'local',
@@ -192,7 +192,7 @@ final class SettingsCommandTest extends TestCase
             'userData' => md5(serialize($remoteWithoutDefaults)),
         ]);
 
-        $this->artisan('scout:settings', [
+        $this->artisan('scout:sync', [
             'model' => User::class,
             '--no-interaction' => true,
             '--keep' => 'remote',

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
-use Algolia\LaravelScoutExtended\Settings\Compiler;
-use Illuminate\Support\Facades\Artisan;
 use Mockery;
 use Tests\TestCase;
 use Tests\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Artisan;
+use Algolia\LaravelScoutExtended\Settings\Compiler;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 
-final class SettingsOptimizeCommandTest extends TestCase
+final class OptimizeCommandTest extends TestCase
 {
     /**
      * @expectedException \Tests\Features\FakeException
@@ -29,7 +28,7 @@ final class SettingsOptimizeCommandTest extends TestCase
         $synchronizerMock->shouldReceive('analyse')->with($this->mockIndex(User::class))->andThrow(FakeException::class);
         $this->swap(Synchronizer::class, $synchronizerMock);
 
-        $this->artisan('scout:settings-optimize')->run();
+        $this->artisan('scout:optimize')->run();
     }
 
     public function testCreationOfLocalSettings(): void
@@ -39,7 +38,7 @@ final class SettingsOptimizeCommandTest extends TestCase
         $usersIndex = $this->mockIndex(User::class);
         $usersIndex->expects('getSettings')->once()->andReturn($defaults);
 
-        Artisan::call('scout:settings-optimize', ['model' => User::class]);
+        Artisan::call('scout:optimize', ['model' => User::class]);
 
         $this->assertEquals($this->getLocalSettings(), require config_path('scout-users.php'));
         $this->assertFileExists(config_path('scout-users.php'));

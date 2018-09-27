@@ -23,12 +23,12 @@ use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 use Algolia\LaravelScoutExtended\Settings\SettingsFactory;
 use Algolia\LaravelScoutExtended\Helpers\SearchableModelsFinder;
 
-final class SettingsOptimizeCommand extends Command
+final class OptimizeCommand extends Command
 {
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:settings-optimize
+    protected $signature = 'scout:optimize
                             {model? : The name of the searchable model}';
 
     /**
