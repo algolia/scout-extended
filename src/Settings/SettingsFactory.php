@@ -106,7 +106,6 @@ final class SettingsFactory
     public function create(string $model): Settings
     {
         $instance = factory($model)->make();
-
         $attributes = array_intersect_key($instance->toArray(), $instance->toSearchableArray());
         $searchableAttributes = [];
         $attributesForFaceting = [];

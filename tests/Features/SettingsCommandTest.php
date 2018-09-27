@@ -15,28 +15,15 @@ use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 
 final class SettingsCommandTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
 
-        @unlink(__DIR__.'/../config/scout-users.php');
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        @unlink(__DIR__.'/../config/scout-users.php');
-    }
 
     /**
      * @expectedException \Tests\Features\FakeException
      */
     public function testModelsAreFound(): void
     {
-        $appMock = Mockery::mock(Application::class)->makePartial();
+        $appMock = Mockery::mock($this->app)->makePartial();
         $appMock->expects('getNamespace')->once()->andReturn('Tests\Models');
-        $appMock->expects('path')->once()->andReturn(__DIR__.'/../');
 
         $this->swap(Application::class, $appMock);
 
@@ -221,19 +208,6 @@ final class SettingsCommandTest extends TestCase
             '--keep' => 'remote',
         ])->run();
         $this->assertEquals($remoteWithoutDefaults, require config_path('scout-users.php'));
-    }
-
-    private function getRemoteDefaultSettings(): array
-    {
-        $defaultsIndex = $this->mockIndex('temp-laravel-scout-extended');
-        $defaults = require __DIR__.'/../resources/defaults.php';
-        $defaultsIndex->expects('getSettings')->once()->andThrow(NotFoundException::class);
-        $defaultsIndex->expects('saveObject')->once();
-        $defaultsIndex->expects('getSettings')->once()->andReturn(require __DIR__.'/../resources/defaults.php');
-        $defaultsIndex->expects('clear')->once();
-        $this->app->get(ClientInterface::class)->expects('deleteIndex')->with('temp-laravel-scout-extended')->once();
-
-        return $defaults;
     }
 
     private function getLocalSettings(): array
