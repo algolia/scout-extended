@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'searchableAttributes' => {!! $searchableAttributes !!},
+    'searchableAttributes' => {!! $searchableAttributes ?? 'null' !!},
 
     /*
     |--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'customRanking' => {!! $customRanking !!},
+    'customRanking' => {!! $customRanking ?? 'null'!!},
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => {!! $attributesForFaceting  !!},
+    'attributesForFaceting' => {!! $attributesForFaceting ?? 'null'  !!},
 
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +90,7 @@ return [
     |
     */
 
-    'ignorePlurals' => {!! $ignorePlurals ?? 'false' !!},
+    'ignorePlurals' => {!! $ignorePlurals ?? 'null' !!},
 
     /*
     |--------------------------------------------------------------------------
@@ -105,7 +105,7 @@ return [
     |
     */
 
-    'removeStopWords' => {!! $removeStopWords ?? 'false' !!},
+    'removeStopWords' => {!! $removeStopWords ?? 'null' !!},
 
     /*
     |--------------------------------------------------------------------------
@@ -120,22 +120,7 @@ return [
     |
     */
 
-    'queryLanguages' => {!! $queryLanguages ?? "array_unique([config('app.locale'), config('app.fallback_locale'),])" !!},
-
-    /*
-    |--------------------------------------------------------------------------
-    | Ranking Formula
-    |--------------------------------------------------------------------------
-    |
-    | It specifies the way results are sorted. You must specify a list of ranking
-    | criteria. Each criterion will be applied in sequence by the tie-breaking
-    | algorithm in the order they are specified.
-    |
-    | Example: ['typo', 'geo', 'words', 'filters', 'proximity', 'attribute'
-    |            'exact', 'custom']
-    |
-    */
-    'ranking' => {!! $ranking !!},
+    'queryLanguages' => {!! $queryLanguages ?? 'null' !!},
 
     /*
     |--------------------------------------------------------------------------

@@ -136,11 +136,12 @@ final class SettingsFactory
         }
 
         $detectedSettings = [
-            'searchableAttributes' => $searchableAttributes,
+            'searchableAttributes' => ! empty($searchableAttributes) ? $searchableAttributes : null,
             'attributesForFaceting' => ! empty($attributesForFaceting) ? $attributesForFaceting : null,
             'customRanking' => ! empty($customRanking) ? $customRanking : null,
             'disableTypoToleranceOnAttributes' => ! empty($disableTypoToleranceOnAttributes) ? $disableTypoToleranceOnAttributes : null,
-            'unretrievableAttributes' => $unretrievableAttributes,
+            'unretrievableAttributes' => ! empty($unretrievableAttributes) ? $unretrievableAttributes : null,
+            'queryLanguages' => array_unique([config('app.locale'), config('app.fallback_locale'),])
         ];
 
         return new Settings($detectedSettings, $this->settingsDiscover->defaults());

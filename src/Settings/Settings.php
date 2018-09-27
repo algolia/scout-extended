@@ -68,6 +68,8 @@ final class Settings
                 $settings[$key] = $this->settings[$key];
             } else if (array_key_exists($key, $this->defaults)) {
                 $settings[$key] = $this->defaults[$key];
+            } else {
+                $settings[$key] = null;
             }
         }
 
