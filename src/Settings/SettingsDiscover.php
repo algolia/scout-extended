@@ -92,11 +92,9 @@ final class SettingsDiscover
         try {
             $settings = $index->getSettings();
         } catch (NotFoundException $e) {
-            $index->saveObject(['objectID' => 'temp']);
-            if (! (defined('SCOUT_EXTENDED_PHPUNIT_IS_RUNNING') && SCOUT_EXTENDED_PHPUNIT_IS_RUNNING)) {
-                sleep(1);
-            }
-            $settings = $this->getSettings($index);
+            $index->saveObject(['objectID' => 'temp'])->wait();
+            $settings = $index->getSettings();
+
             $index->clear();
         }
 
