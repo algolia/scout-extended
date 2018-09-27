@@ -77,12 +77,14 @@ class TestCase extends BaseTestCase
     protected function mockIndex(string $model): MockInterface
     {
         $indexMock = Mockery::mock(Index::class);
+        $indexName = class_exists($model) ? (new $model)->searchableAs() : $model;
+        $indexMock->shouldReceive('getIndexName')->zeroOrMoreTimes()->andReturn($indexName);
 
         $client = $this->app->get(ClientInterface::class);
 
         $clientMock = get_class($client) === 'Algolia\AlgoliaSearch\Client' ? Mockery::mock(Client::class) : $client;
 
-        $clientMock->shouldReceive('initIndex')->zeroOrMoreTimes()->with(class_exists($model) ? (new $model)->searchableAs() : $model)->andReturn($indexMock);
+        $clientMock->shouldReceive('initIndex')->zeroOrMoreTimes()->with($indexName)->andReturn($indexMock);
 
         $engineMock = Mockery::mock(AlgoliaEngine::class, [$clientMock])->makePartial();
 

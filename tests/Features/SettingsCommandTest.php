@@ -15,8 +15,6 @@ use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 
 final class SettingsCommandTest extends TestCase
 {
-
-
     /**
      * @expectedException \Tests\Features\FakeException
      */
@@ -44,7 +42,6 @@ final class SettingsCommandTest extends TestCase
             'searchableAttributes' => ['unordered(foo)', 'bar'],
             'foo' => 'bar',
         ]));
-        $usersIndex->expects('getIndexName')->twice()->andReturn((new User())->searchableAs());
         $usersIndex->expects('setSettings')->once()->with([
             'userData' => $this->getLocalSettingsMd5(),
         ]);
@@ -63,7 +60,6 @@ final class SettingsCommandTest extends TestCase
 
         $usersIndex = $this->mockIndex(User::class);
         $usersIndex->expects('getSettings')->once()->andReturn($defaults);
-        $usersIndex->expects('getIndexName')->twice()->andReturn((new User())->searchableAs());
         $usersIndex->expects('setSettings')->once()->with(array_merge($localSettings, [
             'userData' => $this->getLocalSettingsMd5(),
         ]));
@@ -78,7 +74,6 @@ final class SettingsCommandTest extends TestCase
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
         $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getIndexName')->once()->andReturn((new User())->searchableAs());
         $usersIndex->expects('getSettings')->once()->andReturn(array_merge($defaults, $this->getLocalSettings(), [
             'userData' => $this->getLocalSettingsMd5(),
         ]));
@@ -94,7 +89,6 @@ final class SettingsCommandTest extends TestCase
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
         $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getIndexName')->twice()->andReturn((new User())->searchableAs());
         $usersIndex->expects('getSettings')->once()->andReturn(array_merge($defaults, $this->getLocalSettings(), [
             'userData' => $this->getLocalSettingsMd5(),
         ]));
@@ -117,7 +111,6 @@ final class SettingsCommandTest extends TestCase
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
         $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getIndexName')->twice()->andReturn((new User())->searchableAs());
         $usersIndex->expects('getSettings')->twice()->andReturn(array_merge($defaults, $remoteWithoutDefaults, [
             'userData' => $this->getLocalSettingsMd5(),
         ]));
@@ -141,7 +134,6 @@ final class SettingsCommandTest extends TestCase
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
         $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getIndexName')->once()->andReturn((new User())->searchableAs());
         $usersIndex->expects('getSettings')->once()->andReturn(array_merge($defaults, $remoteWithoutDefaults, [
             'userData' => $this->getLocalSettingsMd5(),
         ]));
@@ -163,7 +155,6 @@ final class SettingsCommandTest extends TestCase
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
         $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getIndexName')->twice()->andReturn((new User())->searchableAs());
         $usersIndex->expects('getSettings')->once()->andReturn(array_merge($defaults, $remoteWithoutDefaults, [
             'userData' => $this->getLocalSettingsMd5(),
         ]));
@@ -191,7 +182,6 @@ final class SettingsCommandTest extends TestCase
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
         $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getIndexName')->twice()->andReturn((new User())->searchableAs());
         $usersIndex->expects('getSettings')->twice()->andReturn(array_merge($defaults, $remoteWithoutDefaults, [
             'userData' => $this->getLocalSettingsMd5(),
         ]));

@@ -37,7 +37,6 @@ final class SettingsOptimizeCommandTest extends TestCase
         $defaults = $this->getRemoteDefaultSettings();
 
         $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getIndexName')->once()->andReturn((new User())->searchableAs());
         $usersIndex->expects('getSettings')->once()->andReturn($defaults);
 
         Artisan::call('scout:settings-optimize', ['model' => User::class]);
