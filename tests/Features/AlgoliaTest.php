@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use App\User;
 use Tests\TestCase;
-use Tests\Models\User;
 use Algolia\AlgoliaSearch\Analytics;
 use Algolia\LaravelScoutExtended\Algolia;
 use Algolia\AlgoliaSearch\Interfaces\IndexInterface;

@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Mockery;
+use App\User;
 use Tests\TestCase;
-use Tests\Models\User;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
-use Algolia\LaravelScoutExtended\Settings\Compiler;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 
 final class OptimizeCommandTest extends TestCase
@@ -19,41 +16,19 @@ final class OptimizeCommandTest extends TestCase
      */
     public function testModelsAreFound(): void
     {
-        $appMock = Mockery::mock($this->app)->makePartial();
-        $appMock->expects('getNamespace')->once()->andReturn('Tests\Models');
-
-        $this->swap(Application::class, $appMock);
-
-        $synchronizerMock = Mockery::mock(Synchronizer::class);
+        $synchronizerMock = mock(Synchronizer::class);
         $synchronizerMock->shouldReceive('analyse')->with($this->mockIndex(User::class))->andThrow(FakeException::class);
         $this->swap(Synchronizer::class, $synchronizerMock);
 
-        $this->artisan('scout:optimize')->run();
+        Artisan::call('scout:optimize', ['model' => User::class]);
     }
 
     public function testCreationOfLocalSettings(): void
     {
-        $defaults = $this->getRemoteDefaultSettings();
-
-        $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getSettings')->once()->andReturn($defaults);
+        $this->mockIndex(User::class, $this->defaults());
 
         Artisan::call('scout:optimize', ['model' => User::class]);
 
-        $this->assertEquals($this->getLocalSettings(), require config_path('scout-users.php'));
-        $this->assertFileExists(config_path('scout-users.php'));
-    }
-
-    private function getLocalSettings(): array
-    {
-        $viewVariables = array_fill_keys(Compiler::getViewVariables(), null);
-
-        return array_merge($viewVariables, [
-            'searchableAttributes' => [
-                'name',
-                'email',
-            ],
-            'queryLanguages' => ['en'],
-        ]);
+        $this->assertLocalHas($this->local());
     }
 }

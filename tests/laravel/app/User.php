@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Models;
+namespace App;
 
 use Laravel\Scout\Searchable;
 use Illuminate\Notifications\Notifiable;

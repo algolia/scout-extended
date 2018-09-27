@@ -4,222 +4,151 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Mockery;
+use App\User;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
-use Tests\Models\User;
-use Illuminate\Foundation\Application;
-use Algolia\LaravelScoutExtended\Settings\Compiler;
-use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
-use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 
-final class SettingsCommandTest extends TestCase
+final class SyncCommandTest extends TestCase
 {
     /**
      * @expectedException \Tests\Features\FakeException
      */
-    public function testModelsAreFound(): void
+    public function testModelsAreDiscovered(): void
     {
-        $appMock = Mockery::mock($this->app)->makePartial();
-        $appMock->expects('getNamespace')->once()->andReturn('Tests\Models');
-
-        $this->swap(Application::class, $appMock);
-
-        $synchronizerMock = Mockery::mock(Synchronizer::class);
-        $synchronizerMock->shouldReceive('analyse')->with($this->mockIndex(User::class))->andThrow(FakeException::class);
+        $synchronizerMock = mock(Synchronizer::class);
+        $synchronizerMock->shouldReceive('analyse')->once()->with($this->mockIndex(User::class))->andThrow(FakeException::class);
         $this->swap(Synchronizer::class, $synchronizerMock);
 
-        $this->artisan('scout:sync')->run();
+        Artisan::call('scout:sync', ['model' => User::class]);
     }
 
     public function testWhenLocalSettingsNotFound(): void
     {
-        $defaults = $this->getRemoteDefaultSettings();
-        $localSettings = $this->getLocalSettings();
+        $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $this->local()));
 
-        $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getSettings')->twice()->andReturn(array_merge($defaults, [
-            'searchableAttributes' => ['unordered(foo)', 'bar'],
-            'foo' => 'bar',
-        ]));
-        $usersIndex->expects('setSettings')->once()->with([
-            'userData' => $this->getLocalSettingsMd5(),
+        $usersIndex->shouldReceive('setSettings')->once()->with([
+            'userData' => $this->localMd5(),
         ]);
 
-        $this->artisan('scout:sync', ['model' => User::class])->run();
+        Artisan::call('scout:sync', ['model' => User::class]);
 
-        $this->assertFileExists(config_path('scout-users.php'));
-        $this->assertEquals($localSettings, require config_path('scout-users.php'));
+        $this->assertLocalHas($this->local());
     }
 
     public function testWhenRemoteSettingsNotFound(): void
     {
-        $defaults = $this->getRemoteDefaultSettings();
-        $localSettings = $this->getLocalSettings();
-        file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
+        file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($this->local(), true).';');
 
-        $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getSettings')->once()->andReturn($defaults);
-        $usersIndex->expects('setSettings')->once()->with(array_merge($localSettings, [
-            'userData' => $this->getLocalSettingsMd5(),
+        $usersIndex = $this->mockIndex(User::class, $this->defaults());
+        $usersIndex->shouldReceive('setSettings')->once()->with(array_merge($this->local(), [
+            'userData' => $this->localMd5(),
         ]));
 
-        $this->artisan('scout:sync', ['model' => User::class])->run();
+        Artisan::call('scout:sync', ['model' => User::class]);
     }
 
     public function testWhenSettingsAreTheSame(): void
     {
-        $defaults = $this->getRemoteDefaultSettings();
-        $localSettings = $this->getLocalSettings();
-        file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
+        file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($this->local(), true).';');
 
-        $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getSettings')->once()->andReturn(array_merge($defaults, $this->getLocalSettings(), [
-            'userData' => $this->getLocalSettingsMd5(),
+        $this->mockIndex(User::class, array_merge($this->defaults(), $this->local(), [
+            'userData' => $this->localMd5(),
         ]));
-        $this->artisan('scout:sync', ['model' => User::class])->run();
+
+        Artisan::call('scout:sync', ['model' => User::class]);
     }
 
     public function testWhenLocalSettingsAreMostRecent(): void
     {
-        $defaults = $this->getRemoteDefaultSettings();
-        $localSettings = array_merge($this->getLocalSettings(), [
-            'newSetting' => true,
-        ]);
-        file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
+        $local = array_merge($this->local(), ['newSetting' => true,]);
+        file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($local, true).';');
 
-        $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getSettings')->once()->andReturn(array_merge($defaults, $this->getLocalSettings(), [
-            'userData' => $this->getLocalSettingsMd5(),
+        $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $this->local(), [
+            'userData' => $this->localMd5(),
         ]));
 
-        ksort($localSettings);
+        ksort($local);
 
-        $usersIndex->expects('setSettings')->once()->with(array_merge($localSettings, [
-            'userData' => md5(serialize($localSettings)),
+        $usersIndex->shouldReceive('setSettings')->once()->with(array_merge($local, [
+            'userData' => md5(serialize($local)),
         ]));
 
-        $this->artisan('scout:sync', ['model' => User::class, '--no-interaction' => true])->run();
+        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true]);
     }
 
     public function testWhenRemoteSettingsAreMostRecent(): void
     {
-        $defaults = $this->getRemoteDefaultSettings();
-        $localSettings = $this->getLocalSettings();
-        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true,]);
+        file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($this->local(), true).';');
 
-        file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
-
-        $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getSettings')->twice()->andReturn(array_merge($defaults, $remoteWithoutDefaults, [
-            'userData' => $this->getLocalSettingsMd5(),
+        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true,]);
+        $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $remoteWithoutDefaults, [
+            'userData' => $this->localMd5(),
         ]));
 
         ksort($remoteWithoutDefaults);
 
-        $usersIndex->expects('setSettings')->once()->with([
-            'userData' => md5(serialize($remoteWithoutDefaults)),
-        ]);
+        $usersIndex->shouldReceive('setSettings')->once()->with(['userData' => md5(serialize($remoteWithoutDefaults)),]);
 
-        $this->artisan('scout:sync', ['model' => User::class, '--no-interaction' => true])->run();
-        $this->assertEquals($remoteWithoutDefaults, require config_path('scout-users.php'));
+        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true]);
+        $this->assertLocalHas($remoteWithoutDefaults);
     }
 
     public function testWhenBothSettingsAreMostRecentAndNoneGotChosen(): void
     {
-        $defaults = $this->getRemoteDefaultSettings();
-        $localSettings = array_merge($this->getLocalSettings(), ['newSetting' => false]);
-        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true,]);
-
+        $localSettings = array_merge($this->local(), ['newSetting' => false]);
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
-        $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getSettings')->once()->andReturn(array_merge($defaults, $remoteWithoutDefaults, [
-            'userData' => $this->getLocalSettingsMd5(),
+        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true,]);
+        $this->mockIndex(User::class, array_merge($this->defaults(), $remoteWithoutDefaults, [
+            'userData' => $this->localMd5(),
         ]));
 
-        $this->artisan('scout:sync', [
-            'model' => User::class,
-            '--no-interaction' => true,
-            '--keep' => 'none',
-        ])->run();
-        $this->assertEquals($localSettings, require config_path('scout-users.php'));
+        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true, '--keep' => 'none']);
+
+        $this->assertLocalHas($localSettings);
     }
 
     public function testWhenBothSettingsAreMostRecentAndLocalGotChosen(): void
     {
-        $defaults = $this->getRemoteDefaultSettings();
-        $localSettings = array_merge($this->getLocalSettings(), ['newSetting' => false]);
-        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true,]);
-
+        $localSettings = array_merge($this->local(), ['newSetting' => false]);
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
-        $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getSettings')->once()->andReturn(array_merge($defaults, $remoteWithoutDefaults, [
-            'userData' => $this->getLocalSettingsMd5(),
+        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true,]);
+        $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $remoteWithoutDefaults, [
+            'userData' => $this->localMd5(),
         ]));
 
         ksort($localSettings);
 
-        $usersIndex->expects('setSettings')->once()->with(array_merge($localSettings, [
+        $usersIndex->shouldReceive('setSettings')->once()->with(array_merge($localSettings, [
             'userData' => md5(serialize($localSettings)),
         ]));
 
-        $this->artisan('scout:sync', [
-            'model' => User::class,
-            '--no-interaction' => true,
-            '--keep' => 'local',
-        ])->run();
-        $this->assertEquals($localSettings, require config_path('scout-users.php'));
+        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true, '--keep' => 'local']);
+
+        $this->assertLocalHas($localSettings);
     }
 
     public function testWhenBothSettingsAreMostRecentAndRemoteGotChosen(): void
     {
-        $defaults = $this->getRemoteDefaultSettings();
-        $localSettings = array_merge($this->getLocalSettings(), ['newSetting' => false]);
-        $remoteWithoutDefaults = array_merge($this->getLocalSettings(), ['newSetting' => true,]);
-
+        $localSettings = array_merge($this->local(), ['newSetting' => false]);
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
-        $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('getSettings')->twice()->andReturn(array_merge($defaults, $remoteWithoutDefaults, [
-            'userData' => $this->getLocalSettingsMd5(),
+        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true,]);
+        $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $remoteWithoutDefaults, [
+            'userData' => $this->localMd5(),
         ]));
 
         ksort($remoteWithoutDefaults);
 
-        $usersIndex->expects('setSettings')->once()->with([
+        $usersIndex->shouldReceive('setSettings')->once()->with([
             'userData' => md5(serialize($remoteWithoutDefaults)),
         ]);
 
-        $this->artisan('scout:sync', [
-            'model' => User::class,
-            '--no-interaction' => true,
-            '--keep' => 'remote',
-        ])->run();
-        $this->assertEquals($remoteWithoutDefaults, require config_path('scout-users.php'));
-    }
+        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true, '--keep' => 'remote']);
 
-    private function getLocalSettings(): array
-    {
-        $viewVariables = array_fill_keys(Compiler::getViewVariables(), null);
-
-        return array_merge($viewVariables, [
-            'searchableAttributes' => [
-                'unordered(foo)',
-                'bar',
-            ],
-            'foo' => 'bar',
-        ]);
-    }
-
-    private function getLocalSettingsMd5(): string
-    {
-        $content = $this->getLocalSettings();
-
-        ksort($content);
-
-        return md5(serialize($content));
+        $this->assertLocalHas($remoteWithoutDefaults);
     }
 }
 
