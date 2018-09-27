@@ -15,6 +15,13 @@ use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 
 final class SettingsCommandTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        @unlink(__DIR__.'/../config/scout-users.php');
+    }
+
     public function tearDown(): void
     {
         parent::tearDown();
@@ -29,7 +36,7 @@ final class SettingsCommandTest extends TestCase
     {
         $appMock = Mockery::mock(Application::class)->makePartial();
         $appMock->expects('getNamespace')->once()->andReturn('Tests\Models');
-        $appMock->expects('path')->once()->andReturn(__DIR__ . '/../');
+        $appMock->expects('path')->once()->andReturn(__DIR__.'/../');
 
         $this->swap(Application::class, $appMock);
 
@@ -232,11 +239,6 @@ final class SettingsCommandTest extends TestCase
     private function getLocalSettings(): array
     {
         $viewVariables = array_fill_keys(Compiler::getViewVariables(), null);
-
-        $viewVariables['ignorePlurals'] = false;
-        $viewVariables['removeStopWords'] = false;
-        $viewVariables['unretrievableAttributes'] = null;
-        $viewVariables['disableTypoToleranceOnAttributes'] = true;
 
         return array_merge($viewVariables, [
             'searchableAttributes' => [
