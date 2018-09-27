@@ -34,7 +34,7 @@ final class OptimizeCommand extends Command
     /**
      * {@inheritdoc}<<
      */
-    protected $description = "Setup the local settings of searchable models";
+    protected $description = "Optimize local settings of searchable models";
 
     /**
      * {@inheritdoc}
@@ -57,7 +57,7 @@ final class OptimizeCommand extends Command
         foreach ($classes as $class) {
             $state = $synchronizer->analyse($algolia->index($class));
             if (! File::exists($state->getPath()) || $this->confirm('File already exists, do you wish to overwrite?')) {
-                $io->comment('Creating local settings from ['.$class.'] model...');
+                $io->comment('Reading information from ['.$class.'] model...');
                 $settings = $settingsFactory->create($class);
                 $compiler->compile($settings, $state->getPath());
                 $io->success('Settings file created at: '.$state->getPath());

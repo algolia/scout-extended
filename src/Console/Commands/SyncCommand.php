@@ -33,7 +33,7 @@ final class SyncCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = "Synchronize the local & remote settings of searchable models";
+    protected $description = "Synchronize local & remote settings of searchable models";
 
     /**
      * {@inheritdoc}
@@ -57,25 +57,25 @@ final class SyncCommand extends Command
 
             switch ($state->toString()) {
                 case State::LOCAL_NOT_FOUND:
-                    $io->comment('Local settings do not exist and remote settings found! Downloading remote settings...');
+                    $io->comment('No settins found locally! Downloading remote settings...');
                     $synchronizer->download($index);
                     $io->success('Settings file created at: '.$state->getPath());
                     break;
                 case State::REMOTE_NOT_FOUND:
-                    $io->success('Remote settings does not exists. Uploading settings file: '.$state->getPath());
+                    $io->success('No settings found remotely. Uploading settings file: '.$state->getPath());
                     $synchronizer->upload($index);
                     break;
                 case State::BOTH_ARE_EQUAL:
-                    $io->success('Both local and remote settings are the equal.');
+                    $io->success('Both local and remote settings are up-to-date!');
                     break;
                 case State::LOCAL_GOT_UPDATED:
-                    if ($io->confirm('You local settings is more recent than the remote one. Wish to upload the local settings?')) {
+                    if ($io->confirm('Remote settings are outdated. Wish to upload the local settings?')) {
                         $io->comment('Uploading local settings...');
                         $synchronizer->upload($index);
                     }
                     break;
                 case State::REMOTE_GOT_UPDATED:
-                    if ($io->confirm('You remote configuration is more recent than the local one. Wish to download the remote settings?')) {
+                    if ($io->confirm('Local settings are outdated. Wish to download the remote settings?')) {
                         $io->comment('Downloading remote settings...');
                         $synchronizer->download($index);
                     }
