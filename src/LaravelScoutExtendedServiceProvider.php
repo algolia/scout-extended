@@ -23,6 +23,7 @@ use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 use Algolia\LaravelScoutExtended\Console\Commands\ClearCommand;
 use Algolia\LaravelScoutExtended\Console\Commands\SettingsCommand;
+use Algolia\LaravelScoutExtended\Console\Commands\SettingsOptimizeCommand;
 
 final class LaravelScoutExtendedServiceProvider extends ServiceProvider
 {
@@ -76,6 +77,7 @@ final class LaravelScoutExtendedServiceProvider extends ServiceProvider
             $this->commands([
                 ClearCommand::class,
                 SettingsCommand::class,
+                SettingsOptimizeCommand::class,
             ]);
         }
     }

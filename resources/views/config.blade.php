@@ -9,40 +9,28 @@ return [
     |
     | Limits the scope of a search to the attributes listed in this setting. Defining
     | specific attributes as searchable is critical for relevance because it gives
-    | you direct control over what information the search engine will look at.
+    | you direct control over what information the search engine should look at.
     |
-    | Example: ["attribute1", "ordered(attribute4)", "unordered(attribute5)",]
+    | Example: ["name", "ordered(email)", "unordered(city)",]
     |
     */
-    'searchableAttributes' => {!! $searchableAttributes  !!},
+
+    'searchableAttributes' => {!! $searchableAttributes !!},
 
     /*
     |--------------------------------------------------------------------------
-    | Attributes For Faceting
+    | Disable Typo Tolerance
     |--------------------------------------------------------------------------
     |
-    | Your index comes with no categories. By designating an attribute as a facet, this enables
-    | Algolia to compute a set of possible values that can later be used to create categories
-    | or filters. You can also get a count of records that match those values.
+    | Algolia provides robust "typo-tolerance" out-of-the-box. This parameter accepts an
+    | array of attributes for which typo-tolerance should be disabled. This is useful,
+    | for example, products that might require SKU search without "typo-tolerance".
     |
-    | Example: ['attribute1', 'filterOnly(attribute2)', 'searchable(attribute3)',]
+    | Example: ['id', 'sku', 'reference', 'code',]
     |
     */
-    'attributesForFaceting' => {!! $attributesForFaceting  !!},
 
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes To Retrieve
-    |--------------------------------------------------------------------------
-    |
-    | You don’t always need to retrieve a full response that includes every attribute
-    | in your index. Sometimes you may only want to receive the most relevant
-    | attributes, or exclude attributes used only for internal purposes.
-    |
-    | Example: ['attribute1', 'attribute2', 'attribute3',]
-    |
-    */
-    'attributesToRetrieve' => {!! $attributesToRetrieve  !!},
+    'disableTypoToleranceOnAttributes' => {!! $disableTypoToleranceOnAttributes ?? 'null' !!},
 
     /*
     |--------------------------------------------------------------------------
@@ -53,24 +41,101 @@ return [
     | sorted by textual relevance. Said another way, if two matched records have
     | the same match textually, we resort to custom ranking to tie-break.
     |
-    | Examples: "asc(name)", "asc(email)", "desc(age)"
+    | Examples: ['desc(comments_count)', 'desc(views_count)',]
     |
     */
-    'customRanking' => {!! $customRanking  !!},
+
+    'customRanking' => {!! $customRanking !!},
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes For Faceting
+    |--------------------------------------------------------------------------
+    |
+    | Your index comes with no categories. By designating an attribute as a facet, this enables
+    | Algolia to compute a set of possible values that can later be used to create categories
+    | or filters. You can also get a count of records that match those values.
+    |
+    | Example: ['type', 'filterOnly(country)', 'searchable(city)',]
+    |
+    */
+
+    'attributesForFaceting' => {!! $attributesForFaceting  !!},
+
+    /*
+    |--------------------------------------------------------------------------
+    | Unretrievable Attributes
+    |--------------------------------------------------------------------------
+    |
+    | This is particularly important for security or business reasons, where some attributes are
+    | used only for ranking or other technical purposes, but should never be seen by your end
+    | users, such us: total_sales, permissions, stock_count, and other private information.
+    |
+    | Example: ['total_sales', 'permissions', 'stock_count',]
+    |
+    */
+
+    'unretrievableAttributes' => {!! $unretrievableAttributes ?? 'null' !!},
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ignore Plurals
+    |--------------------------------------------------------------------------
+    |
+    | Treats singular, plurals, and other forms of declensions as matching terms. When
+    | enabled, will make the engine consider “car” and “cars”, or “foot” and “feet”,
+    | equivalent. This is used in conjunction with the "queryLanguages" setting.
+    |
+    | Example: true
+    |
+    */
+
+    'ignorePlurals' => {!! $ignorePlurals ?? 'false' !!},
+
+    /*
+    |--------------------------------------------------------------------------
+    | Remove Stop Words
+    |--------------------------------------------------------------------------
+    |
+    | Stop word removal is useful when you have a query in natural language, e.g.
+    | “what is a record?”. In that case, the engine will remove “what”, “is”,
+    | before executing the query, and therefore just search for “record”.
+    |
+    | Example: true
+    |
+    */
+
+    'removeStopWords' => {!! $removeStopWords ?? 'false' !!},
+
+    /*
+    |--------------------------------------------------------------------------
+    | Query Languages
+    |--------------------------------------------------------------------------
+    |
+    | Sets the languages to be used by language-specific settings such as
+    | "removeStopWords" or "ignorePlurals". For optimum relevance, it is
+    | recommended to only enable languages that are used in your data.
+    |
+    | Example: ['en', 'fr',]
+    |
+    */
+
+    'queryLanguages' => {!! $queryLanguages ?? "array_unique([config('app.locale'), config('app.fallback_locale'),])" !!},
 
     /*
     |--------------------------------------------------------------------------
     | Ranking Formula
     |--------------------------------------------------------------------------
     |
-    | Configure how hits are sorted. The ranking formula is implemented as
-    | a tie-breaking algorithm, comparing each criteria one after another.
+    | It specifies the way results are sorted. You must specify a list of ranking
+    | criteria. Each criterion will be applied in sequence by the tie-breaking
+    | algorithm in the order they are specified.
     |
-    | Supported: "typo", "geo", "words", "filters", "proximity", "attribute"
-    |            "exact", "custom".
+    | Example: ['typo', 'geo', 'words', 'filters', 'proximity', 'attribute'
+    |            'exact', 'custom']
     |
     */
-    'ranking' => {!! $ranking  !!},
+    'ranking' => {!! $ranking !!},
 
     /*
     |--------------------------------------------------------------------------

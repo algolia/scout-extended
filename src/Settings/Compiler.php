@@ -19,7 +19,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
- * {@internal}
+ * @internal
  */
 final class Compiler
 {
@@ -115,7 +115,7 @@ final class Compiler
         array_pop($matches[2]);
 
         return array_map(function ($match) {
-            return ltrim($match, '$');
+            return ltrim(explode(' ', $match)[0], '$');
         }, $matches[2]);
     }
 }

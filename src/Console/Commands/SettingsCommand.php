@@ -57,7 +57,7 @@ final class SettingsCommand extends Command
 
             switch ($state->toString()) {
                 case State::LOCAL_NOT_FOUND:
-                    $io->comment('Local settings do not exist. Downloading remote settings...');
+                    $io->comment('Local settings do not exist and remote settings found! Downloading remote settings...');
                     $synchronizer->download($index);
                     $io->success('Settings file created at: '.$state->getPath());
                     break;

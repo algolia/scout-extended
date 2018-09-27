@@ -61,7 +61,17 @@ final class Settings
      */
     public function all(): array
     {
-        return array_filter($this->settings, function ($value, $setting) {
+        $viewVariables = Compiler::getViewVariables();
+        $settings = $this->settings;
+        foreach ($viewVariables as $key) {
+            if (array_key_exists($key, $this->settings)) {
+                $settings[$key] = $this->settings[$key];
+            } else if (array_key_exists($key, $this->defaults)) {
+                $settings[$key] = $this->defaults[$key];
+            }
+        }
+
+        return array_filter($settings, function ($value, $setting) {
             return ! in_array($setting, self::$ignore, true);
         }, ARRAY_FILTER_USE_BOTH);
     }

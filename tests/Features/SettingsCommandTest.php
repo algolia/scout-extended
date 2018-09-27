@@ -231,7 +231,14 @@ final class SettingsCommandTest extends TestCase
 
     private function getLocalSettings(): array
     {
-        return array_merge(array_fill_keys(Compiler::getViewVariables(), null), [
+        $viewVariables = array_fill_keys(Compiler::getViewVariables(), null);
+
+        $viewVariables['ignorePlurals'] = false;
+        $viewVariables['removeStopWords'] = false;
+        $viewVariables['unretrievableAttributes'] = null;
+        $viewVariables['disableTypoToleranceOnAttributes'] = true;
+
+        return array_merge($viewVariables, [
             'searchableAttributes' => [
                 'unordered(foo)',
                 'bar',
