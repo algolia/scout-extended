@@ -35,8 +35,12 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
-        }
+            "Tests\\": "tests/",
+            "App\\": "tests/laravel/app"
+        },
+        "files": [
+            "vendor/mockery/mockery/library/helpers.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
