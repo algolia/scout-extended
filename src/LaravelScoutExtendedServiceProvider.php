@@ -21,8 +21,8 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
-use Algolia\LaravelScoutExtended\Console\Commands\ClearCommand;
 use Algolia\LaravelScoutExtended\Console\Commands\SyncCommand;
+use Algolia\LaravelScoutExtended\Console\Commands\ClearCommand;
 use Algolia\LaravelScoutExtended\Console\Commands\OptimizeCommand;
 
 final class LaravelScoutExtendedServiceProvider extends ServiceProvider

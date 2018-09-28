@@ -144,7 +144,7 @@ final class LocalFactory
             'customRanking' => ! empty($customRanking) ? $customRanking : null,
             'disableTypoToleranceOnAttributes' => ! empty($disableTypoToleranceOnAttributes) ? $disableTypoToleranceOnAttributes : null,
             'unretrievableAttributes' => ! empty($unretrievableAttributes) ? $unretrievableAttributes : null,
-            'queryLanguages' => array_unique([config('app.locale'), config('app.fallback_locale'),]),
+            'queryLanguages' => array_unique([config('app.locale'), config('app.fallback_locale')]),
         ];
 
         return new Settings($detectedSettings, $this->remoteRepository->defaults());
