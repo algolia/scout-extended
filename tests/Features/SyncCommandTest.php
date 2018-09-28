@@ -58,7 +58,7 @@ final class SyncCommandTest extends TestCase
     {
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($this->local(), true).';');
 
-        $this->mockIndex(User::class, array_merge($this->defaults(), $this->local(), ['userData' => $this->localMd5(),]));
+        $this->mockIndex(User::class, array_merge($this->defaults(), $this->local(), ['userData' => $this->localMd5()]));
 
         Artisan::call('scout:sync', ['model' => User::class]);
     }
@@ -74,7 +74,7 @@ final class SyncCommandTest extends TestCase
 
         ksort($local);
 
-        $this->assertSettingsSet($usersIndex, array_merge($local, ['userData' => md5(serialize($local)),]));
+        $this->assertSettingsSet($usersIndex, array_merge($local, ['userData' => md5(serialize($local))]));
 
         Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true]);
     }
@@ -124,7 +124,7 @@ final class SyncCommandTest extends TestCase
 
         ksort($localSettings);
 
-        $this->assertSettingsSet($usersIndex, array_merge($localSettings, ['userData' => md5(serialize($localSettings)),]));
+        $this->assertSettingsSet($usersIndex, array_merge($localSettings, ['userData' => md5(serialize($localSettings))]));
 
         Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true, '--keep' => 'local']);
 
@@ -143,7 +143,7 @@ final class SyncCommandTest extends TestCase
 
         ksort($remoteWithoutDefaults);
 
-        $this->assertSettingsSet($usersIndex, ['userData' => md5(serialize($remoteWithoutDefaults)),]);
+        $this->assertSettingsSet($usersIndex, ['userData' => md5(serialize($remoteWithoutDefaults))]);
 
         Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true, '--keep' => 'remote']);
 

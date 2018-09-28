@@ -13,16 +13,14 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Illuminate\Console\Application;
-use Illuminate\Support\Facades\Artisan;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 use Algolia\ScoutExtended\Algolia;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Illuminate\Support\Facades\File;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Settings\LocalFactory;
 use Algolia\ScoutExtended\Settings\Synchronizer;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
 
 final class OptimizeCommand extends Command
@@ -54,6 +52,7 @@ final class OptimizeCommand extends Command
 
         if (empty($classes) && empty($classes = $searchableModelsFinder->find())) {
             $io->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
+
             return 1;
         }
 

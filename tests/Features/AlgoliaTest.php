@@ -6,8 +6,8 @@ namespace Tests\Features;
 
 use App\User;
 use Tests\TestCase;
-use Algolia\AlgoliaSearch\Analytics;
 use Algolia\ScoutExtended\Algolia;
+use Algolia\AlgoliaSearch\Analytics;
 use Algolia\AlgoliaSearch\Interfaces\IndexInterface;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 

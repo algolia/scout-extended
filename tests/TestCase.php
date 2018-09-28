@@ -10,8 +10,8 @@ use Algolia\AlgoliaSearch\Index;
 use Laravel\Scout\EngineManager;
 use Algolia\AlgoliaSearch\Client;
 use Laravel\Scout\Engines\AlgoliaEngine;
-use Orchestra\Testbench\TestCase as BaseTestCase;
 use Algolia\ScoutExtended\Settings\Compiler;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
 class TestCase extends BaseTestCase
