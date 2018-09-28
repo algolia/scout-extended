@@ -40,6 +40,18 @@ final class LaravelScoutExtendedServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->registerBinds();
+        $this->registerCommands();
+        $this->registerMacros();
+    }
+
+    /**
+     * Binds Algolia services into the container.
+     *
+     * @return void
+     */
+    private function registerBinds(): void
+    {
         $this->app->bind(Algolia::class, function () {
             return new Algolia($this->app);
         });
@@ -70,9 +82,15 @@ final class LaravelScoutExtendedServiceProvider extends ServiceProvider
         $this->app->alias(Analytics::class, 'algolia.analytics');
 
         $this->app->bind(SynchronizerContract::class, Synchronizer::class);
+    }
 
-        Builder::mixin(new BuilderMacros);
-
+    /**
+     * Register artisan commands.
+     *
+     * @return void
+     */
+    private function registerCommands(): void
+    {
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ClearCommand::class,
@@ -80,5 +98,15 @@ final class LaravelScoutExtendedServiceProvider extends ServiceProvider
                 OptimizeCommand::class,
             ]);
         }
+    }
+
+    /**
+     * Register macros.
+     *
+     * @return void
+     */
+    private function registerMacros(): void
+    {
+        Builder::mixin(new BuilderMacros);
     }
 }
