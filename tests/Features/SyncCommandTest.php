@@ -81,17 +81,17 @@ final class SyncCommandTest extends TestCase
     {
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($this->local(), true).';');
 
-        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true,]);
-        $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $remoteWithoutDefaults, [
+        $remoteSettings = array_merge($this->local(), ['newSetting' => true,]);
+        $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $remoteSettings, [
             'userData' => $this->localMd5(),
         ]));
 
-        ksort($remoteWithoutDefaults);
+        ksort($remoteSettings);
 
-        $usersIndex->shouldReceive('setSettings')->once()->with(['userData' => md5(serialize($remoteWithoutDefaults)),]);
+        $usersIndex->shouldReceive('setSettings')->once()->with(['userData' => md5(serialize($remoteSettings)),]);
 
         Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true]);
-        $this->assertLocalHas($remoteWithoutDefaults);
+        $this->assertLocalHas($remoteSettings);
     }
 
     public function testWhenBothSettingsAreMostRecentAndNoneGotChosen(): void

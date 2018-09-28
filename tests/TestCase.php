@@ -71,7 +71,11 @@ class TestCase extends BaseTestCase
             'searchableAttributes' => [
                 'name',
                 'email',
+                'views_count',
+                'category_type',
             ],
+            'customRanking' => ['desc(views_count)'],
+            'attributesForFaceting' => ['category_type'],
             'queryLanguages' => ['en'],
         ]);
     }

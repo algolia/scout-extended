@@ -20,4 +20,12 @@ final class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function toSearchableArray()
+    {
+        return array_merge($this->toArray(), [
+            'views_count' => 100,
+            'category_type' => 'published'
+        ]);
+    }
 }
