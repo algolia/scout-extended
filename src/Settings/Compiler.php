@@ -78,7 +78,7 @@ final class Compiler
 
         foreach ($viewVariables as $viewVariable) {
             if (array_key_exists($viewVariable, $all)) {
-                $viewParams[$viewVariable] = $this->encoder->encode($all[$viewVariable], ['array.base' => 4,]);
+                $viewParams[$viewVariable] = $this->encoder->encode($all[$viewVariable], ['array.base' => 4]);
             }
         }
 

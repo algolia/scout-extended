@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Features;
 
 use App\User;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Artisan;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 
 final class SyncCommandTest extends TestCase
@@ -61,7 +61,7 @@ final class SyncCommandTest extends TestCase
 
     public function testWhenLocalSettingsAreMostRecent(): void
     {
-        $local = array_merge($this->local(), ['newSetting' => true,]);
+        $local = array_merge($this->local(), ['newSetting' => true]);
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($local, true).';');
 
         $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $this->local(), [
@@ -81,14 +81,14 @@ final class SyncCommandTest extends TestCase
     {
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($this->local(), true).';');
 
-        $remoteSettings = array_merge($this->local(), ['newSetting' => true,]);
+        $remoteSettings = array_merge($this->local(), ['newSetting' => true]);
         $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $remoteSettings, [
             'userData' => $this->localMd5(),
         ]));
 
         ksort($remoteSettings);
 
-        $usersIndex->shouldReceive('setSettings')->once()->with(['userData' => md5(serialize($remoteSettings)),]);
+        $usersIndex->shouldReceive('setSettings')->once()->with(['userData' => md5(serialize($remoteSettings))]);
 
         Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true]);
         $this->assertLocalHas($remoteSettings);
@@ -99,7 +99,7 @@ final class SyncCommandTest extends TestCase
         $localSettings = array_merge($this->local(), ['newSetting' => false]);
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
-        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true,]);
+        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true]);
         $this->mockIndex(User::class, array_merge($this->defaults(), $remoteWithoutDefaults, [
             'userData' => $this->localMd5(),
         ]));
@@ -114,7 +114,7 @@ final class SyncCommandTest extends TestCase
         $localSettings = array_merge($this->local(), ['newSetting' => false]);
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
-        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true,]);
+        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true]);
         $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $remoteWithoutDefaults, [
             'userData' => $this->localMd5(),
         ]));
@@ -135,7 +135,7 @@ final class SyncCommandTest extends TestCase
         $localSettings = array_merge($this->local(), ['newSetting' => false]);
         file_put_contents(config_path('scout-users.php'), '<?php return '.var_export($localSettings, true).';');
 
-        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true,]);
+        $remoteWithoutDefaults = array_merge($this->local(), ['newSetting' => true]);
         $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $remoteWithoutDefaults, [
             'userData' => $this->localMd5(),
         ]));

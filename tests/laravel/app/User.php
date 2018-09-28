@@ -25,7 +25,7 @@ final class User extends Authenticatable
     {
         return array_merge($this->toArray(), [
             'views_count' => 100,
-            'category_type' => 'published'
+            'category_type' => 'published',
         ]);
     }
 }

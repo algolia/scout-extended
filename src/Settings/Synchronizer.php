@@ -97,7 +97,7 @@ class Synchronizer
 
         $userData = $this->encrypter->local($path);
 
-        $index->setSettings(['userData' => $userData,]);
+        $index->setSettings(['userData' => $userData]);
     }
 
     /**
@@ -115,6 +115,6 @@ class Synchronizer
 
         $userData = $this->encrypter->with($settings);
 
-        $index->setSettings(array_merge($settings, ['userData' => $userData,]));
+        $index->setSettings(array_merge($settings, ['userData' => $userData]));
     }
 }

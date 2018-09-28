@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\File;
 use Algolia\LaravelScoutExtended\Algolia;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\LaravelScoutExtended\Settings\Compiler;
-use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 use Algolia\LaravelScoutExtended\Settings\LocalFactory;
+use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 use Algolia\LaravelScoutExtended\Helpers\SearchableModelsFinder;
 
 final class OptimizeCommand extends Command
@@ -34,7 +34,7 @@ final class OptimizeCommand extends Command
     /**
      * {@inheritdoc}<<
      */
-    protected $description = "Optimize local settings of searchable models";
+    protected $description = 'Optimize local settings of searchable models';
 
     /**
      * {@inheritdoc}
