@@ -26,7 +26,7 @@ final class ClearCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = "Clear all of the model's records from the index";
+    protected $description = "Clear the index of the the given model";
 
     /**
      * {@inheritdoc}

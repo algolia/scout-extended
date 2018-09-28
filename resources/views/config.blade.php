@@ -124,12 +124,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Other Modified Settings
+    | Other Settings
     |--------------------------------------------------------------------------
     |
-    | ..
-    |
-    | Supported: ..
+    | The easiest way to manage your settings is usually to go to your Algolia dashboard because
+    | it has a nice UI and you can test the relevancy directly there. Once you fine-tuned your
+    | configuration, just use the command `scout:sync` to get remote settings in this file.
     |
     */
 {!! $__indexChangedSettings  !!};

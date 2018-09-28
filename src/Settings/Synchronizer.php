@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\LaravelScoutExtended\Settings;
 
-use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use Algolia\AlgoliaSearch\Interfaces\IndexInterface;
 
@@ -38,6 +37,11 @@ class Synchronizer
     private $files;
 
     /**
+     * @var \Algolia\LaravelScoutExtended\Settings\LocalRepository
+     */
+    private $localRepository;
+
+    /**
      * @var \Algolia\LaravelScoutExtended\Settings\RemoteRepository
      */
     private $remoteRepository;
@@ -48,6 +52,7 @@ class Synchronizer
      * @param \Algolia\LaravelScoutExtended\Settings\Compiler $compiler
      * @param \Algolia\LaravelScoutExtended\Settings\Encrypter $encrypter
      * @param \Illuminate\Filesystem\Filesystem $files
+     * @param \Algolia\LaravelScoutExtended\Settings\LocalRepository $localRepository
      * @param \Algolia\LaravelScoutExtended\Settings\RemoteRepository $remoteRepository
      *
      * @return void
@@ -56,10 +61,12 @@ class Synchronizer
         Compiler $compiler,
         Encrypter $encrypter,
         Filesystem $files,
+        LocalRepository $localRepository,
         RemoteRepository $remoteRepository
     ) {
         $this->compiler = $compiler;
         $this->encrypter = $encrypter;
+        $this->localRepository = $localRepository;
         $this->remoteRepository = $remoteRepository;
         $this->files = $files;
     }
@@ -75,7 +82,7 @@ class Synchronizer
     {
         $settings = new Settings($this->remoteRepository->from($index), $this->remoteRepository->defaults());
 
-        $path = config_path('scout-'.Str::lower($index->getIndexName()).'.php');
+        $path = $this->localRepository->getPath($index->getIndexName());
 
         return new StateResponse($this->encrypter, $this->files, $settings, $path);
     }
@@ -91,13 +98,13 @@ class Synchronizer
     {
         $settings = new Settings($this->remoteRepository->from($index), $this->remoteRepository->defaults());
 
-        $path = config_path('scout-'.Str::lower($index->getIndexName()).'.php');
+        $path = $this->localRepository->getPath($index->getIndexName());
 
         $this->compiler->compile($settings, $path);
 
         $userData = $this->encrypter->local($path);
 
-        $index->setSettings(['userData' => $userData]);
+        $index->setSettings(['userData' => $userData])->wait();
     }
 
     /**
@@ -109,12 +116,10 @@ class Synchronizer
      */
     public function upload(IndexInterface $index): void
     {
-        $path = config_path('scout-'.Str::lower($index->getIndexName()).'.php');
-
-        $settings = require $path;
+        $settings = require $this->localRepository->getPath($index->getIndexName());
 
         $userData = $this->encrypter->with($settings);
 
-        $index->setSettings(array_merge($settings, ['userData' => $userData]));
+        $index->setSettings(array_merge($settings, ['userData' => $userData]))->wait();
     }
 }

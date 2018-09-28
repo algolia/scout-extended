@@ -124,4 +124,13 @@ class TestCase extends BaseTestCase
 
         return $indexMock;
     }
+
+    protected function assertSettingsSet($indexMock, array $settings)
+    {
+        $responseMock = mock(\Algolia\AlgoliaSearch\Response\AbstractResponse::class);
+
+        $responseMock->shouldReceive('wait')->zeroOrMoreTimes();
+
+        $indexMock->shouldReceive('setSettings')->zeroOrMoreTimes()->with($settings)->andReturn($responseMock);
+    }
 }

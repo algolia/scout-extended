@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\LaravelScoutExtended\Console\Commands;
 
+use Algolia\LaravelScoutExtended\Settings\LocalRepository;
+use Illuminate\Support\Facades\File;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\LaravelScoutExtended\Algolia;
@@ -33,7 +35,7 @@ final class SyncCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Synchronize the local & remote settings of searchable models';
+    protected $description = 'Synchronize the given model settings';
 
     /**
      * {@inheritdoc}
@@ -42,22 +44,34 @@ final class SyncCommand extends Command
         Algolia $algolia,
         Synchronizer $synchronizer,
         SearchableModelsFinder $searchableModelsFinder
-    ): void {
+    ) {
         $classes = (array) $this->argument('model');
 
         $io = new SymfonyStyle($this->input, $this->output);
 
         if (empty($classes) && empty($classes = $searchableModelsFinder->find())) {
             $io->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
+
+            return 1;
         }
 
         foreach ($classes as $class) {
-            $io->comment('Analysing ['.$class.'] index settings...');
+            $io->text('🔎 Analysing information from: <info>['.$class.']</info>');
             $state = $synchronizer->analyse($index = $algolia->index($class));
 
             switch ($state->toString()) {
                 case StateResponse::LOCAL_NOT_FOUND:
-                    $io->comment('Local settings do not exist and remote settings found! Downloading remote settings...');
+                    if ($state->remoteNotFound()) {
+                        $io->note('No settings found.');
+                        if ($this->confirm('Wish to optimize the search experience based on information from your model class?')) {
+                            return $this->call('scout:optimize', ['model' => $class]);
+                        }
+                    } else {
+                        $io->note('Remote settings <info>found</info>!');
+                        $io->newLine();
+                    }
+
+                    $io->text('⬇️  Downloading <info>remote</info> settings...');
                     $synchronizer->download($index);
                     $io->success('Settings file created at: '.$state->getPath());
                     break;
@@ -66,17 +80,19 @@ final class SyncCommand extends Command
                     $synchronizer->upload($index);
                     break;
                 case StateResponse::BOTH_ARE_EQUAL:
-                    $io->success('Both local and remote settings are the equal.');
+                    $io->success('Local and remote settings are similar.');
                     break;
                 case StateResponse::LOCAL_GOT_UPDATED:
-                    if ($io->confirm('You local settings is more recent than the remote one. Wish to upload the local settings?')) {
-                        $io->comment('Uploading local settings...');
+                    if ($io->confirm('Local settings got updated. Wish to upload them?')) {
+                        $io->text('Uploading <info>local settings</info>...');
+                        $io->newLine();
                         $synchronizer->upload($index);
                     }
                     break;
                 case StateResponse::REMOTE_GOT_UPDATED:
-                    if ($io->confirm('You remote configuration is more recent than the local one. Wish to download the remote settings?')) {
-                        $io->comment('Downloading remote settings...');
+                    if ($io->confirm('Remote settings got updated. Wish to download them?')) {
+                        $io->text('Downloading <info>remote settings</info>...');
+                        $io->newLine();
                         $synchronizer->download($index);
                     }
                     break;
@@ -87,16 +103,21 @@ final class SyncCommand extends Command
 
                     switch ($choice) {
                         case 'local':
-                            $io->comment('Uploading local settings...');
+                            $io->text('Uploading <info>local settings</info>...');
+                            $io->newLine();
                             $synchronizer->upload($index);
                             break;
                         case 'remote':
-                            $io->comment('Downloading remote settings...');
+                            $io->text('Downloading <info>remote settings</info>...');
+                            $io->newLine();
                             $synchronizer->download($index);
                             break;
                     }
                     break;
             }
         }
+
+        $io->text('💡 Feedback: <info>https://github.com/algolia/scout-extended</info>');
+        $io->newLine();
     }
 }
