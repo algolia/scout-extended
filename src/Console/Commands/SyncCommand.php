@@ -16,9 +16,9 @@ namespace Algolia\LaravelScoutExtended\Console\Commands;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\LaravelScoutExtended\Algolia;
-use Algolia\LaravelScoutExtended\Settings\StateResponse;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
+use Algolia\LaravelScoutExtended\Settings\StateResponse;
 use Algolia\LaravelScoutExtended\Helpers\SearchableModelsFinder;
 
 final class SyncCommand extends Command
@@ -33,7 +33,7 @@ final class SyncCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = "Synchronize the local & remote settings of searchable models";
+    protected $description = 'Synchronize the local & remote settings of searchable models';
 
     /**
      * {@inheritdoc}
@@ -81,7 +81,7 @@ final class SyncCommand extends Command
                     }
                     break;
                 case StateResponse::BOTH_GOT_UPDATED:
-                    $options = ['none', 'local', 'remote',];
+                    $options = ['none', 'local', 'remote'];
 
                     $choice = $io->choice('Remote & Local settings got updated. Which one you want to preserve?', $options, $this->option('keep'));
 
