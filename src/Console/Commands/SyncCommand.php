@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\LaravelScoutExtended\Console\Commands;
 
-use Algolia\LaravelScoutExtended\Settings\LocalRepository;
-use Illuminate\Support\Facades\File;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\LaravelScoutExtended\Algolia;
