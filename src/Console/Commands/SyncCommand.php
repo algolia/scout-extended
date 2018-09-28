@@ -16,9 +16,9 @@ namespace Algolia\ScoutExtended\Console\Commands;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\ScoutExtended\Settings\Synchronizer;
 use Algolia\ScoutExtended\Settings\StateResponse;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
 
 final class SyncCommand extends Command
