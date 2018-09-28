@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * This file is part of Laravel Scout Extended.
+ * This file is part of Scout Extended.
  *
  * (c) Algolia Team <contact@algolia.com>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended\Facades;
+namespace Algolia\ScoutExtended\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Algolia\AlgoliaSearch\Interfaces\ClientInterface client()
  * @method static \Algolia\AlgoliaSearch\Analytics analytics()
  *
- * @see \Algolia\LaravelScoutExtended\Algolia
+ * @see \Algolia\ScoutExtended\Algolia
  */
 final class Algolia extends Facade
 {

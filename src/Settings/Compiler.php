@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * This file is part of Laravel Scout Extended.
+ * This file is part of Scout Extended.
  *
  * (c) Algolia Team <contact@algolia.com>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended\Settings;
+namespace Algolia\ScoutExtended\Settings;
 
 use Illuminate\Support\Facades\File;
 use Riimu\Kit\PHPEncoder\PHPEncoder;
@@ -64,7 +64,7 @@ final class Compiler
     /**
      * Compiles the provided settings into the provided path.
      *
-     * @param \Algolia\LaravelScoutExtended\Settings\Settings $settings
+     * @param \Algolia\ScoutExtended\Settings\Settings $settings
      * @param string $path
      *
      * @return void

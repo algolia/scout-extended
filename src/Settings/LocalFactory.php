@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * This file is part of Laravel Scout Extended.
+ * This file is part of Scout Extended.
  *
  * (c) Algolia Team <contact@algolia.com>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended\Settings;
+namespace Algolia\ScoutExtended\Settings;
 
 use function is_string;
 
@@ -21,7 +21,7 @@ use function is_string;
 final class LocalFactory
 {
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\RemoteRepository
+     * @var \Algolia\ScoutExtended\Settings\RemoteRepository
      */
     private $remoteRepository;
 
@@ -91,7 +91,7 @@ final class LocalFactory
     /**
      * SettingsFactory constructor.
      *
-     * @param \Algolia\LaravelScoutExtended\Settings\RemoteRepository $remoteRepository
+     * @param \Algolia\ScoutExtended\Settings\RemoteRepository $remoteRepository
      *
      * @return void
      */
@@ -105,7 +105,7 @@ final class LocalFactory
      *
      * @param string $model
      *
-     * @return \Algolia\LaravelScoutExtended\Settings\Settings
+     * @return \Algolia\ScoutExtended\Settings\Settings
      */
     public function create(string $model): Settings
     {

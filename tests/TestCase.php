@@ -11,7 +11,7 @@ use Laravel\Scout\EngineManager;
 use Algolia\AlgoliaSearch\Client;
 use Laravel\Scout\Engines\AlgoliaEngine;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Algolia\LaravelScoutExtended\Settings\Compiler;
+use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
 class TestCase extends BaseTestCase
@@ -38,14 +38,14 @@ class TestCase extends BaseTestCase
     {
         return [
             \Laravel\Scout\ScoutServiceProvider::class,
-            \Algolia\LaravelScoutExtended\LaravelScoutExtendedServiceProvider::class,
+            \Algolia\ScoutExtended\ScoutExtendedServiceProvider::class,
         ];
     }
 
     protected function getPackageAliases($app)
     {
         return [
-            'Algolia' => \Algolia\LaravelScoutExtended\Facades\Algolia::class,
+            'Algolia' => \Algolia\ScoutExtended\Facades\Algolia::class,
         ];
     }
 

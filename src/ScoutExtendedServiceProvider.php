@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * This file is part of Laravel Scout Extended.
+ * This file is part of Scout Extended.
  *
  * (c) Algolia Team <contact@algolia.com>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended;
+namespace Algolia\ScoutExtended;
 
 use ReflectionClass;
 use Laravel\Scout\Builder;
@@ -20,12 +20,12 @@ use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
-use Algolia\LaravelScoutExtended\Settings\Synchronizer;
-use Algolia\LaravelScoutExtended\Console\Commands\SyncCommand;
-use Algolia\LaravelScoutExtended\Console\Commands\ClearCommand;
-use Algolia\LaravelScoutExtended\Console\Commands\OptimizeCommand;
+use Algolia\ScoutExtended\Settings\Synchronizer;
+use Algolia\ScoutExtended\Console\Commands\SyncCommand;
+use Algolia\ScoutExtended\Console\Commands\ClearCommand;
+use Algolia\ScoutExtended\Console\Commands\OptimizeCommand;
 
-final class LaravelScoutExtendedServiceProvider extends ServiceProvider
+final class ScoutExtendedServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritdoc}

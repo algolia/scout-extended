@@ -7,7 +7,7 @@ namespace Tests\Features;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
-use Algolia\LaravelScoutExtended\Settings\Synchronizer;
+use Algolia\ScoutExtended\Settings\Synchronizer;
 
 final class SyncCommandTest extends TestCase
 {
@@ -144,7 +144,7 @@ final class SyncCommandTest extends TestCase
         ksort($remoteWithoutDefaults);
 
         $this->assertSettingsSet($usersIndex, ['userData' => md5(serialize($remoteWithoutDefaults)),]);
-        
+
         Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true, '--keep' => 'remote']);
 
         $this->assertLocalHas($remoteWithoutDefaults);

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * This file is part of Laravel Scout Extended.
+ * This file is part of Scout Extended.
  *
  * (c) Algolia Team <contact@algolia.com>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended\Console\Commands;
+namespace Algolia\ScoutExtended\Console\Commands;
 
 use Illuminate\Console\Command;
-use Algolia\LaravelScoutExtended\Algolia;
+use Algolia\ScoutExtended\Algolia;
 
 final class ClearCommand extends Command
 {

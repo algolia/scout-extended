@@ -7,7 +7,7 @@ namespace Tests\Features;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
-use Algolia\LaravelScoutExtended\Settings\Synchronizer;
+use Algolia\ScoutExtended\Settings\Synchronizer;
 
 final class OptimizeCommandTest extends TestCase
 {

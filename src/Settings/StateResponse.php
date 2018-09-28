@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * This file is part of Laravel Scout Extended.
+ * This file is part of Scout Extended.
  *
  * (c) Algolia Team <contact@algolia.com>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended\Settings;
+namespace Algolia\ScoutExtended\Settings;
 
 use LogicException;
 use Illuminate\Filesystem\Filesystem;
@@ -22,7 +22,7 @@ use Illuminate\Filesystem\Filesystem;
 final class StateResponse
 {
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\Encrypter
+     * @var \Algolia\ScoutExtended\Settings\Encrypter
      */
     private $encrypter;
 
@@ -32,7 +32,7 @@ final class StateResponse
     private $files;
 
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\Settings
+     * @var \Algolia\ScoutExtended\Settings\Settings
      */
     private $settings;
 
@@ -56,9 +56,9 @@ final class StateResponse
     /**
      * StateResponse constructor.
      *
-     * @param \Algolia\LaravelScoutExtended\Settings\Encrypter $encrypter
+     * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
      * @param \Illuminate\Filesystem\Filesystem $files
-     * @param \Algolia\LaravelScoutExtended\Settings\Settings $settings
+     * @param \Algolia\ScoutExtended\Settings\Settings $settings
      * @param string $path
      *
      * @return void

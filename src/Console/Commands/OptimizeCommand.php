@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * This file is part of Laravel Scout Extended.
+ * This file is part of Scout Extended.
  *
  * (c) Algolia Team <contact@algolia.com>
  *
@@ -11,19 +11,19 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended\Console\Commands;
+namespace Algolia\ScoutExtended\Console\Commands;
 
 use Illuminate\Console\Application;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Algolia\LaravelScoutExtended\Algolia;
+use Algolia\ScoutExtended\Algolia;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Algolia\LaravelScoutExtended\Settings\Compiler;
-use Algolia\LaravelScoutExtended\Settings\LocalFactory;
-use Algolia\LaravelScoutExtended\Settings\Synchronizer;
-use Algolia\LaravelScoutExtended\Helpers\SearchableModelsFinder;
+use Algolia\ScoutExtended\Settings\Compiler;
+use Algolia\ScoutExtended\Settings\LocalFactory;
+use Algolia\ScoutExtended\Settings\Synchronizer;
+use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
 
 final class OptimizeCommand extends Command
 {

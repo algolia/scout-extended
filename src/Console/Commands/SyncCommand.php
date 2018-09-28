@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * This file is part of Laravel Scout Extended.
+ * This file is part of Scout Extended.
  *
  * (c) Algolia Team <contact@algolia.com>
  *
@@ -11,15 +11,15 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended\Console\Commands;
+namespace Algolia\ScoutExtended\Console\Commands;
 
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
-use Algolia\LaravelScoutExtended\Algolia;
+use Algolia\ScoutExtended\Algolia;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Algolia\LaravelScoutExtended\Settings\Synchronizer;
-use Algolia\LaravelScoutExtended\Settings\StateResponse;
-use Algolia\LaravelScoutExtended\Helpers\SearchableModelsFinder;
+use Algolia\ScoutExtended\Settings\Synchronizer;
+use Algolia\ScoutExtended\Settings\StateResponse;
+use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
 
 final class SyncCommand extends Command
 {

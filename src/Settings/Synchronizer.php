@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * This file is part of Laravel Scout Extended.
+ * This file is part of Scout Extended.
  *
  * (c) Algolia Team <contact@algolia.com>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\LaravelScoutExtended\Settings;
+namespace Algolia\ScoutExtended\Settings;
 
 use Illuminate\Filesystem\Filesystem;
 use Algolia\AlgoliaSearch\Interfaces\IndexInterface;
@@ -22,12 +22,12 @@ use Algolia\AlgoliaSearch\Interfaces\IndexInterface;
 class Synchronizer
 {
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\Compiler
+     * @var \Algolia\ScoutExtended\Settings\Compiler
      */
     private $compiler;
 
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\Encrypter
+     * @var \Algolia\ScoutExtended\Settings\Encrypter
      */
     private $encrypter;
 
@@ -37,23 +37,23 @@ class Synchronizer
     private $files;
 
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\LocalRepository
+     * @var \Algolia\ScoutExtended\Settings\LocalRepository
      */
     private $localRepository;
 
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\RemoteRepository
+     * @var \Algolia\ScoutExtended\Settings\RemoteRepository
      */
     private $remoteRepository;
 
     /**
      * Synchronizer constructor.
      *
-     * @param \Algolia\LaravelScoutExtended\Settings\Compiler $compiler
-     * @param \Algolia\LaravelScoutExtended\Settings\Encrypter $encrypter
+     * @param \Algolia\ScoutExtended\Settings\Compiler $compiler
+     * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
      * @param \Illuminate\Filesystem\Filesystem $files
-     * @param \Algolia\LaravelScoutExtended\Settings\LocalRepository $localRepository
-     * @param \Algolia\LaravelScoutExtended\Settings\RemoteRepository $remoteRepository
+     * @param \Algolia\ScoutExtended\Settings\LocalRepository $localRepository
+     * @param \Algolia\ScoutExtended\Settings\RemoteRepository $remoteRepository
      *
      * @return void
      */
@@ -76,7 +76,7 @@ class Synchronizer
      *
      * @param \Algolia\AlgoliaSearch\Interfaces\IndexInterface $index
      *
-     * @return \Algolia\LaravelScoutExtended\Settings\StateResponse
+     * @return \Algolia\ScoutExtended\Settings\StateResponse
      */
     public function analyse(IndexInterface $index): StateResponse
     {
