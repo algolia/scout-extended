@@ -20,7 +20,7 @@ use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 /**
  * @internal
  */
-final class SettingsDiscover
+final class RemoteRepository
 {
     /**
      * Settings that may be know by other names.
@@ -42,7 +42,7 @@ final class SettingsDiscover
     private $defaults;
 
     /**
-     * DefaultSettingsDiscover constructor.
+     * RemoteRepository constructor.
      *
      * @param \Algolia\AlgoliaSearch\Interfaces\ClientInterface $client
      *

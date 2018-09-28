@@ -19,7 +19,7 @@ use Illuminate\Filesystem\Filesystem;
 /**
  * @internal
  */
-final class State
+final class StateResponse
 {
     /**
      * @var \Algolia\LaravelScoutExtended\Settings\Encrypter
@@ -54,7 +54,7 @@ final class State
     public const  BOTH_GOT_UPDATED = 'bothGotUpdated';
 
     /**
-     * AnalyseResult constructor.
+     * StateResponse constructor.
      *
      * @param \Algolia\LaravelScoutExtended\Settings\Encrypter $encrypter
      * @param \Illuminate\Filesystem\Filesystem $files

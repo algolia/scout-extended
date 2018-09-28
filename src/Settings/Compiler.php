@@ -75,6 +75,7 @@ final class Compiler
 
         $viewParams = [];
         $all = $settings->all();
+
         foreach ($viewVariables as $viewVariable) {
             if (array_key_exists($viewVariable, $all)) {
                 $viewParams[$viewVariable] = $this->encoder->encode($all[$viewVariable], ['array.base' => 4,]);

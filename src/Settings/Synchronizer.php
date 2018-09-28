@@ -38,9 +38,9 @@ class Synchronizer
     private $files;
 
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\SettingsDiscover
+     * @var \Algolia\LaravelScoutExtended\Settings\RemoteRepository
      */
-    private $settingsDiscover;
+    private $remoteRepository;
 
     /**
      * Synchronizer constructor.
@@ -48,7 +48,7 @@ class Synchronizer
      * @param \Algolia\LaravelScoutExtended\Settings\Compiler $compiler
      * @param \Algolia\LaravelScoutExtended\Settings\Encrypter $encrypter
      * @param \Illuminate\Filesystem\Filesystem $files
-     * @param \Algolia\LaravelScoutExtended\Settings\SettingsDiscover $settingsDiscover
+     * @param \Algolia\LaravelScoutExtended\Settings\RemoteRepository $remoteRepository
      *
      * @return void
      */
@@ -56,26 +56,28 @@ class Synchronizer
         Compiler $compiler,
         Encrypter $encrypter,
         Filesystem $files,
-        SettingsDiscover $settingsDiscover
+        RemoteRepository $remoteRepository
     ) {
         $this->compiler = $compiler;
         $this->encrypter = $encrypter;
-        $this->settingsDiscover = $settingsDiscover;
+        $this->remoteRepository = $remoteRepository;
         $this->files = $files;
     }
 
     /**
+     * Analyses the settings of the given index.
+     *
      * @param \Algolia\AlgoliaSearch\Interfaces\IndexInterface $index
      *
-     * @return \Algolia\LaravelScoutExtended\Settings\State
+     * @return \Algolia\LaravelScoutExtended\Settings\StateResponse
      */
-    public function analyse(IndexInterface $index): State
+    public function analyse(IndexInterface $index): StateResponse
     {
-        $settings = new Settings($this->settingsDiscover->from($index), $this->settingsDiscover->defaults());
+        $settings = new Settings($this->remoteRepository->from($index), $this->remoteRepository->defaults());
 
         $path = config_path('scout-'.Str::lower($index->getIndexName()).'.php');
 
-        return new State($this->encrypter, $this->files, $settings, $path);
+        return new StateResponse($this->encrypter, $this->files, $settings, $path);
     }
 
     /**
@@ -87,7 +89,7 @@ class Synchronizer
      */
     public function download(IndexInterface $index): void
     {
-        $settings = new Settings($this->settingsDiscover->from($index), $this->settingsDiscover->defaults());
+        $settings = new Settings($this->remoteRepository->from($index), $this->remoteRepository->defaults());
 
         $path = config_path('scout-'.Str::lower($index->getIndexName()).'.php');
 
@@ -95,9 +97,7 @@ class Synchronizer
 
         $userData = $this->encrypter->local($path);
 
-        $index->setSettings([
-            'userData' => $userData,
-        ]);
+        $index->setSettings(['userData' => $userData,]);
     }
 
     /**
@@ -115,8 +115,6 @@ class Synchronizer
 
         $userData = $this->encrypter->with($settings);
 
-        $index->setSettings(array_merge($settings, [
-            'userData' => $userData,
-        ]));
+        $index->setSettings(array_merge($settings, ['userData' => $userData,]));
     }
 }

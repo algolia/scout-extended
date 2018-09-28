@@ -18,12 +18,12 @@ use function is_string;
 /**
  * @internal
  */
-final class SettingsFactory
+final class LocalFactory
 {
     /**
-     * @var \Algolia\LaravelScoutExtended\Settings\SettingsDiscover
+     * @var \Algolia\LaravelScoutExtended\Settings\RemoteRepository
      */
-    private $settingsDiscover;
+    private $remoteRepository;
 
     /**
      * @var string[]
@@ -32,6 +32,8 @@ final class SettingsFactory
         'id',
         'id_*',
         '*_id',
+        '*number*',
+        '*count*',
     ];
 
     /**
@@ -89,11 +91,13 @@ final class SettingsFactory
     /**
      * SettingsFactory constructor.
      *
-     * @param \Algolia\LaravelScoutExtended\Settings\SettingsDiscover $settingsDiscover
+     * @param \Algolia\LaravelScoutExtended\Settings\RemoteRepository $remoteRepository
+     *
+     * @return void
      */
-    public function __construct(SettingsDiscover $settingsDiscover)
+    public function __construct(RemoteRepository $remoteRepository)
     {
-        $this->settingsDiscover = $settingsDiscover;
+        $this->remoteRepository = $remoteRepository;
     }
 
     /**
@@ -106,7 +110,7 @@ final class SettingsFactory
     public function create(string $model): Settings
     {
         $instance = factory($model)->make();
-        $attributes = array_intersect_key($instance->toArray(), $instance->toSearchableArray());
+        $attributes = $instance->toSearchableArray();
         $searchableAttributes = [];
         $attributesForFaceting = [];
         $customRanking = [];
@@ -140,10 +144,10 @@ final class SettingsFactory
             'customRanking' => ! empty($customRanking) ? $customRanking : null,
             'disableTypoToleranceOnAttributes' => ! empty($disableTypoToleranceOnAttributes) ? $disableTypoToleranceOnAttributes : null,
             'unretrievableAttributes' => ! empty($unretrievableAttributes) ? $unretrievableAttributes : null,
-            'queryLanguages' => array_unique([config('app.locale'), config('app.fallback_locale'),])
+            'queryLanguages' => array_unique([config('app.locale'), config('app.fallback_locale'),]),
         ];
 
-        return new Settings($detectedSettings, $this->settingsDiscover->defaults());
+        return new Settings($detectedSettings, $this->remoteRepository->defaults());
     }
 
     /**

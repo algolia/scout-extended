@@ -16,7 +16,7 @@ namespace Algolia\LaravelScoutExtended\Console\Commands;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\LaravelScoutExtended\Algolia;
-use Algolia\LaravelScoutExtended\Settings\State;
+use Algolia\LaravelScoutExtended\Settings\StateResponse;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
 use Algolia\LaravelScoutExtended\Helpers\SearchableModelsFinder;
@@ -33,7 +33,7 @@ final class SyncCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = "Synchronize local & remote settings of searchable models";
+    protected $description = "Synchronize the local & remote settings of searchable models";
 
     /**
      * {@inheritdoc}
@@ -56,31 +56,31 @@ final class SyncCommand extends Command
             $state = $synchronizer->analyse($index = $algolia->index($class));
 
             switch ($state->toString()) {
-                case State::LOCAL_NOT_FOUND:
-                    $io->comment('No settins found locally! Downloading remote settings...');
+                case StateResponse::LOCAL_NOT_FOUND:
+                    $io->comment('Local settings do not exist and remote settings found! Downloading remote settings...');
                     $synchronizer->download($index);
                     $io->success('Settings file created at: '.$state->getPath());
                     break;
-                case State::REMOTE_NOT_FOUND:
-                    $io->success('No settings found remotely. Uploading settings file: '.$state->getPath());
+                case StateResponse::REMOTE_NOT_FOUND:
+                    $io->success('Remote settings does not exists. Uploading settings file: '.$state->getPath());
                     $synchronizer->upload($index);
                     break;
-                case State::BOTH_ARE_EQUAL:
-                    $io->success('Both local and remote settings are up-to-date!');
+                case StateResponse::BOTH_ARE_EQUAL:
+                    $io->success('Both local and remote settings are the equal.');
                     break;
-                case State::LOCAL_GOT_UPDATED:
-                    if ($io->confirm('Remote settings are outdated. Wish to upload the local settings?')) {
+                case StateResponse::LOCAL_GOT_UPDATED:
+                    if ($io->confirm('You local settings is more recent than the remote one. Wish to upload the local settings?')) {
                         $io->comment('Uploading local settings...');
                         $synchronizer->upload($index);
                     }
                     break;
-                case State::REMOTE_GOT_UPDATED:
-                    if ($io->confirm('Local settings are outdated. Wish to download the remote settings?')) {
+                case StateResponse::REMOTE_GOT_UPDATED:
+                    if ($io->confirm('You remote configuration is more recent than the local one. Wish to download the remote settings?')) {
                         $io->comment('Downloading remote settings...');
                         $synchronizer->download($index);
                     }
                     break;
-                case State::BOTH_GOT_UPDATED:
+                case StateResponse::BOTH_GOT_UPDATED:
                     $options = ['none', 'local', 'remote',];
 
                     $choice = $io->choice('Remote & Local settings got updated. Which one you want to preserve?', $options, $this->option('keep'));

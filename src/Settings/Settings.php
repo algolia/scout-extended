@@ -61,9 +61,8 @@ final class Settings
      */
     public function all(): array
     {
-        $viewVariables = Compiler::getViewVariables();
         $settings = $this->settings;
-        foreach ($viewVariables as $key) {
+        foreach (Compiler::getViewVariables() as $key) {
             if (array_key_exists($key, $this->settings)) {
                 $settings[$key] = $this->settings[$key];
             } else if (array_key_exists($key, $this->defaults)) {

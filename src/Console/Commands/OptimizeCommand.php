@@ -20,7 +20,7 @@ use Algolia\LaravelScoutExtended\Algolia;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\LaravelScoutExtended\Settings\Compiler;
 use Algolia\LaravelScoutExtended\Settings\Synchronizer;
-use Algolia\LaravelScoutExtended\Settings\SettingsFactory;
+use Algolia\LaravelScoutExtended\Settings\LocalFactory;
 use Algolia\LaravelScoutExtended\Helpers\SearchableModelsFinder;
 
 final class OptimizeCommand extends Command
@@ -42,7 +42,7 @@ final class OptimizeCommand extends Command
     public function handle(
         Algolia $algolia,
         Synchronizer $synchronizer,
-        SettingsFactory $settingsFactory,
+        LocalFactory $localFactory,
         Compiler $compiler,
         SearchableModelsFinder $searchableModelsFinder
     ): void {
@@ -58,7 +58,7 @@ final class OptimizeCommand extends Command
             $state = $synchronizer->analyse($algolia->index($class));
             if (! File::exists($state->getPath()) || $this->confirm('File already exists, do you wish to overwrite?')) {
                 $io->comment('Reading information from ['.$class.'] model...');
-                $settings = $settingsFactory->create($class);
+                $settings = $localFactory->create($class);
                 $compiler->compile($settings, $state->getPath());
                 $io->success('Settings file created at: '.$state->getPath());
             }

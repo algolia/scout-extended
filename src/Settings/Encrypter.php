@@ -19,7 +19,7 @@ namespace Algolia\LaravelScoutExtended\Settings;
 final class Encrypter
 {
     /**
-     * Encrypt the provided settings file.
+     * Get the encrypted value from the provided settings path.
      *
      * @param  string $path
      *
@@ -33,6 +33,8 @@ final class Encrypter
     }
 
     /**
+     * Get the encrypted value from the remote settings.
+     *
      * @param  \Algolia\LaravelScoutExtended\Settings\Settings $settings
      *
      * @return string
@@ -43,6 +45,8 @@ final class Encrypter
     }
 
     /**
+     * Get the encrypted value from the array settings.
+     *
      * @param  array $settings
      *
      * @return string
@@ -57,7 +61,7 @@ final class Encrypter
      *
      * @return string
      */
-    private function encrypt(array $settings)
+    private function encrypt(array $settings): string
     {
         ksort($settings);
 
