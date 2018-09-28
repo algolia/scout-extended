@@ -5,6 +5,7 @@ sudo: false
 php:
   - 7.1
   - 7.2
+  - nightly
 
 env:
   matrix:
@@ -16,4 +17,5 @@ before_script:
     - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
-    - vendor/bin/phpstan analyse
+    - vendor/bin/phpunit
+    # - vendor/bin/phpstan analyse
