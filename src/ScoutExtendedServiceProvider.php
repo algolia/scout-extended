@@ -80,8 +80,6 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(Analytics::class, 'algolia.analytics');
-
-        $this->app->bind(SynchronizerContract::class, Synchronizer::class);
     }
 
     /**
