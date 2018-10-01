@@ -15,9 +15,9 @@ namespace Algolia\ScoutExtended\Exceptions;
 
 use RuntimeException;
 
-class ModelNotDefinedInAggregatorException extends RuntimeException
+class ModelNotDefinedException extends RuntimeException
 {
-    public function __construct(string $message = "", int $code = 0, \Throwable $previous = null)
+    public function __construct(string $message = '', int $code = 0, \Throwable $previous = null)
     {
         if (empty($message)) {
             $message = 'Model not defined in aggregator.';

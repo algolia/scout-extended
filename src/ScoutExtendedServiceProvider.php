@@ -19,7 +19,6 @@ use Laravel\Scout\EngineManager;
 use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
-use Algolia\ScoutExtended\Settings\Synchronizer;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\ScoutExtended\Console\Commands\SyncCommand;
 use Algolia\ScoutExtended\Console\Commands\ClearCommand;
