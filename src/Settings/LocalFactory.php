@@ -232,8 +232,7 @@ final class LocalFactory
 
         if (in_array(Aggregator::class, class_parents($searchable), true)) {
             foreach (($instance = new $searchable)->getModels() as $model) {
-                $instance->searchableWith(new $model);
-                $attributes = array_merge($attributes, $instance->toSearchableArray());
+                $attributes = array_merge($attributes, $this->getAttributes($model));
             }
         } else {
             $instance = null;
