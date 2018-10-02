@@ -27,7 +27,7 @@ final class Observer extends BaseModelObserver
      *       ]
      * ]
      */
-    private static $aggregators = [];
+    private $aggregators = [];
 
     /**
      * Set a aggregator.
@@ -37,15 +37,15 @@ final class Observer extends BaseModelObserver
      *
      * @return void
      */
-    public static function setAggregator(string $aggregator, array $models): void
+    public function setAggregator(string $aggregator, array $models): void
     {
         foreach ($models as $model) {
 
-            if (! array_key_exists($model, self::$aggregators)) {
-                self::$aggregators[$model] = [];
+            if (! array_key_exists($model, $this->aggregators)) {
+                $this->aggregators[$model] = [];
             }
 
-            self::$aggregators[$model][] = $aggregator;
+            $this->aggregators[$model][] = $aggregator;
         }
     }
 
@@ -56,11 +56,11 @@ final class Observer extends BaseModelObserver
     {
         $class = get_class($model);
 
-        if (! array_key_exists($class, self::$aggregators)) {
+        if (! array_key_exists($class, $this->aggregators)) {
             return;
         }
 
-        foreach (self::$aggregators[$class] as $aggregator) {
+        foreach ($this->aggregators[$class] as $aggregator) {
             parent::saved((new $aggregator)->searchableWith($model));
         }
     }
@@ -79,11 +79,11 @@ final class Observer extends BaseModelObserver
         } else {
             $class = get_class($model);
 
-            if (! array_key_exists($class, self::$aggregators)) {
+            if (! array_key_exists($class, $this->aggregators)) {
                 return;
             }
 
-            foreach (self::$aggregators[$class] as $aggregator) {
+            foreach ($this->aggregators[$class] as $aggregator) {
                 (new $aggregator)->searchableWith($model)->unsearchable();
             }
         }
@@ -103,11 +103,11 @@ final class Observer extends BaseModelObserver
 
         $class = get_class($model);
 
-        if (! array_key_exists($class, self::$aggregators)) {
+        if (! array_key_exists($class, $this->aggregators)) {
             return;
         }
 
-        foreach (self::$aggregators[$class] as $aggregator) {
+        foreach ($this->aggregators[$class] as $aggregator) {
             (new $aggregator)->searchableWith($model)->unsearchable();
         }
     }

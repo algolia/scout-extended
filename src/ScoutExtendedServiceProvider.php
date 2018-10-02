@@ -19,7 +19,7 @@ use Laravel\Scout\EngineManager;
 use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
-use Algolia\ScoutExtended\Settings\Synchronizer;
+use Algolia\ScoutExtended\Search\Observer;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\ScoutExtended\Console\Commands\SyncCommand;
 use Algolia\ScoutExtended\Console\Commands\ClearCommand;
@@ -80,6 +80,10 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(Analytics::class, 'algolia.analytics');
+
+        $this->app->singleton(Observer::class, function () {
+            return new Observer();
+        });
     }
 
     /**

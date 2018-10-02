@@ -49,18 +49,18 @@ abstract class Aggregator
      *
      * @return void
      */
-    public static function boot(): void
+    public static function bootSearchable(): void
     {
         ($self = new static)->registerSearchableMacros();
 
-        Observer::setAggregator(static::class, $models = $self->getModels());
+        $observer = tap(resolve(Observer::class))->setAggregator(static::class, $models = $self->getModels());
 
         foreach ($models as $model) {
             \Illuminate\Database\Eloquent\Builder::macro('getScoutKey', function () {
                 return UuidGenerator::getUuid($this->model).'_'.$this->model->getKey();
             });
 
-            $model::observe(Observer::class);
+            $model::observe($observer);
         }
     }
 

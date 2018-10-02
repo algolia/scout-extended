@@ -12,3 +12,15 @@ $factory->define(\App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(\App\Thread::class, function (Faker $faker) {
+    return [
+        'body' => $faker->text,
+    ];
+});
+
+$factory->define(\App\Post::class, function (Faker $faker) {
+    return [
+        'subject' => $faker->text,
+    ];
+});
