@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
+use function in_array;
 use function is_string;
+use InvalidArgumentException;
+use Illuminate\Database\QueryException;
+use Algolia\ScoutExtended\Search\Aggregator;
 
 /**
  * @internal
@@ -109,8 +113,7 @@ final class LocalFactory
      */
     public function create(string $model): Settings
     {
-        $instance = factory($model)->make();
-        $attributes = $instance->toSearchableArray();
+        $attributes = $this->getAttributes($model);
         $searchableAttributes = [];
         $attributesForFaceting = [];
         $customRanking = [];
@@ -213,5 +216,35 @@ final class LocalFactory
     public function isUnretrievableAttributes(string $key, $value): bool
     {
         return is_string($key) && str_is(self::$unretrievableAttributes, $key);
+    }
+
+    /**
+     * Tries to get attributes from the searchable class.
+     *
+     * @param  string $searchable
+     *
+     * @return array
+     */
+    private function getAttributes(string $searchable): array
+    {
+        $attributes = [];
+
+
+        if (in_array(Aggregator::class, class_parents($searchable), true)) {
+            foreach (($instance = new $searchable)->getModels() as $model) {
+                $instance->searchableWith(new $model);
+                $attributes = array_merge($attributes, $instance->toSearchableArray());
+            }
+        } else {
+            $instance = null;
+
+            try {
+                $instance = @factory($searchable)->make() ?? $searchable::first();
+                $attributes = method_exists($instance, 'toSearchableArray') ? $instance->toSearchableArray() : $instance->toArray();
+            } catch (InvalidArgumentException | QueryException $e) {
+            }
+        }
+
+        return $attributes;
     }
 }

@@ -59,6 +59,8 @@ final class LocalRepository
      */
     public function getPath(string $index): string
     {
+        $index = str_replace('_', '-', $index);
+
         return config_path('scout-'.Str::lower($index).'.php');
     }
 }
