@@ -135,7 +135,7 @@ abstract class Aggregator
     public function toSearchableArray(): array
     {
         if ($this->model === null) {
-            throw new ModelNotDefinedException();
+            throw new ModelNotDefinedInAggregatorException();
         }
 
         return method_exists($this->model, 'toSearchableArray') ? $this->model->toSearchableArray() : $this->model->toArray();
