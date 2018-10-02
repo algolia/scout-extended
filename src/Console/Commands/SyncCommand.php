@@ -18,7 +18,6 @@ use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
 use Algolia\ScoutExtended\Settings\Synchronizer;
 use Algolia\ScoutExtended\Settings\StateResponse;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
 
 final class SyncCommand extends Command

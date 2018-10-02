@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\File;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Settings\LocalFactory;
 use Algolia\ScoutExtended\Settings\Synchronizer;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
 
 final class OptimizeCommand extends Command

@@ -229,7 +229,6 @@ final class LocalFactory
     {
         $attributes = [];
 
-
         if (in_array(Aggregator::class, class_parents($searchable), true)) {
             foreach (($instance = new $searchable)->getModels() as $model) {
                 $attributes = array_merge($attributes, $this->getAttributes($model));
