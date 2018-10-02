@@ -37,7 +37,7 @@ final class UuidGenerator
     }
 
     /**
-     * KeyBy the given array of classes by their Uuid
+     * KeyBy the given array of classes by their Uuid.
      *
      * @param  array $classes
      *
