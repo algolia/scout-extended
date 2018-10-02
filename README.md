@@ -15,12 +15,12 @@ This package is **still in development**. It's not ready for use.
 - [x] Adds `scout:clear` command : Clear the index of the the given model
 - [x] Adds `scout:optimize` command : optimize the search experience based on information from the model class
 - [x] Adds `scout:sync` command : Backups & Synchronize the given model settings
+- [x] Aggregators - **Multiple models on the same index**
+- [x] Ability to create **Custom Ranking**.
 - [ ] Improve usage/access to **Rules, Synonyms**. Using side configuration, or on the `model::class` itself.
 - [ ] Manager - **Multiple connections** per project
 - [ ] **Extends Driver's Query Builder** adding more methods: whereIn, whereNotIn, whereNot, whereBetween, and others cases to be studied
 - [ ] Consider providing easy access to Algolia's **Places** features
-- [ ] Ability to create **Custom Ranking**. Using side configuration, or on the `model::class` itself.
-- [ ] Aggregators - **Multiple models on the same index**, using the same approach already used on the Symfony bundle
 - [ ] Support to **multiple language indexes**. Implementation to be studied.
 - [ ] Advanced **Distinct** - Easy way leverage this feature
 - [ ] Set a default **UserAgent**
