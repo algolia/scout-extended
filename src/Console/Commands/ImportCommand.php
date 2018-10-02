@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
+use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
-use Laravel\Scout\Searchable;
+use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
 
 final class ImportCommand extends Command
 {
