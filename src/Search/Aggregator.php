@@ -140,4 +140,40 @@ abstract class Aggregator
 
         return method_exists($this->model, 'toSearchableArray') ? $this->model->toSearchableArray() : $this->model->toArray();
     }
+
+    /**
+     * Make all instances of the model searchable.
+     *
+     * @return void
+     */
+    public static function makeAllSearchable()
+    {
+        foreach ((new static)->getModels() as $model) {
+            $instance = new $model;
+
+            $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($model)) && config('scout.soft_delete', false);
+
+            $instance->newQuery()->when($softDeletes, function ($query) {
+                $query->withTrashed();
+            })->orderBy($instance->getKeyName())->get()->map(function ($model) {
+                return (new static)->searchableWith($model);
+            })->searchable();
+        }
+    }
+
+    /**
+     * Remove all instances of the model from the search index.
+     *
+     * @return void
+     */
+    public static function removeAllFromSearch(): void
+    {
+        foreach ((new static)->getModels() as $model) {
+            $instance = new $model;
+
+            $instance->newQuery()->orderBy($instance->getKeyName())->get()->map(function ($model) {
+                return (new static)->searchableWith($model);
+            })->unsearchable();
+        }
+    }
 }
