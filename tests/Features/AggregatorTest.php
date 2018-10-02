@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Mockery;
 use App\Post;
 use App\User;
 use App\Wall;
@@ -74,7 +73,7 @@ final class AggregatorTest extends TestCase
 
         $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
             return count($argument) === 1 && $argument[0] === 'threads_1';
-        }));;
+        }));
         $thread->delete();
     }
 
@@ -129,14 +128,14 @@ final class AggregatorTest extends TestCase
         $wallIndexMock->shouldReceive('search')->once()->andReturn([
             'hits' => [
                 [
-                    "subject" => "Sed neque est quos.",
-                    "id" => 1,
-                    "objectID" => "posts_1",
+                    'subject' => 'Sed neque est quos.',
+                    'id' => 1,
+                    'objectID' => 'posts_1',
                 ],
                 [
-                    "body" => "Saepe et delectus quis dolor sit unde voluptatibus. Quas blanditiis enim accusamus veniam.",
-                    "id" => 1,
-                    "objectID" => "threads_1",
+                    'body' => 'Saepe et delectus quis dolor sit unde voluptatibus. Quas blanditiis enim accusamus veniam.',
+                    'id' => 1,
+                    'objectID' => 'threads_1',
                 ],
             ],
         ]);
@@ -145,7 +144,7 @@ final class AggregatorTest extends TestCase
         $thread = factory(Thread::class)->create();
 
         $models = Wall::search('input')->get();
-        /** @var $models \Illuminate\Database\Eloquent\Collection */
+        /* @var $models \Illuminate\Database\Eloquent\Collection */
 
         $this->assertCount(2, $models);
         $this->assertInstanceOf(Post::class, $models->get(0));
