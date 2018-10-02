@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Helpers;
 
-use ReflectionClass;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 use Symfony\Component\Finder\Finder;
 use Illuminate\Foundation\Application;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @internal
@@ -64,13 +63,10 @@ final class SearchableModelsFinder
      * @param  string $class
      *
      * @return bool
-     * @throws \ReflectionException
      */
     private function isSearchableModel($class): bool
     {
-        $reflectionClass = new ReflectionClass($class);
-
-        return $reflectionClass->isSubclassOf(Model::class) && method_exists($class, 'bootSearchable');
+        return in_array(Searchable::class, class_uses_recursive($class), true);
     }
 
     /**
