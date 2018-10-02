@@ -21,6 +21,6 @@ final class ClearCommandTest extends TestCase
     {
         $this->mockIndex($class = User::class)->expects('clear')->once();
 
-        $this->artisan('scout:clear', ['model' => User::class])->expectsOutput("The [{$class}] index have been cleared.");
+        $this->artisan('scout:clear', ['model' => User::class]);
     }
 }

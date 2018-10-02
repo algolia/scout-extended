@@ -37,6 +37,6 @@ final class ClearCommand extends Command
 
         $algolia->index($class)->clear();
 
-        $this->info('The ['.$class.'] index have been cleared.');
+        $this->output->success('The ['.$class.'] index have been cleared.');
     }
 }

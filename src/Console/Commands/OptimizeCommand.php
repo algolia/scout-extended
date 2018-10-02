@@ -48,22 +48,20 @@ final class OptimizeCommand extends Command
     ) {
         $classes = (array) $this->argument('model');
 
-        $io = new SymfonyStyle($this->input, $this->output);
-
         if (empty($classes) && empty($classes = $searchableModelsFinder->find())) {
-            $io->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
+            $this->output->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
 
             return 1;
         }
 
         foreach ($classes as $class) {
-            $io->text('🔎 Optimizing search experience in: <info>['.$class.']</info>');
+            $this->output->text('🔎 Optimizing search experience in: <info>['.$class.']</info>');
             $state = $synchronizer->analyse($algolia->index($class));
             if (! File::exists($state->getPath()) || $this->confirm('Local settings already exists, do you wish to overwrite?')) {
                 $settings = $localFactory->create($class);
                 $compiler->compile($settings, $state->getPath());
-                $io->success('Settings file created at: '.$state->getPath());
-                $io->note('Please review the settings file and synchronize it with Algolia using: "'.ARTISAN_BINARY.' scout:sync"');
+                $this->output->success('Settings file created at: '.$state->getPath());
+                $this->output->note('Please review the settings file and synchronize it with Algolia using: "'.ARTISAN_BINARY.' scout:sync"');
             }
         }
     }
