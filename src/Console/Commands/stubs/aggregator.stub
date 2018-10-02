@@ -1,0 +1,17 @@
+<?php
+
+namespace DummyNamespace;
+
+use Algolia\ScoutExtended\Search\Aggregator;
+
+class DummyClass extends Aggregator
+{
+    /**
+     * The names of the models that should be aggregated.
+     *
+     * @var string[]
+     */
+    protected $models = [
+    	// ..
+    ];
+}

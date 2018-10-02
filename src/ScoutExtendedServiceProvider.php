@@ -17,13 +17,16 @@ use ReflectionClass;
 use Laravel\Scout\Builder;
 use Laravel\Scout\EngineManager;
 use Algolia\AlgoliaSearch\Analytics;
+use Laravel\Scout\ScoutServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Search\Observer;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\ScoutExtended\Console\Commands\SyncCommand;
-use Algolia\ScoutExtended\Console\Commands\ClearCommand;
+use Algolia\ScoutExtended\Console\Commands\FlushCommand;
+use Algolia\ScoutExtended\Console\Commands\ImportCommand;
 use Algolia\ScoutExtended\Console\Commands\OptimizeCommand;
+use Algolia\ScoutExtended\Console\Commands\AggregatorCommand;
 
 final class ScoutExtendedServiceProvider extends ServiceProvider
 {
@@ -40,6 +43,8 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->register(ScoutServiceProvider::class);
+
         $this->registerBinds();
         $this->registerCommands();
         $this->registerMacros();
@@ -95,9 +100,11 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                ClearCommand::class,
-                SyncCommand::class,
+                AggregatorCommand::class,
+                ImportCommand::class,
+                FlushCommand::class,
                 OptimizeCommand::class,
+                SyncCommand::class,
             ]);
         }
     }

@@ -29,9 +29,9 @@ class TestCase extends BaseTestCase
 
     public function tearDown()
     {
-        parent::tearDown();
-
         @unlink(__DIR__.'/laravel/config/scout-users.php');
+        
+        parent::tearDown();
     }
 
     protected function getPackageProviders($app)
