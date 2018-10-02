@@ -12,10 +12,12 @@ This package is **still in development**. It's not ready for use.
 - [x] Based on [Algolia's PHP Client v2](https://github.com/algolia/algoliasearch-client-php/tree/2.0)
 - [x] Contains **macros** from [github.com/algolia/laravel-scout-algolia-macros](https://github.com/algolia/laravel-scout-algolia-macros)
 - [x] **Facade** to provide a "static" interface to access clients, analytics
-- [x] Adds `scout:clear` command : Clear the index of the the given model
+- [x] Replace `scout:flush` command : Clear the index of the the given model
+- [x] Replace `scout:import` command : Import the records of the given model
 - [x] Adds `scout:optimize` command : optimize the search experience based on information from the model class
 - [x] Adds `scout:sync` command : Backups & Synchronize the given model settings
 - [x] Aggregators - **Multiple models on the same index**
+- [x] Replace `scout:aggregator` command : Create a new aggregator class
 - [x] Ability to create **Custom Ranking**.
 - [ ] Improve usage/access to **Rules, Synonyms**. Using side configuration, or on the `model::class` itself.
 - [ ] Manager - **Multiple connections** per project
