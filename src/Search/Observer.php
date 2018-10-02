@@ -19,7 +19,6 @@ use Laravel\Scout\ModelObserver as BaseModelObserver;
 final class Observer extends BaseModelObserver
 {
     /**
-     *
      * @var array [
      *      '\App\Post' => [
      *           '\App\Search\NewsAggregator',
@@ -40,7 +39,6 @@ final class Observer extends BaseModelObserver
     public function setAggregator(string $aggregator, array $models): void
     {
         foreach ($models as $model) {
-
             if (! array_key_exists($model, $this->aggregators)) {
                 $this->aggregators[$model] = [];
             }
@@ -50,7 +48,7 @@ final class Observer extends BaseModelObserver
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function saved($model): void
     {
@@ -66,7 +64,7 @@ final class Observer extends BaseModelObserver
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleted($model): void
     {
