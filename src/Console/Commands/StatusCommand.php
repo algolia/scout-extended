@@ -15,7 +15,6 @@ namespace Algolia\ScoutExtended\Console\Commands;
 
 use function count;
 use function in_array;
-use \App\Models\Thread;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
@@ -67,7 +66,7 @@ final class StatusCommand extends Command
             if (! $status->bothAreEqual()) {
                 $description = "<fg=red>$description</>";
             } else {
-                $description = "<fg=green>synchronized</>";
+                $description = '<fg=green>synchronized</>';
             }
 
             $row[] = $description;
