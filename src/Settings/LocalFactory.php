@@ -16,6 +16,7 @@ namespace Algolia\ScoutExtended\Settings;
 use function in_array;
 use function is_string;
 use InvalidArgumentException;
+use Algolia\AlgoliaSearch\Index;
 use Illuminate\Database\QueryException;
 use Algolia\ScoutExtended\Search\Aggregator;
 
@@ -107,11 +108,12 @@ final class LocalFactory
     /**
      * Creates settings for the given model.
      *
+     * @param \Algolia\AlgoliaSearch\Index $index
      * @param string $model
      *
      * @return \Algolia\ScoutExtended\Settings\Settings
      */
-    public function create(string $model): Settings
+    public function create(Index $index, string $model): Settings
     {
         $attributes = $this->getAttributes($model);
         $searchableAttributes = [];
@@ -150,7 +152,9 @@ final class LocalFactory
             'queryLanguages' => array_unique([config('app.locale'), config('app.fallback_locale')]),
         ];
 
-        return new Settings($detectedSettings, $this->remoteRepository->defaults());
+        $settings = array_merge($this->remoteRepository->from($index), $detectedSettings);
+
+        return new Settings($settings, $this->remoteRepository->defaults());
     }
 
     /**

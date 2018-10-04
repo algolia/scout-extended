@@ -55,9 +55,9 @@ final class OptimizeCommand extends Command
 
         foreach ($classes as $class) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$class.']</info>');
-            $state = $synchronizer->analyse($algolia->index($class));
+            $state = $synchronizer->analyse($index = $algolia->index($class));
             if (! File::exists($state->getPath()) || $this->confirm('Local settings already exists, do you wish to overwrite?')) {
-                $settings = $localFactory->create($class);
+                $settings = $localFactory->create($index, $class);
                 $compiler->compile($settings, $state->getPath());
                 $this->output->success('Settings file created at: '.$state->getPath());
                 $this->output->note('Please review the settings file and synchronize it with Algolia using: "'.ARTISAN_BINARY.' scout:sync"');
