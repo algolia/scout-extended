@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Search;
 
+use function in_array;
 use Laravel\Scout\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @internal
