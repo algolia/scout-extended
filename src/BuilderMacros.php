@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended;
 
 use Closure;
-use function get_class;
 use Laravel\Scout\Builder;
 use function call_user_func;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @internal
