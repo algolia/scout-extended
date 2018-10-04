@@ -17,7 +17,7 @@ use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
 use Algolia\ScoutExtended\Settings\Synchronizer;
-use Algolia\ScoutExtended\Settings\StateResponse;
+use Algolia\ScoutExtended\Settings\Status;
 use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
 
 final class SyncCommand extends Command
@@ -51,11 +51,11 @@ final class SyncCommand extends Command
         }
 
         foreach ($classes as $class) {
-            $this->output->text('🔎 Analysing information from: <info>['.$class.']</info>');
+            $this->output->text('🔎 Analysing settings from: <info>['.$class.']</info>');
             $state = $synchronizer->analyse($index = $algolia->index($class));
 
             switch ($state->toString()) {
-                case StateResponse::LOCAL_NOT_FOUND:
+                case Status::LOCAL_NOT_FOUND:
                     if ($state->remoteNotFound()) {
                         $this->output->note('No settings found.');
                         if ($this->output->confirm('Wish to optimize the search experience based on information from your model class?')) {
@@ -70,28 +70,28 @@ final class SyncCommand extends Command
                     $synchronizer->download($index);
                     $this->output->success('Settings file created at: '.$state->getPath());
                     break;
-                case StateResponse::REMOTE_NOT_FOUND:
+                case Status::REMOTE_NOT_FOUND:
                     $this->output->success('Remote settings does not exists. Uploading settings file: '.$state->getPath());
                     $synchronizer->upload($index);
                     break;
-                case StateResponse::BOTH_ARE_EQUAL:
+                case Status::BOTH_ARE_EQUAL:
                     $this->output->success('Local and remote settings are similar.');
                     break;
-                case StateResponse::LOCAL_GOT_UPDATED:
+                case Status::LOCAL_GOT_UPDATED:
                     if ($this->output->confirm('Local settings got updated. Wish to upload them?')) {
                         $this->output->text('Uploading <info>local settings</info>...');
                         $this->output->newLine();
                         $synchronizer->upload($index);
                     }
                     break;
-                case StateResponse::REMOTE_GOT_UPDATED:
+                case Status::REMOTE_GOT_UPDATED:
                     if ($this->output->confirm('Remote settings got updated. Wish to download them?')) {
                         $this->output->text('Downloading <info>remote settings</info>...');
                         $this->output->newLine();
                         $synchronizer->download($index);
                     }
                     break;
-                case StateResponse::BOTH_GOT_UPDATED:
+                case Status::BOTH_GOT_UPDATED:
                     $options = ['none', 'local', 'remote'];
 
                     $choice = $this->output->choice('Remote & Local settings got updated. Which one you want to preserve?', $options, $this->option('keep'));

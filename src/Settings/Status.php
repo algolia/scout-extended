@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
+use Illuminate\Support\Str;
 use LogicException;
 use Illuminate\Filesystem\Filesystem;
 
 /**
  * @internal
  */
-final class StateResponse
+final class Status
 {
     /**
      * @var \Algolia\ScoutExtended\Settings\Encrypter
@@ -54,7 +55,7 @@ final class StateResponse
     public const  BOTH_GOT_UPDATED = 'bothGotUpdated';
 
     /**
-     * StateResponse constructor.
+     * Status constructor.
      *
      * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
      * @param \Illuminate\Filesystem\Filesystem $files
@@ -150,5 +151,17 @@ final class StateResponse
         }
 
         throw new LogicException('This should not happen');
+    }
+
+    /**
+     * Get a human description of the current status.
+     *
+     * @return string
+     */
+    public function toHumanString(): string
+    {
+        $string = Str::snake($this->toString());
+
+        return Str::ucfirst(str_replace('_', ' ', $string));
     }
 }

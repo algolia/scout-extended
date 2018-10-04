@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Search;
 
+use function in_array;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Searchable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
 use Algolia\ScoutExtended\Exceptions\ModelNotDefinedInAggregatorException;
 
-abstract class Aggregator
+abstract class Aggregator implements SearchableCountableContract
 {
     use Searchable;
 
@@ -175,5 +178,24 @@ abstract class Aggregator
                 return (new static)->searchableWith($model);
             })->unsearchable();
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSearchableCount(): int
+    {
+        $count = 0;
+
+        foreach ($this->getModels() as $model) {
+
+            $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($model), true) && config('scout.soft_delete', false);
+
+            $count += $model::query()->when($softDeletes, function ($query) {
+                $query->withTrashed();
+            })->count();
+        }
+
+        return $count;
     }
 }
