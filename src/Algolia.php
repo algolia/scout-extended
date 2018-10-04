@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended;
 
 use function is_string;
+use Algolia\AlgoliaSearch\Index;
 use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Contracts\Container\Container;
-use Algolia\AlgoliaSearch\Index;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
 final class Algolia
