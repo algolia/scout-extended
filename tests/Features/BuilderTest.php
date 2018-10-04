@@ -32,23 +32,4 @@ final class BuilderTest extends TestCase
 
         User::search('bar')->aroundLatLng(48.8566, 2.3522)->get();
     }
-
-    public function testHydrate(): void
-    {
-        $this->mockEngine()->shouldReceive('search')->andReturn([
-            'hits' => [
-                [
-                    'name' => 'Foo',
-                    'email' => 'bar@example.com',
-                ],
-            ],
-        ]);
-
-        $users = User::search('foo@bar.com')->hydrate();
-
-        $this->assertCount(1, $users);
-        $this->assertInstanceOf(User::class, $users->first());
-        $this->assertEquals('Foo', $users->first()->name);
-        $this->assertEquals('bar@example.com', $users->first()->email);
-    }
 }
