@@ -15,7 +15,7 @@ final class FlushCommandTest extends TestCase
         $this->mockIndex(User::class)->expects('clear')->once();
         $this->mockIndex(Wall::class)->expects('clear')->once();
 
-        /**
+        /*
          * Detects searchable models.
          */
         $this->artisan('scout:flush');
