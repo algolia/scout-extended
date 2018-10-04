@@ -18,18 +18,16 @@ This package is **still in development**. It's not ready for use.
 - [x] Adds `scout:sync` command : Backups & Synchronize the given model settings
 - [x] Aggregators - **Multiple models on the same index**
 - [x] Replace `scout:aggregator` command : Create a new aggregator class
-- [x] Ability to create **Custom Ranking**.
-- [ ] Improve usage/access to **Rules, Synonyms**. Using side configuration, or on the `model::class` itself.
+- [x] Ability to create **Custom Ranking**
+- [ ] Adds `scout:status` command : information about the remote status
+- [ ] Adds `scout:reimport` command : Reimport the records of the given model using a temporary indices
+- [ ] Improve usage/access to **Rules, Synonyms**. Using side configuration, or on the `model::class` itself
 - [ ] Manager - **Multiple connections** per project
 - [ ] **Extends Driver's Query Builder** adding more methods: whereIn, whereNotIn, whereNot, whereBetween, and others cases to be studied
 - [ ] Consider providing easy access to Algolia's **Places** features
 - [ ] Support to **multiple language indexes**. Implementation to be studied.
 - [ ] Advanced **Distinct** - Easy way leverage this feature
 - [ ] Set a default **UserAgent**
-
----
-- [ ] Nova tool
-- [ ] Provide front-end resources
 
 ## License
 
