@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended;
 use function is_string;
 use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Contracts\Container\Container;
-use Algolia\AlgoliaSearch\Interfaces\IndexInterface;
+use Algolia\AlgoliaSearch\Index;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
 final class Algolia
@@ -43,9 +43,9 @@ final class Algolia
      *
      * @param  string|\Illuminate\Database\Eloquent\Model $model
      *
-     * @return \Algolia\AlgoliaSearch\Interfaces\IndexInterface
+     * @return \Algolia\AlgoliaSearch\Index
      */
-    public function index($model): IndexInterface
+    public function index($model): Index
     {
         $model = is_string($model) ? new $model : $model;
 

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
+use Algolia\AlgoliaSearch\Index;
 use Illuminate\Filesystem\Filesystem;
-use Algolia\AlgoliaSearch\Interfaces\IndexInterface;
 
 /**
  * @internal
@@ -74,27 +74,27 @@ class Synchronizer
     /**
      * Analyses the settings of the given index.
      *
-     * @param \Algolia\AlgoliaSearch\Interfaces\IndexInterface $index
+     * @param \Algolia\AlgoliaSearch\Index $index
      *
-     * @return \Algolia\ScoutExtended\Settings\StateResponse
+     * @return \Algolia\ScoutExtended\Settings\Status
      */
-    public function analyse(IndexInterface $index): StateResponse
+    public function analyse(Index $index): Status
     {
         $settings = new Settings($this->remoteRepository->from($index), $this->remoteRepository->defaults());
 
         $path = $this->localRepository->getPath($index->getIndexName());
 
-        return new StateResponse($this->encrypter, $this->files, $settings, $path);
+        return new Status($this->encrypter, $this->files, $settings, $path);
     }
 
     /**
      * Downloads the settings of the given index.
      *
-     * @param \Algolia\AlgoliaSearch\Interfaces\IndexInterface $index
+     * @param \Algolia\AlgoliaSearch\Index $index
      *
      * @return void
      */
-    public function download(IndexInterface $index): void
+    public function download(Index $index): void
     {
         $settings = new Settings($this->remoteRepository->from($index), $this->remoteRepository->defaults());
 
@@ -110,11 +110,11 @@ class Synchronizer
     /**
      * Uploads the settings of the given index.
      *
-     * @param \Algolia\AlgoliaSearch\Interfaces\IndexInterface $index
+     * @param \Algolia\AlgoliaSearch\Index $index
      *
      * @return void
      */
-    public function upload(IndexInterface $index): void
+    public function upload(Index $index): void
     {
         $settings = require $this->localRepository->getPath($index->getIndexName());
 

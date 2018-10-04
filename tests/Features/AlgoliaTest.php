@@ -8,7 +8,7 @@ use App\User;
 use Tests\TestCase;
 use Algolia\ScoutExtended\Algolia;
 use Algolia\AlgoliaSearch\Analytics;
-use Algolia\AlgoliaSearch\Interfaces\IndexInterface;
+use Algolia\AlgoliaSearch\Index;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
 final class AlgoliaTest extends TestCase
@@ -24,10 +24,10 @@ final class AlgoliaTest extends TestCase
 
     public function testIndexGetter(): void
     {
-        $this->assertInstanceOf(IndexInterface::class, $index = $this->algolia->index(User::class));
+        $this->assertInstanceOf(Index::class, $index = $this->algolia->index(User::class));
 
         $index = $this->algolia->index($model = new User);
-        $this->assertInstanceOf(IndexInterface::class, $index);
+        $this->assertInstanceOf(Index::class, $index);
         $this->assertEquals($model->searchableAs(), $index->getIndexName());
     }
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
-use Algolia\AlgoliaSearch\Interfaces\IndexInterface;
+use Algolia\AlgoliaSearch\Index;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
@@ -73,21 +73,21 @@ final class RemoteRepository
     /**
      * Get settings from the provided index.
      *
-     * @param  \Algolia\AlgoliaSearch\Interfaces\IndexInterface $index
+     * @param  \Algolia\AlgoliaSearch\Index $index
      *
      * @return array
      */
-    public function from(IndexInterface $index): array
+    public function from(Index $index): array
     {
         return $this->getSettings($index);
     }
 
     /**
-     * @param  \Algolia\AlgoliaSearch\Interfaces\IndexInterface $index
+     * @param  \Algolia\AlgoliaSearch\Index $index
      *
      * @return array
      */
-    private function getSettings(IndexInterface $index): array
+    private function getSettings(Index $index): array
     {
         try {
             $settings = $index->getSettings();
