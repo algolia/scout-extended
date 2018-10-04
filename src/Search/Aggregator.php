@@ -82,7 +82,7 @@ abstract class Aggregator implements SearchableCountableContract
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      *
-     * @return \Algolia\ScoutExtended\Aggregator
+     * @return \Algolia\ScoutExtended\Search\Aggregator
      */
     public function searchableWith(Model $model): Aggregator
     {
