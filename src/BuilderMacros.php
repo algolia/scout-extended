@@ -99,49 +99,4 @@ final class BuilderMacros
             return $this;
         };
     }
-
-    /**
-     * @return \Closure
-     */
-    public function hydrate(): Closure
-    {
-        /*
-         * Create a collection of models from search results.
-         *
-         * @return \Illuminate\Support\Collection
-         */
-        return function () {
-            $results = $this->engine()->search($this);
-
-            $models = collect();
-
-            if (count($results['hits']) === 0) {
-                return $models;
-            }
-
-            $hits = collect($results['hits']);
-            $className = get_class($this->model);
-
-            /*
-             * If the model is fully guarded, we unguard it. Fully guarded is the default
-             * configuration and it will result in error. If the `$guarded` attribute
-             * exists on the model class, we will take it in consideration.
-             *
-             * @todo Review this algorithm.
-             */
-            if (in_array('*', $this->model->getGuarded(), true)) {
-                Model::unguard();
-            }
-
-            try {
-                $hits->each(function ($item) use ($className, $models) {
-                    $models->push(new $className($item));
-                });
-            } finally {
-                Model::reguard();
-            }
-
-            return $models;
-        };
-    }
 }
