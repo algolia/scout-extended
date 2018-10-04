@@ -188,7 +188,6 @@ abstract class Aggregator implements SearchableCountableContract
         $count = 0;
 
         foreach ($this->getModels() as $model) {
-
             $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($model), true) && config('scout.soft_delete', false);
 
             $count += $model::query()->when($softDeletes, function ($query) {
