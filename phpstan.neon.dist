@@ -1,3 +1,6 @@
+includes:
+    # https://github.com/nunomaduro/larastan
+    - vendor/nunomaduro/larastan/extension.neon
 parameters:
     level: 5
     paths:
