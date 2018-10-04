@@ -27,7 +27,7 @@ final class Encrypter
      */
     public function local(string $path): string
     {
-        $settings = require $path;
+        $settings = file_exists($path) ? require $path : [];
 
         return $this->with($settings);
     }
