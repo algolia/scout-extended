@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
-use Illuminate\Support\Str;
 use LogicException;
+use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 
 /**
