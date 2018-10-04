@@ -26,8 +26,8 @@ use Algolia\ScoutExtended\Console\Commands\SyncCommand;
 use Algolia\ScoutExtended\Console\Commands\FlushCommand;
 use Algolia\ScoutExtended\Console\Commands\ImportCommand;
 use Algolia\ScoutExtended\Console\Commands\StatusCommand;
-use Algolia\ScoutExtended\Console\Commands\ReImportCommand;
 use Algolia\ScoutExtended\Console\Commands\OptimizeCommand;
+use Algolia\ScoutExtended\Console\Commands\ReImportCommand;
 use Algolia\ScoutExtended\Console\Commands\AggregatorCommand;
 
 final class ScoutExtendedServiceProvider extends ServiceProvider
