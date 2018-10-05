@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
-use Illuminate\Support\Facades\Route;
 use ReflectionClass;
 use Laravel\Scout\Builder;
 use Laravel\Scout\EngineManager;
@@ -21,10 +20,10 @@ use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
 use Laravel\Scout\Engines\AlgoliaEngine;
-use Algolia\ScoutExtended\Searchable\AggregatorObserver;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\ScoutExtended\Console\Commands\SyncCommand;
 use Algolia\ScoutExtended\Console\Commands\FlushCommand;
+use Algolia\ScoutExtended\Searchable\AggregatorObserver;
 use Algolia\ScoutExtended\Console\Commands\ImportCommand;
 use Algolia\ScoutExtended\Console\Commands\StatusCommand;
 use Algolia\ScoutExtended\Console\Commands\OptimizeCommand;
