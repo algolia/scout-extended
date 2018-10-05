@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Algolia\ScoutExtended\Searchable\RecordsCounter;
-use Laravel\Scout\Searchable;
+use function count;
 use Illuminate\Console\Command;
 use Algolia\AlgoliaSearch\Index;
 use Algolia\ScoutExtended\Algolia;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
+use Illuminate\Contracts\Events\Dispatcher;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
+use Algolia\ScoutExtended\Searchable\RecordsCounter;
+use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
 final class ReImportCommand extends Command
 {
@@ -43,8 +42,12 @@ final class ReImportCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(Algolia $algolia, SearchableFinder $searchableModelsFinder, RecordsCounter $recordsCounter)
-    {
+    public function handle(
+        Algolia $algolia,
+        SearchableFinder $searchableModelsFinder,
+        RecordsCounter $recordsCounter,
+        Dispatcher $events
+    ) {
         $searchables = $searchableModelsFinder->fromCommand($this);
 
         $config = config();
@@ -74,9 +77,9 @@ final class ReImportCommand extends Command
             try {
                 $config->set('scout.prefix', self::$prefix.'_'.$scoutPrefix);
                 $searchable::makeAllSearchable();
-                do {
+                while ($this->waitingForRecordsImported($recordsCounter, $searchable)) {
                     sleep(1);
-                } while ($this->waitingForRecordsImported($recordsCounter, $searchable));
+                }
             }
             finally {
                 $config->set('scout.prefix', $scoutPrefix);
@@ -85,7 +88,6 @@ final class ReImportCommand extends Command
             tap($this->output)->progressAdvance()->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
 
             $algolia->client()->moveIndex($temporaryName, $index->getIndexName())->wait();
-            $algolia->client()->deleteIndex($temporaryName)->wait();
         }
 
         tap($this->output)->success('All ['.implode(',', $searchables).'] records have been imported')->newLine();

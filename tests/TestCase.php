@@ -119,6 +119,17 @@ class TestCase extends BaseTestCase
         return $engineMock;
     }
 
+    protected function mockClient(): MockInterface
+    {
+        $client = $this->app->get(ClientInterface::class);
+
+        $clientMock = get_class($client) === 'Algolia\AlgoliaSearch\Client' ? mock(Client::class) : $client;
+
+        $this->swap(ClientInterface::class, $clientMock);
+
+        return $clientMock;
+    }
+
     protected function mockIndex(string $model, array $settings = []): MockInterface
     {
         $indexMock = mock(Index::class);
@@ -126,9 +137,7 @@ class TestCase extends BaseTestCase
         $indexMock->shouldReceive('getIndexName')->zeroOrMoreTimes()->andReturn($indexName);
         $indexMock->shouldReceive('getSettings')->zeroOrMoreTimes()->andReturn($settings);
 
-        $client = $this->app->get(ClientInterface::class);
-
-        $clientMock = get_class($client) === 'Algolia\AlgoliaSearch\Client' ? mock(Client::class) : $client;
+        $clientMock = $this->mockClient();
         $clientMock->shouldReceive('initIndex')->zeroOrMoreTimes()->with($indexName)->andReturn($indexMock);
 
         $engineMock = mock(AlgoliaEngine::class, [$clientMock])->makePartial();
@@ -136,7 +145,6 @@ class TestCase extends BaseTestCase
 
         $managerMock->shouldReceive('driver')->andReturn($engineMock);
 
-        $this->swap(ClientInterface::class, $clientMock);
         $this->swap(EngineManager::class, $managerMock);
 
         return $indexMock;
@@ -144,10 +152,15 @@ class TestCase extends BaseTestCase
 
     protected function assertSettingsSet($indexMock, array $settings)
     {
+        $indexMock->shouldReceive('setSettings')->zeroOrMoreTimes()->with($settings)->andReturn($this->mockResponse());
+    }
+
+    protected function mockResponse(): MockInterface
+    {
         $responseMock = mock(\Algolia\AlgoliaSearch\Response\AbstractResponse::class);
 
         $responseMock->shouldReceive('wait')->zeroOrMoreTimes();
 
-        $indexMock->shouldReceive('setSettings')->zeroOrMoreTimes()->with($settings)->andReturn($responseMock);
+        return $responseMock;
     }
 }

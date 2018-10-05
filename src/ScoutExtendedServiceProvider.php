@@ -90,7 +90,7 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         $this->app->alias(Analytics::class, 'algolia.analytics');
 
         $this->app->singleton(AggregatorObserver::class, AggregatorObserver::class);
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        // $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
     }
 
     /**
