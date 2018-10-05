@@ -80,8 +80,7 @@ final class ReImportCommand extends Command
                 while ($this->waitingForRecordsImported($recordsCounter, $searchable)) {
                     sleep(1);
                 }
-            }
-            finally {
+            } finally {
                 $config->set('scout.prefix', $scoutPrefix);
             }
 
