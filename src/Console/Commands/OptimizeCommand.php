@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\File;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Settings\LocalFactory;
 use Algolia\ScoutExtended\Settings\Synchronizer;
-use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
 
 final class OptimizeCommand extends Command
 {
@@ -43,21 +43,13 @@ final class OptimizeCommand extends Command
         Synchronizer $synchronizer,
         LocalFactory $localFactory,
         Compiler $compiler,
-        SearchableModelsFinder $searchableModelsFinder
+        SearchableFinder $searchableModelsFinder
     ) {
-        $classes = (array) $this->argument('model');
-
-        if (empty($classes) && empty($classes = $searchableModelsFinder->find())) {
-            $this->output->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
-
-            return 1;
-        }
-
-        foreach ($classes as $class) {
-            $this->output->text('🔎 Optimizing search experience in: <info>['.$class.']</info>');
-            $state = $synchronizer->analyse($index = $algolia->index($class));
+        foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
+            $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
+            $state = $synchronizer->analyse($index = $algolia->index($searchable));
             if (! File::exists($state->getPath()) || $this->confirm('Local settings already exists, do you wish to overwrite?')) {
-                $settings = $localFactory->create($index, $class);
+                $settings = $localFactory->create($index, $searchable);
                 $compiler->compile($settings, $state->getPath());
                 $this->output->success('Settings file created at: '.$state->getPath());
                 $this->output->note('Please review the settings file and synchronize it with Algolia using: "'.ARTISAN_BINARY.' scout:sync"');

@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Console\Commands;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
-use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
 
 final class ImportCommand extends Command
 {
@@ -33,22 +33,14 @@ final class ImportCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(SearchableModelsFinder $searchableModelsFinder)
+    public function handle(SearchableFinder $searchableModelsFinder)
     {
-        $classes = (array) $this->argument('model');
+        foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
+            $this->call('scout:flush', ['model' => $searchable]);
 
-        if (empty($classes) && empty($classes = $searchableModelsFinder->find())) {
-            $this->output->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
+            $searchable::makeAllSearchable();
 
-            return 1;
-        }
-
-        foreach ($classes as $class) {
-            $this->call('scout:flush', ['model' => $class]);
-
-            $class::makeAllSearchable();
-
-            $this->output->success('All ['.$class.'] records have been imported.');
+            $this->output->success('All ['.$searchable.'] records have been imported.');
         }
     }
 }

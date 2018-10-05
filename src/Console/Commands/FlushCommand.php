@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Console\Commands;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
-use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
 
 final class FlushCommand extends Command
 {
@@ -33,20 +33,12 @@ final class FlushCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(Algolia $algolia, SearchableModelsFinder $searchableModelsFinder)
+    public function handle(Algolia $algolia, SearchableFinder $searchableModelsFinder)
     {
-        $classes = (array) $this->argument('model');
+        foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
+            $algolia->index($searchable)->clear();
 
-        if (empty($classes) && empty($classes = $searchableModelsFinder->find())) {
-            $this->output->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
-
-            return 1;
-        }
-
-        foreach ($classes as $class) {
-            $algolia->index($class)->clear();
-
-            $this->output->success('All ['.$class.'] records have been flushed.');
+            $this->output->success('All ['.$searchable.'] records have been flushed.');
         }
     }
 }

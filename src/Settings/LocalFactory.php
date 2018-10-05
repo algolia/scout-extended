@@ -18,7 +18,7 @@ use function is_string;
 use InvalidArgumentException;
 use Algolia\AlgoliaSearch\Index;
 use Illuminate\Database\QueryException;
-use Algolia\ScoutExtended\Search\Aggregator;
+use Algolia\ScoutExtended\Searchable\Aggregator;
 
 /**
  * @internal

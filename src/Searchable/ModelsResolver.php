@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\ScoutExtended\Search;
+namespace Algolia\ScoutExtended\Searchable;
 
 use function in_array;
 use Laravel\Scout\Builder;

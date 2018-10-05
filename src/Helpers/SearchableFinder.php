@@ -13,16 +13,18 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Helpers;
 
+use Illuminate\Console\Command;
 use function in_array;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Finder\Finder;
 use Illuminate\Foundation\Application;
 
 /**
  * @internal
  */
-final class SearchableModelsFinder
+final class SearchableFinder
 {
     /**
      * @var array
@@ -44,6 +46,24 @@ final class SearchableModelsFinder
     public function __construct(Application $app)
     {
         $this->app = $app;
+    }
+
+    /**
+     * Get a list of searchable models from the given command.
+     *
+     * @param \Illuminate\Console\Command $command
+     *
+     * @return array
+     */
+    public function fromCommand(Command $command): array
+    {
+        $searchables = (array) $command->argument('model');
+
+        if (empty($searchables) && empty($searchables = $this->find())) {
+            throw new InvalidArgumentException('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
+        }
+
+        return $searchables;
     }
 
     /**

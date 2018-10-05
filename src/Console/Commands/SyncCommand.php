@@ -18,7 +18,7 @@ use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
 use Algolia\ScoutExtended\Settings\Status;
 use Algolia\ScoutExtended\Settings\Synchronizer;
-use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
 
 final class SyncCommand extends Command
 {
@@ -40,26 +40,18 @@ final class SyncCommand extends Command
     public function handle(
         Algolia $algolia,
         Synchronizer $synchronizer,
-        SearchableModelsFinder $searchableModelsFinder
+        SearchableFinder $searchableModelsFinder
     ) {
-        $classes = (array) $this->argument('model');
-
-        if (empty($classes) && empty($classes = $searchableModelsFinder->find())) {
-            $this->output->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
-
-            return 1;
-        }
-
-        foreach ($classes as $class) {
-            $this->output->text('🔎 Analysing settings from: <info>['.$class.']</info>');
-            $state = $synchronizer->analyse($index = $algolia->index($class));
+        foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
+            $this->output->text('🔎 Analysing settings from: <info>['.$searchable.']</info>');
+            $state = $synchronizer->analyse($index = $algolia->index($searchable));
 
             switch ($state->toString()) {
                 case Status::LOCAL_NOT_FOUND:
                     if ($state->remoteNotFound()) {
                         $this->output->note('No settings found.');
                         if ($this->output->confirm('Wish to optimize the search experience based on information from your model class?')) {
-                            return $this->call('scout:optimize', ['model' => $class]);
+                            return $this->call('scout:optimize', ['model' => $searchable]);
                         }
                     } else {
                         $this->output->note('Remote settings <info>found</info>!');
@@ -112,7 +104,6 @@ final class SyncCommand extends Command
             }
         }
 
-        $this->output->text('💡 Feedback: <info>https://github.com/algolia/scout-extended</info>');
         $this->output->newLine();
     }
 }

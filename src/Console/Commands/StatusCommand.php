@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
+use Algolia\ScoutExtended\Searchable\RecordsCounter;
 use function count;
 use function in_array;
 use Laravel\Scout\Searchable;
@@ -20,7 +21,7 @@ use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\ScoutExtended\Settings\Synchronizer;
-use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
 
 final class StatusCommand extends Command
@@ -38,23 +39,21 @@ final class StatusCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(Algolia $algolia, SearchableModelsFinder $searchableModelsFinder, Synchronizer $synchronizer)
-    {
-        $classes = (array) $this->argument('model');
-
-        if (empty($classes) && empty($classes = $searchableModelsFinder->find())) {
-            $this->output->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
-
-            return 1;
-        }
+    public function handle(
+        Algolia $algolia,
+        SearchableFinder $searchableModelsFinder,
+        Synchronizer $synchronizer,
+        RecordsCounter $recordsCounter
+    ) {
+        $searchables = $searchableModelsFinder->fromCommand($this);
 
         $rows = [];
 
-        $this->output->text('🔎 Analysing information from: <info>['.implode(',', $classes).']</info>');
+        $this->output->text('🔎 Analysing information from: <info>['.implode(',', $searchables).']</info>');
         $this->output->newLine();
-        $this->output->progressStart(count($classes));
+        $this->output->progressStart(count($searchables));
 
-        foreach ($classes as $searchable) {
+        foreach ($searchables as $searchable) {
             $row = [];
             $instance = $this->laravel->make($searchable);
             $index = $algolia->index($instance);
@@ -70,8 +69,8 @@ final class StatusCommand extends Command
             }
 
             $row[] = $description;
-            $row[] = $this->getSearchableCount($searchable);
-            $row[] = $searchable::search('')->count();
+            $row[] = $recordsCounter->local($searchable);
+            $row[] = $recordsCounter->remote($searchable);
 
             $rows[] = $row;
             $this->output->progressAdvance();
@@ -79,25 +78,5 @@ final class StatusCommand extends Command
 
         $this->output->progressFinish();
         $this->output->table(['Model', 'Index', 'Settings', 'Local records', 'Remote records'], $rows);
-    }
-
-    /**
-     * @param  string $searchable
-     *
-     * @return int
-     */
-    private function getSearchableCount(string $searchable): int
-    {
-        $instance = new $searchable;
-
-        if ($instance instanceof SearchableCountableContract) {
-            return $instance->getSearchableCount();
-        }
-
-        $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($searchable), true) && config('scout.soft_delete', false);
-
-        return $searchable::query()->when($softDeletes, function ($query) {
-            $query->withTrashed();
-        })->count();
     }
 }

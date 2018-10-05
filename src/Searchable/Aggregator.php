@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\ScoutExtended\Search;
+namespace Algolia\ScoutExtended\Searchable;
 
 use function in_array;
 use Laravel\Scout\Builder;
@@ -56,7 +56,7 @@ abstract class Aggregator implements SearchableCountableContract
     {
         ($self = new static)->registerSearchableMacros();
 
-        $observer = tap(resolve(Observer::class))->setAggregator(static::class, $models = $self->getModels());
+        $observer = tap(resolve(AggregatorObserver::class))->setAggregator(static::class, $models = $self->getModels());
 
         foreach ($models as $model) {
             \Illuminate\Database\Eloquent\Builder::macro('getScoutKey', function () {
@@ -87,7 +87,7 @@ abstract class Aggregator implements SearchableCountableContract
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      *
-     * @return \Algolia\ScoutExtended\Search\Aggregator
+     * @return \Algolia\ScoutExtended\Searchable\Aggregator
      */
     public function searchableWith(Model $model): Aggregator
     {

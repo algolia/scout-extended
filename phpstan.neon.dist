@@ -8,5 +8,5 @@ parameters:
     excludes_analyse:
     	- %rootDir%/../../../src/BuilderMacros.php
     ignoreErrors:
-        - '#Using \$this in static method Algolia\\ScoutExtended\\Search\\Aggregator::bootSearchable\(\).#'
+        - '#Using \$this in static method Algolia\\ScoutExtended\\Searchable\\Aggregator::bootSearchable\(\).#'
 

@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
+use Algolia\ScoutExtended\Searchable\RecordsCounter;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\AlgoliaSearch\Index;
 use Algolia\ScoutExtended\Algolia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
-use Algolia\ScoutExtended\Helpers\SearchableModelsFinder;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
 
 final class ReImportCommand extends Command
@@ -42,15 +43,9 @@ final class ReImportCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(Algolia $algolia, SearchableModelsFinder $searchableModelsFinder)
+    public function handle(Algolia $algolia, SearchableFinder $searchableModelsFinder, RecordsCounter $recordsCounter)
     {
-        $searchables = (array) $this->argument('model');
-
-        if (empty($searchables) && empty($searchables = $searchableModelsFinder->find())) {
-            $this->output->error('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
-
-            return 1;
-        }
+        $searchables = $searchableModelsFinder->fromCommand($this);
 
         $config = config();
 
@@ -80,8 +75,9 @@ final class ReImportCommand extends Command
                 $searchable::makeAllSearchable();
                 do {
                     sleep(1);
-                } while ($this->waitingForRecordsImported($searchable));
-            } finally {
+                } while ($this->waitingForRecordsImported($recordsCounter, $searchable));
+            }
+            finally {
                 $config->set('scout.prefix', $scoutPrefix);
             }
             $this->output->progressAdvance();
@@ -112,34 +108,16 @@ final class ReImportCommand extends Command
      *
      * @return bool
      */
-    private function waitingForRecordsImported(string $searchable): bool
+    private function waitingForRecordsImported(RecordsCounter $recordsCounter, string $searchable): bool
     {
+        $result = false;
+
         try {
-            return $searchable::search('')->count() !== $this->getSearchableCount($searchable);
+            $result = $recordsCounter->local($searchable) !== $recordsCounter->remote($searchable);
         } catch (NotFoundException $e) {
             // ..
         }
 
-        return false;
-    }
-
-    /**
-     * @param  string $searchable
-     *
-     * @return int
-     */
-    private function getSearchableCount(string $searchable): int
-    {
-        $instance = new $searchable;
-
-        if ($instance instanceof SearchableCountableContract) {
-            return $instance->getSearchableCount();
-        }
-
-        $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($searchable), true) && config('scout.soft_delete', false);
-
-        return $searchable::query()->when($softDeletes, function ($query) {
-            $query->withTrashed();
-        })->count();
+        return $result;
     }
 }

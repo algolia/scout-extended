@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Algolia\ScoutExtended\Search\Aggregator;
+use Algolia\ScoutExtended\Searchable\Aggregator;
 
 final class Wall extends Aggregator
 {
