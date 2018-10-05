@@ -7,6 +7,10 @@ php:
   - 7.2
   - nightly
 
+cache:
+  directories:
+  - "$HOME/.composer/cache/files"
+
 env:
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"
@@ -14,7 +18,7 @@ env:
 
 before_script:
     - travis_retry composer self-update
-    - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+    - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --no-suggest --prefer-source
 
 script:
     - vendor/bin/phpunit
