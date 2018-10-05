@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Algolia\ScoutExtended\Searchable\RecordsCounter;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\AlgoliaSearch\Index;
 use Algolia\ScoutExtended\Algolia;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
+use Algolia\ScoutExtended\Searchable\RecordsCounter;
+use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
 final class ReImportCommand extends Command
 {
@@ -77,8 +75,7 @@ final class ReImportCommand extends Command
                 do {
                     sleep(1);
                 } while ($this->waitingForRecordsImported($recordsCounter, $searchable));
-            }
-            finally {
+            } finally {
                 $config->set('scout.prefix', $scoutPrefix);
             }
 
