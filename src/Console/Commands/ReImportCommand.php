@@ -58,8 +58,9 @@ final class ReImportCommand extends Command
         foreach ($searchables as $searchable) {
             $index = $algolia->index($searchable);
             $temporaryName = $this->getTemporaryIndexName($index);
-            $this->output->progressAdvance();
-            $this->output->text("Creating temporary index <info>{$temporaryName}</info>");
+
+            tap($this->output)->progressAdvance()->text("Creating temporary index <info>{$temporaryName}</info>");
+
             $algolia->client()->copyIndex($index->getIndexName(), $temporaryName, [
                 'scope' => [
                     'settings',
@@ -67,9 +68,9 @@ final class ReImportCommand extends Command
                     'rules',
                 ],
             ])->wait();
-            $this->output->progressAdvance();
 
-            $this->output->text("Importing records to index <info>{$temporaryName}</info>");
+            tap($this->output)->progressAdvance()->text("Importing records to index <info>{$temporaryName}</info>");
+
             try {
                 $config->set('scout.prefix', self::$prefix.'_'.$scoutPrefix);
                 $searchable::makeAllSearchable();
@@ -80,15 +81,14 @@ final class ReImportCommand extends Command
             finally {
                 $config->set('scout.prefix', $scoutPrefix);
             }
-            $this->output->progressAdvance();
 
-            $this->output->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
+            tap($this->output)->progressAdvance()->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
+
             $algolia->client()->moveIndex($temporaryName, $index->getIndexName())->wait();
             $algolia->client()->deleteIndex($temporaryName)->wait();
         }
 
-        $this->output->success('All ['.implode(',', $searchables).'] records have been imported');
-        $this->output->newLine();
+        tap($this->output)->success('All ['.implode(',', $searchables).'] records have been imported')->newLine();
     }
 
     /**
