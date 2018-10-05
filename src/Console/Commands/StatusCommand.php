@@ -13,16 +13,13 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Algolia\ScoutExtended\Searchable\RecordsCounter;
 use function count;
-use function in_array;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\ScoutExtended\Settings\Synchronizer;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
+use Algolia\ScoutExtended\Searchable\RecordsCounter;
 
 final class StatusCommand extends Command
 {
