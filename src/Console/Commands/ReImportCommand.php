@@ -45,8 +45,7 @@ final class ReImportCommand extends Command
     public function handle(
         Algolia $algolia,
         SearchableFinder $searchableModelsFinder,
-        RecordsCounter $recordsCounter,
-        Dispatcher $events
+        RecordsCounter $recordsCounter
     ) {
         $searchables = $searchableModelsFinder->fromCommand($this);
 
