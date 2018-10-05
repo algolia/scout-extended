@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
+use Illuminate\Support\Facades\Route;
 use ReflectionClass;
 use Laravel\Scout\Builder;
 use Laravel\Scout\EngineManager;
@@ -89,6 +90,7 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         $this->app->alias(Analytics::class, 'algolia.analytics');
 
         $this->app->singleton(AggregatorObserver::class, AggregatorObserver::class);
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
     }
 
     /**
