@@ -1,7 +1,7 @@
 includes:
     - vendor/nunomaduro/larastan/extension.neon
 parameters:
-    level: 5
+    level: max
     paths:
         - src
     reportUnmatchedIgnoredErrors: false

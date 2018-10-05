@@ -88,9 +88,7 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
 
         $this->app->alias(Analytics::class, 'algolia.analytics');
 
-        $this->app->singleton(Observer::class, function () {
-            return new Observer();
-        });
+        $this->app->singleton(Observer::class, Observer::class);
     }
 
     /**

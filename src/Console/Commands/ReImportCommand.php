@@ -52,7 +52,7 @@ final class ReImportCommand extends Command
             return 1;
         }
 
-        $config = $this->laravel['config'];
+        $config = config();
 
         $scoutPrefix = $config->get('scout.prefix');
 

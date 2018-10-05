@@ -122,6 +122,9 @@ final class LocalFactory
         $disableTypoToleranceOnAttributes = [];
         $unretrievableAttributes = [];
         foreach ($attributes as $key => $value) {
+
+            $key = (string) $key;
+
             if ($this->isSearchableAttributes($key, $value)) {
                 $searchableAttributes[] = $key;
             }

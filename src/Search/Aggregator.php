@@ -60,6 +60,11 @@ abstract class Aggregator implements SearchableCountableContract
 
         foreach ($models as $model) {
             \Illuminate\Database\Eloquent\Builder::macro('getScoutKey', function () {
+
+                if ($this->model === null) {
+                    throw new ModelNotDefinedInAggregatorException();
+                }
+
                 return UuidGenerator::getUuid($this->model).'_'.$this->model->getKey();
             });
 
@@ -111,11 +116,11 @@ abstract class Aggregator implements SearchableCountableContract
      */
     public function getScoutKey(): string
     {
-        $scoutKey = method_exists($this->model, 'getScoutKey') ? $this->model->getScoutKey() : $this->model->getKey();
-
         if ($this->model === null) {
             throw new ModelNotDefinedInAggregatorException();
         }
+
+        $scoutKey = method_exists($this->model, 'getScoutKey') ? $this->model->getScoutKey() : $this->model->getKey();
 
         return UuidGenerator::getUuid($this->model).'_'.$scoutKey;
     }
@@ -195,6 +200,6 @@ abstract class Aggregator implements SearchableCountableContract
             })->count();
         }
 
-        return $count;
+        return (int) $count;
     }
 }
