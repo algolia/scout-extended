@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
-use Algolia\AlgoliaSearch\Index;
 use LogicException;
 use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
+use Algolia\AlgoliaSearch\Index;
 
 /**
  * @internal

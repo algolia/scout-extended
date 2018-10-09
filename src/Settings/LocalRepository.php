@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
-use Algolia\AlgoliaSearch\Index;
-use Algolia\ScoutExtended\Exceptions\SettingsNotFound;
 use Illuminate\Support\Str;
+use Algolia\AlgoliaSearch\Index;
 use Illuminate\Filesystem\Filesystem;
 
 /**
