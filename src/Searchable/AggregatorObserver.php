@@ -59,7 +59,7 @@ final class AggregatorObserver extends BaseModelObserver
         }
 
         foreach ($this->aggregators[$class] as $aggregator) {
-            parent::saved((new $aggregator)->searchableWith($model));
+            parent::saved($aggregator::create($model));
         }
     }
 
@@ -82,7 +82,7 @@ final class AggregatorObserver extends BaseModelObserver
             }
 
             foreach ($this->aggregators[$class] as $aggregator) {
-                (new $aggregator)->searchableWith($model)->unsearchable();
+                $aggregator::create($model)->unsearchable();
             }
         }
     }
@@ -106,7 +106,7 @@ final class AggregatorObserver extends BaseModelObserver
         }
 
         foreach ($this->aggregators[$class] as $aggregator) {
-            (new $aggregator)->searchableWith($model)->unsearchable();
+            $aggregator::create($model)->unsearchable();
         }
     }
 }

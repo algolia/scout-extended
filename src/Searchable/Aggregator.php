@@ -19,6 +19,7 @@ use Laravel\Scout\Searchable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
 use Algolia\ScoutExtended\Exceptions\ModelNotDefinedInAggregatorException;
 
@@ -59,16 +60,20 @@ abstract class Aggregator implements SearchableCountableContract
         $observer = tap(resolve(AggregatorObserver::class))->setAggregator(static::class, $models = $self->getModels());
 
         foreach ($models as $model) {
-            \Illuminate\Database\Eloquent\Builder::macro('getScoutKey', function () {
-                if ($this->model === null) {
-                    throw new ModelNotDefinedInAggregatorException();
-                }
-
-                return UuidGenerator::getUuid($this->model).'_'.$this->model->getKey();
-            });
-
             $model::observe($observer);
         }
+    }
+
+    /**
+     * Creates an instance of the aggregator.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return \Algolia\ScoutExtended\Searchable
+     */
+    public static function create(Model $model): Aggregator
+    {
+        return (new static)->setModel($model);
     }
 
     /**
@@ -88,11 +93,21 @@ abstract class Aggregator implements SearchableCountableContract
      *
      * @return \Algolia\ScoutExtended\Searchable\Aggregator
      */
-    public function searchableWith(Model $model): Aggregator
+    public function setModel(Model $model): Aggregator
     {
         $this->model = $model;
 
         return $this;
+    }
+
+    /**
+     * Get the current model.
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getModel(): Model
+    {
+        return $this->model;
     }
 
     /**
@@ -105,7 +120,7 @@ abstract class Aggregator implements SearchableCountableContract
      */
     public function getScoutModelsByIds(Builder $builder, array $ids): Collection
     {
-        return resolve(ModelsResolver::class)->from($builder, $this->models, $ids);
+        return resolve(ModelsResolver::class)->from($builder, static::class, $this->models, $ids);
     }
 
     /**
@@ -163,7 +178,7 @@ abstract class Aggregator implements SearchableCountableContract
             $instance->newQuery()->when($softDeletes, function ($query) {
                 $query->withTrashed();
             })->orderBy($instance->getKeyName())->get()->map(function ($model) {
-                return (new static)->searchableWith($model);
+                return static::create($model);
             })->searchable();
         }
     }
@@ -179,7 +194,7 @@ abstract class Aggregator implements SearchableCountableContract
             $instance = new $model;
 
             $instance->newQuery()->orderBy($instance->getKeyName())->get()->map(function ($model) {
-                return (new static)->searchableWith($model);
+                return static::create($model);
             })->unsearchable();
         }
     }

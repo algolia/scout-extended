@@ -32,12 +32,13 @@ final class ModelsResolver
      * Get a set of models from the provided ids.
      *
      * @param \Laravel\Scout\Builder $builder
+     * @param  string $searchable
      * @param  array $models
      * @param  array $ids
      *
      * @return \Illuminate\Support\Collection
      */
-    public function from(Builder $builder, array $models, array $ids): Collection
+    public function from(Builder $builder, string $searchable, array $models, array $ids): Collection
     {
         $models = UuidGenerator::keyByUuid($models);
 
@@ -56,7 +57,7 @@ final class ModelsResolver
             $scoutKey = method_exists($model, 'getScoutKeyName') ? $model->getScoutKeyName() : $model->getQualifiedKeyName();
 
             if ($instance = $query->where($scoutKey, $modelKey)->get()->first()) {
-                $instances->push($instance);
+                $instances->push($searchable::create($instance));
             }
         }
 
