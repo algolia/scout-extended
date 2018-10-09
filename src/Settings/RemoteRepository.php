@@ -90,11 +90,10 @@ final class RemoteRepository
     private function getSettings(Index $index): array
     {
         try {
-            $settings = $index->getSettings();
+            $settings = $this->attachSynonyms($index, $index->getSettings());
         } catch (NotFoundException $e) {
             $index->saveObject(['objectID' => 'temp'])->wait();
-            $settings = $index->getSettings();
-
+            $settings = $this->attachSynonyms($index, $index->getSettings());
             $index->clear();
         }
 
@@ -102,6 +101,28 @@ final class RemoteRepository
             if (array_key_exists($from, $settings)) {
                 $settings[$to] = $settings[$from];
                 unset($settings[$from]);
+            }
+        }
+
+        return $settings;
+    }
+
+    /**
+     * @param  \Algolia\AlgoliaSearch\Index $index
+     * @param  array $settings
+     *
+     * @return array
+     */
+    private function attachSynonyms(Index $index, array $settings): array
+    {
+        $settings['synonyms'] = [];
+
+        foreach ($index->browseSynonyms() as $key => $synonym) {
+
+            if (isset($synonym['input'])) {
+                $settings['synonyms'][$synonym['input']] = $synonym['synonyms'];
+            } else {
+                $settings['synonyms'][] = $synonym['synonyms'];
             }
         }
 

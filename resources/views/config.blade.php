@@ -79,6 +79,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Synonyms
+    |--------------------------------------------------------------------------
+    |
+    | In any search engine, adding "synonyms" is one of the most important customization
+    | to introduce domain specific knowledge. Here you may specify sets of words that
+    | should be considered equal, for example: "PHP Framework": Laravel or Symfony.
+    |
+    | Two-way synonyms: [['laravel', 'Php Framework'], ['tablet', 'ipad', 'galaxy note]]
+    |
+    | One-way synonyms: ['Php Framework' => ['Php Framework'], 'tablet' => ['ipad', 'galaxy note]]
+    |
+    */
+
+    'synonyms' => {!! $synonyms ?? '[]' !!},
+
+    /*
+    |--------------------------------------------------------------------------
     | Ignore Plurals
     |--------------------------------------------------------------------------
     |

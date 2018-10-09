@@ -93,7 +93,7 @@ final class Status
      */
     public function bothAreEqual(): bool
     {
-        return $this->encrypter->local($this->path) === $this->settings->previousHash() && $this->encrypter->remote($this->settings) === $this->settings->previousHash();
+        return $this->encrypter->fromPath($this->path) === $this->settings->previousHash() && $this->encrypter->remote($this->settings) === $this->settings->previousHash();
     }
 
     /**
@@ -101,7 +101,7 @@ final class Status
      */
     public function localGotUpdated(): bool
     {
-        return $this->encrypter->local($this->path) !== $this->settings->previousHash() && $this->encrypter->remote($this->settings) === $this->settings->previousHash();
+        return $this->encrypter->fromPath($this->path) !== $this->settings->previousHash() && $this->encrypter->remote($this->settings) === $this->settings->previousHash();
     }
 
     /**
@@ -109,7 +109,7 @@ final class Status
      */
     public function remoteGotUpdated(): bool
     {
-        return $this->encrypter->local($this->path) === $this->settings->previousHash() && $this->encrypter->remote($this->settings) !== $this->settings->previousHash();
+        return $this->encrypter->fromPath($this->path) === $this->settings->previousHash() && $this->encrypter->remote($this->settings) !== $this->settings->previousHash();
     }
 
     /**
@@ -117,7 +117,7 @@ final class Status
      */
     public function bothGotUpdated(): bool
     {
-        return $this->encrypter->local($this->path) !== $this->settings->previousHash() && $this->encrypter->remote($this->settings) !== $this->settings->previousHash();
+        return $this->encrypter->fromPath($this->path) !== $this->settings->previousHash() && $this->encrypter->remote($this->settings) !== $this->settings->previousHash();
     }
 
     /**
