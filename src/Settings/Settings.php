@@ -132,7 +132,6 @@ final class Settings
         $synonyms = [];
 
         foreach ($payload['synonyms'] as $key => $values) {
-
             if (is_int($key)) {
                 $synonyms[] = [
                     'objectID' => implode('::', $values),

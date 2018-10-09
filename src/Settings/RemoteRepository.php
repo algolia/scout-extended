@@ -118,7 +118,6 @@ final class RemoteRepository
         $settings['synonyms'] = [];
 
         foreach ($index->browseSynonyms() as $key => $synonym) {
-
             if (isset($synonym['input'])) {
                 $settings['synonyms'][$synonym['input']] = $synonym['synonyms'];
             } else {
