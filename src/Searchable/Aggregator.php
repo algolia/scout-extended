@@ -19,7 +19,6 @@ use Laravel\Scout\Searchable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
 use Algolia\ScoutExtended\Exceptions\ModelNotDefinedInAggregatorException;
 
