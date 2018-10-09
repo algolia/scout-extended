@@ -60,7 +60,6 @@ abstract class Aggregator implements SearchableCountableContract
 
         foreach ($models as $model) {
             \Illuminate\Database\Eloquent\Builder::macro('getScoutKey', function () {
-
                 if ($this->model === null) {
                     throw new ModelNotDefinedInAggregatorException();
                 }
