@@ -113,42 +113,4 @@ final class Settings
     {
         return $this->settings['userData'] ?? '';
     }
-
-    public function forSettingsEndpoint()
-    {
-        $payload = $this->compiled();
-
-        unset($payload['synonyms']);
-
-        return $payload;
-    }
-
-    public function forSynonymsEndpoint()
-    {
-        $payload = $this->compiled();
-
-        $payload['synonyms'] = $payload['synonyms'] ?? [];
-
-        $synonyms = [];
-
-        foreach ($payload['synonyms'] as $key => $values) {
-
-            if (is_int($key)) {
-                $synonyms[] = [
-                    'objectID' => implode('::', $values),
-                    'type' => 'synonym',
-                    'synonyms' => $values,
-                ];
-            } else {
-                $synonyms[] = [
-                    'objectID' => $key,
-                    'type' => 'oneWaySynonym',
-                    'input' => $key,
-                    'synonyms' => $values,
-                ];
-            }
-        }
-
-        return $synonyms;
-    }
 }

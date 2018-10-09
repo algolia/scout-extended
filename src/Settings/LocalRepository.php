@@ -27,21 +27,15 @@ final class LocalRepository
     private $files;
 
     /**
-     * @var \Algolia\ScoutExtended\Settings\RemoteRepository
-     */
-    private $remoteRepository;
-
-    /**
      * LocalRepository constructor.
      *
      * @param \Illuminate\Filesystem\Filesystem $files
      *
      * @return void
      */
-    public function __construct(Filesystem $files, RemoteRepository $remoteRepository)
+    public function __construct(Filesystem $files)
     {
         $this->files = $files;
-        $this->remoteRepository = $remoteRepository;
     }
 
     /**
@@ -68,13 +62,5 @@ final class LocalRepository
         $index = str_replace('_', '-', $index);
 
         return config_path('scout-'.Str::lower($index).'.php');
-    }
-
-    /**
-     * @return \Algolia\ScoutExtended\Settings\Settings
-     */
-    public function getSettings(string $index): Settings
-    {
-        return new Settings(require $this->getPath($index), $this->remoteRepository->defaults());
     }
 }

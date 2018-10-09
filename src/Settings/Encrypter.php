@@ -19,44 +19,17 @@ namespace Algolia\ScoutExtended\Settings;
 final class Encrypter
 {
     /**
-     * @var \Algolia\ScoutExtended\Settings\RemoteRepository
-     */
-    private $remoteRepository;
-
-    /**
-     * Encrypter constructor.
-     *
-     * @param \Algolia\ScoutExtended\Settings\RemoteRepository $remoteRepository
-     */
-    public function __construct(RemoteRepository $remoteRepository)
-    {
-        $this->remoteRepository = $remoteRepository;
-    }
-
-    /**
-     * Get the encrypted value from the path settings.
+     * Get the encrypted value from the provided settings path.
      *
      * @param  string $path
      *
      * @return string
      */
-    public function fromPath(string $path): string
+    public function local(string $path): string
     {
-        $settingsObject = new Settings(file_exists($path) ? require $path : [], $this->remoteRepository->defaults());
+        $settings = file_exists($path) ? require $path : [];
 
-        return $this->local($settingsObject);
-    }
-
-    /**
-     * Get the encrypted value from the local settings.
-     *
-     * @param  \Algolia\ScoutExtended\Settings\Settings $settings
-     *
-     * @return string
-     */
-    public function local(Settings $settings): string
-    {
-        return $this->encrypt($settings->compiled());
+        return $this->with($settings);
     }
 
     /**
@@ -68,11 +41,11 @@ final class Encrypter
      */
     public function remote(Settings $settings): string
     {
-        return $this->encrypt($settings->compiled());
+        return $this->with($settings->compiled());
     }
 
     /**
-     * Get the encrypted value from the given settings.
+     * Get the encrypted value from the array settings.
      *
      * @param  array $settings
      *
@@ -80,9 +53,7 @@ final class Encrypter
      */
     public function with(array $settings): string
     {
-        $settingsObject = new Settings($settings, $this->remoteRepository->defaults());
-
-        return $this->encrypt($settingsObject->compiled());
+        return $this->encrypt($settings);
     }
 
     /**
@@ -93,8 +64,6 @@ final class Encrypter
     private function encrypt(array $settings): string
     {
         ksort($settings);
-
-        ksort($settings['synonyms']);
 
         return md5(serialize($settings));
     }

@@ -102,7 +102,7 @@ class Synchronizer
 
         $this->compiler->compile($settings, $path);
 
-        $userData = $this->encrypter->local($this->localRepository->getSettings($index->getIndexName()));
+        $userData = $this->encrypter->local($path);
 
         $index->setSettings(['userData' => $userData])->wait();
     }
@@ -116,13 +116,10 @@ class Synchronizer
      */
     public function upload(Index $index): void
     {
-        $settings = $this->localRepository->getSettings($index->getIndexName());
-        $userData = $this->encrypter->local($settings);
+        $settings = require $this->localRepository->getPath($index->getIndexName());
 
-        $index->setSettings(array_merge($settings->forSettingsEndpoint(), ['userData' => $userData]))->wait();
-        $index->clearSynonyms()->wait();
-        if (! empty($synonymsPayload = $settings->forSynonymsEndpoint())) {
-            $index->saveSynonyms($settings->forSynonymsEndpoint())->wait();
-        }
+        $userData = $this->encrypter->with($settings);
+
+        $index->setSettings(array_merge($settings, ['userData' => $userData]))->wait();
     }
 }
