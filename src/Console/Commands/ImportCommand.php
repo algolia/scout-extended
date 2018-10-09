@@ -33,7 +33,7 @@ final class ImportCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(SearchableFinder $searchableModelsFinder)
+    public function handle(SearchableFinder $searchableModelsFinder): void
     {
         foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
             $this->call('scout:flush', ['model' => $searchable]);

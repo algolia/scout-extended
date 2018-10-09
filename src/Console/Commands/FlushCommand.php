@@ -33,7 +33,7 @@ final class FlushCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(Algolia $algolia, SearchableFinder $searchableModelsFinder)
+    public function handle(Algolia $algolia, SearchableFinder $searchableModelsFinder): void
     {
         foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
             $algolia->index($searchable)->clear();

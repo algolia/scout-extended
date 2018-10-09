@@ -43,7 +43,7 @@ final class SyncCommand extends Command
         Synchronizer $synchronizer,
         SearchableFinder $searchableModelsFinder,
         LocalRepository $localRepository
-    ) {
+    ): void {
         foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Analysing settings from: <info>['.$searchable.']</info>');
             $status = $synchronizer->analyse($index = $algolia->index($searchable));
@@ -54,7 +54,8 @@ final class SyncCommand extends Command
                     if ($status->remoteNotFound()) {
                         $this->output->note('No settings found.');
                         if ($this->output->confirm('Wish to optimize the search experience based on information from your model class?')) {
-                            return $this->call('scout:optimize', ['model' => $searchable]);
+                            $this->call('scout:optimize', ['model' => $searchable]);
+                            return;
                         }
                     } else {
                         $this->output->note('Remote settings <info>found</info>!');

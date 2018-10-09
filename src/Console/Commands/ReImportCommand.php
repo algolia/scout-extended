@@ -45,7 +45,7 @@ final class ReImportCommand extends Command
         Algolia $algolia,
         SearchableFinder $searchableModelsFinder,
         RecordsCounter $recordsCounter
-    ) {
+    ): void {
         $searchables = $searchableModelsFinder->fromCommand($this);
 
         $config = config();

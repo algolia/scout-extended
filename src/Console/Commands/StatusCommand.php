@@ -41,7 +41,7 @@ final class StatusCommand extends Command
         SearchableFinder $searchableModelsFinder,
         Synchronizer $synchronizer,
         RecordsCounter $recordsCounter
-    ) {
+    ): void {
         $searchables = $searchableModelsFinder->fromCommand($this);
 
         $rows = [];

@@ -46,7 +46,7 @@ final class OptimizeCommand extends Command
         Compiler $compiler,
         SearchableFinder $searchableModelsFinder,
         LocalRepository $localRepository
-    ) {
+    ): void {
         foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
             $status = $synchronizer->analyse($index = $algolia->index($searchable));
