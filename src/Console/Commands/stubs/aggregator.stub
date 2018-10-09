@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use Algolia\ScoutExtended\Search\Aggregator;
+use Algolia\ScoutExtended\Searchable\Aggregator;
 
 class DummyClass extends Aggregator
 {
