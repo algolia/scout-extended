@@ -55,6 +55,7 @@ final class SyncCommand extends Command
                         $this->output->note('No settings found.');
                         if ($this->output->confirm('Wish to optimize the search experience based on information from the searchable class?')) {
                             $this->call('scout:optimize', ['searchable' => $searchable]);
+
                             return;
                         }
                     } else {
