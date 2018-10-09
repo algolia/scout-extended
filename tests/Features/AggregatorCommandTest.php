@@ -25,7 +25,7 @@ final class AggregatorCommandTest extends TestCase
         parent::tearDown();
     }
 
-    public function testClearsIndex(): void
+    public function testCreatesAggregator(): void
     {
         Artisan::call('scout:aggregator', ['name' => 'News']);
         Artisan::call('scout:aggregator', ['name' => 'Forum']);

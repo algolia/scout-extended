@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use App\Thread;
+use Illuminate\Support\Facades\Artisan;
 use Mockery;
 use App\User;
 use App\Wall;
@@ -40,6 +42,10 @@ final class ImportCommandTest extends TestCase
             return count($argument) === 5 && $argument[0]['objectID'] === 'users_1';
         }));
 
-        $this->artisan('scout:import');
+        // Detects searchable models.
+        $threadIndexMock = $this->mockIndex(Thread::class);
+        $threadIndexMock->expects('clear')->once();
+
+        Artisan::call('scout:import');
     }
 }

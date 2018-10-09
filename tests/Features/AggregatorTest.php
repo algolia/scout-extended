@@ -64,13 +64,16 @@ final class AggregatorTest extends TestCase
     {
         Wall::bootSearchable();
 
+        $threadIndexMock = $this->mockIndex(Thread::class);
         $wallIndexMock = $this->mockIndex('walls');
 
+        $threadIndexMock->shouldReceive('saveObjects')->once();
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
             return count($argument) === 1 && array_key_exists('body', $argument[0]) && $argument[0]['objectID'] === 'threads_1';
         }));
         $thread = factory(Thread::class)->create();
 
+        $threadIndexMock->shouldReceive('deleteObjects')->once();
         $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
             return count($argument) === 1 && $argument[0] === 'threads_1';
         }));
@@ -122,8 +125,10 @@ final class AggregatorTest extends TestCase
     {
         Wall::bootSearchable();
 
+        $threadIndexMock = $this->mockIndex(Thread::class);
         $wallIndexMock = $this->mockIndex('walls');
 
+        $threadIndexMock->shouldReceive('saveObjects')->once();
         $wallIndexMock->shouldReceive('saveObjects')->twice();
         $wallIndexMock->shouldReceive('search')->once()->andReturn([
             'hits' => [

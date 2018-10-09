@@ -9,8 +9,8 @@ use Mockery\MockInterface;
 use Algolia\AlgoliaSearch\Index;
 use Laravel\Scout\EngineManager;
 use Algolia\AlgoliaSearch\Client;
-use Laravel\Scout\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Settings\Compiler;
+use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
@@ -141,6 +141,7 @@ class TestCase extends BaseTestCase
         $clientMock->shouldReceive('initIndex')->zeroOrMoreTimes()->with($indexName)->andReturn($indexMock);
 
         $engineMock = mock(AlgoliaEngine::class, [$clientMock])->makePartial();
+
         $managerMock = mock(EngineManager::class)->makePartial();
 
         $managerMock->shouldReceive('driver')->andReturn($engineMock);
