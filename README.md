@@ -19,9 +19,10 @@ This package is **still in development**. It's not ready for use.
 - [x] Adds `scout:optimize` command : Optimize the search experience based on information from the model class
 - [x] Adds `scout:sync` command : Backups & Synchronize the given model settings
 - [x] Adds `scout:aggregator` command : Create a new aggregator class
-- [x] Aggregators - **Multiple models on the same index** 
+- [x] Aggregators - **Multiple models on the same index**
 - [x] Ability to use **display features** (**Searchable attributes**, **Query Language**, **Custom Ranking**, etc) of using a configuration file
-- [x] Ability to use **synonyms features** (**Searchable attributes**, **Query Language**, **Custom Ranking**, etc) of using a configuration file
+- [ ] Ability to use **synonyms features** (**Searchable attributes**, **Query Language**, **Custom Ranking**, etc) of using a configuration file
+- [ ] Front-end components and directives
 - [ ] Ability to use **Rules features**
 - [ ] Manager - **Multiple client connections** per project
 - [ ] **Extends Driver's Query Builder** adding more methods: whereIn, whereNotIn, whereNot, whereBetween, and others cases to be studied
