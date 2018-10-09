@@ -28,7 +28,7 @@ use Algolia\ScoutExtended\Console\Commands\ImportCommand;
 use Algolia\ScoutExtended\Console\Commands\StatusCommand;
 use Algolia\ScoutExtended\Console\Commands\OptimizeCommand;
 use Algolia\ScoutExtended\Console\Commands\ReImportCommand;
-use Algolia\ScoutExtended\Console\Commands\AggregatorCommand;
+use Algolia\ScoutExtended\Console\Commands\MakeAggregatorCommand;
 
 final class ScoutExtendedServiceProvider extends ServiceProvider
 {
@@ -101,7 +101,7 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                AggregatorCommand::class,
+                MakeAggregatorCommand::class,
                 ImportCommand::class,
                 FlushCommand::class,
                 OptimizeCommand::class,

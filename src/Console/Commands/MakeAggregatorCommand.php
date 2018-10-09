@@ -15,12 +15,12 @@ namespace Algolia\ScoutExtended\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
-final class AggregatorCommand extends GeneratorCommand
+final class MakeAggregatorCommand extends GeneratorCommand
 {
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:aggregator {name : The name of the aggregator}';
+    protected $signature = 'scout:make-aggregator {name : The name of the aggregator}';
 
     /**
      * {@inheritdoc}
