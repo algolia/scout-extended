@@ -26,12 +26,12 @@ final class ReImportCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:reimport {model? : The name of the searchable model}';
+    protected $signature = 'scout:reimport {searchable? : The name of the searchable}';
 
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Reimport the given model into the search index';
+    protected $description = 'Reimport the given searchable into the search index';
 
     /**
      * @var string

@@ -20,14 +20,14 @@ final class SyncCommandTest extends TestCase
         $synchronizerMock->shouldReceive('analyse')->once()->with($this->mockIndex(User::class))->andThrow(FakeException::class);
         $this->swap(Synchronizer::class, $synchronizerMock);
 
-        Artisan::call('scout:sync', ['model' => User::class]);
+        Artisan::call('scout:sync', ['searchable' => User::class]);
     }
 
     public function testWhenLocalSettingsNotFoundWithOptimize(): void
     {
         $this->mockIndex(User::class, array_merge($this->defaults(), $this->local()));
 
-        $this->artisan('scout:sync', ['model' => User::class])->expectsQuestion('Wish to optimize the search experience based on information from your model class?', true);
+        $this->artisan('scout:sync', ['searchable' => User::class])->expectsQuestion('Wish to optimize the search experience based on information from the searchable class?', true);
 
         $this->assertLocalHas($this->local());
     }
@@ -38,7 +38,7 @@ final class SyncCommandTest extends TestCase
 
         $this->assertSettingsSet($usersIndex, ['userData' => $this->localMd5()]);
 
-        $this->artisan('scout:sync', ['model' => User::class])->expectsQuestion('Wish to optimize the search experience based on information from your model class?', false);
+        $this->artisan('scout:sync', ['searchable' => User::class])->expectsQuestion('Wish to optimize the search experience based on information from the searchable class?', false);
 
         $this->assertLocalHas($this->local());
     }
@@ -51,7 +51,7 @@ final class SyncCommandTest extends TestCase
 
         $this->assertSettingsSet($usersIndex, array_merge($this->local(), ['userData' => $this->localMd5()]));
 
-        Artisan::call('scout:sync', ['model' => User::class]);
+        Artisan::call('scout:sync', ['searchable' => User::class]);
     }
 
     public function testWhenSettingsAreTheSame(): void
@@ -60,7 +60,7 @@ final class SyncCommandTest extends TestCase
 
         $this->mockIndex(User::class, array_merge($this->defaults(), $this->local(), ['userData' => $this->localMd5()]));
 
-        Artisan::call('scout:sync', ['model' => User::class]);
+        Artisan::call('scout:sync', ['searchable' => User::class]);
     }
 
     public function testWhenLocalSettingsAreMostRecent(): void
@@ -76,7 +76,7 @@ final class SyncCommandTest extends TestCase
 
         $this->assertSettingsSet($usersIndex, array_merge($local, ['userData' => md5(serialize($local))]));
 
-        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true]);
+        Artisan::call('scout:sync', ['searchable' => User::class, '--no-interaction' => true]);
     }
 
     public function testWhenRemoteSettingsAreMostRecent(): void
@@ -92,7 +92,7 @@ final class SyncCommandTest extends TestCase
 
         $this->assertSettingsSet($usersIndex, ['userData' => md5(serialize($remoteSettings))]);
 
-        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true]);
+        Artisan::call('scout:sync', ['searchable' => User::class, '--no-interaction' => true]);
         $this->assertLocalHas($remoteSettings);
     }
 
@@ -107,7 +107,7 @@ final class SyncCommandTest extends TestCase
             'userData' => $this->localMd5(),
         ]));
 
-        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true, '--keep' => 'none']);
+        Artisan::call('scout:sync', ['searchable' => User::class, '--no-interaction' => true, '--keep' => 'none']);
 
         $this->assertLocalHas($localSettings);
     }
@@ -126,7 +126,7 @@ final class SyncCommandTest extends TestCase
 
         $this->assertSettingsSet($usersIndex, array_merge($localSettings, ['userData' => md5(serialize($localSettings))]));
 
-        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true, '--keep' => 'local']);
+        Artisan::call('scout:sync', ['searchable' => User::class, '--no-interaction' => true, '--keep' => 'local']);
 
         $this->assertLocalHas($localSettings);
     }
@@ -145,7 +145,7 @@ final class SyncCommandTest extends TestCase
 
         $this->assertSettingsSet($usersIndex, ['userData' => md5(serialize($remoteWithoutDefaults))]);
 
-        Artisan::call('scout:sync', ['model' => User::class, '--no-interaction' => true, '--keep' => 'remote']);
+        Artisan::call('scout:sync', ['searchable' => User::class, '--no-interaction' => true, '--keep' => 'remote']);
 
         $this->assertLocalHas($remoteWithoutDefaults);
     }

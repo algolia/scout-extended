@@ -23,19 +23,19 @@ final class FlushCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:flush {model? : The name of the searchable model}';
+    protected $signature = 'scout:flush {searchable? : The name of the searchable}';
 
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Flush the index of the the given model';
+    protected $description = 'Flush the index of the the given searchable';
 
     /**
      * {@inheritdoc}
      */
-    public function handle(Algolia $algolia, SearchableFinder $searchableModelsFinder): void
+    public function handle(Algolia $algolia, SearchableFinder $searchableFinder): void
     {
-        foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
+        foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $algolia->index($searchable)->clear();
 
             $this->output->success('All ['.$searchable.'] records have been flushed.');

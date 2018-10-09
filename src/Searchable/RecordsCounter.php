@@ -55,6 +55,6 @@ final class RecordsCounter
      */
     public function remote(string $searchable): int
     {
-        return (int) $searchable::search('')->count();
+        return (int) $searchable::search()->count();
     }
 }

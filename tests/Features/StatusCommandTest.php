@@ -26,6 +26,6 @@ final class StatusCommandTest extends TestCase
             'nbHits' => 0,
         ]);
 
-        Artisan::call('scout:status', ['model' => User::class]);
+        Artisan::call('scout:status', ['searchable' => User::class]);
     }
 }

@@ -27,8 +27,8 @@ final class AggregatorCommandTest extends TestCase
 
     public function testCreatesAggregator(): void
     {
-        Artisan::call('scout:aggregator', ['name' => 'News']);
-        Artisan::call('scout:aggregator', ['name' => 'Forum']);
+        Artisan::call('scout:make-aggregator', ['name' => 'News']);
+        Artisan::call('scout:make-aggregator', ['name' => 'Forum']);
 
         $this->assertFileExists(app_path('Search/News.php'));
         $this->assertFileExists(app_path('Search/Forum.php'));

@@ -20,14 +20,14 @@ final class OptimizeCommandTest extends TestCase
         $synchronizerMock->shouldReceive('analyse')->with($this->mockIndex(User::class))->andThrow(FakeException::class);
         $this->swap(Synchronizer::class, $synchronizerMock);
 
-        Artisan::call('scout:optimize', ['model' => User::class]);
+        Artisan::call('scout:optimize', ['searchable' => User::class]);
     }
 
     public function testCreationOfLocalSettings(): void
     {
         $this->mockIndex(User::class, $this->defaults());
 
-        Artisan::call('scout:optimize', ['model' => User::class]);
+        Artisan::call('scout:optimize', ['searchable' => User::class]);
 
         $this->assertLocalHas($this->local());
     }

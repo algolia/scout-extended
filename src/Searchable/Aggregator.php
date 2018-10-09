@@ -87,7 +87,18 @@ abstract class Aggregator implements SearchableCountableContract
     }
 
     /**
-     * Sets the current model.
+     * Get the model instance being queried.
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getModel(): Model
+    {
+        return $this->model;
+    }
+
+
+    /**
+     * Set a model instance for the model being queried.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      *
@@ -98,16 +109,6 @@ abstract class Aggregator implements SearchableCountableContract
         $this->model = $model;
 
         return $this;
-    }
-
-    /**
-     * Get the current model.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function getModel(): Model
-    {
-        return $this->model;
     }
 
     /**
@@ -140,7 +141,7 @@ abstract class Aggregator implements SearchableCountableContract
     }
 
     /**
-     * Get the index name for the model.
+     * Get the index name for the searchable.
      *
      * @return string
      */
@@ -150,7 +151,7 @@ abstract class Aggregator implements SearchableCountableContract
     }
 
     /**
-     * Get the searchable array of the model.
+     * Get the searchable array of the searchable.
      *
      * @return array
      */
@@ -209,7 +210,7 @@ abstract class Aggregator implements SearchableCountableContract
         foreach ($this->getModels() as $model) {
             $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($model), true) && config('scout.soft_delete', false);
 
-            $count += $model::query()->when($softDeletes, function ($query) {
+            $count += (int) $model::query()->when($softDeletes, function ($query) {
                 $query->withTrashed();
             })->count();
         }

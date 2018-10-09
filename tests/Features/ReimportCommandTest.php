@@ -44,6 +44,6 @@ final class ReimportCommandTest extends TestCase
 
         $client->shouldReceive('moveIndex')->andReturn($this->mockResponse());
 
-        Artisan::call('scout:reimport', ['model' => User::class]);
+        Artisan::call('scout:reimport', ['searchable' => User::class]);
     }
 }

@@ -22,21 +22,21 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     /**
      * {@inheritdoc}
      */
-    public function map(Builder $builder, $results, $model): Collection
+    public function map(Builder $builder, $results, $searchable): Collection
     {
         if (count($results['hits']) === 0) {
             return collect();
         }
 
-        $models = $model->getScoutModelsByIds(
+        $searchables = $searchable->getScoutModelsByIds(
             $builder, collect($results['hits'])->pluck('objectID')->values()->all()
-        )->keyBy(function ($model) {
-            return $model->getScoutKey();
+        )->keyBy(function ($searchable) {
+            return $searchable->getScoutKey();
         })->map->getModel();
 
-        return collect($results['hits'])->map(function ($hit) use ($models) {
-            if (isset($models[$hit['objectID']])) {
-                return $models[$hit['objectID']];
+        return collect($results['hits'])->map(function ($hit) use ($searchables) {
+            if (isset($searchables[$hit['objectID']])) {
+                return $searchables[$hit['objectID']];
             }
         })->filter()->values();
     }

@@ -26,23 +26,23 @@ final class StatusCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:status {model? : The name of the searchable model}';
+    protected $signature = 'scout:status {searchable? : The name of the searchable}';
 
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Show the status of the index of the the given model';
+    protected $description = 'Show the status of the index of the the given searchable';
 
     /**
      * {@inheritdoc}
      */
     public function handle(
         Algolia $algolia,
-        SearchableFinder $searchableModelsFinder,
+        SearchableFinder $searchableFinder,
         Synchronizer $synchronizer,
         RecordsCounter $recordsCounter
     ): void {
-        $searchables = $searchableModelsFinder->fromCommand($this);
+        $searchables = $searchableFinder->fromCommand($this);
 
         $rows = [];
 
@@ -74,6 +74,6 @@ final class StatusCommand extends Command
         }
 
         $this->output->progressFinish();
-        $this->output->table(['Model', 'Index', 'Settings', 'Local records', 'Remote records'], $rows);
+        $this->output->table(['Searchable', 'Index', 'Settings', 'Local records', 'Remote records'], $rows);
     }
 }

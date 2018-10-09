@@ -27,13 +27,13 @@ final class SyncCommand extends Command
      * {@inheritdoc}
      */
     protected $signature = 'scout:sync
-                            {model? : The name of the searchable model}
+                            {searchable? : The name of the searchable}
                             {--keep=none} : In conflict keep the given option';
 
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Synchronize the given model settings';
+    protected $description = 'Synchronize the given searchable settings';
 
     /**
      * {@inheritdoc}
@@ -41,10 +41,10 @@ final class SyncCommand extends Command
     public function handle(
         Algolia $algolia,
         Synchronizer $synchronizer,
-        SearchableFinder $searchableModelsFinder,
+        SearchableFinder $searchableFinder,
         LocalRepository $localRepository
     ): void {
-        foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
+        foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Analysing settings from: <info>['.$searchable.']</info>');
             $status = $synchronizer->analyse($index = $algolia->index($searchable));
             $path = $localRepository->getPath($index);
@@ -53,8 +53,8 @@ final class SyncCommand extends Command
                 case Status::LOCAL_NOT_FOUND:
                     if ($status->remoteNotFound()) {
                         $this->output->note('No settings found.');
-                        if ($this->output->confirm('Wish to optimize the search experience based on information from your model class?')) {
-                            $this->call('scout:optimize', ['model' => $searchable]);
+                        if ($this->output->confirm('Wish to optimize the search experience based on information from the searchable class?')) {
+                            $this->call('scout:optimize', ['searchable' => $searchable]);
                             return;
                         }
                     } else {

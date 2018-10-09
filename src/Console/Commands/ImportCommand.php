@@ -23,20 +23,20 @@ final class ImportCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:import {model? : The name of the searchable model}';
+    protected $signature = 'scout:import {searchable? : The name of the searchable}';
 
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Import the given model into the search index';
+    protected $description = 'Import the given searchable into the search index';
 
     /**
      * {@inheritdoc}
      */
-    public function handle(SearchableFinder $searchableModelsFinder): void
+    public function handle(SearchableFinder $searchableFinder): void
     {
-        foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
-            $this->call('scout:flush', ['model' => $searchable]);
+        foreach ($searchableFinder->fromCommand($this) as $searchable) {
+            $this->call('scout:flush', ['searchable' => $searchable]);
 
             $searchable::makeAllSearchable();
 

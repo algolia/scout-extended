@@ -28,13 +28,12 @@ final class OptimizeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:optimize
-                            {model? : The name of the searchable model}';
+    protected $signature = 'scout:optimize {searchable? : The name of the searchable}';
 
     /**
-     * {@inheritdoc}<<
+     * {@inheritdoc}
      */
-    protected $description = 'Optimize the given model creating a settings file';
+    protected $description = 'Optimize the given searchable creating a settings file';
 
     /**
      * {@inheritdoc}
@@ -44,10 +43,10 @@ final class OptimizeCommand extends Command
         Synchronizer $synchronizer,
         LocalFactory $localFactory,
         Compiler $compiler,
-        SearchableFinder $searchableModelsFinder,
+        SearchableFinder $searchableFinder,
         LocalRepository $localRepository
     ): void {
-        foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
+        foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
             $status = $synchronizer->analyse($index = $algolia->index($searchable));
             if (! $localRepository->exists($index) || $this->confirm('Local settings already exists, do you wish to overwrite?')) {

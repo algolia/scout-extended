@@ -29,7 +29,7 @@ final class AggregatorObserver extends BaseModelObserver
     private $aggregators = [];
 
     /**
-     * Set a aggregator.
+     * Set the aggregator.
      *
      * @param string $aggregator
      * @param string[] $models
