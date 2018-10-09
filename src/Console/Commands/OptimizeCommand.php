@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Algolia\ScoutExtended\Settings\LocalRepository;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
@@ -22,6 +21,7 @@ use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Settings\LocalFactory;
 use Algolia\ScoutExtended\Settings\Synchronizer;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
+use Algolia\ScoutExtended\Settings\LocalRepository;
 
 final class OptimizeCommand extends Command
 {
