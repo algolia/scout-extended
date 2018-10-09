@@ -38,7 +38,8 @@ final class LocalFactory
         'id_*',
         '*_id',
         '*number*',
-        '*count*',
+        '*count_*',
+        '*_count*',
     ];
 
     /**
