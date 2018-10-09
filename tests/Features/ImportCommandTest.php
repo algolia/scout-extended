@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use App\Thread;
-use Illuminate\Support\Facades\Artisan;
 use Mockery;
 use App\User;
 use App\Wall;
+use App\Thread;
 use function count;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Artisan;
 
 final class ImportCommandTest extends TestCase
 {
