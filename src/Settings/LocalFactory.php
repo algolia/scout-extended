@@ -155,7 +155,7 @@ final class LocalFactory
             'queryLanguages' => array_unique([config('app.locale'), config('app.fallback_locale')]),
         ];
 
-        $settings = array_merge($this->remoteRepository->from($index), $detectedSettings);
+        $settings = array_merge($this->remoteRepository->find($index)->compiled(), $detectedSettings);
 
         return new Settings($settings, $this->remoteRepository->defaults());
     }

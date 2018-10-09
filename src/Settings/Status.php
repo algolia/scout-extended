@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
+use Algolia\AlgoliaSearch\Index;
 use LogicException;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
@@ -28,19 +29,19 @@ final class Status
     private $encrypter;
 
     /**
-     * @var \Illuminate\Filesystem\Filesystem
+     * @var \Algolia\ScoutExtended\Settings\LocalRepository
      */
-    private $files;
+    private $localRepository;
 
     /**
      * @var \Algolia\ScoutExtended\Settings\Settings
      */
-    private $settings;
+    private $remoteSettings;
 
     /**
-     * @var string
+     * @var \Algolia\AlgoliaSearch\Index
      */
-    private $path;
+    private $index;
 
     public const LOCAL_NOT_FOUND = 'localNotFound';
 
@@ -57,19 +58,23 @@ final class Status
     /**
      * Status constructor.
      *
+     * @param \Algolia\ScoutExtended\Settings\LocalRepository $localRepository
      * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
-     * @param \Illuminate\Filesystem\Filesystem $files
-     * @param \Algolia\ScoutExtended\Settings\Settings $settings
-     * @param string $path
+     * @param \Algolia\ScoutExtended\Settings\Settings $remoteSettings
+     * @param \Algolia\AlgoliaSearch\Index $index
      *
      * @return void
      */
-    public function __construct(Encrypter $encrypter, Filesystem $files, Settings $settings, string $path)
-    {
+    public function __construct(
+        LocalRepository $localRepository,
+        Encrypter $encrypter,
+        Settings $remoteSettings,
+        Index $index
+    ) {
         $this->encrypter = $encrypter;
-        $this->files = $files;
-        $this->settings = $settings;
-        $this->path = $path;
+        $this->localRepository = $localRepository;
+        $this->remoteSettings = $remoteSettings;
+        $this->index = $index;
     }
 
     /**
@@ -77,7 +82,7 @@ final class Status
      */
     public function localNotFound(): bool
     {
-        return ! $this->files->exists($this->path);
+        return ! $this->localRepository->exists($this->index);
     }
 
     /**
@@ -85,7 +90,7 @@ final class Status
      */
     public function remoteNotFound(): bool
     {
-        return empty($this->settings->previousHash());
+        return empty($this->remoteSettings->previousHash());
     }
 
     /**
@@ -93,7 +98,7 @@ final class Status
      */
     public function bothAreEqual(): bool
     {
-        return $this->encrypter->local($this->path) === $this->settings->previousHash() && $this->encrypter->remote($this->settings) === $this->settings->previousHash();
+        return $this->encrypter->encrypt($this->localRepository->find($this->index)) === $this->remoteSettings->previousHash() && $this->encrypter->encrypt($this->remoteSettings) === $this->remoteSettings->previousHash();
     }
 
     /**
@@ -101,7 +106,7 @@ final class Status
      */
     public function localGotUpdated(): bool
     {
-        return $this->encrypter->local($this->path) !== $this->settings->previousHash() && $this->encrypter->remote($this->settings) === $this->settings->previousHash();
+        return $this->encrypter->encrypt($this->localRepository->find($this->index)) !== $this->remoteSettings->previousHash() && $this->encrypter->encrypt($this->remoteSettings) === $this->remoteSettings->previousHash();
     }
 
     /**
@@ -109,7 +114,7 @@ final class Status
      */
     public function remoteGotUpdated(): bool
     {
-        return $this->encrypter->local($this->path) === $this->settings->previousHash() && $this->encrypter->remote($this->settings) !== $this->settings->previousHash();
+        return $this->encrypter->encrypt($this->localRepository->find($this->index)) === $this->remoteSettings->previousHash() && $this->encrypter->encrypt($this->remoteSettings) !== $this->remoteSettings->previousHash();
     }
 
     /**
@@ -117,15 +122,7 @@ final class Status
      */
     public function bothGotUpdated(): bool
     {
-        return $this->encrypter->local($this->path) !== $this->settings->previousHash() && $this->encrypter->remote($this->settings) !== $this->settings->previousHash();
-    }
-
-    /**
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->path;
+        return $this->encrypter->encrypt($this->localRepository->find($this->index)) !== $this->remoteSettings->previousHash() && $this->encrypter->encrypt($this->remoteSettings) !== $this->remoteSettings->previousHash();
     }
 
     /**

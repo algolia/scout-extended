@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
+use Algolia\ScoutExtended\Settings\LocalRepository;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
@@ -43,15 +44,17 @@ final class OptimizeCommand extends Command
         Synchronizer $synchronizer,
         LocalFactory $localFactory,
         Compiler $compiler,
-        SearchableFinder $searchableModelsFinder
+        SearchableFinder $searchableModelsFinder,
+        LocalRepository $localRepository
     ) {
         foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
-            $state = $synchronizer->analyse($index = $algolia->index($searchable));
-            if (! File::exists($state->getPath()) || $this->confirm('Local settings already exists, do you wish to overwrite?')) {
+            $status = $synchronizer->analyse($index = $algolia->index($searchable));
+            if (! $localRepository->exists($index) || $this->confirm('Local settings already exists, do you wish to overwrite?')) {
                 $settings = $localFactory->create($index, $searchable);
-                $compiler->compile($settings, $state->getPath());
-                $this->output->success('Settings file created at: '.$state->getPath());
+                $path = $localRepository->getPath($index);
+                $compiler->compile($settings, $path);
+                $this->output->success('Settings file created at: '.$path);
                 $this->output->note('Please review the settings file and synchronize it with Algolia using: "'.ARTISAN_BINARY.' scout:sync"');
             }
         }

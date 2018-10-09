@@ -71,15 +71,15 @@ final class RemoteRepository
     }
 
     /**
-     * Get settings from the provided index.
+     * Find the settings of the given Index.
      *
      * @param  \Algolia\AlgoliaSearch\Index $index
      *
-     * @return array
+     * @return \Algolia\ScoutExtended\Settings\Settings
      */
-    public function from(Index $index): array
+    public function find(Index $index): Settings
     {
-        return $this->getSettings($index);
+        return new Settings($this->getSettings($index), $this->defaults());
     }
 
     /**

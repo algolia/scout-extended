@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
+use Algolia\ScoutExtended\Settings\LocalRepository;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
@@ -40,15 +41,17 @@ final class SyncCommand extends Command
     public function handle(
         Algolia $algolia,
         Synchronizer $synchronizer,
-        SearchableFinder $searchableModelsFinder
+        SearchableFinder $searchableModelsFinder,
+        LocalRepository $localRepository
     ) {
         foreach ($searchableModelsFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Analysing settings from: <info>['.$searchable.']</info>');
-            $state = $synchronizer->analyse($index = $algolia->index($searchable));
+            $status = $synchronizer->analyse($index = $algolia->index($searchable));
+            $path = $localRepository->getPath($index);
 
-            switch ($state->toString()) {
+            switch ($status->toString()) {
                 case Status::LOCAL_NOT_FOUND:
-                    if ($state->remoteNotFound()) {
+                    if ($status->remoteNotFound()) {
                         $this->output->note('No settings found.');
                         if ($this->output->confirm('Wish to optimize the search experience based on information from your model class?')) {
                             return $this->call('scout:optimize', ['model' => $searchable]);
@@ -60,10 +63,10 @@ final class SyncCommand extends Command
 
                     $this->output->text('⬇️  Downloading <info>remote</info> settings...');
                     $synchronizer->download($index);
-                    $this->output->success('Settings file created at: '.$state->getPath());
+                    $this->output->success('Settings file created at: '.$path);
                     break;
                 case Status::REMOTE_NOT_FOUND:
-                    $this->output->success('Remote settings does not exists. Uploading settings file: '.$state->getPath());
+                    $this->output->success('Remote settings does not exists. Uploading settings file: '.$path);
                     $synchronizer->upload($index);
                     break;
                 case Status::BOTH_ARE_EQUAL:

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
+use Algolia\AlgoliaSearch\Index;
+use Algolia\ScoutExtended\Exceptions\SettingsNotFound;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 
@@ -21,6 +23,11 @@ use Illuminate\Filesystem\Filesystem;
  */
 final class LocalRepository
 {
+    /**
+     * @var \Algolia\ScoutExtended\Settings\RemoteRepository
+     */
+    private $remoteRepository;
+
     /**
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -33,19 +40,20 @@ final class LocalRepository
      *
      * @return void
      */
-    public function __construct(Filesystem $files)
+    public function __construct(RemoteRepository $remoteRepository, Filesystem $files)
     {
+        $this->remoteRepository = $remoteRepository;
         $this->files = $files;
     }
 
     /**
      * Checks if the given index settings exists.
      *
-     * @param  string $index
+     * @param  \Algolia\AlgoliaSearch\Index $index
      *
      * @return bool
      */
-    public function exists(string $index): bool
+    public function exists(Index $index): bool
     {
         return $this->files->exists($this->getPath($index));
     }
@@ -53,14 +61,26 @@ final class LocalRepository
     /**
      * Get the settings path of the given index name.
      *
-     * @param  string $index
+     * @param  \Algolia\AlgoliaSearch\Index $index
      *
      * @return string
      */
-    public function getPath(string $index): string
+    public function getPath(Index $index): string
     {
-        $index = str_replace('_', '-', $index);
+        $name = str_replace('_', '-', $index->getIndexName());
 
-        return config_path('scout-'.Str::lower($index).'.php');
+        return config_path('scout-'.Str::lower($name).'.php');
+    }
+
+    /**
+     * Find the settings of the given Index.
+     *
+     * @param \Algolia\AlgoliaSearch\Index $index
+     *
+     * @return \Algolia\ScoutExtended\Settings\Settings
+     */
+    public function find(Index $index): Settings
+    {
+        return new Settings(($this->exists($index) ? require $this->getPath($index) : []), $this->remoteRepository->defaults());
     }
 }

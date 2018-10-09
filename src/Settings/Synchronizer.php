@@ -80,11 +80,9 @@ class Synchronizer
      */
     public function analyse(Index $index): Status
     {
-        $settings = new Settings($this->remoteRepository->from($index), $this->remoteRepository->defaults());
+        $remoteSettings = $this->remoteRepository->find($index);
 
-        $path = $this->localRepository->getPath($index->getIndexName());
-
-        return new Status($this->encrypter, $this->files, $settings, $path);
+        return new Status($this->localRepository, $this->encrypter, $remoteSettings, $index);
     }
 
     /**
@@ -96,13 +94,13 @@ class Synchronizer
      */
     public function download(Index $index): void
     {
-        $settings = new Settings($this->remoteRepository->from($index), $this->remoteRepository->defaults());
+        $settings = $this->remoteRepository->find($index);
 
-        $path = $this->localRepository->getPath($index->getIndexName());
+        $path = $this->localRepository->getPath($index);
 
         $this->compiler->compile($settings, $path);
 
-        $userData = $this->encrypter->local($path);
+        $userData = $this->encrypter->encrypt($settings);
 
         $index->setSettings(['userData' => $userData])->wait();
     }
@@ -116,10 +114,10 @@ class Synchronizer
      */
     public function upload(Index $index): void
     {
-        $settings = require $this->localRepository->getPath($index->getIndexName());
+        $settings = $this->localRepository->find($index);
 
-        $userData = $this->encrypter->with($settings);
+        $userData = $this->encrypter->encrypt($settings);
 
-        $index->setSettings(array_merge($settings, ['userData' => $userData]))->wait();
+        $index->setSettings(array_merge($settings->compiled(), ['userData' => $userData]))->wait();
     }
 }

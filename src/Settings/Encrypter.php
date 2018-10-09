@@ -19,52 +19,12 @@ namespace Algolia\ScoutExtended\Settings;
 final class Encrypter
 {
     /**
-     * Get the encrypted value from the provided settings path.
-     *
-     * @param  string $path
-     *
-     * @return string
-     */
-    public function local(string $path): string
-    {
-        $settings = file_exists($path) ? require $path : [];
-
-        return $this->with($settings);
-    }
-
-    /**
-     * Get the encrypted value from the remote settings.
-     *
      * @param  \Algolia\ScoutExtended\Settings\Settings $settings
      *
      * @return string
      */
-    public function remote(Settings $settings): string
+    public function encrypt(Settings $settings): string
     {
-        return $this->with($settings->compiled());
-    }
-
-    /**
-     * Get the encrypted value from the array settings.
-     *
-     * @param  array $settings
-     *
-     * @return string
-     */
-    public function with(array $settings): string
-    {
-        return $this->encrypt($settings);
-    }
-
-    /**
-     * @param  array $settings
-     *
-     * @return string
-     */
-    private function encrypt(array $settings): string
-    {
-        ksort($settings);
-
-        return md5(serialize($settings));
+        return md5(serialize($settings->compiled()));
     }
 }
