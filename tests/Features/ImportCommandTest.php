@@ -32,14 +32,14 @@ final class ImportCommandTest extends TestCase
         $userIndexMock = $this->mockIndex(User::class);
         $userIndexMock->expects('clear')->once();
         $userIndexMock->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 5 && $argument[0]['objectID'] === 1;
+            return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';
         }));
 
         // Detects aggregators.
         $wallIndexMock = $this->mockIndex(Wall::class);
         $wallIndexMock->expects('clear')->once();
         $wallIndexMock->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 5 && $argument[0]['objectID'] === 'users::1';
+            return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';
         }));
 
         // Detects searchable models.

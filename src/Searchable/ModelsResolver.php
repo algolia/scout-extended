@@ -15,6 +15,8 @@ namespace Algolia\ScoutExtended\Searchable;
 
 use function in_array;
 use Laravel\Scout\Builder;
+use function call_user_func;
+use Laravel\Scout\Searchable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -27,33 +29,37 @@ final class ModelsResolver
      * Get a set of models from the provided ids.
      *
      * @param \Laravel\Scout\Builder $builder
-     * @param  string $searchable
-     * @param  array $models
+     * @param  string|object $searchable
      * @param  array $ids
      *
      * @return \Illuminate\Support\Collection
      */
-    public function from(Builder $builder, string $searchable, array $models, array $ids): Collection
+    public function from(Builder $builder, $searchable, array $ids): Collection
     {
-        $models = UuidGenerator::keyByUuid($models);
-
         $instances = collect();
 
         foreach ($ids as $id) {
-            $model = (new $models[ObjectIdEncrypter::decryptSearchableUuid($id)]);
+            $modelClass = ObjectIdEncrypter::decryptSearchable($id);
+            $model = new $modelClass;
             $modelKey = ObjectIdEncrypter::decryptSearchableKey($id);
-            $query = in_array(SoftDeletes::class,
-                class_uses_recursive($model)) ? $model->withTrashed() : $model->newQuery();
 
-            if ($builder->queryCallback) {
-                call_user_func($builder->queryCallback, $query);
-            }
+            if (in_array(Searchable::class, class_uses_recursive($model), true)) {
+                if (! empty($models = $model->getScoutModelsByIds($builder, [$modelKey]))) {
+                    $instances = $instances->merge($models);
+                }
+            } else {
+                $query = in_array(SoftDeletes::class, class_uses_recursive($model),
+                    true) ? $model->withTrashed() : $model->newQuery();
 
-            $scoutKey = method_exists($model,
-                'getScoutKeyName') ? $model->getScoutKeyName() : $model->getQualifiedKeyName();
+                if ($builder->queryCallback) {
+                    call_user_func($builder->queryCallback, $query);
+                }
 
-            if ($instance = $query->where($scoutKey, $modelKey)->get()->first()) {
-                $instances->push($searchable::create($instance));
+                $scoutKey = method_exists($model,
+                    'getScoutKeyName') ? $model->getScoutKeyName() : $model->getQualifiedKeyName();
+                if ($instance = $query->where($scoutKey, $modelKey)->get()->first()) {
+                    $instances->push($instance);
+                }
             }
         }
 

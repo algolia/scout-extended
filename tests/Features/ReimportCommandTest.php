@@ -37,7 +37,7 @@ final class ReimportCommandTest extends TestCase
         ])->andReturn($this->mockResponse());
 
         $userTemporaryIndex->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 5 && $argument[0]['objectID'] === 1;
+            return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';
         }));
 
         $userTemporaryIndex->shouldReceive('search')->andReturn(['nbHits' => 5]);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Searchable;
 
+use Algolia\ScoutExtended\Facades\Algolia;
 use Illuminate\Support\Collection;
 
 /**
@@ -37,7 +38,9 @@ final class ObjectsResolver
                 continue;
             }
 
-            $array['objectID'] = $searchable->getScoutKey();
+            $array['objectID'] = ObjectIdEncrypter::encrypt($searchable);
+
+            // $array['__distin'] = md5(serialize($array));
 
             $result[] = $array;
         }

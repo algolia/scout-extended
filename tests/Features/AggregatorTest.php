@@ -25,13 +25,13 @@ final class AggregatorTest extends TestCase
         $usersIndexMock = $this->mockIndex('users');
 
         $usersIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 1;
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'App\User::1';
         }));
 
         $user = factory(User::class)->create();
 
         $usersIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 1;
+            return count($argument) === 1 && $argument[0] === 'App\User::1';
         }));
         $user->delete();
     }
@@ -44,19 +44,19 @@ final class AggregatorTest extends TestCase
         $wallIndexMock = $this->mockIndex('walls');
 
         $usersIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 1;
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'App\User::1';
         }));
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
 
-            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'users::1';
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'App\User::1';
         }));
         $user = factory(User::class)->create();
 
         $usersIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 1;
+            return count($argument) === 1 && $argument[0] === 'App\User::1';
         }));
         $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'users::1';
+            return count($argument) === 1 && $argument[0] === 'App\User::1';
         }));
         $user->delete();
     }
@@ -70,13 +70,13 @@ final class AggregatorTest extends TestCase
 
         $threadIndexMock->shouldReceive('saveObjects')->once();
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('body', $argument[0]) && $argument[0]['objectID'] === 'threads::1';
+            return count($argument) === 1 && array_key_exists('body', $argument[0]) && $argument[0]['objectID'] === 'App\Thread::1';
         }));
         $thread = factory(Thread::class)->create();
 
         $threadIndexMock->shouldReceive('deleteObjects')->once();
         $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'threads::1';
+            return count($argument) === 1 && $argument[0] === 'App\Thread::1';
         }));
         $thread->delete();
     }
@@ -89,11 +89,11 @@ final class AggregatorTest extends TestCase
 
         // Laravel Scout restore calls twice the save objects.
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'posts::1';
+            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'App\Post::1';
         }));
         // Laravel Scout force Delete calls twice the save objects.
         $wallIndexMock->shouldReceive('deleteObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'posts::1';
+            return count($argument) === 1 && $argument[0] === 'App\Post::1';
         }));
         $post = factory(Post::class)->create();
         $post->delete();
@@ -111,13 +111,13 @@ final class AggregatorTest extends TestCase
 
         // Laravel Scout force Delete calls once the save() method.
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'posts::1';
+            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'App\Post::1';;
         }));
         $post = factory(Post::class)->create();
         $post->delete();
 
         $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'posts::1';
+            return count($argument) === 1 && $argument[0] === 'App\Post::1';
         }));
         $post->forceDelete();
     }
@@ -136,12 +136,12 @@ final class AggregatorTest extends TestCase
                 [
                     'subject' => 'Sed neque est quos.',
                     'id' => 1,
-                    'objectID' => 'posts::1',
+                    'objectID' => 'App\Post::1'
                 ],
                 [
                     'body' => 'Saepe et delectus quis dolor sit unde voluptatibus. Quas blanditiis enim accusamus veniam.',
                     'id' => 1,
-                    'objectID' => 'threads::1',
+                    'objectID' => 'App\Thread::1',
                 ],
             ],
         ]);

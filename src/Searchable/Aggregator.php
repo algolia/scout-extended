@@ -116,30 +116,17 @@ abstract class Aggregator implements SearchableCountableContract
     }
 
     /**
-     * Get the requested models from an array of object IDs.
-     *
-     * @param  \Laravel\Scout\Builder $builder
-     * @param  array $ids
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getScoutModelsByIds(Builder $builder, array $ids): Collection
-    {
-        return resolve(ModelsResolver::class)->from($builder, static::class, $this->models, $ids);
-    }
-
-    /**
      * Get the value used to index the model.
      *
-     * @return string
+     * @return mixed
      */
-    public function getScoutKey(): string
+    public function getScoutKey()
     {
         if ($this->model === null) {
             throw new ModelNotDefinedInAggregatorException();
         }
 
-        return ObjectIdEncrypter::encrypt($this->model);
+        return method_exists($this->model, 'getScoutKey') ? $this->model->getScoutKey() : $this->model->getKey();
     }
 
     /**

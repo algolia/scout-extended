@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Engines;
 
+use Algolia\ScoutExtended\Searchable\ModelsResolver;
+use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Laravel\Scout\Builder;
 use Algolia\AlgoliaSearch\Client as Algolia;
 use Illuminate\Database\Eloquent\Collection;
@@ -62,6 +64,21 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     }
 
     /**
+     * Remove the given model from the index.
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection $models
+     * @return void
+     */
+    public function delete($models)
+    {
+        $index = $this->algolia->initIndex($models->first()->searchableAs());
+
+        $index->deleteObjects($models->map(function ($model) {
+            return ObjectIdEncrypter::encrypt($model);
+        })->values()->all());
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function map(Builder $builder, $results, $searchable)
@@ -70,15 +87,8 @@ class AlgoliaEngine extends BaseAlgoliaEngine
             return Collection::make();
         }
 
-        $searchables = $searchable->getScoutModelsByIds($builder,
-            collect($results['hits'])->pluck('objectID')->values()->all())->keyBy(function ($searchable) {
-            return $searchable->getScoutKey();
-        })->map->getModel();
+        $ids = collect($results['hits'])->pluck('objectID')->values()->all();
 
-        return Collection::make($results['hits'])->map(function ($hit) use ($searchables) {
-            if (isset($searchables[$hit['objectID']])) {
-                return $searchables[$hit['objectID']];
-            }
-        })->filter()->values();
+        return resolve(ModelsResolver::class)->from($builder, $searchable, $ids);
     }
 }

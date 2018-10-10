@@ -39,7 +39,7 @@ final class ObjectIdEncrypter
         $scoutKey = method_exists($searchable, 'getScoutKey') ? $searchable->getScoutKey() : $searchable->getKey();
 
         return implode(self::$separator, [
-            UuidGenerator::getUuid($searchable->getModel()),
+            get_class($searchable->getModel()),
             $scoutKey,
         ]);
     }
@@ -49,7 +49,7 @@ final class ObjectIdEncrypter
      *
      * @return string
      */
-    public static function decryptSearchableUuid(string $objectId): string
+    public static function decryptSearchable(string $objectId): string
     {
         return (string) explode(self::$separator, $objectId)[0];
     }
