@@ -16,9 +16,8 @@ namespace Algolia\ScoutExtended\Managers;
 use Algolia\AlgoliaSearch\Client;
 use Algolia\AlgoliaSearch\Support\UserAgent;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
-use Laravel\Scout\EngineManager as BaseEngineManager;
-use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Algolia\ScoutExtended\Searchable\ObjectsResolver;
+use Laravel\Scout\EngineManager as BaseEngineManager;
 
 class EngineManager extends BaseEngineManager
 {
