@@ -34,7 +34,7 @@ abstract class Aggregator implements SearchableCountableContract
     protected $models = [];
 
     /**
-     * The current model instance, if any.
+     * The model being queried, if any.
      *
      * @var \Illuminate\Database\Eloquent\Model|null
      */
@@ -68,7 +68,7 @@ abstract class Aggregator implements SearchableCountableContract
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      *
-     * @return \Algolia\ScoutExtended\Searchable
+     * @return \Algolia\ScoutExtended\Searchable\Aggregator
      */
     public static function create(Model $model): Aggregator
     {
@@ -89,12 +89,17 @@ abstract class Aggregator implements SearchableCountableContract
      * Get the model instance being queried.
      *
      * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Algolia\ScoutExtended\Exceptions\ModelNotDefinedInAggregatorException
      */
     public function getModel(): Model
     {
+        if ($this->model === null) {
+            throw new ModelNotDefinedInAggregatorException();
+        }
+
         return $this->model;
     }
-
 
     /**
      * Set a model instance for the model being queried.
@@ -134,9 +139,7 @@ abstract class Aggregator implements SearchableCountableContract
             throw new ModelNotDefinedInAggregatorException();
         }
 
-        $scoutKey = method_exists($this->model, 'getScoutKey') ? $this->model->getScoutKey() : $this->model->getKey();
-
-        return UuidGenerator::getUuid($this->model).'_'.$scoutKey;
+        return ObjectIdEncrypter::encrypt($this->model);
     }
 
     /**
@@ -160,7 +163,8 @@ abstract class Aggregator implements SearchableCountableContract
             throw new ModelNotDefinedInAggregatorException();
         }
 
-        return method_exists($this->model, 'toSearchableArray') ? $this->model->toSearchableArray() : $this->model->toArray();
+        return method_exists($this->model,
+            'toSearchableArray') ? $this->model->toSearchableArray() : $this->model->toArray();
     }
 
     /**
@@ -173,7 +177,8 @@ abstract class Aggregator implements SearchableCountableContract
         foreach ((new static)->getModels() as $model) {
             $instance = new $model;
 
-            $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($model)) && config('scout.soft_delete', false);
+            $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($model)) && config('scout.soft_delete',
+                    false);
 
             $instance->newQuery()->when($softDeletes, function ($query) {
                 $query->withTrashed();
@@ -207,9 +212,10 @@ abstract class Aggregator implements SearchableCountableContract
         $count = 0;
 
         foreach ($this->getModels() as $model) {
-            $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($model), true) && config('scout.soft_delete', false);
+            $softDeletes = in_array(SoftDeletes::class, class_uses_recursive($model),
+                    true) && config('scout.soft_delete', false);
 
-            $count += (int) $model::query()->when($softDeletes, function ($query) {
+            $count += $model::query()->when($softDeletes, function ($query) {
                 $query->withTrashed();
             })->count();
         }

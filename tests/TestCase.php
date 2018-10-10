@@ -7,10 +7,10 @@ namespace Tests;
 use function get_class;
 use Mockery\MockInterface;
 use Algolia\AlgoliaSearch\Index;
-use Laravel\Scout\EngineManager;
 use Algolia\AlgoliaSearch\Client;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
+use Algolia\ScoutExtended\Managers\EngineManager;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
@@ -108,7 +108,7 @@ class TestCase extends BaseTestCase
 
     protected function mockEngine(): MockInterface
     {
-        $engineMock = mock(AlgoliaEngine::class)->makePartial()->shouldIgnoreMissing();
+        $engineMock = mock(app(AlgoliaEngine::class))->makePartial()->shouldIgnoreMissing();
 
         $managerMock = mock(EngineManager::class)->makePartial()->shouldIgnoreMissing();
 
@@ -140,7 +140,10 @@ class TestCase extends BaseTestCase
         $clientMock = $this->mockClient();
         $clientMock->shouldReceive('initIndex')->zeroOrMoreTimes()->with($indexName)->andReturn($indexMock);
 
-        $engineMock = mock(AlgoliaEngine::class, [$clientMock])->makePartial();
+        $algoliaEngine = app(AlgoliaEngine::class);
+        $algoliaEngine->setClient($clientMock);
+
+        $engineMock = mock($algoliaEngine)->makePartial();
 
         $managerMock = mock(EngineManager::class)->makePartial();
 

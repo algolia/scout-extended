@@ -47,7 +47,8 @@ final class AggregatorTest extends TestCase
             return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 1;
         }));
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'users_1';
+
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'users::1';
         }));
         $user = factory(User::class)->create();
 
@@ -55,7 +56,7 @@ final class AggregatorTest extends TestCase
             return count($argument) === 1 && $argument[0] === 1;
         }));
         $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'users_1';
+            return count($argument) === 1 && $argument[0] === 'users::1';
         }));
         $user->delete();
     }
@@ -69,13 +70,13 @@ final class AggregatorTest extends TestCase
 
         $threadIndexMock->shouldReceive('saveObjects')->once();
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('body', $argument[0]) && $argument[0]['objectID'] === 'threads_1';
+            return count($argument) === 1 && array_key_exists('body', $argument[0]) && $argument[0]['objectID'] === 'threads::1';
         }));
         $thread = factory(Thread::class)->create();
 
         $threadIndexMock->shouldReceive('deleteObjects')->once();
         $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'threads_1';
+            return count($argument) === 1 && $argument[0] === 'threads::1';
         }));
         $thread->delete();
     }
@@ -88,11 +89,11 @@ final class AggregatorTest extends TestCase
 
         // Laravel Scout restore calls twice the save objects.
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'posts_1';
+            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'posts::1';
         }));
         // Laravel Scout force Delete calls twice the save objects.
         $wallIndexMock->shouldReceive('deleteObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'posts_1';
+            return count($argument) === 1 && $argument[0] === 'posts::1';
         }));
         $post = factory(Post::class)->create();
         $post->delete();
@@ -110,13 +111,13 @@ final class AggregatorTest extends TestCase
 
         // Laravel Scout force Delete calls once the save() method.
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'posts_1';
+            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'posts::1';
         }));
         $post = factory(Post::class)->create();
         $post->delete();
 
         $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'posts_1';
+            return count($argument) === 1 && $argument[0] === 'posts::1';
         }));
         $post->forceDelete();
     }
@@ -135,12 +136,12 @@ final class AggregatorTest extends TestCase
                 [
                     'subject' => 'Sed neque est quos.',
                     'id' => 1,
-                    'objectID' => 'posts_1',
+                    'objectID' => 'posts::1',
                 ],
                 [
                     'body' => 'Saepe et delectus quis dolor sit unde voluptatibus. Quas blanditiis enim accusamus veniam.',
                     'id' => 1,
-                    'objectID' => 'threads_1',
+                    'objectID' => 'threads::1',
                 ],
             ],
         ]);

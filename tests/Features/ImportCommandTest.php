@@ -39,7 +39,7 @@ final class ImportCommandTest extends TestCase
         $wallIndexMock = $this->mockIndex(Wall::class);
         $wallIndexMock->expects('clear')->once();
         $wallIndexMock->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 5 && $argument[0]['objectID'] === 'users_1';
+            return count($argument) === 5 && $argument[0]['objectID'] === 'users::1';
         }));
 
         // Detects searchable models.

@@ -24,11 +24,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 final class ModelsResolver
 {
     /**
-     * @var string
-     */
-    private static $separator = '_';
-
-    /**
      * Get a set of models from the provided ids.
      *
      * @param \Laravel\Scout\Builder $builder
@@ -45,16 +40,17 @@ final class ModelsResolver
         $instances = collect();
 
         foreach ($ids as $id) {
-            $model = (new $models[explode(self::$separator, $id)[0]]);
-            $modelKey = explode(self::$separator, $id)[1];
-
-            $query = in_array(SoftDeletes::class, class_uses_recursive($model)) ? $model->withTrashed() : $model->newQuery();
+            $model = (new $models[ObjectIdEncrypter::decryptSearchableUuid($id)]);
+            $modelKey = ObjectIdEncrypter::decryptSearchableKey($id);
+            $query = in_array(SoftDeletes::class,
+                class_uses_recursive($model)) ? $model->withTrashed() : $model->newQuery();
 
             if ($builder->queryCallback) {
                 call_user_func($builder->queryCallback, $query);
             }
 
-            $scoutKey = method_exists($model, 'getScoutKeyName') ? $model->getScoutKeyName() : $model->getQualifiedKeyName();
+            $scoutKey = method_exists($model,
+                'getScoutKeyName') ? $model->getScoutKeyName() : $model->getQualifiedKeyName();
 
             if ($instance = $query->where($scoutKey, $modelKey)->get()->first()) {
                 $instances->push($searchable::create($instance));
