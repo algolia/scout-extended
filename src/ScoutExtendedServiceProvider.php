@@ -15,11 +15,11 @@ namespace Algolia\ScoutExtended;
 
 use ReflectionClass;
 use Laravel\Scout\Builder;
-use Laravel\Scout\EngineManager;
 use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
+use Algolia\ScoutExtended\Managers\EngineManager;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\ScoutExtended\Console\Commands\SyncCommand;
 use Algolia\ScoutExtended\Console\Commands\FlushCommand;
@@ -65,8 +65,14 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
 
         $this->app->alias(Algolia::class, 'algolia');
 
+        $this->app->singleton(EngineManager::class, function ($app) {
+            return new EngineManager($app);
+        });
+
+        $this->app->alias(EngineManager::class, \Laravel\Scout\EngineManager::class);
+
         $this->app->bind(AlgoliaEngine::class, function (): AlgoliaEngine {
-            return $this->app->make(EngineManager::class)->createAlgoliaDriver();
+            return $this->app->make(\Laravel\Scout\EngineManager::class)->createAlgoliaDriver();
         });
 
         $this->app->alias(AlgoliaEngine::class, 'algolia.engine');
@@ -116,6 +122,8 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
      * Register macros.
      *
      * @return void
+     *
+     * @throws \ReflectionException
      */
     private function registerMacros(): void
     {
