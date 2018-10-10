@@ -95,7 +95,6 @@ abstract class Aggregator implements SearchableCountableContract
         return $this->model;
     }
 
-
     /**
      * Set a model instance for the model being queried.
      *
