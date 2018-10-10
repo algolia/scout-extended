@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Searchable;
 
-use function get_class;
-
 /**
  * @internal
  */
