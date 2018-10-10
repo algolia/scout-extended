@@ -68,6 +68,8 @@ final class LocalRepository
     {
         $name = str_replace('_', '-', $index->getIndexName());
 
+        $name = is_array($name) ? current($name) : $name;
+
         return config_path('scout-'.Str::lower($name).'.php');
     }
 
