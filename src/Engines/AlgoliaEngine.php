@@ -31,7 +31,6 @@ class AlgoliaEngine extends BaseAlgoliaEngine
      *
      * @param \Algolia\AlgoliaSearch\Client $algolia
      * @param \Algolia\ScoutExtended\Searchable\ObjectsResolver $objectsResolver
-     *
      */
     public function __construct(
         Algolia $algolia,
@@ -72,8 +71,8 @@ class AlgoliaEngine extends BaseAlgoliaEngine
 
         $searchables = $searchable->getScoutModelsByIds($builder,
             collect($results['hits'])->pluck('objectID')->values()->all())->keyBy(function ($searchable) {
-            return $searchable->getScoutKey();
-        })->map->getModel();
+                return $searchable->getScoutKey();
+            })->map->getModel();
 
         return Collection::make($results['hits'])->map(function ($hit) use ($searchables) {
             if (isset($searchables[$hit['objectID']])) {

@@ -47,7 +47,6 @@ final class AggregatorTest extends TestCase
             return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 1;
         }));
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-
             return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'users::1';
         }));
         $user = factory(User::class)->create();
