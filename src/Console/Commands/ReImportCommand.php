@@ -51,6 +51,7 @@ final class ReImportCommand extends Command
         $config = config();
 
         $scoutPrefix = $config->get('scout.prefix');
+        $scoutSynchronous = $config->get('scout.synchronous', false);
 
         $this->output->text('🔎 Importing: <info>['.implode(',', $searchables).']</info>');
         $this->output->newLine();
@@ -74,12 +75,11 @@ final class ReImportCommand extends Command
 
             try {
                 $config->set('scout.prefix', self::$prefix.'_'.$scoutPrefix);
+                $config->set('scout.synchronous', true);
                 $searchable::makeAllSearchable();
-                while ($this->waitingForRecordsImported($recordsCounter, $searchable)) {
-                    sleep(1);
-                }
             } finally {
                 $config->set('scout.prefix', $scoutPrefix);
+                $config->set('scout.synchronous', $scoutSynchronous);
             }
 
             tap($this->output)->progressAdvance()->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
@@ -100,23 +100,5 @@ final class ReImportCommand extends Command
     private function getTemporaryIndexName(Index $index): string
     {
         return self::$prefix.'_'.$index->getIndexName();
-    }
-
-    /**
-     * @param  string $searchable
-     *
-     * @return bool
-     */
-    private function waitingForRecordsImported(RecordsCounter $recordsCounter, string $searchable): bool
-    {
-        $result = false;
-
-        try {
-            $result = $recordsCounter->local($searchable) !== $recordsCounter->remote($searchable);
-        } catch (NotFoundException $e) {
-            // ..
-        }
-
-        return $result;
     }
 }

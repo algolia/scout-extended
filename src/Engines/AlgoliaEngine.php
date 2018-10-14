@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Engines;
 
-use Algolia\ScoutExtended\Searchable\ModelsResolver;
-use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Laravel\Scout\Builder;
 use Algolia\AlgoliaSearch\Client as Algolia;
 use Illuminate\Database\Eloquent\Collection;
+use Algolia\ScoutExtended\Searchable\ModelsResolver;
 use Algolia\ScoutExtended\Searchable\ObjectsResolver;
+use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Laravel\Scout\Engines\AlgoliaEngine as BaseAlgoliaEngine;
 
 class AlgoliaEngine extends BaseAlgoliaEngine
@@ -34,6 +34,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
      * @param \Algolia\AlgoliaSearch\Client $algolia
      * @param \Algolia\ScoutExtended\Searchable\ObjectsResolver $objectsResolver
      *
+     * @return void
      */
     public function __construct(
         Algolia $algolia,
@@ -60,7 +61,10 @@ class AlgoliaEngine extends BaseAlgoliaEngine
         }
 
         $objects = $this->objectsResolver->toUpdate($searchables);
-        $index->saveObjects(collect($objects)->filter()->values()->all());
+        $result = $index->saveObjects(collect($objects)->filter()->values()->all());
+        if (config('scout.synchronous', false)) {
+            $result->wait();
+        }
     }
 
     /**
@@ -73,9 +77,13 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     {
         $index = $this->algolia->initIndex($models->first()->searchableAs());
 
-        $index->deleteObjects($models->map(function ($model) {
+        $result = $index->deleteObjects($models->map(function ($model) {
             return ObjectIdEncrypter::encrypt($model);
         })->values()->all());
+
+        if (config('scout.synchronous', false)) {
+            $result->wait();
+        }
     }
 
     /**
