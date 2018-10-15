@@ -47,7 +47,6 @@ final class AggregatorTest extends TestCase
             return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'App\User::1';
         }));
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-
             return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'App\User::1';
         }));
         $user = factory(User::class)->create();
@@ -111,7 +110,7 @@ final class AggregatorTest extends TestCase
 
         // Laravel Scout force Delete calls once the save() method.
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'App\Post::1';;
+            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'App\Post::1';
         }));
         $post = factory(Post::class)->create();
         $post->delete();
@@ -136,7 +135,7 @@ final class AggregatorTest extends TestCase
                 [
                     'subject' => 'Sed neque est quos.',
                     'id' => 1,
-                    'objectID' => 'App\Post::1'
+                    'objectID' => 'App\Post::1',
                 ],
                 [
                     'body' => 'Saepe et delectus quis dolor sit unde voluptatibus. Quas blanditiis enim accusamus veniam.',

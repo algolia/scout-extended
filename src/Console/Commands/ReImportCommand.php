@@ -19,7 +19,6 @@ use Algolia\AlgoliaSearch\Index;
 use Algolia\ScoutExtended\Algolia;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use Algolia\ScoutExtended\Searchable\RecordsCounter;
-use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
 final class ReImportCommand extends Command
 {
