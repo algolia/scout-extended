@@ -7,7 +7,7 @@ namespace Tests\Features;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 
-final class AggregatorCommandTest extends TestCase
+final class MakeAggregatorCommandTest extends TestCase
 {
     public function setUp()
     {
