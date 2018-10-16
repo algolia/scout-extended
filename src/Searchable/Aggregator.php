@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Searchable;
 
 use function in_array;
-use Laravel\Scout\Builder;
 use Laravel\Scout\Searchable;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
