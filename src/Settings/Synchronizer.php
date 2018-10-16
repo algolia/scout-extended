@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Settings;
 
 use Algolia\AlgoliaSearch\Index;
-use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
-use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 use Illuminate\Filesystem\Filesystem;
+use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
+use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
 
 /**
  * @internal

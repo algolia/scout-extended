@@ -17,6 +17,7 @@ use LogicException;
 use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\Index;
 use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
+
 /**
  * @internal
  */

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use Algolia\ScoutExtended\Settings\Settings;
 use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\Index;
 use Illuminate\Filesystem\Filesystem;
+use Algolia\ScoutExtended\Settings\Settings;
 
 /**
  * @internal
@@ -38,7 +38,6 @@ final class LocalSettingsRepository
      *
      * @param \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository $remoteRepository
      * @param \Illuminate\Filesystem\Filesystem $files
-     *
      */
     public function __construct(RemoteSettingsRepository $remoteRepository, Filesystem $files)
     {
