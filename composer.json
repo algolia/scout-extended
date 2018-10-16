@@ -26,6 +26,9 @@
             "url": "../algoliasearch-client-php"
         }
     ],
+    "suggest": {
+        "ext-dom": "Required to use the HTML Splitter."
+    },
     "require-dev": {
         "fzaninotto/faker": "^1.8",
         "mockery/mockery": "^1.1",

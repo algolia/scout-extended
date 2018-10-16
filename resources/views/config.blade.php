@@ -124,6 +124,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Distinct
+    |--------------------------------------------------------------------------
+    |
+    | Using this attribute, you can limit the number of returned records that contain the same
+    | value in that attribute. For example, if the distinct attribute is the series_name and
+    | several hits (Episodes) have the same value for series_name (Laravel From Scratch).
+    |
+    | Example: 'null', 'id', 'name'
+    |
+    */
+
+    'distinct' => {!! $distinct ?? 'false' !!},
+    'attributeForDistinct' => {!! $attributeForDistinct ?? 'null' !!},
+
+    /*
+    |--------------------------------------------------------------------------
     | Other Settings
     |--------------------------------------------------------------------------
     |
