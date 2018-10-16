@@ -19,6 +19,7 @@ use InvalidArgumentException;
 use Algolia\AlgoliaSearch\Index;
 use Illuminate\Database\QueryException;
 use Algolia\ScoutExtended\Searchable\Aggregator;
+use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
 
 /**
  * @internal
@@ -26,7 +27,7 @@ use Algolia\ScoutExtended\Searchable\Aggregator;
 final class LocalFactory
 {
     /**
-     * @var \Algolia\ScoutExtended\Settings\RemoteRepository
+     * @var \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository
      */
     private $remoteRepository;
 
@@ -97,11 +98,11 @@ final class LocalFactory
     /**
      * SettingsFactory constructor.
      *
-     * @param \Algolia\ScoutExtended\Settings\RemoteRepository $remoteRepository
+     * @param \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository $remoteRepository
      *
      * @return void
      */
-    public function __construct(RemoteRepository $remoteRepository)
+    public function __construct(RemoteSettingsRepository $remoteRepository)
     {
         $this->remoteRepository = $remoteRepository;
     }
@@ -150,7 +151,8 @@ final class LocalFactory
             'searchableAttributes' => ! empty($searchableAttributes) ? $searchableAttributes : null,
             'attributesForFaceting' => ! empty($attributesForFaceting) ? $attributesForFaceting : null,
             'customRanking' => ! empty($customRanking) ? $customRanking : null,
-            'disableTypoToleranceOnAttributes' => ! empty($disableTypoToleranceOnAttributes) ? $disableTypoToleranceOnAttributes : null,
+            'disableTypoToleranceOnAttributes' => ! empty($disableTypoToleranceOnAttributes) ?
+                $disableTypoToleranceOnAttributes : null,
             'unretrievableAttributes' => ! empty($unretrievableAttributes) ? $unretrievableAttributes : null,
             'queryLanguages' => array_unique([config('app.locale'), config('app.fallback_locale')]),
         ];
@@ -170,7 +172,8 @@ final class LocalFactory
      */
     public function isSearchableAttributes(string $key, $value): bool
     {
-        return ! str_is(self::$unsearchableAttributesKeys, $key) && ! str_is(self::$unsearchableAttributesValues, $value);
+        return ! str_is(self::$unsearchableAttributesKeys, $key) &&
+            ! str_is(self::$unsearchableAttributesValues, $value);
     }
 
     /**
@@ -245,7 +248,8 @@ final class LocalFactory
 
             try {
                 $instance = @factory($searchable)->make() ?? $searchable::first();
-                $attributes = method_exists($instance, 'toSearchableArray') ? $instance->toSearchableArray() : $instance->toArray();
+                $attributes = method_exists($instance, 'toSearchableArray') ? $instance->toSearchableArray() :
+                    $instance->toArray();
             } catch (InvalidArgumentException | QueryException $e) {
             }
         }

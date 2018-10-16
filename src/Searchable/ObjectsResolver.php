@@ -25,10 +25,12 @@ final class ObjectsResolver
     /**
      * Contains a list of splittables searchables.
      *
-     * @var [
+     * Example: [
      *      '\App\Thread' => true,
      *      '\App\User' => false,
      * ];
+     *
+     * @var array
      */
     private $splittables = [];
 
@@ -103,7 +105,7 @@ final class ObjectsResolver
         $splittedBy = null;
         $pieces = [];
         foreach ($array as $key => $value) {
-            $method = 'split'.Str::camel($key);
+            $method = 'split'.Str::camel((string) $key);
             $model = $searchable->getModel();
             if (method_exists($model, $method)) {
                 $result = $model->{$method}($value);

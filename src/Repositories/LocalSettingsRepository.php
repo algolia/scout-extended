@@ -11,8 +11,9 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\ScoutExtended\Settings;
+namespace Algolia\ScoutExtended\Repositories;
 
+use Algolia\ScoutExtended\Settings\Settings;
 use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\Index;
 use Illuminate\Filesystem\Filesystem;
@@ -20,10 +21,10 @@ use Illuminate\Filesystem\Filesystem;
 /**
  * @internal
  */
-final class LocalRepository
+final class LocalSettingsRepository
 {
     /**
-     * @var \Algolia\ScoutExtended\Settings\RemoteRepository
+     * @var \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository
      */
     private $remoteRepository;
 
@@ -35,11 +36,11 @@ final class LocalRepository
     /**
      * LocalRepository constructor.
      *
+     * @param \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository $remoteRepository
      * @param \Illuminate\Filesystem\Filesystem $files
      *
-     * @return void
      */
-    public function __construct(RemoteRepository $remoteRepository, Filesystem $files)
+    public function __construct(RemoteSettingsRepository $remoteRepository, Filesystem $files)
     {
         $this->remoteRepository = $remoteRepository;
         $this->files = $files;
@@ -82,6 +83,7 @@ final class LocalRepository
      */
     public function find(Index $index): Settings
     {
-        return new Settings(($this->exists($index) ? require $this->getPath($index) : []), $this->remoteRepository->defaults());
+        return new Settings(($this->exists($index) ? require $this->getPath($index) : []),
+            $this->remoteRepository->defaults());
     }
 }

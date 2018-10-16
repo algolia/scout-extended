@@ -11,16 +11,17 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\ScoutExtended\Settings;
+namespace Algolia\ScoutExtended\Repositories;
 
 use Algolia\AlgoliaSearch\Index;
+use Algolia\ScoutExtended\Settings\Settings;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
 /**
  * @internal
  */
-final class RemoteRepository
+final class RemoteSettingsRepository
 {
     /**
      * Settings that may be know by other names.

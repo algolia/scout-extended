@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Settings;
 use LogicException;
 use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\Index;
-
+use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 /**
  * @internal
  */
@@ -28,7 +28,7 @@ final class Status
     private $encrypter;
 
     /**
-     * @var \Algolia\ScoutExtended\Settings\LocalRepository
+     * @var \Algolia\ScoutExtended\Repositories\LocalSettingsRepository
      */
     private $localRepository;
 
@@ -57,7 +57,7 @@ final class Status
     /**
      * Status constructor.
      *
-     * @param \Algolia\ScoutExtended\Settings\LocalRepository $localRepository
+     * @param \Algolia\ScoutExtended\Repositories\LocalSettingsRepository $localRepository
      * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
      * @param \Algolia\ScoutExtended\Settings\Settings $remoteSettings
      * @param \Algolia\AlgoliaSearch\Index $index
@@ -65,7 +65,7 @@ final class Status
      * @return void
      */
     public function __construct(
-        LocalRepository $localRepository,
+        LocalSettingsRepository $localRepository,
         Encrypter $encrypter,
         Settings $remoteSettings,
         Index $index
@@ -97,7 +97,9 @@ final class Status
      */
     public function bothAreEqual(): bool
     {
-        return $this->encrypter->encrypt($this->localRepository->find($this->index)) === $this->remoteSettings->previousHash() && $this->encrypter->encrypt($this->remoteSettings) === $this->remoteSettings->previousHash();
+        return $this->encrypter->encrypt($this->localRepository->find($this->index)) ===
+            $this->remoteSettings->previousHash() &&
+            $this->encrypter->encrypt($this->remoteSettings) === $this->remoteSettings->previousHash();
     }
 
     /**
@@ -105,7 +107,9 @@ final class Status
      */
     public function localGotUpdated(): bool
     {
-        return $this->encrypter->encrypt($this->localRepository->find($this->index)) !== $this->remoteSettings->previousHash() && $this->encrypter->encrypt($this->remoteSettings) === $this->remoteSettings->previousHash();
+        return $this->encrypter->encrypt($this->localRepository->find($this->index)) !==
+            $this->remoteSettings->previousHash() &&
+            $this->encrypter->encrypt($this->remoteSettings) === $this->remoteSettings->previousHash();
     }
 
     /**
@@ -113,7 +117,9 @@ final class Status
      */
     public function remoteGotUpdated(): bool
     {
-        return $this->encrypter->encrypt($this->localRepository->find($this->index)) === $this->remoteSettings->previousHash() && $this->encrypter->encrypt($this->remoteSettings) !== $this->remoteSettings->previousHash();
+        return $this->encrypter->encrypt($this->localRepository->find($this->index)) ===
+            $this->remoteSettings->previousHash() &&
+            $this->encrypter->encrypt($this->remoteSettings) !== $this->remoteSettings->previousHash();
     }
 
     /**
@@ -121,7 +127,9 @@ final class Status
      */
     public function bothGotUpdated(): bool
     {
-        return $this->encrypter->encrypt($this->localRepository->find($this->index)) !== $this->remoteSettings->previousHash() && $this->encrypter->encrypt($this->remoteSettings) !== $this->remoteSettings->previousHash();
+        return $this->encrypter->encrypt($this->localRepository->find($this->index)) !==
+            $this->remoteSettings->previousHash() &&
+            $this->encrypter->encrypt($this->remoteSettings) !== $this->remoteSettings->previousHash();
     }
 
     /**

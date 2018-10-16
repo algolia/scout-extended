@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
 use Algolia\ScoutExtended\Settings\Status;
 use Algolia\ScoutExtended\Settings\Synchronizer;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Settings\LocalRepository;
+use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 
 final class SyncCommand extends Command
 {
@@ -42,7 +41,7 @@ final class SyncCommand extends Command
         Algolia $algolia,
         Synchronizer $synchronizer,
         SearchableFinder $searchableFinder,
-        LocalRepository $localRepository
+        LocalSettingsRepository $localRepository
     ): void {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Analysing settings from: <info>['.$searchable.']</info>');
@@ -91,7 +90,9 @@ final class SyncCommand extends Command
                 case Status::BOTH_GOT_UPDATED:
                     $options = ['none', 'local', 'remote'];
 
-                    $choice = $this->output->choice('Remote & Local settings got updated. Which one you want to preserve?', $options, $this->option('keep'));
+                    $choice =
+                        $this->output->choice('Remote & Local settings got updated. Which one you want to preserve?',
+                            $options, $this->option('keep'));
 
                     switch ($choice) {
                         case 'local':

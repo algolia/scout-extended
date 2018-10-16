@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Settings;
 
 use Algolia\AlgoliaSearch\Index;
+use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
+use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 use Illuminate\Filesystem\Filesystem;
 
 /**
@@ -37,12 +39,12 @@ class Synchronizer
     private $files;
 
     /**
-     * @var \Algolia\ScoutExtended\Settings\LocalRepository
+     * @var \Algolia\ScoutExtended\Repositories\LocalSettingsRepository
      */
     private $localRepository;
 
     /**
-     * @var \Algolia\ScoutExtended\Settings\RemoteRepository
+     * @var \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository
      */
     private $remoteRepository;
 
@@ -52,8 +54,8 @@ class Synchronizer
      * @param \Algolia\ScoutExtended\Settings\Compiler $compiler
      * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
      * @param \Illuminate\Filesystem\Filesystem $files
-     * @param \Algolia\ScoutExtended\Settings\LocalRepository $localRepository
-     * @param \Algolia\ScoutExtended\Settings\RemoteRepository $remoteRepository
+     * @param \Algolia\ScoutExtended\Repositories\LocalSettingsRepository $localRepository
+     * @param \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository $remoteRepository
      *
      * @return void
      */
@@ -61,8 +63,8 @@ class Synchronizer
         Compiler $compiler,
         Encrypter $encrypter,
         Filesystem $files,
-        LocalRepository $localRepository,
-        RemoteRepository $remoteRepository
+        LocalSettingsRepository $localRepository,
+        RemoteSettingsRepository $remoteRepository
     ) {
         $this->compiler = $compiler;
         $this->encrypter = $encrypter;
