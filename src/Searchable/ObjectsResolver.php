@@ -45,7 +45,6 @@ final class ObjectsResolver
         $result = [];
 
         foreach ($searchables as $key => $searchable) {
-
             if (empty($array = array_merge($searchable->toSearchableArray(), $searchable->scoutMetadata()))) {
                 continue;
             }

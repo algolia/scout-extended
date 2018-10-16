@@ -38,7 +38,7 @@ final class ObjectIdEncrypter
     {
         $scoutKey = method_exists($searchable, 'getScoutKey') ? $searchable->getScoutKey() : $searchable->getKey();
 
-        $meta = [get_class($searchable->getModel()), $scoutKey,];
+        $meta = [get_class($searchable->getModel()), $scoutKey];
 
         if ($part !== null) {
             $meta[] = $part;
