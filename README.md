@@ -22,11 +22,11 @@ This package is **still in development**. It's not ready for use.
 - [x] Aggregators - **Multiple models on the same index**
 - [x] Ability to use **display features** (**Searchable attributes**, **Query Language**, **Custom Ranking**, etc) of using a configuration file
 - [x] Automatic way of leverage **Distinct**
+- [x] Update **UserAgent**
 - [ ] Front-end components and directives
 - [ ] Manager - **Multiple client connections** per project
 - [ ] **Extends Driver's Query Builder** adding more methods: whereIn, whereNotIn, whereNot, whereBetween, and others cases to be studied
 - [ ] Support to **multiple language indexes**
-- [ ] Ability to use **UserAgent**
 - [ ] Ability to use **synonyms features** (**Searchable attributes**, **Query Language**, **Custom Ranking**, etc) of using a configuration file
 - [ ] Ability to use **Rules features**
 
