@@ -6,8 +6,8 @@ namespace Tests\Features;
 
 use Mockery;
 use App\Thread;
-use Tests\TestCase;
 use function count;
+use Tests\TestCase;
 use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 
 final class SplittersTest extends TestCase
@@ -92,19 +92,19 @@ final class SplittersTest extends TestCase
         $index->shouldReceive('search')->once()->andReturn([
             'hits' => [
                 [
-                    "body" => "Hello Foo!",
-                    "id" => 1,
-                    "objectID" => "Tests\Features\ThreadWithValueReturned::1::0",
+                    'body' => 'Hello Foo!',
+                    'id' => 1,
+                    'objectID' => "Tests\Features\ThreadWithValueReturned::1::0",
                 ],
                 [
-                    "body" => "Hello Bar!",
-                    "id" => 1,
-                    "objectID" => "Tests\Features\ThreadWithValueReturned::1::1",
+                    'body' => 'Hello Bar!',
+                    'id' => 1,
+                    'objectID' => "Tests\Features\ThreadWithValueReturned::1::1",
                 ],
                 [
-                    "body" => "Hello John!",
-                    "id" => 2,
-                    "objectID" => "Tests\Features\ThreadWithValueReturned::2::0",
+                    'body' => 'Hello John!',
+                    'id' => 2,
+                    'objectID' => "Tests\Features\ThreadWithValueReturned::2::0",
                 ],
             ],
         ]);
