@@ -33,7 +33,7 @@ final class SplittersTest extends TestCase
         $index->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
                 'Tests\Features\ThreadWithSplitterClass::1',
-            ]
+            ],
         ]);
 
         $body = implode('', [
@@ -58,7 +58,7 @@ final class SplittersTest extends TestCase
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
                 'Tests\Features\ThreadWithValueReturned::1',
-            ]
+            ],
         ]);
 
         $body = implode(',', [
@@ -83,7 +83,7 @@ final class SplittersTest extends TestCase
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
                 'Tests\Features\ThreadWithSplitterInstance::1',
-            ]
+            ],
         ]);
 
         $body = implode('', [
