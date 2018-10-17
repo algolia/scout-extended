@@ -16,7 +16,6 @@ namespace Algolia\ScoutExtended\Managers;
 use Algolia\AlgoliaSearch\Client;
 use Algolia\AlgoliaSearch\Support\UserAgent;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
-use Algolia\ScoutExtended\Searchable\ObjectsResolver;
 use Laravel\Scout\EngineManager as BaseEngineManager;
 
 class EngineManager extends BaseEngineManager
@@ -30,8 +29,6 @@ class EngineManager extends BaseEngineManager
     {
         UserAgent::addCustomUserAgent('Laravel Scout Extended', '@dev');
 
-        return new AlgoliaEngine(Client::create(config('scout.algolia.id'), config('scout.algolia.secret')),
-            app(ObjectsResolver::class)
-        );
+        return new AlgoliaEngine(Client::create(config('scout.algolia.id'), config('scout.algolia.secret')));
     }
 }

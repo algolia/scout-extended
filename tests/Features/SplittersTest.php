@@ -30,6 +30,12 @@ final class SplittersTest extends TestCase
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
 
+        $index->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                'Tests\Features\ThreadWithSplitterClass::1',
+            ]
+        ]);
+
         $body = implode('', [
             '<p>Hello <a href="example.com">Foo</a>!</p>',
             '<p>Hello <a href="example.com">Bar</a>!</p>',
@@ -48,6 +54,12 @@ final class SplittersTest extends TestCase
                 $argument[1]['objectID'] === 'Tests\Features\ThreadWithValueReturned::1::1' &&
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
+
+        $index->shouldReceive('deleteBy')->with([
+            'tagFilters' => [
+                'Tests\Features\ThreadWithValueReturned::1',
+            ]
+        ]);
 
         $body = implode(',', [
             'Hello Foo!',
@@ -68,6 +80,12 @@ final class SplittersTest extends TestCase
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
 
+        $index->shouldReceive('deleteBy')->with([
+            'tagFilters' => [
+                'Tests\Features\ThreadWithSplitterInstance::1',
+            ]
+        ]);
+
         $body = implode('', [
             '<h1>Hello <strong>Foo!</strong></h1>',
             '<h1>Hello <strong>Bar</strong>!</h1>',
@@ -81,6 +99,7 @@ final class SplittersTest extends TestCase
         $index = $this->mockIndex(ThreadWithValueReturned::class);
 
         $index->shouldReceive('saveObjects')->once();
+        $index->shouldReceive('deleteBy')->once();
 
         $body = implode('', [
             '<h1>Hello <strong>Foo!</strong></h1>',

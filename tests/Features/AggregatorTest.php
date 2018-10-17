@@ -30,9 +30,12 @@ final class AggregatorTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $usersIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'App\User::1';
-        }));
+        $usersIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                'App\User::1',
+            ]
+        ]);
+
         $user->delete();
     }
 
@@ -51,12 +54,18 @@ final class AggregatorTest extends TestCase
         }));
         $user = factory(User::class)->create();
 
-        $usersIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'App\User::1';
-        }));
-        $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'App\User::1';
-        }));
+        $usersIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                'App\User::1',
+            ]
+        ]);
+
+        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                'App\User::1',
+            ]
+        ]);
+
         $user->delete();
     }
 
@@ -73,10 +82,17 @@ final class AggregatorTest extends TestCase
         }));
         $thread = factory(Thread::class)->create();
 
-        $threadIndexMock->shouldReceive('deleteObjects')->once();
-        $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'App\Thread::1';
-        }));
+        $threadIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                'App\Thread::1',
+            ]
+        ]);
+
+        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                'App\Thread::1',
+            ]
+        ]);
         $thread->delete();
     }
 
@@ -90,10 +106,11 @@ final class AggregatorTest extends TestCase
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
             return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'App\Post::1';
         }));
-        // Laravel Scout force Delete calls twice the save objects.
-        $wallIndexMock->shouldReceive('deleteObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'App\Post::1';
-        }));
+        $wallIndexMock->shouldReceive('deleteBy')->times(3)->with([
+            'tagFilters' => [
+                'App\Post::1',
+            ]
+        ]);
         $post = factory(Post::class)->create();
         $post->delete();
         $post->restore();
@@ -115,9 +132,11 @@ final class AggregatorTest extends TestCase
         $post = factory(Post::class)->create();
         $post->delete();
 
-        $wallIndexMock->shouldReceive('deleteObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && $argument[0] === 'App\Post::1';
-        }));
+        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                'App\Post::1',
+            ]
+        ]);
         $post->forceDelete();
     }
 

@@ -11,16 +11,18 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Algolia\ScoutExtended\Searchable;
+namespace Algolia\ScoutExtended\Jobs;
 
-use function get_class;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
+use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 
 /**
  * @internal
  */
-final class ObjectsResolver
+final class UpdateJob
 {
     /**
      * Contains a list of splittables searchables.
@@ -35,36 +37,70 @@ final class ObjectsResolver
     private $splittables = [];
 
     /**
-     * Get an collection of objects to update
-     * from the given searchables.
+     * @var \Illuminate\Support\Collection
+     */
+    private $searchables;
+
+    /**
+     * UpdateJob constructor.
      *
      * @param \Illuminate\Support\Collection $searchables
      *
-     * @return \Illuminate\Support\Collection
+     * @return void
      */
-    public function toUpdate(Collection $searchables): Collection
+    public function __construct(Collection $searchables)
     {
-        $result = [];
+        $this->searchables = $searchables;
+    }
 
-        foreach ($searchables as $key => $searchable) {
+    /**
+     * @param \Algolia\AlgoliaSearch\Interfaces\ClientInterface $client
+     *
+     * @return void
+     */
+    public function handle(ClientInterface $client): void
+    {
+        if ($this->searchables->isEmpty()) {
+            return;
+        }
+
+        if ($this->usesSoftDelete($this->searchables->first()) && config('scout.soft_delete', false)) {
+            $this->searchables->each->pushSoftDeleteMetadata();
+        }
+
+        $index = $client->initIndex($this->searchables->first()->searchableAs());
+
+        $objectsToSave = [];
+        $searchablesToDelete = [];
+
+        foreach ($this->searchables as $key => $searchable) {
             if (empty($array = array_merge($searchable->toSearchableArray(), $searchable->scoutMetadata()))) {
                 continue;
             }
 
+            $array['_tags'] = ObjectIdEncrypter::encrypt($searchable);
+
             if ($this->shouldBeSplitted($searchable)) {
                 [$pieces, $splittedBy] = $this->splitSearchable($searchable, $array);
+
                 foreach ($pieces as $number => $piece) {
                     $array['objectID'] = ObjectIdEncrypter::encrypt($searchable, $number);
                     $array[$splittedBy] = $piece;
-                    $result[] = $array;
+                    $objectsToSave[] = $array;
                 }
+                $searchablesToDelete[] = $searchable;
             } else {
                 $array['objectID'] = ObjectIdEncrypter::encrypt($searchable);
-                $result[] = $array;
+                $objectsToSave[] = $array;
             }
         }
 
-        return collect($result);
+        dispatch_now(new DeleteJob(collect($searchablesToDelete)));
+
+        $result = $index->saveObjects($objectsToSave);
+        if (config('scout.synchronous', false)) {
+            $result->wait();
+        }
     }
 
     /**
@@ -127,5 +163,16 @@ final class ObjectsResolver
         }
 
         return [$pieces, $splittedBy];
+    }
+
+    /**
+     * Determine if the given searchable uses soft deletes.
+     *
+     * @param  object $searchable
+     * @return bool
+     */
+    private function usesSoftDelete($searchable)
+    {
+        return $searchable instanceof Model && in_array(SoftDeletes::class, class_uses_recursive($searchable));
     }
 }

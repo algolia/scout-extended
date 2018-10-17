@@ -14,76 +14,30 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Engines;
 
 use Laravel\Scout\Builder;
+use Algolia\ScoutExtended\Jobs\UpdateJob;
+use Algolia\ScoutExtended\Jobs\DeleteJob;
 use Algolia\AlgoliaSearch\Client as Algolia;
 use Illuminate\Database\Eloquent\Collection;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
-use Algolia\ScoutExtended\Searchable\ObjectsResolver;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Laravel\Scout\Engines\AlgoliaEngine as BaseAlgoliaEngine;
 
 class AlgoliaEngine extends BaseAlgoliaEngine
 {
     /**
-     * @var \Algolia\ScoutExtended\Searchable\ObjectsResolver
+     * {@inheritdoc}
      */
-    private $objectsResolver;
-
-    /**
-     * AlgoliaEngine constructor.
-     *
-     * @param \Algolia\AlgoliaSearch\Client $algolia
-     * @param \Algolia\ScoutExtended\Searchable\ObjectsResolver $objectsResolver
-     *
-     * @return void
-     */
-    public function __construct(
-        Algolia $algolia,
-        ObjectsResolver $objectsResolver
-    ) {
-        parent::__construct($algolia);
-
-        $this->objectsResolver = $objectsResolver;
+    public function update($searchables)
+    {
+        dispatch_now(new UpdateJob($searchables));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function update($searchables)
+    public function delete($searchables)
     {
-        if ($searchables->isEmpty()) {
-            return;
-        }
-
-        $index = $this->algolia->initIndex($searchables->first()->searchableAs());
-
-        if ($this->usesSoftDelete($searchables->first()) && config('scout.soft_delete', false)) {
-            $searchables->each->pushSoftDeleteMetadata();
-        }
-
-        $objects = $this->objectsResolver->toUpdate($searchables);
-        $result = $index->saveObjects(collect($objects)->filter()->values()->all());
-        if (config('scout.synchronous', false)) {
-            $result->wait();
-        }
-    }
-
-    /**
-     * Remove the given model from the index.
-     *
-     * @param  \Illuminate\Database\Eloquent\Collection $models
-     * @return void
-     */
-    public function delete($models)
-    {
-        $index = $this->algolia->initIndex($models->first()->searchableAs());
-
-        $result = $index->deleteObjects($models->map(function ($model) {
-            return ObjectIdEncrypter::encrypt($model);
-        })->values()->all());
-
-        if (config('scout.synchronous', false)) {
-            $result->wait();
-        }
+        dispatch_now(new DeleteJob($searchables));
     }
 
     /**
