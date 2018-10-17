@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Engines;
 
 use Laravel\Scout\Builder;
-use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\ScoutExtended\Jobs\DeleteJob;
+use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\AlgoliaSearch\Client as Algolia;
 use Illuminate\Database\Eloquent\Collection;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
-use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Laravel\Scout\Engines\AlgoliaEngine as BaseAlgoliaEngine;
 
 class AlgoliaEngine extends BaseAlgoliaEngine

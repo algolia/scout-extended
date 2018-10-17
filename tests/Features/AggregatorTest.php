@@ -33,7 +33,7 @@ final class AggregatorTest extends TestCase
         $usersIndexMock->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
                 'App\User::1',
-            ]
+            ],
         ]);
 
         $user->delete();
@@ -57,13 +57,13 @@ final class AggregatorTest extends TestCase
         $usersIndexMock->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
                 'App\User::1',
-            ]
+            ],
         ]);
 
         $wallIndexMock->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
                 'App\User::1',
-            ]
+            ],
         ]);
 
         $user->delete();
@@ -85,13 +85,13 @@ final class AggregatorTest extends TestCase
         $threadIndexMock->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
                 'App\Thread::1',
-            ]
+            ],
         ]);
 
         $wallIndexMock->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
                 'App\Thread::1',
-            ]
+            ],
         ]);
         $thread->delete();
     }
@@ -109,7 +109,7 @@ final class AggregatorTest extends TestCase
         $wallIndexMock->shouldReceive('deleteBy')->times(3)->with([
             'tagFilters' => [
                 'App\Post::1',
-            ]
+            ],
         ]);
         $post = factory(Post::class)->create();
         $post->delete();
@@ -135,7 +135,7 @@ final class AggregatorTest extends TestCase
         $wallIndexMock->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
                 'App\Post::1',
-            ]
+            ],
         ]);
         $post->forceDelete();
     }
