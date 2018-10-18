@@ -62,7 +62,6 @@ final class ApiKeysRepository
         $searchKey = $this->cache->get(self::SEARCH_KEY);
 
         if ($searchKey === null) {
-
             $id = config('app.name').'::searchKey';
 
             $keys = $this->client->listApiKeys()->getBody()['keys'];
