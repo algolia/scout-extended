@@ -60,11 +60,12 @@ class HtmlSplitter
     /**
      * Splits the given value.
      *
+     * @param  object $searchable
      * @param  string $value
      *
      * @return array
      */
-    public function __invoke($value): array
+    public function __invoke($searchable, $value): array
     {
         $dom = new DOMDocument();
         $dom->loadHTML($value);

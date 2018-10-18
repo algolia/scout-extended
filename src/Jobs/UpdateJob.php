@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Jobs;
 
+use function is_array;
+use function in_array;
+use function is_string;
+use function is_object;
+use function get_class;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -64,7 +69,7 @@ final class UpdateJob
             return;
         }
 
-        if ($this->usesSoftDelete($this->searchables->first()) && config('scout.soft_delete', false)) {
+        if (config('scout.soft_delete', false) && $this->usesSoftDelete($this->searchables->first())) {
             $this->searchables->each->pushSoftDeleteMetadata();
         }
 
@@ -112,18 +117,16 @@ final class UpdateJob
     {
         $class = get_class($searchable->getModel());
 
-        if (array_key_exists($class, $this->splittables)) {
-            return $this->splittables[$class];
-        }
+        if (! array_key_exists($class, $this->splittables)) {
+            $this->splittables[$class] = false;
 
-        $this->splittables[$class] = false;
-
-        foreach ($searchable->toSearchableArray() as $key => $value) {
-            $method = 'split'.Str::camel($key);
-            $model = $searchable->getModel();
-            if (method_exists($model, $method)) {
-                $this->splittables[$class] = true;
-                break;
+            foreach ($searchable->toSearchableArray() as $key => $value) {
+                $method = 'split'.Str::camel($key);
+                $model = $searchable->getModel();
+                if (method_exists($model, $method)) {
+                    $this->splittables[$class] = true;
+                    break;
+                }
             }
         }
 
@@ -146,16 +149,16 @@ final class UpdateJob
             if (method_exists($model, $method)) {
                 $result = $model->{$method}($value);
 
-                if (is_array($result)) {
-                    $pieces = $result;
-                } else {
-                    if (is_string($result)) {
-                        $pieces = (new $result)($value);
-                    } else {
-                        if (is_object($result)) {
-                            $pieces = $result->__invoke($value);
-                        }
-                    }
+                switch (true) {
+                    case is_array($result):
+                        $pieces = $result;
+                        break;
+                    case is_string($result):
+                        $pieces = (new $result)($model, $value);
+                        break;
+                    case is_object($result):
+                        $pieces = $result->__invoke($model, $value);
+                        break;
                 }
                 $splittedBy = $key;
                 break;
@@ -169,10 +172,11 @@ final class UpdateJob
      * Determine if the given searchable uses soft deletes.
      *
      * @param  object $searchable
+     *
      * @return bool
      */
-    private function usesSoftDelete($searchable)
+    private function usesSoftDelete($searchable): bool
     {
-        return $searchable instanceof Model && in_array(SoftDeletes::class, class_uses_recursive($searchable));
+        return $searchable instanceof Model && in_array(SoftDeletes::class, class_uses_recursive($searchable), true);
     }
 }
