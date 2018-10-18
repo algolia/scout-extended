@@ -23,11 +23,11 @@ This package is **still in development**. It's not ready for use.
 - [x] Ability to use **display features** (**Searchable attributes**, **Query Language**, **Custom Ranking**, etc) of using a configuration file
 - [x] Automatic way of leverage **Distinct**
 - [x] Update **UserAgent**
-- [ ] Front-end components and directives
+- [x] Adds `@scout` blade directive
 - [ ] Manager - **Multiple client connections** per project
 - [ ] **Extends Driver's Query Builder** adding more methods: whereIn, whereNotIn, whereNot, whereBetween, and others cases to be studied
 - [ ] Support to **multiple language indexes**
-- [ ] Ability to use **synonyms features** (**Searchable attributes**, **Query Language**, **Custom Ranking**, etc) of using a configuration file
+- [ ] Ability to use **synonyms features** of using a configuration file
 - [ ] Ability to use **Rules features**
 
 ## License

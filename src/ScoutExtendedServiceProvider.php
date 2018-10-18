@@ -16,6 +16,7 @@ namespace Algolia\ScoutExtended;
 use ReflectionClass;
 use Laravel\Scout\Builder;
 use Algolia\AlgoliaSearch\Analytics;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
@@ -38,6 +39,8 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'algolia');
+
+        Blade::component('algolia::components.scout', 'scout');
     }
 
     /**
@@ -95,7 +98,6 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         $this->app->alias(Analytics::class, 'algolia.analytics');
 
         $this->app->singleton(AggregatorObserver::class, AggregatorObserver::class);
-        // $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
     }
 
     /**
