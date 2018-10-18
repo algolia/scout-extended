@@ -14,7 +14,8 @@
         "riimu/kit-phpencoder": "^2.3",
         "algolia/algoliasearch-client-php": "@dev",
         "laravel/framework": "~5.6.0|~5.7.0",
-        "laravel/scout": "@dev"
+        "laravel/scout": "@dev",
+        "ext-json": "*"
     },
     "repositories": [
         {

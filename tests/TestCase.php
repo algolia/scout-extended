@@ -69,7 +69,8 @@ class TestCase extends BaseTestCase
     protected function defaults(): array
     {
         $this->mockIndex('temp-laravel-scout-extended', $defaults = require __DIR__.'/resources/defaults.php');
-        $this->app->get(ClientInterface::class)->shouldReceive('deleteIndex')->with('temp-laravel-scout-extended')->zeroOrMoreTimes();
+        $this->app->get(ClientInterface::class)->shouldReceive('deleteIndex')->with('temp-laravel-scout-extended')
+            ->zeroOrMoreTimes();
 
         return $defaults;
     }
@@ -154,9 +155,18 @@ class TestCase extends BaseTestCase
         return $indexMock;
     }
 
-    protected function assertSettingsSet($indexMock, array $settings)
+    protected function assertSettingsSet($indexMock, array $settings) : void
     {
-        $indexMock->shouldReceive('setSettings')->zeroOrMoreTimes()->with($settings)->andReturn($this->mockResponse());
+        if ($settings['userData']) {
+            $indexMock->shouldReceive('setSettings')->once()
+                ->with(['userData' => json_encode(['settingsHash' => $settings['userData']])])->andReturn($this->mockResponse());
+        }
+
+        unset($settings['userData']);
+
+        if (! empty($settings)) {
+            $indexMock->shouldReceive('setSettings')->once()->with($settings)->andReturn($this->mockResponse());
+        }
     }
 
     protected function mockResponse(): MockInterface

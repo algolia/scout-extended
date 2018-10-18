@@ -64,7 +64,7 @@ final class RemoteSettingsRepository
         if ($this->defaults === null) {
             $indexName = 'temp-laravel-scout-extended';
             $index = $this->client->initIndex($indexName);
-            $this->defaults = $this->getSettings($index);
+            $this->defaults = $this->getSettingsRaw($index);
             $this->client->deleteIndex($indexName);
         }
 
@@ -80,7 +80,18 @@ final class RemoteSettingsRepository
      */
     public function find(Index $index): Settings
     {
-        return new Settings($this->getSettings($index), $this->defaults());
+        return new Settings($this->getSettingsRaw($index), $this->defaults());
+    }
+
+    /**
+     * @param \Algolia\AlgoliaSearch\Index $index
+     * @param \Algolia\ScoutExtended\Settings\Settings $settings
+     *
+     * @return void
+     */
+    public function save(Index $index, Settings $settings): void
+    {
+        $index->setSettings($settings->compiled())->wait();
     }
 
     /**
@@ -88,7 +99,7 @@ final class RemoteSettingsRepository
      *
      * @return array
      */
-    private function getSettings(Index $index): array
+    public function getSettingsRaw(Index $index): array
     {
         try {
             $settings = $index->getSettings();

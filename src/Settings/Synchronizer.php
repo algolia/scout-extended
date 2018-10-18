@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Settings;
 
 use Algolia\AlgoliaSearch\Index;
-use Illuminate\Filesystem\Filesystem;
+use Algolia\ScoutExtended\Repositories\UserDataRepository;
 use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
 
@@ -34,11 +34,6 @@ class Synchronizer
     private $encrypter;
 
     /**
-     * @var \Illuminate\Filesystem\Filesystem
-     */
-    private $files;
-
-    /**
      * @var \Algolia\ScoutExtended\Repositories\LocalSettingsRepository
      */
     private $localRepository;
@@ -49,28 +44,33 @@ class Synchronizer
     private $remoteRepository;
 
     /**
+     * @var \Algolia\ScoutExtended\Repositories\UserDataRepository
+     */
+    private $userDataRepository;
+
+    /**
      * Synchronizer constructor.
      *
      * @param \Algolia\ScoutExtended\Settings\Compiler $compiler
      * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
-     * @param \Illuminate\Filesystem\Filesystem $files
      * @param \Algolia\ScoutExtended\Repositories\LocalSettingsRepository $localRepository
      * @param \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository $remoteRepository
+     * @param \Algolia\ScoutExtended\Repositories\UserDataRepository $userDataRepository
      *
      * @return void
      */
     public function __construct(
         Compiler $compiler,
         Encrypter $encrypter,
-        Filesystem $files,
         LocalSettingsRepository $localRepository,
-        RemoteSettingsRepository $remoteRepository
+        RemoteSettingsRepository $remoteRepository,
+        UserDataRepository $userDataRepository
     ) {
         $this->compiler = $compiler;
         $this->encrypter = $encrypter;
         $this->localRepository = $localRepository;
         $this->remoteRepository = $remoteRepository;
-        $this->files = $files;
+        $this->userDataRepository = $userDataRepository;
     }
 
     /**
@@ -102,9 +102,9 @@ class Synchronizer
 
         $this->compiler->compile($settings, $path);
 
-        $userData = $this->encrypter->encrypt($settings);
+        $settingsHash = $this->encrypter->encrypt($settings);
 
-        $index->setSettings(['userData' => $userData])->wait();
+        $this->userDataRepository->save($index, ['settingsHash' => $settingsHash]);
     }
 
     /**
@@ -118,8 +118,9 @@ class Synchronizer
     {
         $settings = $this->localRepository->find($index);
 
-        $userData = $this->encrypter->encrypt($settings);
+        $settingsHash = $this->encrypter->encrypt($settings);
 
-        $index->setSettings(array_merge($settings->compiled(), ['userData' => $userData]))->wait();
+        $this->userDataRepository->save($index, ['settingsHash' => $settingsHash]);
+        $this->remoteRepository->save($index, $settings);
     }
 }

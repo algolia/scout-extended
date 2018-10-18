@@ -20,6 +20,7 @@ use function is_object;
 use function get_class;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
