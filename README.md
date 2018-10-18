@@ -2,9 +2,18 @@
 
 Scout Extended was created by, and is maintained by [Algolia](https://github.com/algolia), and extends [Laravel Scout](https://github.com/laravel/scout)'s Algolia driver adding **Algolia-specific features**.
 
-## Installation & Usage
+## Installation
 
 This package is **still in development**. It's not ready for use.
+
+> **Requires:**
+- **[PHP 7.1.3+](https://php.net/releases/)**
+- **[Laravel 5.6+](https://github.com/laravel/laravel)**
+
+You may use [Composer](https://getcomposer.org) to install Scout Extended into your Laravel project:
+```bash
+composer require algolia/scout-extended
+```
 
 ## Features
 
