@@ -14,15 +14,22 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Engines;
 
 use Laravel\Scout\Builder;
+use Algolia\AlgoliaSearch\Client;
 use Algolia\ScoutExtended\Jobs\DeleteJob;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
-use Algolia\AlgoliaSearch\Client as Algolia;
 use Illuminate\Database\Eloquent\Collection;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
 use Laravel\Scout\Engines\AlgoliaEngine as BaseAlgoliaEngine;
 
 class AlgoliaEngine extends BaseAlgoliaEngine
 {
+    /**
+     * @param \Algolia\AlgoliaSearch\Client $algolia
+     */
+    public function setClient(Client $algolia): void
+    {
+        $this->algolia = $algolia;
+    }
     /**
      * {@inheritdoc}
      */
