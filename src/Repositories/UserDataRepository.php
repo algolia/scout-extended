@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Repositories;
 
 use Algolia\AlgoliaSearch\Index;
-use Algolia\ScoutExtended\Settings\Settings;
 
 /**
  * @internal
