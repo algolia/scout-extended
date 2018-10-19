@@ -15,11 +15,14 @@ namespace Algolia\ScoutExtended\Settings;
 
 use function in_array;
 use function is_string;
+use function LogicException;
 use InvalidArgumentException;
 use Algolia\AlgoliaSearch\Index;
 use Illuminate\Database\QueryException;
 use Algolia\ScoutExtended\Searchable\Aggregator;
+use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
 use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException as BaseModelNotFoundException;
 
 /**
  * @internal
@@ -35,10 +38,7 @@ final class LocalFactory
      * @var string[]
      */
     private static $customRankingKeys = [
-        'id',
-        'id_*',
-        '*_id',
-        '*number*',
+        '*ed_at',
         '*count_*',
         '*_count*',
     ];
@@ -47,6 +47,13 @@ final class LocalFactory
      * @var string[]
      */
     private static $unsearchableAttributesKeys = [
+        'id',
+        '*_id',
+        'id_*',
+        '*ed_at',
+        'count',
+        '*_count',
+        'count_*',
         '*image*',
         '*url*',
         '*link*',
@@ -73,6 +80,7 @@ final class LocalFactory
         '*password*',
         '*token*',
         '*secret*',
+        '*hash*',
     ];
 
     /**
@@ -87,9 +95,9 @@ final class LocalFactory
      * @var string[]
      */
     private static $disableTypoToleranceOnAttributesKeys = [
-        'id',
-        'id_*',
-        '*_id',
+        'slug',
+        '*_slug',
+        'slug_*',
         '*code*',
         '*sku*',
         '*reference*',
@@ -172,7 +180,8 @@ final class LocalFactory
      */
     public function isSearchableAttributes(string $key, $value): bool
     {
-        return ! str_is(self::$unsearchableAttributesKeys, $key) &&
+        return ! is_object($value) && ! is_array($value) &&
+            ! str_is(self::$unsearchableAttributesKeys, $key) &&
             ! str_is(self::$unsearchableAttributesValues, $value);
     }
 
@@ -247,11 +256,13 @@ final class LocalFactory
             $instance = null;
 
             try {
-                $instance = @factory($searchable)->make() ?? $searchable::first();
-                $attributes = method_exists($instance, 'toSearchableArray') ? $instance->toSearchableArray() :
-                    $instance->toArray();
-            } catch (InvalidArgumentException | QueryException $e) {
+                $instance = $searchable::firstOrFail();
+            } catch (QueryException | BaseModelNotFoundException $e) {
+                throw tap(new ModelNotFoundException())->setModel($searchable);
             }
+
+            $attributes = method_exists($instance, 'toSearchableArray') ? $instance->toSearchableArray() :
+                $instance->toArray();
         }
 
         return $attributes;
