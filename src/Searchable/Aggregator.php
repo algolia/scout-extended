@@ -218,8 +218,7 @@ abstract class Aggregator implements SearchableCountableContract
      */
     public function __call($method, $parameters)
     {
-        $model = $this->model ?? new class extends Model
-        {
+        $model = $this->model ?? new class extends Model {
         };
 
         return $model->$method(...$parameters);
