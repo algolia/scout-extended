@@ -10,9 +10,16 @@ This package is **still in development**. It's not ready for use.
 - **[PHP 7.1.3+](https://php.net/releases/)**
 - **[Laravel 5.6+](https://github.com/laravel/laravel)**
 
-You may use [Composer](https://getcomposer.org) to install Scout Extended into your Laravel project:
+First, install Scout via the [Composer](https://getcomposer.org) package manager:
+
 ```bash
 composer require algolia/scout-extended
+```
+
+After installing Scout Extended, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `scout.php configuration file to your config directory:
+
+```bash
+php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
 
 ## Features
