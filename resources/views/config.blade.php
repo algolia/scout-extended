@@ -11,7 +11,8 @@ return [
     | specific attributes as searchable is critical for relevance because it gives
     | you direct control over what information the search engine should look at.
     |
-    | Example: ["name", "ordered(email)", "unordered(city)",]
+    | Supported: Null, Array
+    | Example: ["name", "ordered(email)", "unordered(city)"]
     |
     */
 
@@ -26,7 +27,8 @@ return [
     | array of attributes for which typo-tolerance should be disabled. This is useful,
     | for example, products that might require SKU search without "typo-tolerance".
     |
-    | Example: ['id', 'sku', 'reference', 'code',]
+    | Supported: Null, Array
+    | Example: ['id', 'sku', 'reference', 'code']
     |
     */
 
@@ -41,7 +43,8 @@ return [
     | sorted by textual relevance. Said another way, if two matched records have
     | the same match textually, we resort to custom ranking to tie-break.
     |
-    | Examples: ['desc(comments_count)', 'desc(views_count)',]
+    | Supported: Null, Array
+    | Examples: ['desc(comments_count)', 'desc(views_count)']
     |
     */
 
@@ -56,6 +59,7 @@ return [
     | Algolia to compute a set of possible values that can later be used to create categories
     | or filters. You can also get a count of records that match those values.
     |
+    | Supported: Null, Array
     | Example: ['type', 'filterOnly(country)', 'searchable(city)',]
     |
     */
@@ -71,6 +75,7 @@ return [
     | used only for ranking or other technical purposes, but should never be seen by your end
     | users, such us: total_sales, permissions, stock_count, and other private information.
     |
+    | Supported: Null, Array
     | Example: ['total_sales', 'permissions', 'stock_count',]
     |
     */
@@ -86,7 +91,7 @@ return [
     | enabled, will make the engine consider “car” and “cars”, or “foot” and “feet”,
     | equivalent. This is used in conjunction with the "queryLanguages" setting.
     |
-    | Example: true
+    | Supported: Null, Boolean
     |
     */
 
@@ -101,7 +106,7 @@ return [
     | “what is a record?”. In that case, the engine will remove “what”, “is”,
     | before executing the query, and therefore just search for “record”.
     |
-    | Example: true
+    | Supported: Null, Boolean
     |
     */
 
@@ -116,6 +121,7 @@ return [
     | "removeStopWords" or "ignorePlurals". For optimum relevance, it is
     | recommended to only enable languages that are used in your data.
     |
+    | Supported: Null, Array
     | Example: ['en', 'fr',]
     |
     */
@@ -131,8 +137,9 @@ return [
     | value in that attribute. For example, if the distinct attribute is the series_name and
     | several hits (Episodes) have the same value for series_name (Laravel From Scratch).
     |
-    | Example: 'null', 'id', 'name'
-    |
+    | Supported(distinct): Boolean
+    | Supported(attributeForDistinct): Null, String
+    | Example(attributeForDistinct): 'slug'
     */
 
     'distinct' => {!! $distinct ?? 'false' !!},
