@@ -60,7 +60,7 @@ final class SearchableFinder
         $searchables = (array) $command->argument('searchable');
 
         if (empty($searchables) && empty($searchables = $this->find())) {
-            throw new InvalidArgumentException('No searchable models found. Please add the ['.Searchable::class.'] trait to a model.');
+            throw new InvalidArgumentException('No searchable classes found.');
         }
 
         return $searchables;
