@@ -15,8 +15,6 @@ namespace Algolia\ScoutExtended\Settings;
 
 use function in_array;
 use function is_string;
-use function LogicException;
-use InvalidArgumentException;
 use Algolia\AlgoliaSearch\Index;
 use Illuminate\Database\QueryException;
 use Algolia\ScoutExtended\Searchable\Aggregator;

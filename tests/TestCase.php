@@ -138,7 +138,7 @@ class TestCase extends BaseTestCase
         $indexMock->shouldReceive('getIndexName')->zeroOrMoreTimes()->andReturn($indexName);
 
         $indexMock->shouldReceive('getSettings')->zeroOrMoreTimes()->andReturn(array_merge($settings, [
-            'userData' => @json_encode($userData)
+            'userData' => @json_encode($userData),
         ]));
 
         $clientMock = $this->mockClient();
@@ -158,7 +158,7 @@ class TestCase extends BaseTestCase
         return $indexMock;
     }
 
-    protected function assertSettingsSet($indexMock, array $settings, array $userData =  null) : void
+    protected function assertSettingsSet($indexMock, array $settings, array $userData = null) : void
     {
         if (! empty($settings)) {
             $indexMock->shouldReceive('setSettings')->once()->with($settings)->andReturn($this->mockResponse());
@@ -168,8 +168,6 @@ class TestCase extends BaseTestCase
             $indexMock->shouldReceive('setSettings')->once()->with(['userData' => @json_encode($userData)])->andReturn($this->mockResponse());
         }
     }
-
-
 
     protected function mockResponse(): MockInterface
     {
