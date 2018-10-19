@@ -84,7 +84,7 @@ class Synchronizer
     {
         $remoteSettings = $this->remoteRepository->find($index);
 
-        return new Status($this->localRepository, $this->encrypter, $remoteSettings, $index);
+        return new Status($this->localRepository, $this->userDataRepository, $this->encrypter, $remoteSettings, $index);
     }
 
     /**

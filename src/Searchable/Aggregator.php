@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Searchable;
 
 use function in_array;
+use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -134,7 +135,7 @@ abstract class Aggregator implements SearchableCountableContract
      */
     public function searchableAs(): string
     {
-        return config('scout.prefix').UuidGenerator::getUuid(static::class);
+        return config('scout.prefix').str_replace('\\', '', Str::snake(class_basename(static::class)));
     }
 
     /**
@@ -206,5 +207,21 @@ abstract class Aggregator implements SearchableCountableContract
         }
 
         return (int) $count;
+    }
+
+    /**
+     * Handle dynamic method calls into the model.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        $model = $this->model ?? new class extends Model
+        {
+        };
+
+        return $model->$method(...$parameters);
     }
 }

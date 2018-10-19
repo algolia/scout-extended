@@ -47,7 +47,7 @@ final class UserDataRepository
         $settings = $this->remoteRepository->getSettingsRaw($index);
 
         if (array_key_exists('userData', $settings)) {
-            $userData = @json_decode($settings['userData']);
+            $userData = @json_decode($settings['userData'], true);
         }
 
         return $userData ?? [];
@@ -68,5 +68,19 @@ final class UserDataRepository
         $userDataJson = json_encode(array_merge($currentUserData, $userData));
 
         $index->setSettings(['userData' => $userDataJson])->wait();
+    }
+
+    /**
+     * Get the settings hash.
+     *
+     * @param  \Algolia\AlgoliaSearch\Index $index
+     *
+     * @return string
+     */
+    public function getSettingsHash(Index $index): string
+    {
+        $userData = $this->find($index);
+
+        return $userData['settingsHash'] ?? '';
     }
 }

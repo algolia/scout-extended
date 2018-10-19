@@ -131,12 +131,15 @@ class TestCase extends BaseTestCase
         return $clientMock;
     }
 
-    protected function mockIndex(string $model, array $settings = []): MockInterface
+    protected function mockIndex(string $model, array $settings = [], array $userData = null): MockInterface
     {
         $indexMock = mock(Index::class);
         $indexName = class_exists($model) ? (new $model)->searchableAs() : $model;
         $indexMock->shouldReceive('getIndexName')->zeroOrMoreTimes()->andReturn($indexName);
-        $indexMock->shouldReceive('getSettings')->zeroOrMoreTimes()->andReturn($settings);
+
+        $indexMock->shouldReceive('getSettings')->zeroOrMoreTimes()->andReturn(array_merge($settings, [
+            'userData' => @json_encode($userData)
+        ]));
 
         $clientMock = $this->mockClient();
         $clientMock->shouldReceive('initIndex')->zeroOrMoreTimes()->with($indexName)->andReturn($indexMock);
@@ -155,19 +158,18 @@ class TestCase extends BaseTestCase
         return $indexMock;
     }
 
-    protected function assertSettingsSet($indexMock, array $settings) : void
+    protected function assertSettingsSet($indexMock, array $settings, array $userData =  null) : void
     {
-        if ($settings['userData']) {
-            $indexMock->shouldReceive('setSettings')->once()
-                ->with(['userData' => json_encode(['settingsHash' => $settings['userData']])])->andReturn($this->mockResponse());
-        }
-
-        unset($settings['userData']);
-
         if (! empty($settings)) {
             $indexMock->shouldReceive('setSettings')->once()->with($settings)->andReturn($this->mockResponse());
         }
+
+        if (! empty($userData)) {
+            $indexMock->shouldReceive('setSettings')->once()->with(['userData' => @json_encode($userData)])->andReturn($this->mockResponse());
+        }
     }
+
+
 
     protected function mockResponse(): MockInterface
     {
