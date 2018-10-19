@@ -12,6 +12,6 @@ class DummyClass extends Aggregator
      * @var string[]
      */
     protected $models = [
-    	// ..
+        // ..
     ];
 }
