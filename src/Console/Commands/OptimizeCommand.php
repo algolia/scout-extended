@@ -53,6 +53,7 @@ final class OptimizeCommand extends Command
                 } catch (ModelNotFoundException $e) {
                     $model = $e->getModel();
                     $this->output->error("Model not found [$model] resolving [$searchable] settings. Please seed your database with records of this model.");
+
                     return 1;
                 }
                 $path = $localRepository->getPath($index);

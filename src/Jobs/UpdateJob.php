@@ -86,7 +86,7 @@ final class UpdateJob
 
             $array['_tags'] = (array) ($array['_tags'] ?? []);
 
-            array_push($array['_tags'], ObjectIdEncrypter::encrypt($searchable) );
+            array_push($array['_tags'], ObjectIdEncrypter::encrypt($searchable));
 
             if ($this->shouldBeSplitted($searchable)) {
                 [$pieces, $splittedBy] = $this->splitSearchable($searchable, $array);
