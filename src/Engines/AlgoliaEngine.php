@@ -30,6 +30,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     {
         $this->algolia = $algolia;
     }
+
     /**
      * {@inheritdoc}
      */
