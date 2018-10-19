@@ -22,6 +22,59 @@ After installing Scout Extended, you should publish the Scout configuration usin
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
 
+## Optimize the search experience
+
+Performance is important. However, in order for a search to be successful,
+results need to be relevant to the user. Scout Extended provides an optimize
+`Artisan` command that you may use to optimize the search experience based on information from the model class:
+```bash
+php artisan scout:optimize
+```
+
+With Scout Extended, `Artisan` automatically detects the `searchable` classes of your project. You may
+want to specify the `searchable` class to optimize:
+```bash
+php artisan scout:optimize "App\Thread"
+```
+
+After running the optimize command, you may need to edit the created
+settings in `config/scout-threads.php`.
+
+Once you have verified the settings file, all you need to do is synchronize
+the settings with Algolia using the `Artisan` command sync:
+
+ ```bash
+ php artisan scout:sync
+ ```
+
+> **Note:** You may also edit the settings of your index using the Algolia Dashboard.
+Make sure you apply those remote settings locally running the sync command.
+
+## Zero Downtime deployment
+
+In order to keep your existing service running while re-importing your data, we recommend the usage of the reimport `Artisan` command.
+ ```bash
+ php artisan scout:reimport
+ ```
+
+ To ensure that searches performed on the index during the rebuild will not be interrupted.
+ Scout Extended creates a temporary index with all your records before moving the temporary index to the target index
+
+ > **Note:** TODO about the plan.
+
+## Status
+
+If you are not sure about the current status of your indexes, you can always run
+the status `Artisan` command to make sure that your records and your settings are
+up-to-date:
+ ```bash
+ php artisan scout:status
+ ```
+
+## Aggregators
+
+## Distinct
+
 ## Features
 
 - [x] For [Laravel Scout](https://github.com/laravel/scout)
