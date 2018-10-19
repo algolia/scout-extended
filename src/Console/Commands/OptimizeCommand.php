@@ -18,6 +18,7 @@ use Algolia\ScoutExtended\Algolia;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Settings\LocalFactory;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
+use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
 use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 
 final class OptimizeCommand extends Command
@@ -41,13 +42,19 @@ final class OptimizeCommand extends Command
         Compiler $compiler,
         SearchableFinder $searchableFinder,
         LocalSettingsRepository $localRepository
-    ): void {
+    ) {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
             $index = $algolia->index($searchable);
             if (! $localRepository->exists($index) ||
                 $this->confirm('Local settings already exists, do you wish to overwrite?')) {
-                $settings = $localFactory->create($index, $searchable);
+                try {
+                    $settings = $localFactory->create($index, $searchable);
+                } catch (ModelNotFoundException $e) {
+                    $model = $e->getModel();
+                    $this->output->error("Model not found [$model] resolving [$searchable] settings. Please seed your database with records of this model.");
+                    return 1;
+                }
                 $path = $localRepository->getPath($index);
                 $compiler->compile($settings, $path);
                 $this->output->success('Settings file created at: '.$path);
