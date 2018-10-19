@@ -26,13 +26,13 @@ php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 
 Performance is important. However, in order for a search to be successful,
 results need to be relevant to the user. Scout Extended provides an optimize
-`Artisan` command that you may use to optimize the search experience based on information from the model class:
+`Artisan` command that you may use to optimize the search experience based on information from the searchable class:
 ```bash
 php artisan scout:optimize
 ```
 
-With Scout Extended, `Artisan` automatically detects the `searchable` classes of your project. You may
-want to specify the `searchable` class to optimize:
+With Scout Extended, `Artisan` automatically detects the `searchable` classes of your project. But fell free
+to specify the `searchable` class to optimize:
 ```bash
 php artisan scout:optimize "App\Thread"
 ```
