@@ -66,7 +66,7 @@ Scout Extended automatically detects `searchable` classes. But feel free to spec
 php artisan scout:optimize "App\Thread"
 ```
 
-The Artisan command `scout:optimize` will do is best to generate the settings of your searchable class index, but you may need to edit those settings in `config/scout-threads.php`:
+The Artisan command `scout:optimize` will do his best to generate the settings of your searchable class index, but you may need to edit those settings in `config/scout-threads.php`:
 
 ```php
 <?php
@@ -125,7 +125,7 @@ In order to keep your existing service running while reimporting your data, we r
 
 To ensure that searches performed on the index during the rebuild will not be interrupted. Scout Extended creates a temporary index with all your records before moving the temporary index to the target index
 
- > **Note:** TODO about the plan.
+ > **Note:** If you are using the Community Plan, please verify if you have enough number of records available in order to execute the operation.
 
 ## ✅ Status
 
@@ -229,7 +229,7 @@ $count = Article::search('query')->count();
 
 #### `with()`
 
-The `with` method gives you complete access to customize **search** [API parameters](https://www.algolia.com/doc/api-reference/search-api-parameters). 
+The `with` method gives you complete access to customize **search** [API parameters](https://www.algolia.com/doc/api-reference/search-api-parameters).
 
 ```php
 $models = Article::search('query')
