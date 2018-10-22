@@ -32,7 +32,6 @@ First, install Scout Extended via the [Composer](https://getcomposer.org) packag
 composer require algolia/scout-extended
 ```
 
-
 After installing Scout Extended, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `scout.php configuration file to your config directory:
 
 ```bash
@@ -42,31 +41,73 @@ php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ## 🔎 Optimize the search experience
 
 Performance is important. However, in order for a search to be successful, results need to be relevant to the user. Scout Extended provides an optimize `Artisan` command that you may use to optimize the search experience based on information from the searchable class:
+
 ```bash
 php artisan scout:optimize
 ```
 
 With Scout Extended, `Artisan` automatically detects the `searchable` classes of your project. But fell free
 to specify the `searchable` class to optimize:
+
 ```bash
 php artisan scout:optimize "App\Thread"
 ```
 
 After running the optimize command, you may need to edit the created
-settings in `config/scout-threads.php`.
+settings in `config/scout-threads.php`:
 
-Once you have verified the settings file, all you need to do is synchronize
-the settings with Algolia using the `Artisan` command sync:
+```php
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Searchable Attributes
+    |--------------------------------------------------------------------------
+    |
+    | Limits the scope of a search to the attributes listed in this setting. Defining
+    | specific attributes as searchable is critical for relevance because it gives
+    | you direct control over what information the search engine should look at.
+    |
+    | Example: ["name", "ordered(email)", "unordered(city)",]
+    |
+    */
+
+    'searchableAttributes' => ['subject', 'body', 'slug', 'author_name', 'author_email'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Ranking
+    |--------------------------------------------------------------------------
+    |
+    | To return great results, custom ranking attributes are applied after records
+    | sorted by textual relevance. Said another way, if two matched records have
+    | the same match textually, we resort to custom ranking to tie-break.
+    |
+    | Examples: ['desc(comments_count)', 'desc(views_count)',]
+    |
+    */
+
+    'customRanking' => ['desc(reply_count)', 'desc(updated_at)', 'desc(created_at)'],
+
+	 // ...
+];
+
+```
+
+Once you have verified the settings file, all you need to do is synchronize the settings with Algolia using the `Artisan` command sync:
+
  ```bash
  php artisan scout:sync
  ```
 
-> **Note:** You may also edit the settings of your index using the Algolia Dashboard.
-Make sure you apply those remote settings locally running the sync command.
+> **Note:** You may also edit the settings of your index using the Algolia Dashboard. Make sure you apply those remote settings locally running the sync command.
 
 ## 🚀 Zero Downtime deployment
 
 In order to keep your existing service running while re-importing your data, we recommend the usage of the reimport `Artisan` command.
+
  ```bash
  php artisan scout:reimport
  ```
@@ -78,9 +119,8 @@ In order to keep your existing service running while re-importing your data, we 
 
 ## ✅ Status
 
-If you are not sure about the current status of your indexes, you can always run
-the status `Artisan` command to make sure that your records and your settings are
-up-to-date:
+If you are not sure about the current status of your indexes, you can always run the status `Artisan` command to make sure that your records and your settings are up-to-date:
+
  ```bash
  php artisan scout:status
  ```
@@ -97,9 +137,10 @@ To create a new aggregator, use the Make Aggregator `Artisan` command. This comm
 php artisan make:aggregator News
  ```
  
- ### Aggregator Structure
+### Aggregator Structure
  
 After generating your aggregator, you should fill in the models property of the class, which will be used to identify the models that should be aggregated:
+
 ```php
 <?php
 
