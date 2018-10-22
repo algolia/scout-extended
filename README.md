@@ -1,8 +1,8 @@
-## About Scout Extended
+## ⚙️ About Scout Extended
 
 Scout Extended was created by, and is maintained by [Algolia](https://github.com/algolia), and extends [Laravel Scout](https://github.com/laravel/scout)'s Algolia driver adding **Algolia-specific features**.
 
-## Installation
+## ⬇️ Installation
 
 This package is **still in development**. It's not ready for use.
 
@@ -16,13 +16,14 @@ First, install Scout via the [Composer](https://getcomposer.org) package manager
 composer require algolia/scout-extended
 ```
 
+
 After installing Scout Extended, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `scout.php configuration file to your config directory:
 
 ```bash
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
 
-## Optimize the search experience
+## 🔎 Optimize the search experience
 
 Performance is important. However, in order for a search to be successful,
 results need to be relevant to the user. Scout Extended provides an optimize
@@ -50,7 +51,7 @@ the settings with Algolia using the `Artisan` command sync:
 > **Note:** You may also edit the settings of your index using the Algolia Dashboard.
 Make sure you apply those remote settings locally running the sync command.
 
-## Zero Downtime deployment
+## 🚀 Zero Downtime deployment
 
 In order to keep your existing service running while re-importing your data, we recommend the usage of the reimport `Artisan` command.
  ```bash
@@ -62,7 +63,7 @@ In order to keep your existing service running while re-importing your data, we 
 
  > **Note:** TODO about the plan.
 
-## Status
+## ✅ Status
 
 If you are not sure about the current status of your indexes, you can always run
 the status `Artisan` command to make sure that your records and your settings are
@@ -71,9 +72,128 @@ up-to-date:
  php artisan scout:status
  ```
 
-## Aggregators
+## ⚡️ Aggregators
 
-## Distinct
+Scout Extended provides a clean way of implement site-wide search amongst multiple models.
+
+### Generating Aggregators
+
+To create a new aggregator, use the Make Aggregator `Artisan` command. This command will create a new aggregator class in the `app/Search` directory. Don't worry if this directory does not exist in your application, since it will be created the first time you run the command.
+
+ ```bash
+php artisan make:aggregator News
+ ```
+ 
+ ### Aggregator Structure
+ 
+After generating your aggregator, you should fill in the models property of the class, which will be used to identify the models that should be aggregated:
+```php
+<?php
+
+namespace App\Search;
+
+use Algolia\ScoutExtended\Searchable\Aggregator;
+
+class News extends Aggregator
+{
+    /**
+     * The names of the models that should be aggregated.
+     *
+     * @var string[]
+     */
+    protected $models = [
+    	 \App\Event::class,
+    	 \App\Article::class,
+    ];
+}
+```
+## ✂️ Split Records & Distinct
+
+For performance reasons, objects in Algolia should be 10kb or less. Large records can be split into smaller documents by splitting on a logical chunk such as paragraphs or sentences.
+
+### Split using the value
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Thread extends Model
+{
+	 use Searchable;
+
+    /**
+     * Splits the given value.
+     *
+     * @param  string $value
+     * @return string[]
+     */
+    public function splitBody($value)
+    {
+        return explode('. ', $value);
+    }
+}
+```
+
+### Split using a splitter
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Algolia\ScoutExtended\Splitters\HtmlSplitter;
+
+class Thread extends Model
+{
+	 use Searchable;
+
+    /**
+     * Splits the given value.
+     *
+     * @param  string $value
+     * @return string[]
+     */
+    public function splitBody($value)
+    {
+        return HtmlSplitter::by('p');
+    }
+}
+```
+
+### Writing Splitters
+
+Writing a splitter is simple. Create a new `Invokable` class, and the `__invoke` method should split the given `$value` as needed:
+
+```php
+<?php
+
+namespace App\Splitters;
+
+class CustomSplitter
+{
+    /**
+     * Splits the given value.
+     *
+     * @param  object $searchable
+     * @param  string $value
+     *
+     * @return array
+     */
+    public function __invoke($searchable, $value)
+    {
+    	 $values = [$value];
+
+        return $values;
+    }
+}
+
+```
+
+
 
 ## Features
 
