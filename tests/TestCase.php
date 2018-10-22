@@ -89,10 +89,14 @@ class TestCase extends BaseTestCase
             'searchableAttributes' => [
                 'name',
                 'email',
-                'views_count',
                 'category_type',
             ],
-            'customRanking' => ['desc(views_count)'],
+            'customRanking' => [
+                'desc(email_verified_at)',
+                'desc(created_at)',
+                'desc(updated_at)',
+                'desc(views_count)',
+            ],
             'attributesForFaceting' => ['category_type'],
             'queryLanguages' => ['en'],
         ]);
@@ -158,14 +162,15 @@ class TestCase extends BaseTestCase
         return $indexMock;
     }
 
-    protected function assertSettingsSet($indexMock, array $settings, array $userData = null) : void
+    protected function assertSettingsSet($indexMock, array $settings, array $userData = null): void
     {
         if (! empty($settings)) {
             $indexMock->shouldReceive('setSettings')->once()->with($settings)->andReturn($this->mockResponse());
         }
 
         if (! empty($userData)) {
-            $indexMock->shouldReceive('setSettings')->once()->with(['userData' => @json_encode($userData)])->andReturn($this->mockResponse());
+            $indexMock->shouldReceive('setSettings')->once()->with(['userData' => @json_encode($userData)])
+                ->andReturn($this->mockResponse());
         }
     }
 

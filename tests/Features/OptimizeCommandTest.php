@@ -12,10 +12,24 @@ final class OptimizeCommandTest extends TestCase
 {
     public function testCreationOfLocalSettings(): void
     {
+        $this->loadMigrationsFrom(database_path('migrations'));
+        $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
+
+        factory(User::class)->create();
+
         $this->mockIndex(User::class, $this->defaults());
 
         Artisan::call('scout:optimize', ['searchable' => User::class]);
 
         $this->assertLocalHas($this->local());
+    }
+
+    public function testThatRequiresARowOnTheDatabase(): void
+    {
+        $this->mockIndex(User::class, $this->defaults());
+
+        Artisan::call('scout:optimize', ['searchable' => User::class]);
+
+        $this->assertFileNotExists(config_path('scout-users.php'));
     }
 }

@@ -26,15 +26,20 @@ final class ReimportCommandTest extends TestCase
         $client = $this->mockClient();
 
         $userOriginalIndex = $this->mockIndex(User::class);
+
+        // To check if index exists.
+        $userOriginalIndex->shouldReceive('search')->once()->andReturn(['hits' => []]);
+
         $userTemporaryIndex = $this->mockIndex('temp_'.(new User())->searchableAs());
 
-        $client->shouldReceive('copyIndex')->with($userOriginalIndex->getIndexName(), $userTemporaryIndex->getIndexName(), [
-            'scope' => [
-                'settings',
-                'synonyms',
-                'rules',
-            ],
-        ])->andReturn($this->mockResponse());
+        $client->shouldReceive('copyIndex')
+            ->with($userOriginalIndex->getIndexName(), $userTemporaryIndex->getIndexName(), [
+                'scope' => [
+                    'settings',
+                    'synonyms',
+                    'rules',
+                ],
+            ])->andReturn($this->mockResponse());
 
         $userTemporaryIndex->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';

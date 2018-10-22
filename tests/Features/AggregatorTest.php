@@ -44,7 +44,7 @@ final class AggregatorTest extends TestCase
         Wall::bootSearchable();
 
         $usersIndexMock = $this->mockIndex('users');
-        $wallIndexMock = $this->mockIndex('walls');
+        $wallIndexMock = $this->mockIndex('wall');
 
         $usersIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
             return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'App\User::1';
@@ -74,7 +74,7 @@ final class AggregatorTest extends TestCase
         Wall::bootSearchable();
 
         $threadIndexMock = $this->mockIndex(Thread::class);
-        $wallIndexMock = $this->mockIndex('walls');
+        $wallIndexMock = $this->mockIndex('wall');
 
         $threadIndexMock->shouldReceive('saveObjects')->once();
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
@@ -100,7 +100,7 @@ final class AggregatorTest extends TestCase
     {
         Wall::bootSearchable();
 
-        $wallIndexMock = $this->mockIndex('walls');
+        $wallIndexMock = $this->mockIndex('wall');
 
         // Laravel Scout restore calls twice the save objects.
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
@@ -123,7 +123,7 @@ final class AggregatorTest extends TestCase
 
         $this->app['config']->set('scout.soft_delete', true);
 
-        $wallIndexMock = $this->mockIndex('walls');
+        $wallIndexMock = $this->mockIndex('wall');
 
         // Laravel Scout force Delete calls once the save() method.
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
@@ -145,7 +145,7 @@ final class AggregatorTest extends TestCase
         Wall::bootSearchable();
 
         $threadIndexMock = $this->mockIndex(Thread::class);
-        $wallIndexMock = $this->mockIndex('walls');
+        $wallIndexMock = $this->mockIndex('wall');
 
         $threadIndexMock->shouldReceive('saveObjects')->once();
         $wallIndexMock->shouldReceive('saveObjects')->twice();
