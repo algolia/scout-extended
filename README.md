@@ -36,9 +36,9 @@ After installing Scout Extended, you should publish the Scout configuration usin
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
 
-Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to make searchable. This trait will register a model observer to keep the model in sync with your search driver:
+Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to make searchable. This trait will register a model observer to keep the model in sync with algolia:
 
-```
+```php
 <?php
 
 namespace App;
@@ -54,21 +54,19 @@ class Post extends Model
 
 ## 🔎 Optimize the search experience
 
-Performance is important. However, in order for a search to be successful, results need to be relevant to the user. Scout Extended provides an optimize `Artisan` command that you may use to optimize the search experience based on information from the searchable class:
+Performance is important. However, in order for a search to be successful, results need to be relevant to the user. Scout Extended provides an `scout:optimize` Artisan command that you may use to optimize the search experience based on information from the searchable class:
 
 ```bash
 php artisan scout:optimize
 ```
 
-With Scout Extended, `Artisan` automatically detects the `searchable` classes of your project. But fell free
-to specify the `searchable` class to optimize:
+With Scout Extended, Artisan automatically detects the `searchable` classes of your project. But feel free to specify the `searchable` class to optimize:
 
 ```bash
 php artisan scout:optimize "App\Thread"
 ```
 
-After running the optimize command, you may need to edit the created
-settings in `config/scout-threads.php`:
+The Artisan command `scout:optimize` will do is best to generate the settings of your searchable class index, but you may need to edit those settings in `config/scout-threads.php`:
 
 ```php
 <?php
@@ -104,13 +102,13 @@ return [
     */
 
     'customRanking' => ['desc(reply_count)', 'desc(updated_at)', 'desc(created_at)'],
-    
+
     // ...
 ];
 
 ```
 
-Once you have verified the settings file, all you need to do is synchronize the settings with Algolia using the `Artisan` command sync:
+Once you have verified the settings file, all you need to do is synchronize the settings with Algolia using the `scout:sync` Artisan command:
 
  ```bash
  php artisan scout:sync
@@ -118,9 +116,9 @@ Once you have verified the settings file, all you need to do is synchronize the 
 
 > **Note:** You may also edit the settings of your index using the Algolia Dashboard. Make sure you apply those remote settings locally running the sync command.
 
-## 🚀 Zero Downtime deployment
+## 🚀 Zero Downtime Deployments
 
-In order to keep your existing service running while re-importing your data, we recommend the usage of the reimport `Artisan` command.
+In order to keep your existing service running while re-importing your data, we recommend the usage of the `scout:reimport` Artisan command.
 
  ```bash
  php artisan scout:reimport
@@ -132,7 +130,7 @@ In order to keep your existing service running while re-importing your data, we 
 
 ## ✅ Status
 
-If you are not sure about the current status of your indexes, you can always run the status `Artisan` command to make sure that your records and your settings are up-to-date:
+If you are not sure about the current status of your indexes, you can always run the `scout:status` Artisan command to make sure that your records and your settings are up-to-date:
 
  ```bash
  php artisan scout:status
@@ -144,14 +142,14 @@ Scout Extended provides a clean way of implement site-wide search amongst multip
 
 ### Generating Aggregators
 
-To create a new aggregator, use the Make Aggregator `Artisan` command. This command will create a new aggregator class in the `app/Search` directory. Don't worry if this directory does not exist in your application, since it will be created the first time you run the command.
+To create a new aggregator, use the `scout:make-aggregator` Artisan command. This command will create a new aggregator class in the `app/Search` directory. Don't worry if this directory does not exist in your application since it will be created the first time you run the command.
 
  ```bash
 php artisan make:aggregator News
  ```
- 
+
 ### Aggregator Structure
- 
+
 After generating your aggregator, you should fill in the models property of the class, which will be used to identify the models that should be aggregated:
 
 ```php
@@ -178,11 +176,11 @@ class News extends Aggregator
 
 For performance reasons, objects in Algolia should be 10kb or less. Large records can be split into smaller documents by splitting on a logical chunk such as paragraphs or sentences.
 
-To split an attribute, your searchable class must a `splitAttribute` method. This means, if you want to split the body attribute, the method name will be `splitBody`.
+To split an attribute, your searchable class must a `splitAttribute` method. This means, if you want to split the `body attribute, the method name will be `splitBody`.
 
 ### Split using the value
 
-The most basic way of split a record is doing it directily on the searchable class:
+The most basic way of split a record is doing it directly on the searchable class:
 
 ```php
 <?php
@@ -210,7 +208,7 @@ class Article extends Model
 
 ### Split using a splitter
 
-Of course, sometimes you will need to isolate the split logic into a separtily class. 
+Of course, sometimes you will need to isolate the splitting logic into a dedicated class.
 
 ```php
 <?php
@@ -239,7 +237,7 @@ class Article extends Model
 
 ### Writing Splitters
 
-You may want to isolate the split logic into a class. One of the primary benefits of creating a `Splitter` class is the ability to type-hint any dependencies your splitter may need in its constructor. The declared dependencies will automatically be resolved and injected into the splitter instance.
+One of the primary benefits of creating a `Splitter` class is the ability to type-hint any dependencies your splitter may need in its constructor. The declared dependencies will automatically be resolved and injected into the splitter instance.
 
 Writing a splitter is simple. Create a new `Invokable` class, and the `__invoke` method should split the given `$value` as needed:
 
