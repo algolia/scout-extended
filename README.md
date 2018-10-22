@@ -26,7 +26,7 @@ This package is **still in development**. It's not ready for use.
 - **[PHP 7.1.3+](https://php.net/releases/)**
 - **[Laravel 5.6+](https://github.com/laravel/laravel)**
 
-First, install Scout via the [Composer](https://getcomposer.org) package manager:
+First, install Scout Extended via the [Composer](https://getcomposer.org) package manager:
 
 ```bash
 composer require algolia/scout-extended
