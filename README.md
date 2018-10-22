@@ -8,7 +8,7 @@
   </p>
 
   <p align="center">
-    <a href="https://travis-ci.org/algolia/scout-extended"><img src="https://img.shields.io/travis/algolia/scout-extended/develop.svg" alt="Build Status"></img></a>
+    <a href="https://travis-ci.org/algolia/scout-extended"><img src="https://img.shields.io/travis/algolia/scout-extended/master.svg" alt="Build Status"></img></a>
     <a href="https://scrutinizer-ci.com/g/algolia/scout-extended"><img src="https://img.shields.io/scrutinizer/g/algolia/scout-extended.svg" alt="Quality Score"></img></a>
     <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/d/total.svg" alt="Total Downloads"></a>
     <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/v/stable.svg" alt="Latest Version"></a>
@@ -20,8 +20,6 @@
 
 ## ⬇️ Installation
 
-This package is **still in development**. It's not ready for use.
-
 > **Requires:**
 - **[PHP 7.1.3+](https://php.net/releases/)**
 - **[Laravel 5.6+](https://github.com/laravel/laravel)**
@@ -32,10 +30,26 @@ First, install Scout Extended via the [Composer](https://getcomposer.org) packag
 composer require algolia/scout-extended
 ```
 
-After installing Scout Extended, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `scout.php configuration file to your config directory:
+After installing Scout Extended, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `scout.php` configuration file to your config directory:
 
 ```bash
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
+```
+
+Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to make searchable. This trait will register a model observer to keep the model in sync with your search driver:
+
+```
+<?php
+
+namespace App;
+
+use Laravel\Scout\Searchable;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    use Searchable;
+}
 ```
 
 ## 🔎 Optimize the search experience
@@ -90,8 +104,8 @@ return [
     */
 
     'customRanking' => ['desc(reply_count)', 'desc(updated_at)', 'desc(created_at)'],
-
-	 // ...
+    
+    // ...
 ];
 
 ```
@@ -112,8 +126,7 @@ In order to keep your existing service running while re-importing your data, we 
  php artisan scout:reimport
  ```
 
- To ensure that searches performed on the index during the rebuild will not be interrupted.
- Scout Extended creates a temporary index with all your records before moving the temporary index to the target index
+ To ensure that searches performed on the index during the rebuild will not be interrupted. Scout Extended creates a temporary index with all your records before moving the temporary index to the target index
 
  > **Note:** TODO about the plan.
 
