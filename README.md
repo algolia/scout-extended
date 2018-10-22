@@ -105,7 +105,6 @@ return [
 
     // ...
 ];
-
 ```
 
 Once you have verified the settings file, all you need to do is synchronize the settings with Algolia using the `scout:sync` Artisan command:
@@ -138,7 +137,7 @@ If you are not sure about the current status of your indexes, you can always run
 
 ## ⚡️ Aggregators
 
-Scout Extended provides a clean way of implement site-wide search amongst multiple models.
+Scout Extended provides a clean way to implement site-wide search among multiple models.
 
 ### Generating Aggregators
 
@@ -172,6 +171,7 @@ class News extends Aggregator
     ];
 }
 ```
+
 ## ✂️ Split Records & Distinct
 
 For performance reasons, objects in Algolia should be 10kb or less. Large records can be split into smaller documents by splitting on a logical chunk such as paragraphs or sentences.
@@ -282,7 +282,6 @@ class CustomSplitter
         return $values;
     }
 }
-
 ```
 
 ## Features
