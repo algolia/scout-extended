@@ -4,7 +4,7 @@
   </a>
 
   <p align="center">
-    Scout Extended was created by, and is maintained by <a href="https://github.com/algolia">Algolia</a>, and extends <a href="https://github.com/laravel/scout">Laravel Scout</a>'s Algolia driver adding Algolia-specific features.
+    Scout Extended extends <a href="https://github.com/laravel/scout">Laravel Scout</a> adding algolia-specific features.
   </p>
 
   <p align="center">
