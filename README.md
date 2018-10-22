@@ -1,6 +1,22 @@
-## ⚙️ About Scout Extended
+<p align="center">
+  <a href="https://www.algolia.com">
+    <img alt="React InstantSearch" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-logo-light.png" width="250">
+  </a>
 
-Scout Extended was created by, and is maintained by [Algolia](https://github.com/algolia), and extends [Laravel Scout](https://github.com/laravel/scout)'s Algolia driver adding **Algolia-specific features**.
+  <p align="center">
+    Scout Extended was created by, and is maintained by [Algolia](https://github.com/algolia), and extends [Laravel Scout](https://github.com/laravel/scout)'s Algolia driver adding **Algolia-specific features**.
+  </p>
+  
+  <p align="center">
+    <a href="https://travis-ci.org/algolia/scout-extended"><img src="https://img.shields.io/travis/algolia/scout-extended/develop.svg" alt="Build Status"></img></a>
+    <a href="https://scrutinizer-ci.com/g/algolia/scout-extended"><img src="https://img.shields.io/scrutinizer/g/algolia/scout-extended.svg" alt="Quality Score"></img></a>
+    <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/d/total.svg" alt="Total Downloads"></a>
+    <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/v/stable.svg" alt="Latest Version"></a>
+    <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/license.svg" alt="License"></a>
+  </p>
+</p>
+
+---
 
 ## ⬇️ Installation
 
@@ -25,9 +41,7 @@ php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 
 ## 🔎 Optimize the search experience
 
-Performance is important. However, in order for a search to be successful,
-results need to be relevant to the user. Scout Extended provides an optimize
-`Artisan` command that you may use to optimize the search experience based on information from the searchable class:
+Performance is important. However, in order for a search to be successful, results need to be relevant to the user. Scout Extended provides an optimize `Artisan` command that you may use to optimize the search experience based on information from the searchable class:
 ```bash
 php artisan scout:optimize
 ```
@@ -43,7 +57,6 @@ settings in `config/scout-threads.php`.
 
 Once you have verified the settings file, all you need to do is synchronize
 the settings with Algolia using the `Artisan` command sync:
-
  ```bash
  php artisan scout:sync
  ```
@@ -111,7 +124,11 @@ class News extends Aggregator
 
 For performance reasons, objects in Algolia should be 10kb or less. Large records can be split into smaller documents by splitting on a logical chunk such as paragraphs or sentences.
 
+To split an attribute, your searchable class must a `splitAttribute` method. This means, if you want to split the body attribute, the method name will be `splitBody`.
+
 ### Split using the value
+
+The most basic way of split a record is doing it directily on the searchable class:
 
 ```php
 <?php
@@ -120,7 +137,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Thread extends Model
+class Article extends Model
 {
 	 use Searchable;
 
@@ -128,7 +145,7 @@ class Thread extends Model
      * Splits the given value.
      *
      * @param  string $value
-     * @return string[]
+     * @return mixed
      */
     public function splitBody($value)
     {
@@ -139,6 +156,8 @@ class Thread extends Model
 
 ### Split using a splitter
 
+Of course, sometimes you will need to isolate the split logic into a separtily class. 
+
 ```php
 <?php
 
@@ -147,7 +166,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 
-class Thread extends Model
+class Article extends Model
 {
 	 use Searchable;
 
@@ -155,16 +174,18 @@ class Thread extends Model
      * Splits the given value.
      *
      * @param  string $value
-     * @return string[]
+     * @return mixed
      */
     public function splitBody($value)
     {
-        return HtmlSplitter::by('p');
+        return HtmlSplitter::class; // You can also return an instance instead of the class name.
     }
 }
 ```
 
 ### Writing Splitters
+
+You may want to isolate the split logic into a class. One of the primary benefits of creating a `Splitter` class is the ability to type-hint any dependencies your splitter may need in its constructor. The declared dependencies will automatically be resolved and injected into the splitter instance.
 
 Writing a splitter is simple. Create a new `Invokable` class, and the `__invoke` method should split the given `$value` as needed:
 
@@ -173,27 +194,44 @@ Writing a splitter is simple. Create a new `Invokable` class, and the `__invoke`
 
 namespace App\Splitters;
 
+use App\Contracts\SplitterService;
+
 class CustomSplitter
 {
+	 /**
+     * @var \App\Contracts\SplitterService
+     */
+    protected $service;
+
+	 /**
+     * Creates a new instance of the class.
+     *
+     * @param  \App\Contracts\SplitterService $service
+     *
+     * @return void
+     */
+    public function __construct(SplitterService $service)
+    {
+    	 $this->service = $service;
+    }
+
     /**
      * Splits the given value.
      *
      * @param  object $searchable
-     * @param  string $value
+     * @param  mixed $value
      *
      * @return array
      */
     public function __invoke($searchable, $value)
     {
-    	 $values = [$value];
+    	 $values = $this->service->split($searchable->articleType, $value);
 
         return $values;
     }
 }
 
 ```
-
-
 
 ## Features
 
