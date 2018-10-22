@@ -109,9 +109,9 @@ return [
 
 Once you have verified the settings file, all you need to do is synchronize the settings with Algolia using the `scout:sync` Artisan command:
 
- ```bash
- php artisan scout:sync
- ```
+```bash
+php artisan scout:sync
+```
 
 > **Note:** You may also edit settings using the Algolia Dashboard. But make sure you apply those settings locally running the `scout:sync` Artisan command.
 
@@ -119,9 +119,9 @@ Once you have verified the settings file, all you need to do is synchronize the 
 
 In order to keep your existing service running while reimporting your data, we recommend the usage of the `scout:reimport` Artisan command.
 
- ```bash
- php artisan scout:reimport
- ```
+```bash
+php artisan scout:reimport
+```
 
 To ensure that searches performed on the index during the rebuild will not be interrupted. Scout Extended creates a temporary index with all your records before moving the temporary index to the target index
 
@@ -131,9 +131,9 @@ To ensure that searches performed on the index during the rebuild will not be in
 
 If you are not sure about the current status of your indexes, you can always run the `scout:status` Artisan command to make sure that your records and your settings are up-to-date:
 
- ```bash
- php artisan scout:status
- ```
+```bash
+php artisan scout:status
+```
 
 ## ⚡️ Aggregators
 
@@ -143,9 +143,9 @@ Scout Extended provides a clean way to implement site-wide search among multiple
 
 To create a new aggregator, use the `scout:make-aggregator` Artisan command. This command will create a new aggregator class in the `app/Search` directory. Don't worry if this directory does not exist in your application since it will be created the first time you run the command.
 
- ```bash
+```bash
 php artisan make:aggregator News
- ```
+```
 
 After generating your aggregator, you should fill in the models property of the class, which will be used to identify the models that should be aggregated:
 
