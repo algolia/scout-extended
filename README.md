@@ -1,12 +1,12 @@
 <p align="center">
   <a href="https://www.algolia.com">
-    <img alt="React InstantSearch" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-logo-light.png" width="250">
+    <img alt="Scout Extended" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-logo-light.png" width="250">
   </a>
 
   <p align="center">
-    Scout Extended was created by, and is maintained by [Algolia](https://github.com/algolia), and extends [Laravel Scout](https://github.com/laravel/scout)'s Algolia driver adding **Algolia-specific features**.
+    Scout Extended was created by, and is maintained by <a href="https://github.com/algolia">Algolia</a>, and extends <a href="https://github.com/laravel/scout">Laravel Scout</a>'s Algolia driver adding Algolia-specific features.
   </p>
-  
+
   <p align="center">
     <a href="https://travis-ci.org/algolia/scout-extended"><img src="https://img.shields.io/travis/algolia/scout-extended/develop.svg" alt="Build Status"></img></a>
     <a href="https://scrutinizer-ci.com/g/algolia/scout-extended"><img src="https://img.shields.io/scrutinizer/g/algolia/scout-extended.svg" alt="Quality Score"></img></a>
