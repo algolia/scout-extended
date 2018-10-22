@@ -215,25 +215,60 @@ echo get_class($models[0]); // "App\Article"
 echo get_class($models[1]); // "App\Event"
 ```
 
-## ✂️ Split Records & Distinct
+## 🏗 Builder Macros
+
+Scout Extended adds a few methods to the Laravel Scout's builder class.
+
+#### `count()`
+
+The `count` method returns the number of hits matched by the query.
+
+```php
+$count = Article::search('query')->count();
+```
+
+#### `with()`
+
+The `with` method gives you complete access to customize **search** [API parameters](https://www.algolia.com/doc/api-reference/search-api-parameters). 
+
+```php
+$models = Article::search('query')
+    ->with([
+        'hitsPerPage' => 30,
+        'filters' => 'attribute:value',
+        'typoTolerance' => false,
+    ])->get();
+```
+
+#### `aroundLatLng()`
+
+The `aroundLatLng ` method will add geolocation parameter to the search request. You can define a point with its coordinate. This method is pure syntactic sugar, you can use the method `with` to specify more location details such us `aroundRadius` or `aroundLatLngViaIP`.
+
+```
+$models = Article::search('query')
+    ->aroundLatLng(48.8588536, 2.3125377)
+    ->get();
+```
+
+## ✂️ Split Records
 
 For performance reasons, objects in Algolia should be 10kb or less. Large records can be split into smaller documents by splitting on a logical chunk such as paragraphs or sentences.
 
 To split an attribute, your searchable class must implement a `splitAttribute` method. This means that if you want to split the `body` attribute, the method name will be `splitBody`.
 
-### Basic directly on the searchable class
+### Split directly on the searchable class
 The most basic way of split a record is doing it directly on the searchable class:
 
 ```php
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-	 use Searchable;
+    use Searchable;
 
     /**
      * Splits the given value.
@@ -255,14 +290,14 @@ Of course, sometimes you will need to isolate the splitting logic into a dedicat
 ```php
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 
 class Article extends Model
 {
-	 use Searchable;
+    use Searchable;
 
     /**
      * Splits the given value.
@@ -325,6 +360,34 @@ class CustomSplitter
     }
 }
 ```
+
+### Distinct
+
+Distinct functionality allows you to force the algolia to return distinct results based on one attribute defined in `attributeForDistinct`. Using this attribute, you can limit the number of returned records that contain the same value in that attribute.
+
+In order to use the distinct functionality, you should configure the `attributeForDistinct` in your `config/scout-{index-name}.php` configuration file:
+
+```
+    // ...
+    /*
+    |--------------------------------------------------------------------------
+    | Distinct
+    |--------------------------------------------------------------------------
+    |
+    | Using this attribute, you can limit the number of returned records that contain the same
+    | value in that attribute. For example, if the distinct attribute is the series_name and
+    | several hits (Episodes) have the same value for series_name (Laravel From Scratch).
+    |
+    | Example: 'null', 'id', 'name'
+    |
+    */
+
+    'distinct' => true,
+    'attributeForDistinct' => 'slug',
+    // ...
+```
+
+> **Note:** If the `config/scout-{index-name}.php` file doesn't exist, it will be created when you run the `scout:sync` Artisan command.
 
 ## Features
 
