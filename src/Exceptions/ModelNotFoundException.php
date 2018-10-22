@@ -30,7 +30,7 @@ final class ModelNotFoundException extends RuntimeException
     /**
      * Sets the effected model.
      *
-     * @param string
+     * @param string $model
      *
      * @return void
      */
