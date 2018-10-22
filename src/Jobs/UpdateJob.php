@@ -157,7 +157,7 @@ final class UpdateJob
                         $pieces = $result;
                         break;
                     case is_string($result):
-                        $pieces = (new $result)($model, $value);
+                        $pieces = app($result)($model, $value);
                         break;
                     case is_object($result):
                         $pieces = $result->__invoke($model, $value);
