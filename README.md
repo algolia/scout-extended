@@ -60,7 +60,7 @@ Performance is important. However, in order for a search to be successful, resul
 php artisan scout:optimize
 ```
 
-With Scout Extended, Artisan automatically detects the `searchable` classes of your project. But feel free to specify the `searchable` class to optimize:
+Scout Extended automatically detects `searchable` classes. But feel free to specify the `searchable` class to optimize:
 
 ```bash
 php artisan scout:optimize "App\Thread"
@@ -113,17 +113,17 @@ Once you have verified the settings file, all you need to do is synchronize the 
  php artisan scout:sync
  ```
 
-> **Note:** You may also edit the settings of your index using the Algolia Dashboard. Make sure you apply those remote settings locally running the sync command.
+> **Note:** You may also edit settings using the Algolia Dashboard. But make sure you apply those settings locally running the `scout:sync` Artisan command.
 
 ## 🚀 Zero Downtime Deployments
 
-In order to keep your existing service running while re-importing your data, we recommend the usage of the `scout:reimport` Artisan command.
+In order to keep your existing service running while reimporting your data, we recommend the usage of the `scout:reimport` Artisan command.
 
  ```bash
  php artisan scout:reimport
  ```
 
- To ensure that searches performed on the index during the rebuild will not be interrupted. Scout Extended creates a temporary index with all your records before moving the temporary index to the target index
+To ensure that searches performed on the index during the rebuild will not be interrupted. Scout Extended creates a temporary index with all your records before moving the temporary index to the target index
 
  > **Note:** TODO about the plan.
 
@@ -139,15 +139,13 @@ If you are not sure about the current status of your indexes, you can always run
 
 Scout Extended provides a clean way to implement site-wide search among multiple models.
 
-### Generating Aggregators
+### Defining aggregators
 
 To create a new aggregator, use the `scout:make-aggregator` Artisan command. This command will create a new aggregator class in the `app/Search` directory. Don't worry if this directory does not exist in your application since it will be created the first time you run the command.
 
  ```bash
 php artisan make:aggregator News
  ```
-
-### Aggregator Structure
 
 After generating your aggregator, you should fill in the models property of the class, which will be used to identify the models that should be aggregated:
 
@@ -172,14 +170,58 @@ class News extends Aggregator
 }
 ```
 
+To register an Aggregator, use the `bootSearchable` method on the aggregator you wish to register. For this, you should use the boot method of one of your service providers. In this example, we'll register the aggregator in the `AppServiceProvider`:
+
+```php
+<?php
+
+namespace App\Providers;
+
+use App\Search\News;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        News::bootSearchable();
+    }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+}
+```
+
+### Searching
+
+An aggregator is a normal searchable class, and, as usual, you may begin searching models on the aggregator using the `search` method. You may need to prepare your code to receive different models instances while searching.
+
+```php
+$models = App\Search\News::search('Laravel')->get();
+
+echo get_class($models[0]); // "App\Article"
+echo get_class($models[1]); // "App\Event"
+```
+
 ## ✂️ Split Records & Distinct
 
 For performance reasons, objects in Algolia should be 10kb or less. Large records can be split into smaller documents by splitting on a logical chunk such as paragraphs or sentences.
 
-To split an attribute, your searchable class must a `splitAttribute` method. This means, if you want to split the `body attribute, the method name will be `splitBody`.
+To split an attribute, your searchable class must implement a `splitAttribute` method. This means that if you want to split the `body` attribute, the method name will be `splitBody`.
 
-### Split using the value
-
+### Basic directly on the searchable class
 The most basic way of split a record is doing it directly on the searchable class:
 
 ```php

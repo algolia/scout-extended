@@ -25,6 +25,8 @@ class AlgoliaEngine extends BaseAlgoliaEngine
 {
     /**
      * @param \Algolia\AlgoliaSearch\Client $algolia
+     *
+     * @return void
      */
     public function setClient(Client $algolia): void
     {
