@@ -425,11 +425,45 @@ $analytics = Algolia::analytics();
 $test = $analytics->getABTest(42);
 ```
 
-## 🎨 Scout & Vue InstantSearch
+## 🎨 Scout & Vue InstantSearch (Not ready to test)
 
 This package contains a blade directive to provide easy integration with Vue InstantSearch.
 
-TODO...
+### Installation
+
+```bash
+npm install
+npm install --save vue-instantsearch
+```
+
+Then, open up your `resources/assets/js/app.js` and add:
+
+```javascript
+import InstantSearch from 'vue-instantsearch';
+Vue.use(InstantSearch);
+```
+
+### Usage
+
+```html
+    @scout(['searchable' => 'App\Article'])
+
+    <ais-input placeholder="Search contacts..."></ais-input>
+
+    <ais-results>
+       <template scope="{ result }">
+           <div>
+               <h1>@{{ result.name }}</h1>
+               <h4>@{{ result.company }} - @{{ result.state }}</h4>
+               <ul>
+                   <li>@{{ result.email }}</li>
+               </ul>
+           </div>
+       </template>
+    </ais-results>
+
+    @endscout
+```
 
 ## 🤫 Others
 
