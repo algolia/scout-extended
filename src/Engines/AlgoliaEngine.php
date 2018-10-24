@@ -24,6 +24,24 @@ use Laravel\Scout\Engines\AlgoliaEngine as BaseAlgoliaEngine;
 class AlgoliaEngine extends BaseAlgoliaEngine
 {
     /**
+     * The Algolia client.
+     *
+     * @var \Algolia\AlgoliaSearch\Client $algolia
+     */
+    protected $algolia;
+
+    /**
+     * Create a new engine instance.
+     *
+     * @param  \Algolia\AlgoliaSearch\Client $algolia
+     * @return void
+     */
+    public function __construct(Client $algolia)
+    {
+        $this->algolia = $algolia;
+    }
+
+    /**
      * @param \Algolia\AlgoliaSearch\Client $algolia
      *
      * @return void
@@ -61,5 +79,18 @@ class AlgoliaEngine extends BaseAlgoliaEngine
         $ids = collect($results['hits'])->pluck('objectID')->values()->all();
 
         return resolve(ModelsResolver::class)->from($builder, $searchable, $ids);
+    }
+
+    /**
+     * Flush all of the model's records from the engine.
+     *
+     * @param  object $model
+     * @return void
+     */
+    public function flush($model)
+    {
+        $index = $this->algolia->initIndex($model->searchableAs());
+
+        $index->clear();
     }
 }

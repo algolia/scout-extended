@@ -92,7 +92,7 @@ final class UpdateJob
                 $objects = $this->splitSearchable($searchable, $array);
 
                 foreach ($objects as $part => $object) {
-                    $object['objectID'] = ObjectIdEncrypter::encrypt($searchable, $part);
+                    $object['objectID'] = ObjectIdEncrypter::encrypt($searchable, (int) $part);
                     $objectsToSave[] = $object;
                 }
                 $searchablesToDelete[] = $searchable;
