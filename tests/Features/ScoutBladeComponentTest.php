@@ -12,10 +12,9 @@ final class ScoutBladeComponentTest extends TestCase
     {
         $client = $this->mockClient();
 
-        ($listApiKeysResponse = $this->mockResponse())->shouldReceive('getBody')->andReturn(['keys' => []]);
-        $client->shouldReceive('listApiKeys')->andReturn($listApiKeysResponse);
+        $client->shouldReceive('listApiKeys')->andReturn(['keys' => []]);
 
-        ($addApiKeyResponse = $this->mockResponse())->shouldReceive('getBody')->andReturn(['key' => 'fakeApiKey']);
+        ($addApiKeyResponse = $this->mockResponse())->shouldReceive('getBody')->andReturn();
         $client->shouldReceive('addApiKey')->andReturn($addApiKeyResponse);
 
         $client->shouldReceive('generateSecuredApiKey')->andReturn('fakeSecuredApiKey');
