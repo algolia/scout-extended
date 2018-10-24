@@ -12,6 +12,6 @@ class Thread extends Model
     protected $fillable = [
         'body',
         'slug',
-        'description_at_the_letter'
+        'description_at_the_letter',
     ];
 }
