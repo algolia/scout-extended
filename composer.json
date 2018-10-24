@@ -5,8 +5,12 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "Nuno Maduro",
+            "email": "enunomaduro@gmail.com"
+        },
+        {
             "name": "Algolia Team",
-            "email": "contact@algolia.comm"
+            "email": "contact@algolia.com"
         }
     ],
     "require": {

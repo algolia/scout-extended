@@ -16,8 +16,6 @@
   </p>
 </p>
 
----
-
 ## ⬇️ Installation
 
 > **Requires:**
