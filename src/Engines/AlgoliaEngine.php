@@ -26,7 +26,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     /**
      * The Algolia client.
      *
-     * @var \Algolia\AlgoliaSearch\Client $algolia
+     * @var \Algolia\AlgoliaSearch\Client
      */
     protected $algolia;
 
