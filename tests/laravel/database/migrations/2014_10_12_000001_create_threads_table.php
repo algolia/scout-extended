@@ -13,6 +13,8 @@ final class CreateThreadsTable extends Migration
         Schema::create('threads', function (Blueprint $table) {
             $table->increments('id');
             $table->string('body');
+            $table->string('slug')->nullable();
+            $table->string('description_at_the_letter')->nullable();
             $table->timestamps();
         });
     }

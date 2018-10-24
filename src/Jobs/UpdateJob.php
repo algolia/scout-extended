@@ -89,12 +89,11 @@ final class UpdateJob
             array_push($array['_tags'], ObjectIdEncrypter::encrypt($searchable));
 
             if ($this->shouldBeSplitted($searchable)) {
-                [$pieces, $splittedBy] = $this->splitSearchable($searchable, $array);
+                $objects = $this->splitSearchable($searchable, $array);
 
-                foreach ($pieces as $number => $piece) {
-                    $array['objectID'] = ObjectIdEncrypter::encrypt($searchable, $number);
-                    $array[$splittedBy] = $piece;
-                    $objectsToSave[] = $array;
+                foreach ($objects as $part => $object) {
+                    $object['objectID'] = ObjectIdEncrypter::encrypt($searchable, $part);
+                    $objectsToSave[] = $object;
                 }
                 $searchablesToDelete[] = $searchable;
             } else {
@@ -144,31 +143,42 @@ final class UpdateJob
      */
     private function splitSearchable($searchable, array $array): array
     {
-        $splittedBy = null;
         $pieces = [];
         foreach ($array as $key => $value) {
             $method = 'split'.Str::camel((string) $key);
             $model = $searchable->getModel();
             if (method_exists($model, $method)) {
                 $result = $model->{$method}($value);
-
+                $splittedBy = $key;
+                $pieces[$splittedBy] = [];
                 switch (true) {
                     case is_array($result):
-                        $pieces = $result;
+                        $pieces[$splittedBy] = $result;
                         break;
                     case is_string($result):
-                        $pieces = app($result)($model, $value);
+                        $pieces[$splittedBy] = app($result)($model, $value);
                         break;
                     case is_object($result):
-                        $pieces = $result->__invoke($model, $value);
+                        $pieces[$splittedBy] = $result->__invoke($model, $value);
                         break;
                 }
-                $splittedBy = $key;
-                break;
             }
         }
 
-        return [$pieces, $splittedBy];
+        $objects = [[]];
+        foreach ($pieces as $splittedBy => $values) {
+            $temp = [];
+            foreach ($objects as $object) {
+                foreach ($values as $value) {
+                    $temp[] = array_merge($object, [$splittedBy => $value]);
+                }
+            }
+            $objects = $temp;
+        }
+
+        return array_map(function ($object) use ($array) {
+            return array_merge($array, $object);
+        }, $objects);
     }
 
     /**
