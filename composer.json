@@ -17,12 +17,6 @@
         "laravel/scout": "^6.0",
         "ext-json": "*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "https://github.com/nunomaduro/scout"
-        }
-    ],
     "suggest": {
         "ext-dom": "Required to use the HTML Splitter."
     },
