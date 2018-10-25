@@ -19,8 +19,8 @@
 ## ⬇️ Installation
 
 > **Requires:**
-- **[PHP 7.1+](https://php.net/releases/)**
-- **[Laravel 5.4+](https://github.com/laravel/laravel)**
+- **[PHP 7.1.3+](https://php.net/releases/)**
+- **[Laravel 5.6+](https://github.com/laravel/laravel)**
 
 First, install Scout Extended via the [Composer](https://getcomposer.org) package manager:
 
