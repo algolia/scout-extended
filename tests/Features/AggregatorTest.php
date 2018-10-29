@@ -12,13 +12,6 @@ use Tests\TestCase;
 
 final class AggregatorTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
-    }
-
     public function testWhenAggregagorIsNotBooted(): void
     {
         $usersIndexMock = $this->mockIndex('users');

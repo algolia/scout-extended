@@ -8,6 +8,7 @@ use function get_class;
 use Mockery\MockInterface;
 use Algolia\AlgoliaSearch\Index;
 use Algolia\AlgoliaSearch\Client;
+use Illuminate\Support\Facades\Artisan;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Managers\EngineManager;
@@ -23,7 +24,7 @@ class TestCase extends BaseTestCase
         $this->app->setBasePath(__DIR__.'/laravel');
 
         $this->withFactories(database_path('factories'));
-
+        Artisan::call('migrate:fresh', ['--database' => 'testbench']);
         @unlink(config_path('scout-users.php'));
     }
 

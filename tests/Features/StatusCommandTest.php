@@ -10,13 +10,6 @@ use Illuminate\Support\Facades\Artisan;
 
 final class StatusCommandTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
-    }
-
     public function testStatus(): void
     {
         $usersIndex = $this->mockIndex(User::class, $this->defaults());

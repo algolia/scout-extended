@@ -12,8 +12,6 @@ final class OptimizeCommandTest extends TestCase
 {
     public function testCreationOfLocalSettings(): void
     {
-        $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
-
         factory(User::class)->create();
 
         $this->mockIndex(User::class, $this->defaults());

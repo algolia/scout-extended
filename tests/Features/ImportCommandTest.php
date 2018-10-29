@@ -14,13 +14,6 @@ use Illuminate\Support\Facades\Artisan;
 
 final class ImportCommandTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
-    }
-
     public function testImport(): void
     {
         Wall::bootSearchable();

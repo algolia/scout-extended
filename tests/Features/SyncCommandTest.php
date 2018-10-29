@@ -25,9 +25,6 @@ final class SyncCommandTest extends TestCase
 
     public function testWhenLocalSettingsNotFoundWithOptimize(): void
     {
-        $this->loadMigrationsFrom(database_path('migrations'));
-        $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
-
         factory(User::class)->create();
 
         $this->mockIndex(User::class, array_merge($this->defaults(), $this->local()));

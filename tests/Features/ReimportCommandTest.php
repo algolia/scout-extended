@@ -11,13 +11,6 @@ use Illuminate\Support\Facades\Artisan;
 
 final class ReimportCommandTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
-    }
-
     public function testReimport(): void
     {
         factory(User::class, 5)->create();

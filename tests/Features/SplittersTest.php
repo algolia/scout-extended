@@ -12,13 +12,6 @@ use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 
 final class SplittersTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
-    }
-
     public function testRecordsAreSplittedByASplitter(): void
     {
         $index = $this->mockIndex(ThreadWithSplitterClass::class);
