@@ -366,23 +366,23 @@ Distinct functionality allows you to force the algolia to return distinct result
 In order to use the distinct functionality, you should configure the `attributeForDistinct` in your `config/scout-{index-name}.php` configuration file:
 
 ```
-    // ...
-    /*
-    |--------------------------------------------------------------------------
-    | Distinct
-    |--------------------------------------------------------------------------
-    |
-    | Using this attribute, you can limit the number of returned records that contain the same
-    | value in that attribute. For example, if the distinct attribute is the series_name and
-    | several hits (Episodes) have the same value for series_name (Laravel From Scratch).
-    |
-    | Example: 'null', 'id', 'name'
-    |
-    */
+// ...
+/*
+|--------------------------------------------------------------------------
+| Distinct
+|--------------------------------------------------------------------------
+|
+| Using this attribute, you can limit the number of returned records that contain the same
+| value in that attribute. For example, if the distinct attribute is the series_name and
+| several hits (Episodes) have the same value for series_name (Laravel From Scratch).
+|
+| Example: 'null', 'id', 'name'
+|
+*/
 
-    'distinct' => true,
-    'attributeForDistinct' => 'slug',
-    // ...
+'distinct' => true,
+'attributeForDistinct' => 'slug',
+// ...
 ```
 
 > **Note:** If the `config/scout-{index-name}.php` file doesn't exist, it will be created when you run the `scout:sync` Artisan command.
@@ -446,23 +446,23 @@ Vue.use(InstantSearch);
 ### Usage
 
 ```html
-    @scout(['searchable' => 'App\Article'])
+@scout(['searchable' => 'App\Article'])
 
-    <ais-input placeholder="Search contacts..."></ais-input>
+<ais-input placeholder="Search contacts..."></ais-input>
 
-    <ais-results>
-       <template scope="{ result }">
-           <div>
-               <h1>@{{ result.name }}</h1>
-               <h4>@{{ result.company }} - @{{ result.state }}</h4>
-               <ul>
-                   <li>@{{ result.email }}</li>
-               </ul>
-           </div>
-       </template>
-    </ais-results>
+<ais-results>
+   <template scope="{ result }">
+       <div>
+           <h1>@{{ result.name }}</h1>
+           <h4>@{{ result.company }} - @{{ result.state }}</h4>
+           <ul>
+               <li>@{{ result.email }}</li>
+           </ul>
+       </div>
+   </template>
+</ais-results>
 
-    @endscout
+@endscout
 ```
 
 ## 🤫 Others
