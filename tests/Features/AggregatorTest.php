@@ -16,7 +16,6 @@ final class AggregatorTest extends TestCase
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(database_path('migrations'));
         $this->artisan('migrate:fresh', ['--database' => 'testbench'])->run();
     }
 
