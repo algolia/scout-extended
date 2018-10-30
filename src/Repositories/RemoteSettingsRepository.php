@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use Algolia\AlgoliaSearch\Index;
+use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Settings\Settings;
-use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
 /**
@@ -33,7 +33,7 @@ final class RemoteSettingsRepository
     ];
 
     /**
-     * @var \Algolia\AlgoliaSearch\Interfaces\ClientInterface
+     * @var \Algolia\AlgoliaSearch\SearchClient
      */
     private $client;
 
@@ -45,11 +45,11 @@ final class RemoteSettingsRepository
     /**
      * RemoteRepository constructor.
      *
-     * @param \Algolia\AlgoliaSearch\Interfaces\ClientInterface $client
+     * @param \Algolia\AlgoliaSearch\SearchClient $client
      *
      * @return void
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(SearchClient $client)
     {
         $this->client = $client;
     }
@@ -74,32 +74,32 @@ final class RemoteSettingsRepository
     /**
      * Find the settings of the given Index.
      *
-     * @param  \Algolia\AlgoliaSearch\Index $index
+     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
      *
      * @return \Algolia\ScoutExtended\Settings\Settings
      */
-    public function find(Index $index): Settings
+    public function find(SearchIndex $index): Settings
     {
         return new Settings($this->getSettingsRaw($index), $this->defaults());
     }
 
     /**
-     * @param \Algolia\AlgoliaSearch\Index $index
+     * @param \Algolia\AlgoliaSearch\SearchIndex $index
      * @param \Algolia\ScoutExtended\Settings\Settings $settings
      *
      * @return void
      */
-    public function save(Index $index, Settings $settings): void
+    public function save(SearchIndex $index, Settings $settings): void
     {
         $index->setSettings($settings->compiled())->wait();
     }
 
     /**
-     * @param  \Algolia\AlgoliaSearch\Index $index
+     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
      *
      * @return array
      */
-    public function getSettingsRaw(Index $index): array
+    public function getSettingsRaw(SearchIndex $index): array
     {
         try {
             $settings = $index->getSettings();
@@ -107,7 +107,7 @@ final class RemoteSettingsRepository
             $index->saveObject(['objectID' => 'temp'])->wait();
             $settings = $index->getSettings();
 
-            $index->clear();
+            $index->clearObjects();
         }
 
         foreach (self::$aliases as $from => $to) {

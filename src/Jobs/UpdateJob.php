@@ -20,9 +20,9 @@ use function is_object;
 use function is_string;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 
 /**
@@ -60,11 +60,11 @@ final class UpdateJob
     }
 
     /**
-     * @param \Algolia\AlgoliaSearch\Interfaces\ClientInterface $client
+     * @param \Algolia\AlgoliaSearch\SearchClient $client
      *
      * @return void
      */
-    public function handle(ClientInterface $client): void
+    public function handle(SearchClient $client): void
     {
         if ($this->searchables->isEmpty()) {
             return;

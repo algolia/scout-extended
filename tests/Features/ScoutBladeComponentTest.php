@@ -20,11 +20,11 @@ final class ScoutBladeComponentTest extends TestCase
         $client->shouldReceive('generateSecuredApiKey')->andReturn('fakeSecuredApiKey');
 
         $content = view()->file(resource_path('views/scout.blade.php'))->render();
-        $this->assertEquals($content, '<ais-index index-name="threads"
-           app-id=""
-           api-key="fakeSecuredApiKey">
+        $this->assertEquals($content, "<ais-instant-search index-name=\"threads\"
+           :search-client=\"__algolia.algoliasearch('', 'fakeSecuredApiKey')\">
     foo
-</ais-index>
-');
+</ais-instant-search>
+");
     }
 }
+

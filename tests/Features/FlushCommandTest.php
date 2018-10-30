@@ -13,9 +13,9 @@ final class FlushCommandTest extends TestCase
 {
     public function testClearsIndex(): void
     {
-        $this->mockIndex(User::class)->expects('clear')->once();
-        $this->mockIndex(Thread::class)->expects('clear')->once();
-        $this->mockIndex(Wall::class)->expects('clear')->once();
+        $this->mockIndex(User::class)->expects('clearObjects')->once();
+        $this->mockIndex(Thread::class)->expects('clearObjects')->once();
+        $this->mockIndex(Wall::class)->expects('clearObjects')->once();
 
         /*
          * Detects searchable models.

@@ -433,7 +433,7 @@ This package contains a blade directive to provide easy integration with Vue Ins
 
 ```bash
 npm install
-npm install --save vue-instantsearch
+npm install vue-instantsearch@alpha
 ```
 
 Then, open up your `resources/assets/js/app.js` and add:
@@ -448,19 +448,18 @@ Vue.use(InstantSearch);
 ```html
 @scout(['searchable' => 'App\Article'])
 
-<ais-input placeholder="Search contacts..."></ais-input>
+<ais-search-box/>
 
-<ais-results>
-   <template scope="{ result }">
-       <div>
-           <h1>@{{ result.name }}</h1>
-           <h4>@{{ result.company }} - @{{ result.state }}</h4>
-           <ul>
-               <li>@{{ result.email }}</li>
-           </ul>
-       </div>
-   </template>
-</ais-results>
+<ais-hits>
+  <template slot="item" slot-scope="{ item }">
+    <h2>
+      <a :href="item.url">
+        {{ item.title }}
+      </a>
+    </h2>
+    <p>{{ item.description }}</p>
+  </template>
+</ais-hits>
 
 @endscout
 ```

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended;
 
 use function is_string;
-use Algolia\AlgoliaSearch\Index;
-use Algolia\AlgoliaSearch\Analytics;
+use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\AnalyticsClient;
 use Illuminate\Contracts\Container\Container;
-use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
 final class Algolia
 {
@@ -43,9 +43,9 @@ final class Algolia
      *
      * @param  string|\Illuminate\Database\Eloquent\Model $model
      *
-     * @return \Algolia\AlgoliaSearch\Index
+     * @return \Algolia\AlgoliaSearch\SearchIndex
      */
-    public function index($model): Index
+    public function index($model): SearchIndex
     {
         $model = is_string($model) ? new $model : $model;
 
@@ -55,9 +55,9 @@ final class Algolia
     /**
      * Get a client instance.
      *
-     * @return \Algolia\AlgoliaSearch\Interfaces\ClientInterface
+     * @return \Algolia\AlgoliaSearch\SearchClient
      */
-    public function client(): ClientInterface
+    public function client(): SearchClient
     {
         return $this->container->get('algolia.client');
     }
@@ -65,9 +65,9 @@ final class Algolia
     /**
      * Get a analytics instance.
      *
-     * @return \Algolia\AlgoliaSearch\Analytics
+     * @return \Algolia\AlgoliaSearch\AnalyticsClient
      */
-    public function analytics(): Analytics
+    public function analytics(): AnalyticsClient
     {
         return $this->container->get('algolia.analytics');
     }

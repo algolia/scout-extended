@@ -15,13 +15,13 @@ namespace Algolia\ScoutExtended;
 
 use ReflectionClass;
 use Laravel\Scout\Builder;
-use Algolia\AlgoliaSearch\Analytics;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
+use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\AnalyticsClient;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Managers\EngineManager;
-use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 use Algolia\ScoutExtended\Console\Commands\SyncCommand;
 use Algolia\ScoutExtended\Console\Commands\FlushCommand;
 use Algolia\ScoutExtended\Searchable\AggregatorObserver;
@@ -79,23 +79,17 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(AlgoliaEngine::class, 'algolia.engine');
-
-        $this->app->bind(ClientInterface::class, function (): ClientInterface {
-            $engine = $this->app->make('algolia.engine');
-            $reflection = new ReflectionClass(AlgoliaEngine::class);
-            $property = $reflection->getProperty('algolia');
-            $property->setAccessible(true);
-
-            return $property->getValue($engine);
+        $this->app->bind(SearchClient::class, function (): SearchClient {
+            return $this->app->make('algolia.engine')->getClient();
         });
 
-        $this->app->alias(ClientInterface::class, 'algolia.client');
+        $this->app->alias(SearchClient::class, 'algolia.client');
 
-        $this->app->bind(Analytics::class, function (): Analytics {
-            return Analytics::create(config('scout.algolia.id'), config('scout.algolia.secret'));
+        $this->app->bind(AnalyticsClient::class, function (): AnalyticsClient {
+            return AnalyticsClient::create(config('scout.algolia.id'), config('scout.algolia.secret'));
         });
 
-        $this->app->alias(Analytics::class, 'algolia.analytics');
+        $this->app->alias(AnalyticsClient::class, 'algolia.analytics');
 
         $this->app->singleton(AggregatorObserver::class, AggregatorObserver::class);
     }

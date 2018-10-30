@@ -22,21 +22,21 @@ final class ImportCommandTest extends TestCase
 
         // Detects searchable models.
         $userIndexMock = $this->mockIndex(User::class);
-        $userIndexMock->expects('clear')->once();
+        $userIndexMock->expects('clearObjects')->once();
         $userIndexMock->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';
         }));
 
         // Detects aggregators.
         $wallIndexMock = $this->mockIndex(Wall::class);
-        $wallIndexMock->expects('clear')->once();
+        $wallIndexMock->expects('clearObjects')->once();
         $wallIndexMock->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';
         }));
 
         // Detects searchable models.
         $threadIndexMock = $this->mockIndex(Thread::class);
-        $threadIndexMock->expects('clear')->once();
+        $threadIndexMock->expects('clearObjects')->once();
 
         Artisan::call('scout:import');
     }

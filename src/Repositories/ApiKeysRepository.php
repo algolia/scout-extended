@@ -14,14 +14,17 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Repositories;
 
 use function is_string;
+use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Contracts\Cache\Repository;
-use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
 /**
  * @internal
  */
 final class ApiKeysRepository
 {
+    /**
+     * Holds the search key.
+     */
     private const SEARCH_KEY = 'scout-extended.user-data.search-key';
 
     /**
@@ -30,7 +33,7 @@ final class ApiKeysRepository
     private $cache;
 
     /**
-     * @var \Algolia\AlgoliaSearch\Interfaces\ClientInterface
+     * @var \Algolia\AlgoliaSearch\SearchClient
      */
     private $client;
 
@@ -38,11 +41,11 @@ final class ApiKeysRepository
      * ApiKeysRepository constructor.
      *
      * @param \Illuminate\Contracts\Cache\Repository $cache
-     * @param \Algolia\AlgoliaSearch\Interfaces\ClientInterface $client
+     * @param \Algolia\AlgoliaSearch\SearchClient $client
      *
      * @return void
      */
-    public function __construct(Repository $cache, ClientInterface $client)
+    public function __construct(Repository $cache, SearchClient $client)
     {
         $this->cache = $cache;
         $this->client = $client;

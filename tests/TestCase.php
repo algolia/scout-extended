@@ -6,14 +6,13 @@ namespace Tests;
 
 use function get_class;
 use Mockery\MockInterface;
-use Algolia\AlgoliaSearch\Index;
-use Algolia\AlgoliaSearch\Client;
+use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Support\Facades\Artisan;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Managers\EngineManager;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
 
 class TestCase extends BaseTestCase
 {
@@ -70,7 +69,7 @@ class TestCase extends BaseTestCase
     protected function defaults(): array
     {
         $this->mockIndex('temp-laravel-scout-extended', $defaults = require __DIR__.'/resources/defaults.php');
-        $this->app->get(ClientInterface::class)->shouldReceive('deleteIndex')->with('temp-laravel-scout-extended')
+        $this->app->get(SearchClient::class)->shouldReceive('deleteIndex')->with('temp-laravel-scout-extended')
             ->zeroOrMoreTimes();
 
         return $defaults;
@@ -127,18 +126,18 @@ class TestCase extends BaseTestCase
 
     protected function mockClient(): MockInterface
     {
-        $client = $this->app->get(ClientInterface::class);
+        $client = $this->app->get(SearchClient::class);
 
-        $clientMock = get_class($client) === 'Algolia\AlgoliaSearch\Client' ? mock(Client::class) : $client;
+        $clientMock = get_class($client) === SearchClient::class ? mock(SearchClient::class) : $client;
 
-        $this->swap(ClientInterface::class, $clientMock);
+        $this->swap(SearchClient::class, $clientMock);
 
         return $clientMock;
     }
 
     protected function mockIndex(string $model, array $settings = [], array $userData = null): MockInterface
     {
-        $indexMock = mock(Index::class);
+        $indexMock = mock(SearchIndex::class);
         $indexName = class_exists($model) ? (new $model)->searchableAs() : $model;
         $indexMock->shouldReceive('getIndexName')->zeroOrMoreTimes()->andReturn($indexName);
 
@@ -150,6 +149,7 @@ class TestCase extends BaseTestCase
         $clientMock->shouldReceive('initIndex')->zeroOrMoreTimes()->with($indexName)->andReturn($indexMock);
 
         $algoliaEngine = app(AlgoliaEngine::class);
+
         $algoliaEngine->setClient($clientMock);
 
         $engineMock = mock($algoliaEngine)->makePartial();

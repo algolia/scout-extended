@@ -16,9 +16,9 @@ namespace Algolia\ScoutExtended\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \Algolia\AlgoliaSearch\Index index(string $searchable)
- * @method static \Algolia\AlgoliaSearch\Client client()
- * @method static \Algolia\AlgoliaSearch\Analytics analytics()
+ * @method static \Algolia\AlgoliaSearch\SearchIndex index(string $searchable)
+ * @method static \Algolia\AlgoliaSearch\SearchClient client()
+ * @method static \Algolia\AlgoliaSearch\AnalyticsClient analytics()
  *
  * @see \Algolia\ScoutExtended\Algolia
  */

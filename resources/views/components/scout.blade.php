@@ -1,5 +1,4 @@
-<ais-index index-name="{{ (new $searchable)->searchableAs() }}"
-           app-id="{{ config('scout.algolia.id') }}"
-           api-key="{{ app(\Algolia\ScoutExtended\Repositories\ApiKeysRepository::class)->getSearchKey($searchable) }}">
+<ais-instant-search index-name="{{ (new $searchable)->searchableAs() }}"
+           :search-client="__algolia.algoliasearch('{{ config('scout.algolia.id') }}', '{{ app(\Algolia\ScoutExtended\Repositories\ApiKeysRepository::class)->getSearchKey($searchable) }}')">
     {{ $slot }}
-</ais-index>
+</ais-instant-search>

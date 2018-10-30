@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Jobs;
 
 use Illuminate\Support\Collection;
-use Algolia\AlgoliaSearch\Interfaces\ClientInterface;
+use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 
 /**
@@ -40,11 +40,11 @@ final class DeleteJob
     }
 
     /**
-     * @param \Algolia\AlgoliaSearch\Interfaces\ClientInterface $client
+     * @param \Algolia\AlgoliaSearch\SearchClient $client
      *
      * @return void
      */
-    public function handle(ClientInterface $client): void
+    public function handle(SearchClient $client): void
     {
         if ($this->searchables->isEmpty()) {
             return;

@@ -15,7 +15,7 @@ namespace Algolia\ScoutExtended\Settings;
 
 use function in_array;
 use function is_string;
-use Algolia\AlgoliaSearch\Index;
+use Algolia\AlgoliaSearch\SearchIndex;
 use Illuminate\Database\QueryException;
 use Algolia\ScoutExtended\Searchable\Aggregator;
 use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
@@ -116,12 +116,12 @@ final class LocalFactory
     /**
      * Creates settings for the given model.
      *
-     * @param \Algolia\AlgoliaSearch\Index $index
+     * @param \Algolia\AlgoliaSearch\SearchIndex $index
      * @param string $model
      *
      * @return \Algolia\ScoutExtended\Settings\Settings
      */
-    public function create(Index $index, string $model): Settings
+    public function create(SearchIndex $index, string $model): Settings
     {
         $attributes = $this->getAttributes($model);
         $searchableAttributes = [];

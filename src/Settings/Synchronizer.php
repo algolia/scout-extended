@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
-use Algolia\AlgoliaSearch\Index;
+use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Repositories\UserDataRepository;
 use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
@@ -76,11 +76,11 @@ class Synchronizer
     /**
      * Analyses the settings of the given index.
      *
-     * @param \Algolia\AlgoliaSearch\Index $index
+     * @param \Algolia\AlgoliaSearch\SearchIndex $index
      *
      * @return \Algolia\ScoutExtended\Settings\Status
      */
-    public function analyse(Index $index): Status
+    public function analyse(SearchIndex $index): Status
     {
         $remoteSettings = $this->remoteRepository->find($index);
 
@@ -90,11 +90,11 @@ class Synchronizer
     /**
      * Downloads the settings of the given index.
      *
-     * @param \Algolia\AlgoliaSearch\Index $index
+     * @param \Algolia\AlgoliaSearch\SearchIndex $index
      *
      * @return void
      */
-    public function download(Index $index): void
+    public function download(SearchIndex $index): void
     {
         $settings = $this->remoteRepository->find($index);
 
@@ -110,11 +110,11 @@ class Synchronizer
     /**
      * Uploads the settings of the given index.
      *
-     * @param \Algolia\AlgoliaSearch\Index $index
+     * @param \Algolia\AlgoliaSearch\SearchIndex $index
      *
      * @return void
      */
-    public function upload(Index $index): void
+    public function upload(SearchIndex $index): void
     {
         $settings = $this->localRepository->find($index);
 

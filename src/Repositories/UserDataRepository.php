@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use Algolia\AlgoliaSearch\Index;
+use Algolia\AlgoliaSearch\SearchIndex;
 
 /**
  * @internal
@@ -38,11 +38,11 @@ final class UserDataRepository
     /**
      * Find the User Data of the given Index.
      *
-     * @param  \Algolia\AlgoliaSearch\Index $index
+     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
      *
      * @return array
      */
-    public function find(Index $index): array
+    public function find(SearchIndex $index): array
     {
         $settings = $this->remoteRepository->getSettingsRaw($index);
 
@@ -56,12 +56,12 @@ final class UserDataRepository
     /**
      * Save the User Data of the given Index.
      *
-     * @param  \Algolia\AlgoliaSearch\Index $index
+     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
      * @param  array $userData
      *
      * @return void
      */
-    public function save(Index $index, array $userData): void
+    public function save(SearchIndex $index, array $userData): void
     {
         $currentUserData = $this->find($index);
 
@@ -73,11 +73,11 @@ final class UserDataRepository
     /**
      * Get the settings hash.
      *
-     * @param  \Algolia\AlgoliaSearch\Index $index
+     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
      *
      * @return string
      */
-    public function getSettingsHash(Index $index): string
+    public function getSettingsHash(SearchIndex $index): string
     {
         $userData = $this->find($index);
 

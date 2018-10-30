@@ -15,8 +15,8 @@ namespace Algolia\ScoutExtended\Console\Commands;
 
 use function count;
 use Illuminate\Console\Command;
-use Algolia\AlgoliaSearch\Index;
 use Algolia\ScoutExtended\Algolia;
+use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use Algolia\ScoutExtended\Searchable\RecordsCounter;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
@@ -102,11 +102,11 @@ final class ReImportCommand extends Command
     /**
      * Get a temporary index name.
      *
-     * @param \Algolia\AlgoliaSearch\Index $index
+     * @param \Algolia\AlgoliaSearch\SearchIndex $index
      *
      * @return string
      */
-    private function getTemporaryIndexName(Index $index): string
+    private function getTemporaryIndexName(SearchIndex $index): string
     {
         return self::$prefix.'_'.$index->getIndexName();
     }

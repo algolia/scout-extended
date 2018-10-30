@@ -15,7 +15,7 @@ namespace Algolia\ScoutExtended\Settings;
 
 use LogicException;
 use Illuminate\Support\Str;
-use Algolia\AlgoliaSearch\Index;
+use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Repositories\UserDataRepository;
 use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 
@@ -45,7 +45,7 @@ final class Status
     private $remoteSettings;
 
     /**
-     * @var \Algolia\AlgoliaSearch\Index
+     * @var \Algolia\AlgoliaSearch\SearchIndex
      */
     private $index;
 
@@ -67,7 +67,7 @@ final class Status
      * @param \Algolia\ScoutExtended\Repositories\LocalSettingsRepository $localRepository
      * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
      * @param \Algolia\ScoutExtended\Settings\Settings $remoteSettings
-     * @param \Algolia\AlgoliaSearch\Index $index
+     * @param \Algolia\AlgoliaSearch\SearchIndex $index
      *
      * @return void
      */
@@ -76,7 +76,7 @@ final class Status
         UserDataRepository $userDataRepository,
         Encrypter $encrypter,
         Settings $remoteSettings,
-        Index $index
+        SearchIndex $index
     ) {
         $this->encrypter = $encrypter;
         $this->localRepository = $localRepository;
