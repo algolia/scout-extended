@@ -7,7 +7,6 @@ namespace Tests\Features;
 use App\User;
 use Tests\TestCase;
 use Algolia\ScoutExtended\Algolia;
-use Algolia\AlgoliaSearch\Analytics;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\AlgoliaSearch\AnalyticsClient;
