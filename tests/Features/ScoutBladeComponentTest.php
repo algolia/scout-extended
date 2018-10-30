@@ -27,4 +27,3 @@ final class ScoutBladeComponentTest extends TestCase
 ");
     }
 }
-

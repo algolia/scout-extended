@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
-use ReflectionClass;
 use Laravel\Scout\Builder;
 use Illuminate\Support\Facades\Blade;
+use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
-use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\AlgoliaSearch\AnalyticsClient;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Managers\EngineManager;
