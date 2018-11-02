@@ -62,15 +62,10 @@ final class ReImportCommand extends Command
             $temporaryName = $this->getTemporaryIndexName($index);
 
             tap($this->output)->progressAdvance()->text("Creating temporary index <info>{$temporaryName}</info>");
-            $shouldCopy = true;
 
             try {
                 $searchable::search()->get();
-            } catch (NotFoundException $e) {
-                $shouldCopy = false;
-            }
 
-            if ($shouldCopy) {
                 $index->copyTo($temporaryName, [
                     'scope' => [
                         'settings',
@@ -78,6 +73,8 @@ final class ReImportCommand extends Command
                         'rules',
                     ],
                 ])->wait();
+            } catch (NotFoundException $e) {
+                // ..
             }
 
             tap($this->output)->progressAdvance()->text("Importing records to index <info>{$temporaryName}</info>");
@@ -93,10 +90,17 @@ final class ReImportCommand extends Command
 
             tap($this->output)->progressAdvance()->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
 
-            $algolia->client()
-                ->initIndex($temporaryName)
-                ->moveTo($index->getIndexName())
-                ->wait();
+            $temporaryIndex = $algolia->client()
+                ->initIndex($temporaryName);
+
+            try {
+                $temporaryIndex->getSettings();
+
+                $temporaryIndex->moveTo($index->getIndexName())
+                    ->wait();
+            } catch (NotFoundException $e) {
+                $index->setSettings(['attributesForFaceting' => null])->wait();
+            }
         }
 
         tap($this->output)->success('All ['.implode(',', $searchables).'] records have been imported')->newLine();
