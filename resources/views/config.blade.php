@@ -91,7 +91,7 @@ return [
     | enabled, will make the engine consider “car” and “cars”, or “foot” and “feet”,
     | equivalent. This is used in conjunction with the "queryLanguages" setting.
     |
-    | Supported: Null, Boolean
+    | Supported: Null, Boolean, Array
     |
     */
 
@@ -106,7 +106,7 @@ return [
     | “what is a record?”. In that case, the engine will remove “what”, “is”,
     | before executing the query, and therefore just search for “record”.
     |
-    | Supported: Null, Boolean
+    | Supported: Null, Boolean, Array
     |
     */
 
