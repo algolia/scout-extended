@@ -71,7 +71,7 @@ final class ReImportCommand extends Command
             }
 
             if ($shouldCopy) {
-                $algolia->client()->copyIndex($index->getIndexName(), $temporaryName, [
+                $index->copyTo($temporaryName, [
                     'scope' => [
                         'settings',
                         'synonyms',
@@ -93,7 +93,10 @@ final class ReImportCommand extends Command
 
             tap($this->output)->progressAdvance()->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
 
-            $algolia->client()->moveIndex($temporaryName, $index->getIndexName())->wait();
+            $algolia->client()
+                ->initIndex($temporaryName)
+                ->moveTo($index->getIndexName())
+                ->wait();
         }
 
         tap($this->output)->success('All ['.implode(',', $searchables).'] records have been imported')->newLine();

@@ -24,8 +24,8 @@ final class ReimportCommandTest extends TestCase
 
         $userTemporaryIndex = $this->mockIndex('temp_'.(new User())->searchableAs());
 
-        $client->shouldReceive('copyIndex')
-            ->with($userOriginalIndex->getIndexName(), $userTemporaryIndex->getIndexName(), [
+        $userOriginalIndex->shouldReceive('copyTo')
+            ->with($userTemporaryIndex->getIndexName(), [
                 'scope' => [
                     'settings',
                     'synonyms',
@@ -39,7 +39,7 @@ final class ReimportCommandTest extends TestCase
 
         $userTemporaryIndex->shouldReceive('search')->andReturn(['nbHits' => 5]);
 
-        $client->shouldReceive('moveIndex')->andReturn($this->mockResponse());
+        $userTemporaryIndex->shouldReceive('moveTo')->with('users')->andReturn($this->mockResponse());
 
         Artisan::call('scout:reimport', ['searchable' => User::class]);
     }

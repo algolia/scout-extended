@@ -68,9 +68,8 @@ class TestCase extends BaseTestCase
 
     protected function defaults(): array
     {
-        $this->mockIndex('temp-laravel-scout-extended', $defaults = require __DIR__.'/resources/defaults.php');
-        $this->app->get(SearchClient::class)->shouldReceive('deleteIndex')->with('temp-laravel-scout-extended')
-            ->zeroOrMoreTimes();
+        $index = $this->mockIndex('temp-laravel-scout-extended', $defaults = require __DIR__.'/resources/defaults.php');
+        $index->shouldReceive('delete')->zeroOrMoreTimes();
 
         return $defaults;
     }

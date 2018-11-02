@@ -16,7 +16,7 @@
     "require": {
         "php": "^7.1.3",
         "riimu/kit-phpencoder": "^2.3",
-        "algolia/algoliasearch-client-php": "2.0.x-dev",
+        "algolia/algoliasearch-client-php": "2.0.0-RC",
         "illuminate/console": "5.6.*|5.7.*",
         "illuminate/contracts": "5.6.*|5.7.*",
         "illuminate/database": "5.6.*|5.7.*",

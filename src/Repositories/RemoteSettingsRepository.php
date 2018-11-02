@@ -65,7 +65,7 @@ final class RemoteSettingsRepository
             $indexName = 'temp-laravel-scout-extended';
             $index = $this->client->initIndex($indexName);
             $this->defaults = $this->getSettingsRaw($index);
-            $this->client->deleteIndex($indexName);
+            $index->delete();
         }
 
         return $this->defaults;
