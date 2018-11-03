@@ -18,11 +18,11 @@
 
 ## ✨ Features
 
-- Automatically improves the search experience.
-- Reindex your data in production with Zero Downtime.
-- Gives you a quick and simple status overview of your indexes.
-- Implement site-wide search amongst multiple models with Aggregators.
-- A useful collection of macros, Facades, Front-End directives, and much more.
+- Automatically [improves the search experience](#-optimize-the-search-experience).
+- Reindex your data in production with [zero downtime](#-zero-downtime-deployments).
+- Gives you a quick and simple [status overview](#-status) of your indexes.
+- Implement site-wide search amongst multiple models with [aggregators](#%EF%B8%8F-aggregators).
+- A useful collection of [macros](#-builder-macros), [facades](#%EF%B8%8F-algolia-facade), front-end [directives](#-scout--vue-instantsearch-not-ready-to-test), and much more.
 
 ## ⬇️ Installation
 
