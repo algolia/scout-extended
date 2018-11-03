@@ -16,6 +16,14 @@
   </p>
 </p>
 
+## ✨ Features
+
+- Automatically improves the search experience.
+- Reindex your data in production with Zero Downtime.
+- Gives you a quick and simple status overview of your indexes.
+- Implement site-wide search amongst multiple models with Aggregators.
+- A useful collection of macros, Facades, Front-End directives, and much more.
+
 ## ⬇️ Installation
 
 > **Requires:**
