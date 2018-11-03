@@ -433,7 +433,7 @@ $analytics = Algolia::analytics();
 $test = $analytics->getABTest(42);
 ```
 
-## 🎨 Scout & Vue InstantSearch (Not ready to test)
+## 🎨 Scout Directive - Scout & Vue InstantSearch
 
 This package contains a blade directive to provide easy integration with Vue InstantSearch.
 
