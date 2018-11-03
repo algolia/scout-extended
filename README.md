@@ -22,7 +22,7 @@
 - Reindex your data in production with [zero downtime](#-zero-downtime-deployments).
 - Gives you a quick and simple [status overview](#-status) of your indexes.
 - Implement site-wide search amongst multiple models with [aggregators](#%EF%B8%8F-aggregators).
-- A useful collection of [macros](#-builder-macros), [facades](#%EF%B8%8F-algolia-facade), front-end [directives](#-scout--vue-instantsearch-not-ready-to-test), and much more.
+- A useful collection of [macros](#-builder-macros), [facades](#%EF%B8%8F-algolia-facade), front-end [directives](#-scout-directive---scout--vue-instantsearch), and much more.
 
 ## ⬇️ Installation
 
