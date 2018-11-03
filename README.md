@@ -99,7 +99,7 @@ return [
     |
     */
 
-    'customRanking' => ['desc(reply_count)', 'desc(updated_at)', 'desc(created_at)'],
+    'customRanking' => ['desc(reply_count)', 'desc(likes_count)'],
 
     // ...
 ];
