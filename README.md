@@ -10,6 +10,7 @@
   <p align="center">
     <a href="https://travis-ci.org/algolia/scout-extended"><img src="https://img.shields.io/travis/algolia/scout-extended/master.svg" alt="Build Status"></img></a>
     <a href="https://scrutinizer-ci.com/g/algolia/scout-extended"><img src="https://img.shields.io/scrutinizer/g/algolia/scout-extended.svg" alt="Quality Score"></img></a>
+    <a href="https://scrutinizer-ci.com/g/algolia/scout-extended"><img src="https://scrutinizer-ci.com/g/algolia/scout-extended/badges/coverage.png?b=master" alt="Coverage"></img></a>
     <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/d/total.svg" alt="Total Downloads"></a>
     <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/v/stable.svg" alt="Latest Version"></a>
     <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/license.svg" alt="License"></a>
