@@ -24,6 +24,8 @@
 - Implement site-wide search amongst multiple models with [aggregators](#%EF%B8%8F-aggregators).
 - A useful collection of [macros](#-builder-macros), [facades](#%EF%B8%8F-algolia-facade), front-end [directives](#-scout-directive---scout--vue-instantsearch), and much more.
 
+> **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to read the Scout documentation first. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
+
 ## ⬇️ Installation
 
 > **Requires:**
@@ -36,11 +38,13 @@ First, install Scout Extended via the [Composer](https://getcomposer.org) packag
 composer require algolia/scout-extended
 ```
 
-After installing Scout Extended, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `scout.php` configuration file to your config directory:
+After installing Scout Extended, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `config/scout.php` configuration file to your config directory:
 
 ```bash
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
+
+Then you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file.
 
 Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to make searchable. This trait will register a model observer to keep the model in sync with algolia:
 
