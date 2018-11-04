@@ -123,7 +123,7 @@ Once you have verified the settings file, all you need to do is synchronize the 
 php artisan scout:sync
 ```
 
-> **Note:** You may also edit settings using the Algolia Dashboard. But make sure you apply those settings locally running the `scout:sync` Artisan command.
+> **Note:** You may also edit settings using the [Algolia Dashboard](https://www.algolia.com/dasboard). But make sure you apply those settings locally running the `scout:sync` Artisan command.
 
 ## 🚀 Zero Downtime Deployments
 
