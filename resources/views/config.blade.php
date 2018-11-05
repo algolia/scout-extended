@@ -20,22 +20,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Disable Typo Tolerance
-    |--------------------------------------------------------------------------
-    |
-    | Algolia provides robust "typo-tolerance" out-of-the-box. This parameter accepts an
-    | array of attributes for which typo-tolerance should be disabled. This is useful,
-    | for example, products that might require SKU search without "typo-tolerance".
-    |
-    | Supported: Null, Array
-    | Example: ['id', 'sku', 'reference', 'code']
-    |
-    */
-
-    'disableTypoToleranceOnAttributes' => {!! $disableTypoToleranceOnAttributes ?? 'null' !!},
-
-    /*
-    |--------------------------------------------------------------------------
     | Custom Ranking
     |--------------------------------------------------------------------------
     |
@@ -49,6 +33,37 @@ return [
     */
 
     'customRanking' => {!! $customRanking ?? 'null'!!},
+
+    /*
+    |--------------------------------------------------------------------------
+    | Remove Stop Words
+    |--------------------------------------------------------------------------
+    |
+    | Stop word removal is useful when you have a query in natural language, e.g.
+    | “what is a record?”. In that case, the engine will remove “what”, “is”,
+    | before executing the query, and therefore just search for “record”.
+    |
+    | Supported: Null, Boolean, Array
+    |
+    */
+
+    'removeStopWords' => {!! $removeStopWords ?? 'null' !!},
+
+    /*
+    |--------------------------------------------------------------------------
+    | Disable Typo Tolerance
+    |--------------------------------------------------------------------------
+    |
+    | Algolia provides robust "typo-tolerance" out-of-the-box. This parameter accepts an
+    | array of attributes for which typo-tolerance should be disabled. This is useful,
+    | for example, products that might require SKU search without "typo-tolerance".
+    |
+    | Supported: Null, Array
+    | Example: ['id', 'sku', 'reference', 'code']
+    |
+    */
+
+    'disableTypoToleranceOnAttributes' => {!! $disableTypoToleranceOnAttributes ?? 'null' !!},
 
     /*
     |--------------------------------------------------------------------------
@@ -96,21 +111,6 @@ return [
     */
 
     'ignorePlurals' => {!! $ignorePlurals ?? 'null' !!},
-
-    /*
-    |--------------------------------------------------------------------------
-    | Remove Stop Words
-    |--------------------------------------------------------------------------
-    |
-    | Stop word removal is useful when you have a query in natural language, e.g.
-    | “what is a record?”. In that case, the engine will remove “what”, “is”,
-    | before executing the query, and therefore just search for “record”.
-    |
-    | Supported: Null, Boolean, Array
-    |
-    */
-
-    'removeStopWords' => {!! $removeStopWords ?? 'null' !!},
 
     /*
     |--------------------------------------------------------------------------
