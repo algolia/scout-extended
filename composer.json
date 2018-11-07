@@ -1,6 +1,6 @@
 {
     "name": "algolia/scout-extended",
-    "description": "Extends Laravel Scout adding Algolia-specific features",
+    "description": "Scout Extended extends Laravel Scout adding algolia-specific features",
     "keywords": ["laravel", "scout", "algolia", "extended", "search", "places", "analytics"],
     "license": "MIT",
     "authors": [
