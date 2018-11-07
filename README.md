@@ -27,6 +27,11 @@
 
 > **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to read the Scout documentation first. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
 
+
+## 💕 Community Plan
+
+Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's free up to a certain number of records and writing operations. Search operations are not part of any quota and will not be charged in any way.
+
 ## ⬇️ Installation
 
 > **Requires:**
