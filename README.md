@@ -487,14 +487,6 @@ Vue.use(InstantSearch);
 
 Both `scout:flush` and `scout:import` Artisan commands got replaced by implementations that better fits Algolia.
 
-## 🌅 Backlog
-
-- Manager - **Multiple client connections** per project
-- Add more methods to Query Builder: whereIn, whereNotIn, whereNot, whereBetween, and others cases to be studied
-- Support to **multiple language indexes**
-- Ability to use **synonyms features**
-- Ability to use **Rules features**
-
 ## 🆓 License
 
 Scout Extended is an open-sourced software licensed under the [MIT license](LICENSE.md).
