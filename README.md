@@ -23,7 +23,7 @@
 - Reindex your data in production with [zero downtime](#-zero-downtime-deployments).
 - Gives you a quick and simple [status overview](#-status) of your indexes.
 - Implement site-wide search amongst multiple models with [aggregators](#%EF%B8%8F-aggregators).
-- A useful collection of [macros](#-builder-macros), [facades](#%EF%B8%8F-algolia-facade), front-end [directives](#-scout-directive---scout--vue-instantsearch), and much more.
+- A useful collection of [macros](#-builder-macros), [facades](#%EF%B8%8F-algolia-facade), front-end [directives](#-scout-directive---vue-instantsearch), and much more.
 
 > **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to read the Scout documentation first. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
 
@@ -444,7 +444,7 @@ $analytics = Algolia::analytics();
 $test = $analytics->getABTest(42);
 ```
 
-## 🎨 Scout Directive - Scout & Vue InstantSearch
+## 🎨 Scout Directive - Vue InstantSearch
 
 This package contains a blade directive to provide easy integration with Vue InstantSearch.
 
