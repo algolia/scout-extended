@@ -27,7 +27,6 @@
 
 > **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to read the Scout documentation first. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
 
-
 ## 💕 Community Plan
 
 Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's free up to a certain number of records and writing operations. Search operations are not part of any quota and will not be charged in any way.
@@ -70,7 +69,7 @@ class Post extends Model
 
 ## 🔎 Optimize the search experience
 
-Performance is important. However, in order for a search to be successful, results need to be relevant to the user. Scout Extended provides an `scout:optimize` Artisan command that you may use to optimize the search experience based on information from the searchable class:
+Performance is important. However, in order for a search to be successful, results need to be relevant to the user. Scout Extended provides an `scout:optimize` Artisan command that you may use to optimize the search experience with Algolia settings.
 
 ```bash
 php artisan scout:optimize
@@ -128,6 +127,8 @@ Once you have verified the settings file, all you need to do is synchronize the 
 ```bash
 php artisan scout:sync
 ```
+
+Feel free to dig further into all settings parameters to optimize even more your search experience: [Algolia Settings](https://www.algolia.com/doc/api-reference/settings-api-parameters).
 
 > **Note:** You may also edit settings using the [Algolia Dashboard](https://www.algolia.com/dasboard). But make sure you apply those settings locally running the `scout:sync` Artisan command.
 
