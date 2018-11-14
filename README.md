@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.algolia.com">
-    <img alt="Scout Extended" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-logo-light.png" width="250">
+    <img alt="Scout Extended" src="https://raw.githubusercontent.com/algolia/scout-extended/master/docs/banner.png" >
   </a>
 
   <p align="center">
