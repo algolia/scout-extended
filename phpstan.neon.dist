@@ -11,4 +11,5 @@ parameters:
         - '#Using \$this in static method Algolia\\ScoutExtended\\Searchable\\Aggregator::bootSearchable\(\).#'
         - '#Method Algolia\\ScoutExtended\\Engines\\AlgoliaEngine::map\(\) should return Illuminate\\Database\\Eloquent\\Collection but returns Illuminate\\Support\\Collection.#'
         - '#Algolia\\ScoutExtended\\Engines\\AlgoliaEngine::__construct\(\) does not call parent constructor from Laravel\\Scout\\Engines\\AlgoliaEngine.#'
+        - '#Illuminate\\Database\\Eloquent\\Model::searchableAs\(\)#'
 
