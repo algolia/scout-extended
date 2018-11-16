@@ -18,7 +18,6 @@ use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Searchable\RecordsCounter;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
 final class ReImportCommand extends Command
@@ -43,8 +42,7 @@ final class ReImportCommand extends Command
      */
     public function handle(
         Algolia $algolia,
-        SearchableFinder $searchableModelsFinder,
-        RecordsCounter $recordsCounter
+        SearchableFinder $searchableModelsFinder
     ): void {
         $searchables = $searchableModelsFinder->fromCommand($this);
 
@@ -81,11 +79,9 @@ final class ReImportCommand extends Command
 
             try {
                 $config->set('scout.prefix', self::$prefix.'_'.$scoutPrefix);
-                $config->set('scout.synchronous', true);
                 $searchable::makeAllSearchable();
             } finally {
                 $config->set('scout.prefix', $scoutPrefix);
-                $config->set('scout.synchronous', $scoutSynchronous);
             }
 
             tap($this->output)->progressAdvance()->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
@@ -96,8 +92,11 @@ final class ReImportCommand extends Command
             try {
                 $temporaryIndex->getSettings();
 
-                $temporaryIndex->moveTo($index->getIndexName())
-                    ->wait();
+                $response = $temporaryIndex->moveTo($index->getIndexName());
+
+                if ($scoutSynchronous) {
+                    $response->wait();
+                }
             } catch (NotFoundException $e) {
                 $index->setSettings(['attributesForFaceting' => null])->wait();
             }

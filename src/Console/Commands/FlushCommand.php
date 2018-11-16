@@ -36,7 +36,7 @@ final class FlushCommand extends Command
     public function handle(Algolia $algolia, SearchableFinder $searchableFinder): void
     {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
-            $algolia->index($searchable)->clearObjects();
+            $searchable::removeAllFromSearch();
 
             $this->output->success('All ['.$searchable.'] records have been flushed.');
         }

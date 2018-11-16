@@ -92,15 +92,12 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     }
 
     /**
-     * Flush all of the model's records from the engine.
-     *
-     * @param  object $model
-     * @return void
+     * {@inheritdoc}
      */
     public function flush($model)
     {
         $index = $this->algolia->initIndex($model->searchableAs());
 
-        $index->clear();
+        $index->clearObjects();
     }
 }
