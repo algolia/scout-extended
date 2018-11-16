@@ -90,17 +90,4 @@ class AlgoliaEngine extends BaseAlgoliaEngine
 
         return resolve(ModelsResolver::class)->from($builder, $searchable, $ids);
     }
-
-    /**
-     * Flush all of the model's records from the engine.
-     *
-     * @param  object $model
-     * @return void
-     */
-    public function flush($model)
-    {
-        $index = $this->algolia->initIndex($model->searchableAs());
-
-        $index->clear();
-    }
 }
