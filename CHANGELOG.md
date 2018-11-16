@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - No verification of `shouldBeSearchable` while calling `makeAllSearchable` in aggregators ([62](https://github.com/algolia/scout-extended/pull/62/files))
 - No usage of `scout.chunk.searchable` while calling `makeAllSearchable` in aggregators ([62](https://github.com/algolia/scout-extended/pull/62/files))
+- No usage of `ModelsImported` event while calling `makeAllSearchable` in aggregators ([29c56a6](https://github.com/algolia/scout-extended/commit/29c56a6a014e53a861c780f987e48f3a9d033b01))
 
 ### Removed
 - `@scout` directive ([1bbffa9](https://github.com/algolia/scout-extended/commit/1bbffa9ce63e0151d0e1805572a729f706f6573c))
