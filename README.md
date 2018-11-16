@@ -4,10 +4,6 @@
   </a>
 
   <p align="center">
-    Scout Extended extends <a href="https://github.com/laravel/scout">Laravel Scout</a> adding algolia-specific features.
-  </p>
-
-  <p align="center">
     <a href="https://travis-ci.org/algolia/scout-extended"><img src="https://img.shields.io/travis/algolia/scout-extended/master.svg" alt="Build Status"></img></a>
     <a href="https://scrutinizer-ci.com/g/algolia/scout-extended"><img src="https://img.shields.io/scrutinizer/g/algolia/scout-extended.svg" alt="Quality Score"></img></a>
     <a href="https://scrutinizer-ci.com/g/algolia/scout-extended"><img src="https://scrutinizer-ci.com/g/algolia/scout-extended/badges/coverage.png?b=master" alt="Coverage"></img></a>
@@ -75,13 +71,13 @@ Performance is important. However, in order for a search to be successful, resul
 php artisan scout:optimize
 ```
 
-Scout Extended automatically detects `searchable` classes. But feel free to specify the `searchable` class to optimize:
+The `searchable` classes are automatically detected, but feel free to specify the `searchable` class to optimize:
 
 ```bash
-php artisan scout:optimize "App\Thread"
+php artisan scout:optimize "App\Article"
 ```
 
-The Artisan command `scout:optimize` will do his best to generate the settings of your searchable class index, but you may need to edit those settings in `config/scout-threads.php`:
+The Artisan command `scout:optimize` will generate the settings of your `searchable` class, but you may need to review those settings in `config/scout-articles.php`:
 
 ```php
 <?php
@@ -97,26 +93,28 @@ return [
     | specific attributes as searchable is critical for relevance because it gives
     | you direct control over what information the search engine should look at.
     |
-    | Example: ["name", "ordered(email)", "unordered(city)",]
+    | Supported: Null, Array
+    | Example: ["name", "ordered(email)", "unordered(city)"]
     |
     */
 
-    'searchableAttributes' => ['subject', 'body', 'slug', 'author_name', 'author_email'],
+    'searchableAttributes' => ['subject', 'body', 'slug'],
 
     /*
     |--------------------------------------------------------------------------
     | Custom Ranking
     |--------------------------------------------------------------------------
     |
-    | To return great results, custom ranking attributes are applied after records
-    | sorted by textual relevance. Said another way, if two matched records have
-    | the same match textually, we resort to custom ranking to tie-break.
+    | Custom Ranking is about leveraging business metrics to effectively rank search
+    | results - it's crucial for any successful search experience. Make sure that
+    | only "numeric" attributes are used, such as the number of sales or views.
     |
-    | Examples: ['desc(comments_count)', 'desc(views_count)',]
+    | Supported: Null, Array
+    | Examples: ['desc(comments_count)', 'desc(views_count)']
     |
     */
 
-    'customRanking' => ['desc(reply_count)', 'desc(likes_count)'],
+    'customRanking' => ['desc(sales_count)', 'desc(views_count)'],
 
     // ...
 ];

@@ -23,9 +23,9 @@ return [
     | Custom Ranking
     |--------------------------------------------------------------------------
     |
-    | To return great results, custom ranking attributes are applied after records
-    | sorted by textual relevance. Said another way, if two matched records have
-    | the same match textually, we resort to custom ranking to tie-break.
+    | Custom Ranking is about leveraging business metrics to effectively rank search
+    | results - it's crucial for any successful search experience. Make sure that
+    | only "numeric" attributes are used, such as the number of sales or views.
     |
     | Supported: Null, Array
     | Examples: ['desc(comments_count)', 'desc(views_count)']
