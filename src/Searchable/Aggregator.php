@@ -175,22 +175,6 @@ abstract class Aggregator implements SearchableCountableContract
     }
 
     /**
-     * Remove all instances of the model from the search index.
-     *
-     * @return void
-     */
-    public static function removeAllFromSearch(): void
-    {
-        foreach ((new static)->getModels() as $model) {
-            $instance = new $model;
-
-            $instance->newQuery()->orderBy($instance->getKeyName())->get()->map(function ($model) {
-                return static::create($model);
-            })->unsearchable();
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getSearchableCount(): int
