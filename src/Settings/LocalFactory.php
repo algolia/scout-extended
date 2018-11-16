@@ -37,8 +37,10 @@ final class LocalFactory
      */
     private static $customRankingKeys = [
         '*ed_at',
-        '*count_*',
-        '*_count*',
+        'count_*',
+        '*_count',
+        'number_*',
+        '*_number',
     ];
 
     /**
@@ -49,9 +51,10 @@ final class LocalFactory
         '*_id',
         'id_*',
         '*ed_at',
-        'count',
         '*_count',
         'count_*',
+        'number_*',
+        '*_number',
         '*image*',
         '*url*',
         '*link*',
