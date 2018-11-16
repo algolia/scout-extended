@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Algolia\ScoutExtended\Facades\Algolia;
 use App\User;
 use App\Wall;
 use Tests\TestCase;
-use Algolia\AlgoliaSearch\SearchIndex;
-use Algolia\AlgoliaSearch\AnalyticsClient;
+use Algolia\ScoutExtended\Facades\Algolia;
 
 final class SearchKeyTest extends TestCase
 {
@@ -37,8 +35,8 @@ final class SearchKeyTest extends TestCase
         $this->mockClient()->shouldReceive('listApiKeys')->andReturn(['keys' => [
             [
                 'description' => config('app.name').'::searchKey',
-                'value' => 'bar'
-            ]
+                'value' => 'bar',
+            ],
         ]]);
 
         $this->mockClient()->shouldReceive('generateSecuredApiKey')->with('bar', [
