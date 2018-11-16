@@ -126,7 +126,7 @@ Once you have verified the settings file, all you need to do is synchronize the 
 php artisan scout:sync
 ```
 
-Feel free to dig further into all settings parameters to optimize even more your search experience: [Algolia Settings](https://www.algolia.com/doc/api-reference/settings-api-parameters).
+Feel free to dig further into all Algolia settings to optimize even more your search experience: [Algolia Settings](https://www.algolia.com/doc/api-reference/settings-api-parameters).
 
 > **Note:** You may also edit settings using the [Algolia Dashboard](https://www.algolia.com/dasboard). But make sure you apply those settings locally running the `scout:sync` Artisan command.
 
