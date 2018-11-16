@@ -62,9 +62,9 @@ final class ApiKeysRepository
 
         $searchableAs = $searchable->searchableAs();
 
-        $searchKey = $this->cache->get(self::SEARCH_KEY);
+        $securedSearchKey = $this->cache->get(self::SEARCH_KEY.'.'.$searchableAs);
 
-        if ($searchKey === null) {
+        if ($securedSearchKey === null) {
             $id = config('app.name').'::searchKey';
 
             $keys = $this->client->listApiKeys()['keys'];
@@ -81,11 +81,13 @@ final class ApiKeysRepository
                     'description' => config('app.name').'::searchKey',
                 ])->getBody()['key'];
 
-            $this->cache->put(self::SEARCH_KEY, $searchKey, 1440);
+            $securedSearchKey = $this->client::generateSecuredApiKey($searchKey, [
+                'restrictIndices' => $searchableAs,
+            ]);
+
+            $this->cache->put(self::SEARCH_KEY.'.'.$searchableAs, $securedSearchKey, 1440);
         }
 
-        return $this->client::generateSecuredApiKey($searchKey, [
-            'restrictIndices' => $searchableAs,
-        ]);
+        return $securedSearchKey;
     }
 }
