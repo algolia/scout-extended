@@ -16,7 +16,10 @@ namespace Algolia\ScoutExtended\Console\Commands;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
+use Laravel\Scout\Events\ModelsImported;
+use Illuminate\Contracts\Events\Dispatcher;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
+use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 
 final class ImportCommand extends Command
 {
@@ -33,12 +36,20 @@ final class ImportCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function handle(SearchableFinder $searchableFinder): void
+    public function handle(Dispatcher $events, SearchableFinder $searchableFinder): void
     {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->call('scout:flush', ['searchable' => $searchable]);
 
+            $events->listen(ModelsImported::class, function ($event) use ($searchable) {
+                $last = ObjectIdEncrypter::encrypt($event->models->last());
+
+                $this->line('<comment>Imported ['.$searchable.'] models up to ID:</comment> '.$last);
+            });
+
             $searchable::makeAllSearchable();
+
+            $events->forget(ModelsImported::class);
 
             $this->output->success('All ['.$searchable.'] records have been imported.');
         }

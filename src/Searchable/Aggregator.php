@@ -17,6 +17,7 @@ use function in_array;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Events\ModelsImported;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
 use Algolia\ScoutExtended\Exceptions\ModelNotDefinedInAggregatorException;
@@ -169,9 +170,13 @@ abstract class Aggregator implements SearchableCountableContract
             $instance->newQuery()->when($softDeletes, function ($query) {
                 $query->withTrashed();
             })->orderBy($instance->getKeyName())->chunk(config('scout.chunk.searchable', 500), function ($models) {
-                $models->map(function ($model) {
+                $models = $models->map(function ($model) {
                     return static::create($model);
-                })->filter->shouldBeSearchable()->searchable();
+                })->filter->shouldBeSearchable();
+
+                $models->searchable();
+
+                event(new ModelsImported($models));
             });
         }
     }
