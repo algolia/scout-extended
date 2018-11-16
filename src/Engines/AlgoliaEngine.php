@@ -90,4 +90,14 @@ class AlgoliaEngine extends BaseAlgoliaEngine
 
         return resolve(ModelsResolver::class)->from($builder, $searchable, $ids);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush($model)
+    {
+        $index = $this->algolia->initIndex($model->searchableAs());
+
+        $index->clearObjects();
+    }
 }
