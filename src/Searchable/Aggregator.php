@@ -169,9 +169,9 @@ abstract class Aggregator implements SearchableCountableContract
             $instance->newQuery()->when($softDeletes, function ($query) {
                 $query->withTrashed();
             })->orderBy($instance->getKeyName())->chunk(config('scout.chunk.searchable', 500), function ($models) {
-                $models->filter->shouldBeSearchable()->map(function ($model) {
+                $models->map(function ($model) {
                     return static::create($model);
-                })->searchable();
+                })->filter->shouldBeSearchable()->searchable();
             });
         }
     }
