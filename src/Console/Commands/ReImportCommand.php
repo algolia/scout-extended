@@ -18,7 +18,6 @@ use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Searchable\RecordsCounter;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
 final class ReImportCommand extends Command
