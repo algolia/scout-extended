@@ -208,14 +208,14 @@ final class UpdateJob
         foreach ($array as $key => $value) {
             $attributeValue = $searchable->getModel()->getAttribute($key);
 
-            /**
+            /*
              * Casts carbon instances to timestamp.
              */
             if ($attributeValue instanceof \Illuminate\Support\Carbon) {
                 $array[$key] = $attributeValue->getTimestamp();
             }
 
-            /**
+            /*
              * Casts numeric strings to integers/floats.
              */
             if (is_string($attributeValue) && is_numeric($attributeValue)) {
