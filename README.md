@@ -130,15 +130,15 @@ Feel free to dig further into all Algolia settings to optimize even more your se
 
 > **Note:** You may also edit settings using the [Algolia Dashboard](https://www.algolia.com/dasboard). But make sure you apply those settings locally running the `scout:sync` Artisan command.
 
-## 🚀 Zero Downtime Deployments
+## 🚀 Reimport with Zero Downtime
 
-In order to keep your existing service running while reimporting your data, we recommend the usage of the `scout:reimport` Artisan command.
+In order to keep your existing search experience available while reimport your data, we recommend the usage of the `scout:reimport` Artisan command.
 
 ```bash
 php artisan scout:reimport
 ```
 
-To ensure that searches performed on the index during the rebuild will not be interrupted. Scout Extended creates a temporary index with all your records before moving the temporary index to the target index
+To ensure that searches performed on the index during the rebuild will not be interrupted, Scout Extended uses a temporary index to import all records before moving the temporary index to the target index.
 
  > **Note:** If you are using the Community Plan, please verify if you have enough number of records available in order to execute the operation.
 
