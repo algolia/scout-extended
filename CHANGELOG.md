@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.0] - 2018-11-16
+### Added
+- `Algolia::searchKey` method ([1bbffa9](https://github.com/algolia/scout-extended/commit/1bbffa9ce63e0151d0e1805572a729f706f6573c))
+
 ### Fixed
 - No verification of `shouldBeSearchable` while calling `makeAllSearchable` in aggregators ([62](https://github.com/algolia/scout-extended/pull/62/files))
 - No usage of `scout.chunk.searchable` while calling `makeAllSearchable` in aggregators ([62](https://github.com/algolia/scout-extended/pull/62/files))
@@ -21,5 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/algolia/scout-extended/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/algolia/scout-extended/compare/v0.2.0...HEAD
 [0.1.1]: https://github.com/algolia/scout-extended/compare/v0.1.0...v0.1.1
+[0.1.2]: https://github.com/algolia/scout-extended/compare/v0.1.1...v0.1.2
+[0.2.0]: https://github.com/algolia/scout-extended/compare/v0.1.2...v0.2.0
