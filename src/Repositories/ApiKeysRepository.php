@@ -81,8 +81,12 @@ final class ApiKeysRepository
                     'description' => config('app.name').'::searchKey',
                 ])->getBody()['key'];
 
+            // Key will be valid for 25 hours.
+            $validUntil = time() + (3600 * 25);
+
             $securedSearchKey = $this->client::generateSecuredApiKey($searchKey, [
                 'restrictIndices' => $searchableAs,
+                'validUntil' => $validUntil,
             ]);
 
             $this->cache->put(self::SEARCH_KEY.'.'.$searchableAs, $securedSearchKey, 1440);

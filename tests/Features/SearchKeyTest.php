@@ -7,6 +7,7 @@ namespace Tests\Features;
 use Algolia\ScoutExtended\Facades\Algolia;
 use App\User;
 use App\Wall;
+use Mockery;
 use Tests\TestCase;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\AlgoliaSearch\AnalyticsClient;
@@ -27,6 +28,7 @@ final class SearchKeyTest extends TestCase
 
         $this->mockClient()->shouldReceive('generateSecuredApiKey')->with('bar', [
             'restrictIndices' => 'users',
+            'validUntil' => time() + (3600 * 25)
         ])->andReturn('barSecured');
 
         $this->assertEquals(Algolia::searchKey(User::class), 'barSecured');
@@ -43,6 +45,7 @@ final class SearchKeyTest extends TestCase
 
         $this->mockClient()->shouldReceive('generateSecuredApiKey')->with('bar', [
             'restrictIndices' => 'wall',
+            'validUntil' => time() + (3600 * 25)
         ])->andReturn('barSecured');
 
         $this->assertEquals(Algolia::searchKey(new Wall()), 'barSecured');
