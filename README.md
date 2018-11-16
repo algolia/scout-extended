@@ -61,7 +61,7 @@ namespace App;
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Article extends Model
 {
     use Searchable;
 }
@@ -444,48 +444,20 @@ $analytics = Algolia::analytics();
 $test = $analytics->getABTest(42);
 ```
 
-## 🎨 Scout Directive - Vue InstantSearch
+## 🔑 Generate search keys
 
-This package contains a blade directive to provide easy integration with Vue InstantSearch.
+Note that your **Admin API** key is very sensitive: it should never be shared with anyone and must remain confidential.
 
-### Installation
+You may want to create a front-end implementation that will hit our servers directly, without going through your backend.
+And for this, you will need to create a **search key**:
 
-```bash
-npm install
-npm install vue-instantsearch@alpha
+```php
+use Algolia\ScoutExtended\Facades\Algolia;
+
+$searchKey = Algolia::searchKey(Article::class);
 ```
 
-Then, open up your `resources/assets/js/app.js` and add:
-
-```javascript
-import InstantSearch from 'vue-instantsearch';
-Vue.use(InstantSearch);
-```
-
-### Usage
-
-```html
-@scout(['searchable' => 'App\Article'])
-
-<ais-search-box/>
-
-<ais-hits>
-  <template slot="item" slot-scope="{ item }">
-    <h2>
-      <a :href="item.url">
-        {{ item.title }}
-      </a>
-    </h2>
-    <p>{{ item.description }}</p>
-  </template>
-</ais-hits>
-
-@endscout
-```
-
-## 🤫 Others
-
-Both `scout:flush` and `scout:import` Artisan commands got replaced by implementations that better fits Algolia.
+The generated `$searchKey` will only have rights to search on the provided `searchable` class.
 
 ## 🆓 License
 

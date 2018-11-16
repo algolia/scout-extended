@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
+use function is_array;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use Algolia\AlgoliaSearch\SearchIndex;

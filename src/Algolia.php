@@ -18,6 +18,7 @@ use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\AlgoliaSearch\AnalyticsClient;
 use Illuminate\Contracts\Container\Container;
+use Algolia\ScoutExtended\Repositories\ApiKeysRepository;
 
 final class Algolia
 {
@@ -41,15 +42,15 @@ final class Algolia
     /**
      * Get a index instance.
      *
-     * @param  string|\Illuminate\Database\Eloquent\Model $model
+     * @param  string|object $searchable
      *
      * @return \Algolia\AlgoliaSearch\SearchIndex
      */
-    public function index($model): SearchIndex
+    public function index($searchable): SearchIndex
     {
-        $model = is_string($model) ? new $model : $model;
+        $searchable = is_string($searchable) ? new $searchable : $searchable;
 
-        return $this->client()->initIndex($model->searchableAs());
+        return $this->client()->initIndex($searchable->searchableAs());
     }
 
     /**
@@ -70,5 +71,19 @@ final class Algolia
     public function analytics(): AnalyticsClient
     {
         return $this->container->get('algolia.analytics');
+    }
+
+    /**
+     * Get a search key for the given searchable.
+     *
+     * @param  string|object $searchable
+     *
+     * @return string
+     */
+    public function searchKey($searchable): string
+    {
+        $searchable = is_string($searchable) ? new $searchable : $searchable;
+
+        return $this->container->make(ApiKeysRepository::class)->getSearchKey($searchable);
     }
 }
