@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Object us mutated before sending it to Algolia ([#68](https://github.com/algolia/scout-extended/pull/68))
 
 ## [0.2.0] - 2018-11-16
 ### Added
