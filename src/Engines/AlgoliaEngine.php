@@ -122,7 +122,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     /**
      * Mutate the given wheres.
      *
-     * @param  array  $array
+     * @param  array  $wheres
      *
      * @return array
      */
