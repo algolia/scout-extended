@@ -232,7 +232,17 @@ echo get_class($models[1]); // "App\Event"
 
 ## 🏗 Builder Macros
 
-Scout Extended adds a few methods to the Laravel Scout's builder class.
+Scout Extended improves Laravel Scout's Builder class.
+
+#### Improved `where()`
+
+The `where()` supports `<`, `<=`, `=`, `!=`, `>=`, `>` operators:
+
+```php
+$models = Article::search('query')->where('views', '> 100'); // views > 100
+$models = Article::search('query')->where('views <=', '100'); // views <= 100
+$models = Article::search('query')->where('views', '100'); // views = 100
+```
 
 #### `count()`
 
