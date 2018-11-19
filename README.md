@@ -15,17 +15,17 @@
 
 ## ✨ Features
 
-- Automatically [improves the search experience](#-optimize-the-search-experience).
-- Reindex your data in production with [zero downtime](#-zero-downtime-deployments).
-- Gives you a quick and simple [status overview](#-status) of your indexes.
-- Implement site-wide search amongst multiple models with [aggregators](#%EF%B8%8F-aggregators).
+- Automatically [**improves** the search experience](#-optimize-the-search-experience).
+- **Reindex** your data in production with [zero downtime](#-zero-downtime-deployments).
+- Gives you a quick and simple [**status** overview](#-status) of your indexes.
+- Implement site-wide **search** amongst **multiple models** with [aggregators](#%EF%B8%8F-aggregators).
 - A useful collection of [macros](#-builder-macros), [facades](#%EF%B8%8F-algolia-facade), front-end [directives](#-scout-directive---vue-instantsearch), and much more.
 
-> **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to read the Scout documentation first. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
+> **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to **read the Scout documentation first**. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
 
 ## 💕 Community Plan
 
-Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's free up to a certain number of records and writing operations. Search operations are not part of any quota and will not be charged in any way.
+Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's **free** up to a certain number of records and writing operations. Search operations are not part of any quota and will not be charged in any way.
 
 ## ⬇️ Installation
 
@@ -33,21 +33,21 @@ Because everyone should be able to build great search, you can use Algolia's bas
 - **[PHP 7.1.3+](https://php.net/releases/)**
 - **[Laravel 5.6+](https://github.com/laravel/laravel)**
 
-First, install Scout Extended via the [Composer](https://getcomposer.org) package manager:
+First, **install Scout Extended** via the [Composer](https://getcomposer.org) package manager:
 
 ```bash
 composer require algolia/scout-extended
 ```
 
-After installing Scout Extended, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `config/scout.php` configuration file to your config directory:
+After installing Scout Extended, you should **publish the Scout configuration** using the `vendor:publish` Artisan command. This command will publish the `config/scout.php` configuration file to your config directory:
 
 ```bash
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
 
-Then you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file.
+Then you should **configure your Algolia** `id` and `secret` credentials in your `config/scout.php` configuration file.
 
-Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to make searchable. This trait will register a model observer to keep the model in sync with algolia:
+Finally, add the `Laravel\Scout\Searchable` **trait to the model** you would like to make searchable. This trait will register a model observer to keep the model in sync with algolia:
 
 ```php
 <?php
@@ -71,13 +71,13 @@ Performance is important. However, in order for a search to be successful, resul
 php artisan scout:optimize
 ```
 
-The `searchable` classes are automatically detected, but feel free to specify the `searchable` class to optimize:
+The `searchable` classes are **automatically detected**, but feel free to specify the `searchable` class to optimize:
 
 ```bash
 php artisan scout:optimize "App\Article"
 ```
 
-The Artisan command `scout:optimize` will generate the settings of your `searchable` class, but you may need to review those settings in `config/scout-articles.php`:
+The Artisan command `scout:optimize` will generate the settings of your `searchable` class, but you may need to **review those settings** in `config/scout-articles.php`:
 
 ```php
 <?php
@@ -120,31 +120,31 @@ return [
 ];
 ```
 
-Once you have verified the settings file, all you need to do is synchronize the settings with Algolia using the `scout:sync` Artisan command:
+Once you have verified the settings file, all you need to do is **synchronize the settings** with Algolia using the `scout:sync` Artisan command:
 
 ```bash
 php artisan scout:sync
 ```
 
-Feel free to dig further into all Algolia settings to optimize even more your search experience: [Algolia Settings](https://www.algolia.com/doc/api-reference/settings-api-parameters).
+Feel free to dig further into **all Algolia settings** to optimize even more your search experience: [Algolia Settings](https://www.algolia.com/doc/api-reference/settings-api-parameters).
 
 > **Note:** You may also edit settings using the [Algolia Dashboard](https://www.algolia.com/dasboard). But make sure you apply those settings locally running the `scout:sync` Artisan command.
 
 ## 🚀 Reimport with Zero Downtime
 
-In order to keep your existing search experience available while reimport your data, we recommend the usage of the `scout:reimport` Artisan command.
+In order to keep your existing search experience **available while reimport your data**, we recommend the usage of the `scout:reimport` Artisan command.
 
 ```bash
 php artisan scout:reimport
 ```
 
-To ensure that searches performed on the index during the rebuild will not be interrupted, Scout Extended uses a temporary index to import all records before moving the temporary index to the target index.
+To ensure that searches performed on the index during the rebuild **will not be interrupted**, Scout Extended uses a **temporary index** to import all records before moving the temporary index to the target index.
 
  > **Note:** If you are using the Community Plan, please verify if you have enough number of records available in order to execute the operation.
 
 ## ✅ Status
 
-If you are not sure about the current status of your indexes, you can always run the `scout:status` Artisan command to make sure that your records and your settings are up-to-date:
+If you are not sure about the **current status of your indexes**, you can always run the `scout:status` Artisan command to make sure that your records and your settings are up-to-date:
 
 ```bash
 php artisan scout:status
@@ -152,17 +152,17 @@ php artisan scout:status
 
 ## ⚡️ Aggregators
 
-Scout Extended provides a clean way to implement site-wide search among multiple models.
+Scout Extended provides a clean way to implement **site-wide search among multiple models**.
 
 ### Defining aggregators
 
-To create a new aggregator, use the `scout:make-aggregator` Artisan command. This command will create a new aggregator class in the `app/Search` directory. Don't worry if this directory does not exist in your application since it will be created the first time you run the command.
+To create a new aggregator, use the `scout:make-aggregator` Artisan command. This command will create a new **aggregator class** in the `app/Search` directory. Don't worry if this directory does not exist in your application since it will be created the first time you run the command.
 
 ```bash
 php artisan make:aggregator News
 ```
 
-After generating your aggregator, you should fill in the models property of the class, which will be used to identify the models that should be aggregated:
+After generating your aggregator, you should fill in the models property of the class, which will be used to identify the **models that should be aggregated**:
 
 ```php
 <?php
@@ -232,11 +232,21 @@ echo get_class($models[1]); // "App\Event"
 
 ## 🏗 Builder Macros
 
-Scout Extended adds a few methods to the Laravel Scout's builder class.
+Scout Extended improves Laravel Scout's Builder class.
+
+#### Improved `where()`
+
+The `where()` supports `<`, `<=`, `=`, `!=`, `>=`, `>` operators:
+
+```php
+$models = Article::search('query')->where('views', '> 100'); // views > 100
+$models = Article::search('query')->where('views <=', '100'); // views <= 100
+$models = Article::search('query')->where('views', '100'); // views = 100
+```
 
 #### `count()`
 
-The `count` method returns the number of hits matched by the query.
+The `count` method returns the **number of hits** matched by the query.
 
 ```php
 $count = Article::search('query')->count();
@@ -257,7 +267,7 @@ $models = Article::search('query')
 
 #### `aroundLatLng()`
 
-The `aroundLatLng ` method will add geolocation parameter to the search request. You can define a point with its coordinate. This method is pure syntactic sugar, you can use the method `with` to specify more location details such us `aroundRadius` or `aroundLatLngViaIP`.
+The `aroundLatLng ` method will add **geolocation parameter** to the search request. You can define a point with its coordinate. This method is pure syntactic sugar, you can use the method `with` to specify more location details such us `aroundRadius` or `aroundLatLngViaIP`.
 
 ```
 $models = Article::search('query')
@@ -267,7 +277,7 @@ $models = Article::search('query')
 
 ## ✂️ Split Records
 
-For performance reasons, objects in Algolia should be 10kb or less. Large records can be split into smaller documents by splitting on a logical chunk such as paragraphs or sentences.
+For performance reasons, objects in Algolia should be 10kb or less. Large records can be split into smaller documents by splitting on a logical chunk such as **paragraphs or sentences**.
 
 To split an attribute, your searchable class must implement a `splitAttribute` method. This means that if you want to split the `body` attribute, the method name will be `splitBody`.
 
@@ -329,7 +339,7 @@ class Article extends Model
 
 ### Writing Splitters
 
-One of the primary benefits of creating a `Splitter` class is the ability to type-hint any dependencies your splitter may need in its constructor. The declared dependencies will automatically be resolved and injected into the splitter instance.
+One of the primary benefits of creating a `Splitter` class is the ability to type-hint any dependencies your splitter may need in its constructor. The declared dependencies will automatically be **resolved and injected into the splitter instance**.
 
 Writing a splitter is simple. Create a new `Invokable` class, and the `__invoke` method should split the given `$value` as needed:
 
@@ -378,7 +388,7 @@ class CustomSplitter
 
 ### Distinct
 
-Distinct functionality allows you to force the algolia to return distinct results based on one attribute defined in `attributeForDistinct`. Using this attribute, you can limit the number of returned records that contain the same value in that attribute.
+Distinct functionality allows you to force the algolia to return distinct results based on one attribute defined in `attributeForDistinct`. Using this attribute, you can **limit the number of returned records** that contain the same value in that attribute.
 
 In order to use the distinct functionality, you should configure the `attributeForDistinct` in your `config/scout-{index-name}.php` configuration file:
 
@@ -446,7 +456,7 @@ $test = $analytics->getABTest(42);
 
 Note that your **Admin API** key is very sensitive: it should never be shared with anyone and must remain confidential.
 
-You may want to create a front-end implementation that will hit our servers directly, without going through your backend.
+You may want to create a **front-end implementation** that will hit our servers directly, without going through your backend.
 And for this, you will need to create a **search key**:
 
 ```php
