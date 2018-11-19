@@ -84,6 +84,8 @@ final class UpdateJob
                 continue;
             }
 
+            $array = $this->mutateArray($searchable, $array);
+
             $array['_tags'] = (array) ($array['_tags'] ?? []);
 
             array_push($array['_tags'], ObjectIdEncrypter::encrypt($searchable));
@@ -191,5 +193,38 @@ final class UpdateJob
     private function usesSoftDelete($searchable): bool
     {
         return $searchable instanceof Model && in_array(SoftDeletes::class, class_uses_recursive($searchable), true);
+    }
+
+    /**
+     * Mutate the given array using searchable's model attributes.
+     *
+     * @param  object  $searchable
+     * @param  array  $array
+     *
+     * @return array
+     */
+    private function mutateArray($searchable, array $array): array
+    {
+        foreach ($array as $key => $value) {
+            $attributeValue = $searchable->getModel()->getAttribute($key);
+
+            /*
+             * Casts carbon instances to timestamp.
+             */
+            if ($attributeValue instanceof \Illuminate\Support\Carbon) {
+                $array[$key] = $attributeValue->getTimestamp();
+            }
+
+            /*
+             * Casts numeric strings to integers/floats.
+             */
+            if (is_string($attributeValue) && is_numeric($attributeValue)) {
+                $array[$key] = ctype_digit($attributeValue)
+                    ? (int) $attributeValue
+                    : (float) $attributeValue;
+            }
+        }
+
+        return $array;
     }
 }
