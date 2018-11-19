@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.1] - 2018-11-19
+### Changed
+- Wheres gets mutated before sending it to Algolia ([8075476](https://github.com/algolia/scout-extended/commit/80754769539c7ce369aa193d8b0daaa0d99d1b58))
+
 ## [0.3.0] - 2018-11-19
 ### Added
 - Support to `<`, `<=`, `=`, `!=`, `>=`, `>` operators in `Builder::where` method ([#69](https://github.com/algolia/scout-extended/pull/69))
