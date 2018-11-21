@@ -52,12 +52,12 @@ final class Builder extends BaseBuilder
      * Customize the search adding a where clause.
      *
      * @param  string $field
-     * @param  string $operator
+     * @param  mixed $operator
      * @param  mixed $value
      *
      * @return $this
      */
-    public function where($field, $operator = null, $value = null): self
+    public function where($field, $operator, $value = null): self
     {
         // Here we will make some assumptions about the operator. If only 2 values are
         // passed to the method, we will assume that the operator is an equals sign
