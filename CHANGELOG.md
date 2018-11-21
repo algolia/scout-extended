@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.2] - 2018-11-21
+### Changed
+- `Builder::where` now accepts 3 arguments like Eloquent ([d883ce1](https://github.com/algolia/scout-extended/commit/d883ce199f5c5fcf592af96c89e27a08b811d362))
+
 ## [0.3.1] - 2018-11-19
 ### Changed
 - Wheres gets mutated before sending it to Algolia ([8075476](https://github.com/algolia/scout-extended/commit/80754769539c7ce369aa193d8b0daaa0d99d1b58))
