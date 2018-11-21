@@ -9,7 +9,18 @@ use Tests\TestCase;
 
 final class WhereQueriesTest extends TestCase
 {
-    public function testOperators(): void
+    public function testExplicitOperator(): void
+    {
+        $this->mockIndex(User::class)->shouldReceive('search')->with('foo', [
+            'numericFilters' => [
+                'views_count != 100',
+            ],
+        ])->andReturn(['hits' => []]);
+
+        User::search('foo')->where('views_count', '!=', '100')->get();
+    }
+
+    public function testInlineOperators(): void
     {
         $this->mockIndex(User::class)->shouldReceive('search')->with('foo', [
             'numericFilters' => [
@@ -20,7 +31,7 @@ final class WhereQueriesTest extends TestCase
         User::search('foo')->where('views_count', '> 100')->get();
     }
 
-    public function testEqualOperator(): void
+    public function testOmittedOperator(): void
     {
         $this->mockIndex(User::class)->shouldReceive('search')->with('foo', [
             'numericFilters' => [
