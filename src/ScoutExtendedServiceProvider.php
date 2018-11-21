@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
-use Laravel\Scout\Builder;
 use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
@@ -48,7 +47,6 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
 
         $this->registerBinds();
         $this->registerCommands();
-        $this->registerMacros();
     }
 
     /**
@@ -88,6 +86,7 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         $this->app->alias(AnalyticsClient::class, 'algolia.analytics');
 
         $this->app->singleton(AggregatorObserver::class, AggregatorObserver::class);
+        $this->app->bind(\Laravel\Scout\Builder::class, Builder::class);
     }
 
     /**
@@ -108,17 +107,5 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
                 SyncCommand::class,
             ]);
         }
-    }
-
-    /**
-     * Register macros.
-     *
-     * @return void
-     *
-     * @throws \ReflectionException
-     */
-    private function registerMacros(): void
-    {
-        Builder::mixin(new BuilderMacros);
     }
 }
