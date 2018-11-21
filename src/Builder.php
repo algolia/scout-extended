@@ -19,7 +19,7 @@ use Laravel\Scout\Builder as BaseBuilder;
 
 final class Builder extends BaseBuilder
 {
-    /*
+    /**
      * Customize the search to be around a given location.
      *
      * @link https://www.algolia.com/doc/guides/geo-search/geo-search-overview
@@ -36,7 +36,7 @@ final class Builder extends BaseBuilder
         ]);
     }
 
-    /*
+    /**
      * Count the number of items in the search results.
      *
      * @return int
@@ -69,7 +69,7 @@ final class Builder extends BaseBuilder
         return parent::where($field, "$operator $value");
     }
 
-    /*
+    /**
      * Customize the search with the provided search parameters.
      *
      * @link https://www.algolia.com/doc/api-reference/search-api-parameters
