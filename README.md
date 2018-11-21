@@ -239,9 +239,9 @@ Scout Extended improves Laravel Scout's Builder class.
 The `where()` supports `<`, `<=`, `=`, `!=`, `>=`, `>` operators:
 
 ```php
-$models = Article::search('query')->where('views', '> 100'); // views > 100
-$models = Article::search('query')->where('views <=', '100'); // views <= 100
-$models = Article::search('query')->where('views', '100'); // views = 100
+$models = Article::search('query')->where('views', '>', 100);
+$models = Article::search('query')->where('created_at', '>=', now()->subDays(7));
+$models = Article::search('query')->where('views', 100); // views = 100
 ```
 
 #### `count()`
