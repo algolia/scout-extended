@@ -79,8 +79,7 @@ final class ReImportCommand extends Command
             try {
                 $config->set('scout.prefix', self::$prefix.'_'.$scoutPrefix);
                 $searchable::makeAllSearchable();
-            }
-            finally {
+            } finally {
                 $config->set('scout.prefix', $scoutPrefix);
             }
 
