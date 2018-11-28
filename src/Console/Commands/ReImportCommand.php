@@ -15,8 +15,8 @@ namespace Algolia\ScoutExtended\Console\Commands;
 
 use function count;
 use Illuminate\Console\Command;
-use Algolia\ScoutExtended\Algolia;
 use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
@@ -41,7 +41,7 @@ final class ReImportCommand extends Command
      * {@inheritdoc}
      */
     public function handle(
-        Algolia $algolia,
+        SearchClient $client,
         SearchableFinder $searchableModelsFinder
     ): void {
         $searchables = $searchableModelsFinder->fromCommand($this);
@@ -49,14 +49,13 @@ final class ReImportCommand extends Command
         $config = config();
 
         $scoutPrefix = $config->get('scout.prefix');
-        $scoutSynchronous = $config->get('scout.synchronous', false);
 
         $this->output->text('🔎 Importing: <info>['.implode(',', $searchables).']</info>');
         $this->output->newLine();
         $this->output->progressStart(count($searchables) * 3);
 
         foreach ($searchables as $searchable) {
-            $index = $algolia->index($searchable);
+            $index = $client->initIndex((new $searchable)->searchableAs());
             $temporaryName = $this->getTemporaryIndexName($index);
 
             tap($this->output)->progressAdvance()->text("Creating temporary index <info>{$temporaryName}</info>");
@@ -64,7 +63,7 @@ final class ReImportCommand extends Command
             try {
                 $searchable::search()->get();
 
-                $index->copyTo($temporaryName, [
+                $client->copyIndex($index->getIndexName(), $temporaryName, [
                     'scope' => [
                         'settings',
                         'synonyms',
@@ -80,21 +79,22 @@ final class ReImportCommand extends Command
             try {
                 $config->set('scout.prefix', self::$prefix.'_'.$scoutPrefix);
                 $searchable::makeAllSearchable();
-            } finally {
+            }
+            finally {
                 $config->set('scout.prefix', $scoutPrefix);
             }
 
-            tap($this->output)->progressAdvance()->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
+            tap($this->output)->progressAdvance()
+                ->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
 
-            $temporaryIndex = $algolia->client()
-                ->initIndex($temporaryName);
+            $temporaryIndex = $client->initIndex($temporaryName);
 
             try {
                 $temporaryIndex->getSettings();
 
-                $response = $temporaryIndex->moveTo($index->getIndexName());
+                $response = $client->moveIndex($temporaryName, $index->getIndexName());
 
-                if ($scoutSynchronous) {
+                if ($config->get('scout.synchronous', false)) {
                     $response->wait();
                 }
             } catch (NotFoundException $e) {
