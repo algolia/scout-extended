@@ -64,7 +64,7 @@ final class UpdateJob
      *
      * @var array
      */
-    private $transformers = [
+    private static $transformers = [
         ConvertNumericStringsToNumbers::class,
         ConvertDatesToTimestamps::class,
     ];
@@ -107,7 +107,7 @@ final class UpdateJob
             }
 
             if (! $this->hasToSearchableArray($searchable)) {
-                $array = $this->sanitize($searchable, $array);
+                $array = $searchable->getModel()->transform($array);
             }
 
             $array['_tags'] = (array) ($array['_tags'] ?? []);
@@ -239,19 +239,12 @@ final class UpdateJob
     }
 
     /**
-     * Sanitize the given array using searchable's model attributes.
-     *
-     * @param  object $searchable
-     * @param  array $array
+     * Returns the default update job transformers.
      *
      * @return array
      */
-    private function sanitize($searchable, array $array): array
+    public static function getTransformers(): array
     {
-        foreach ($this->transformers as $transformer) {
-            $array = (new $transformer)($searchable, $array);
-        }
-
-        return $array;
+        return self::$transformers;
     }
 }
