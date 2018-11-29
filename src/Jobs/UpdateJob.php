@@ -229,10 +229,11 @@ final class UpdateJob
         $searchableClass = get_class($searchable);
 
         if (! array_key_exists($searchableClass, $this->searchablesWithToSearchableArray)) {
-            $file = (new ReflectionClass(get_class($searchable)))->getMethod('toSearchableArray')->getFileName();
+            $reflectionClass = new ReflectionClass(get_class($searchable));;
 
             $this->searchablesWithToSearchableArray[$searchableClass] =
-                ! ends_with((string) $file, 'laravel/scout/src/Searchable.php');
+                ends_with((string) $reflectionClass->getMethod('toSearchableArray')->getFileName(),
+                    (string) $reflectionClass->getFileName());
         }
 
         return $this->searchablesWithToSearchableArray[$searchableClass];
