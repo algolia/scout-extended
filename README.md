@@ -289,9 +289,85 @@ $models = Article::search('query')
     ->get();
 ```
 
-## 🧹️ Transform Records
+## 🧹️ Transform - `toSearchableArray()`
 
-TODO
+Some Builder methods such us `where` and `whereBetween` require **numeric values**. For this reason,
+by default, Scout Extended transforms the result of `toSearchableArray`:
+
+1. Converts `Dates` attributes to `timestamps`.
+2. Converts `NumericStrings` values to `Integers` or `Floats`.
+
+As usual, you can overwrite this behavior implementing your own `toSearchableArray`:
+
+```php
+public function toSearchableArray()
+{
+	$array = $this->toArray();
+	
+	// You can call default transformers:
+	$array = $this->transform($array);
+	
+	// You can call custom transformers:
+	$array = $this->transform($array, [
+		CustomTransformer::class,
+	]);
+	
+	// Apply custom behavior...
+	
+	return $array;
+}
+```
+
+
+### Writing Transformers
+
+One of the primary benefits of creating a `Transformer` class is the ability to type-hint any dependencies your splitter may need in its constructor. The declared dependencies will automatically be **resolved and injected into the transformer instance**.
+
+Writing a transformer is simple. Create a new class that implemements `Algolia\ScoutExtended\Contracts\TransformerContract`, and the `tranform` method should transform the given `$value` as needed:
+
+```php
+<?php
+
+namespace App\Search\Transformers;
+
+use App\Contracts\TransformService;
+use Algolia\ScoutExtended\Contracts\TransformerContract;
+
+class CustomTransformer implements TransformerContract
+{
+	 /**
+     * @var \App\Contracts\TransformService
+     */
+    protected $service;
+
+	 /**
+     * Creates a new instance of the class.
+     *
+     * @param  \App\Contracts\TransformService $service
+     *
+     * @return void
+     */
+    public function __construct(TransformService $service)
+    {
+    	 $this->service = $service;
+    }
+
+    /**
+     * Transforms the given array.
+     *
+     * @param  object $searchable
+     * @param  array $array
+     *
+     * @return array
+     */
+    public function transform($searchable, array $array): array
+    {
+        $array = $this->service->transform($searchable->articleType, $array);
+
+        return $array;
+    }
+}
+```
 
 ## ✂️ Split Records
 
@@ -364,7 +440,7 @@ Writing a splitter is simple. Create a new class that implemements `Algolia\Scou
 ```php
 <?php
 
-namespace App\Splitters;
+namespace App\Search\Splitters;
 
 use App\Contracts\SplitterService;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
@@ -398,7 +474,7 @@ class CustomSplitter implements SplitterContract
      */
     public function split($searchable, $value): array
     {
-    	 $values = $this->service->split($searchable->articleType, $value);
+        $values = $this->service->split($searchable->articleType, $value);
 
         return $values;
     }
