@@ -249,8 +249,13 @@ $models = Article::search('query')->where('views', 100)->get(); // views = 100
 The whereBetween method verifies that a field's value is between two values:
 
 ```php
-$models = Products::search('query')->whereBetween('price', [100, 200])->get();
-$models = Article::search('query')->whereBetween('created_at', [now()->subDays(7), now()->subDays(1)])->get();
+$models = Products::search('query')
+    ->whereBetween('price', [100, 200])
+    ->get();
+
+$models = Article::search('query')
+    ->whereBetween('created_at', [now()->subDays(7), now()->subDays(1)])
+    ->get();
 ```
 
 #### `count()`
