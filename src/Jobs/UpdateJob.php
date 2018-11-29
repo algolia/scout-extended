@@ -229,7 +229,7 @@ final class UpdateJob
         $searchableClass = get_class($searchable);
 
         if (! array_key_exists($searchableClass, $this->searchablesWithToSearchableArray)) {
-            $reflectionClass = new ReflectionClass(get_class($searchable));;
+            $reflectionClass = new ReflectionClass(get_class($searchable));
 
             $this->searchablesWithToSearchableArray[$searchableClass] =
                 ends_with((string) $reflectionClass->getMethod('toSearchableArray')->getFileName(),

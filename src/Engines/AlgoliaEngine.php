@@ -107,7 +107,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     protected function filters(Builder $builder): array
     {
         $operators = ['<', '<=', '=', '!=', '>=', '>', ':'];
-        
+
         return collect($builder->wheres)->map(function ($value, $key) use ($operators) {
             if (ends_with($key, $operators) || starts_with($value, $operators)) {
                 return $key.' '.$value;
