@@ -56,6 +56,24 @@ final class TransformersTest extends TestCase
 
         $this->assertEquals(100, $array['views_count']);
     }
+
+    public function testTransformMethod(): void
+    {
+        $thread = factory(Thread::class)->create();
+
+        $threadWithSearchableArrayUsingTransform = new ThreadWithSearchableArrayUsingTransform($thread->toArray());
+
+        $threadsIndexMock = $this->mockIndex($threadWithSearchableArrayUsingTransform->searchableAs());
+
+        $threadsIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
+            // Assert dates are NOT converted to integers:
+            return $argument[0]['created_at'] === 'Foo';
+        }));
+
+        $threadWithSearchableArrayUsingTransform->created_at = now();
+
+        dispatch(new UpdateJob(collect([$threadWithSearchableArrayUsingTransform])));
+    }
 }
 
 class ThreadWithSearchableArray extends Thread
@@ -63,5 +81,27 @@ class ThreadWithSearchableArray extends Thread
     public function toSearchableArray(): array
     {
         return $this->toArray();
+    }
+}
+
+class ThreadWithSearchableArrayUsingTransform extends Thread
+{
+    public function toSearchableArray(): array
+    {
+        return $this->transform($this->toArray(), [
+            ConvertToFoo::class,
+        ]);
+    }
+}
+
+class ConvertToFoo
+{
+    public function __invoke($searchable, array $array): array
+    {
+        foreach ($array as $key => $value) {
+            $array[$key] = 'Foo';
+        }
+
+        return $array;
     }
 }

@@ -47,6 +47,7 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
 
         $this->registerBinds();
         $this->registerCommands();
+        $this->registerMacros();
     }
 
     /**
@@ -107,5 +108,21 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
                 SyncCommand::class,
             ]);
         }
+    }
+
+    /**
+     * Register macros.
+     *
+     * @return void
+     */
+    private function registerMacros(): void
+    {
+        \Illuminate\Database\Eloquent\Builder::macro('transform', function (array $array, array $transformers) {
+            foreach ($transformers as $transformer) {
+                $array = (new $transformer)($this->getModel(), $array);
+            }
+
+            return $array;
+        });
     }
 }
