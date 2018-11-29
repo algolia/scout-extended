@@ -246,7 +246,7 @@ $models = Article::search('query')->where('views', 100)->get(); // views = 100
 
 #### `whereBetween()`
 
-The whereBetween method verifies that a field's value is between two values:
+The `whereBetween` method verifies that a field's value is **between two values**:
 
 ```php
 $models = Products::search('query')
