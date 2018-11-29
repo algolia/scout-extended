@@ -239,9 +239,9 @@ Scout Extended improves Laravel Scout's Builder class.
 The `where()` supports `<`, `<=`, `=`, `!=`, `>=`, `>` operators:
 
 ```php
-$models = Article::search('query')->where('views', '>', 100);
-$models = Article::search('query')->where('created_at', '>=', now()->subDays(7));
-$models = Article::search('query')->where('views', 100); // views = 100
+$models = Article::search('query')->where('views', '>', 100)->get();
+$models = Article::search('query')->where('created_at', '>=', now()->subDays(7))->get();
+$models = Article::search('query')->where('views', 100)->get(); // views = 100
 ```
 
 #### `whereBetween()`
@@ -249,8 +249,8 @@ $models = Article::search('query')->where('views', 100); // views = 100
 The whereBetween method verifies that a field's value is between two values:
 
 ```php
-$models = Article::search('query')->whereBetween('views', [100, 200]);
-$models = Article::search('query')->whereBetween('created_at', [now()->subDays(7), now()->subDays(1)]);
+$models = Products::search('query')->whereBetween('price', [100, 200])->get();
+$models = Article::search('query')->whereBetween('created_at', [now()->subDays(7), now()->subDays(1)])->get();
 ```
 
 #### `count()`
