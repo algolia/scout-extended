@@ -107,36 +107,13 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     protected function filters(Builder $builder): array
     {
         $operators = ['<', '<=', '=', '!=', '>=', '>', ':'];
-
-        $wheres = $this->mutateWheres($builder->wheres);
-
-        return collect($wheres)->map(function ($value, $key) use ($operators) {
+        
+        return collect($builder->wheres)->map(function ($value, $key) use ($operators) {
             if (ends_with($key, $operators) || starts_with($value, $operators)) {
                 return $key.' '.$value;
             }
 
             return $key.'='.$value;
         })->values()->all();
-    }
-
-    /**
-     * Mutate the given wheres.
-     *
-     * @param  array  $wheres
-     *
-     * @return array
-     */
-    private function mutateWheres(array $wheres): array
-    {
-        foreach ($wheres as $key => $where) {
-            /*
-             * Casts carbon instances to timestamp.
-             */
-            if ($where instanceof \Illuminate\Support\Carbon) {
-                $wheres[$key] = $where->getTimestamp();
-            }
-        }
-
-        return $wheres;
     }
 }

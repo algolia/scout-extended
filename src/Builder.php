@@ -63,10 +63,10 @@ final class Builder extends BaseBuilder
         // passed to the method, we will assume that the operator is an equals sign
         // and keep going. Otherwise, we'll require the operator to be passed in.
         if (func_num_args() === 2) {
-            return parent::where($field, $operator);
+            return parent::where($field, $this->transform($operator));
         }
 
-        return parent::where($field, "$operator $value");
+        return parent::where($field, "$operator {$this->transform($value)}");
     }
 
     /**
@@ -79,7 +79,7 @@ final class Builder extends BaseBuilder
      */
     public function whereBetween($field, array $values): self
     {
-        return $this->where("$field:", "{$values[0]} TO {$values[1]}");
+        return $this->where("$field:", "{$this->transform($values[0])} TO {$this->transform($values[1])}");
     }
 
     /**
@@ -106,5 +106,24 @@ final class Builder extends BaseBuilder
         };
 
         return $this;
+    }
+
+    /**
+     * Transform the given where value.
+     *
+     * @param  mixed $value
+     *
+     * @return mixed
+     */
+    private function transform($value)
+    {
+        /*
+         * Casts carbon instances to timestamp.
+         */
+        if ($value instanceof \Illuminate\Support\Carbon) {
+            $value = $value->getTimestamp();
+        }
+
+        return $value;
     }
 }
