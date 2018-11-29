@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Jobs;
 
-use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
-use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
 use ReflectionClass;
 use function in_array;
 use function is_array;
@@ -27,6 +25,8 @@ use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
+use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
+use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
 
 /**
  * @internal
