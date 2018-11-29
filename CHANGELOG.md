@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2018-11-29
+### Added
+- `Builder::whereBetween` method to Builder ([4161a60](https://github.com/algolia/scout-extended/commit/4161a6048e6f6e2f54c2dc4e6f0af7bc108c1436))
+
+### Changed
+- Custom splitters must implement `Algolia\ScoutExtended\Contracts\SplitterContract`.
+
+### Fixed
+- Fixes queuing aggregators ([#77](https://github.com/algolia/scout-extended/pull/77))
+
 ## [0.3.2] - 2018-11-21
 ### Changed
 - `Builder::where` now accepts 3 arguments like Eloquent ([d883ce1](https://github.com/algolia/scout-extended/commit/d883ce199f5c5fcf592af96c89e27a08b811d362))
