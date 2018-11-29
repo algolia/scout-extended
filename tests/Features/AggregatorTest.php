@@ -9,6 +9,7 @@ use App\User;
 use App\Wall;
 use App\Thread;
 use Tests\TestCase;
+use Algolia\ScoutExtended\Searchable\AggregatorCollection;
 
 final class AggregatorTest extends TestCase
 {
@@ -17,7 +18,8 @@ final class AggregatorTest extends TestCase
         $usersIndexMock = $this->mockIndex('users');
 
         $usersIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'App\User::1';
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
         }));
 
         $user = factory(User::class)->create();
@@ -39,10 +41,12 @@ final class AggregatorTest extends TestCase
         $wallIndexMock = $this->mockIndex('wall');
 
         $usersIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'App\User::1';
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
         }));
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('email', $argument[0]) && $argument[0]['objectID'] === 'App\User::1';
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
         }));
         $user = factory(User::class)->create();
 
@@ -70,7 +74,8 @@ final class AggregatorTest extends TestCase
 
         $threadIndexMock->shouldReceive('saveObjects')->once();
         $wallIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('body', $argument[0]) && $argument[0]['objectID'] === 'App\Thread::1';
+            return count($argument) === 1 && array_key_exists('body', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\Thread::1';
         }));
         $thread = factory(Thread::class)->create();
 
@@ -96,7 +101,8 @@ final class AggregatorTest extends TestCase
 
         // Laravel Scout restore calls twice the save objects.
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'App\Post::1';
+            return count($argument) === 1 && array_key_exists('subject', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\Post::1';
         }));
         $wallIndexMock->shouldReceive('deleteBy')->times(3)->with([
             'tagFilters' => [
@@ -119,7 +125,8 @@ final class AggregatorTest extends TestCase
 
         // Laravel Scout force Delete calls once the save() method.
         $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(\Mockery::on(function ($argument) {
-            return count($argument) === 1 && array_key_exists('subject', $argument[0]) && $argument[0]['objectID'] === 'App\Post::1';
+            return count($argument) === 1 && array_key_exists('subject', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\Post::1';
         }));
         $post = factory(Post::class)->create();
         $post->delete();
@@ -170,5 +177,19 @@ final class AggregatorTest extends TestCase
         $this->assertInstanceOf(Thread::class, $models->get(1));
         $this->assertEquals($thread->body, $models->get(1)->body);
         $this->assertEquals($thread->id, $models->get(1)->id);
+    }
+
+    public function testSerializationOfCollection(): void
+    {
+        $aggregators = factory(Post::class, 100)->create()->map(function ($model) {
+            return Wall::create(Post::find($model->id));
+        })->toArray();
+
+        $collection = AggregatorCollection::make($aggregators);
+
+        $collectionQueued = unserialize(serialize(clone $collection));
+
+        $this->assertEquals(Wall::class, $collectionQueued->aggregator);
+        $this->assertEquals($collection->toArray(), $collectionQueued->toArray());
     }
 }

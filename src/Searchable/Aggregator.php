@@ -184,6 +184,22 @@ abstract class Aggregator implements SearchableCountableContract
     /**
      * {@inheritdoc}
      */
+    public function searchable(): void
+    {
+        AggregatorCollection::make([$this])->searchable();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unsearchable(): void
+    {
+        AggregatorCollection::make([$this])->unsearchable();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSearchableCount(): int
     {
         $count = 0;
@@ -203,8 +219,8 @@ abstract class Aggregator implements SearchableCountableContract
     /**
      * Handle dynamic method calls into the model.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param  string $method
+     * @param  array $parameters
      * @return mixed
      */
     public function __call($method, $parameters)
