@@ -120,7 +120,7 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
     {
         \Illuminate\Database\Eloquent\Builder::macro('transform', function (array $array, array $transformers = null) {
             foreach ($transformers ?? UpdateJob::getTransformers() as $transformer) {
-                $array = (new $transformer)($this->getModel(), $array);
+                $array = app($transformer)->transform($this->getModel(), $array);
             }
 
             return $array;

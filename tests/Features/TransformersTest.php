@@ -9,6 +9,7 @@ use App\Thread;
 use Tests\TestCase;
 use function is_int;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
+use Algolia\ScoutExtended\Contracts\TransformerContract;
 use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
 use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
 
@@ -43,7 +44,7 @@ final class TransformersTest extends TestCase
     {
         $thread = factory(Thread::class)->create();
 
-        $array = (new ConvertDatesToTimestamps())($thread, $thread->toSearchableArray());
+        $array = (new ConvertDatesToTimestamps())->transform($thread, $thread->toSearchableArray());
 
         $this->assertEquals($thread->created_at->getTimestamp(), $array['created_at']);
     }
@@ -52,7 +53,7 @@ final class TransformersTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $array = (new ConvertNumericStringsToNumbers())($user, $user->toSearchableArray());
+        $array = (new ConvertNumericStringsToNumbers())->transform($user, $user->toSearchableArray());
 
         $this->assertEquals(100, $array['views_count']);
     }
@@ -94,9 +95,9 @@ class ThreadWithSearchableArrayUsingTransform extends Thread
     }
 }
 
-class ConvertToFoo
+class ConvertToFoo implements TransformerContract
 {
-    public function __invoke($searchable, array $array): array
+    public function transform($searchable, array $array): array
     {
         foreach ($array as $key => $value) {
             $array[$key] = 'Foo';

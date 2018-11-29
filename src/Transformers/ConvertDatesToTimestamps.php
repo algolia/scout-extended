@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Transformers;
 
-final class ConvertDatesToTimestamps
+use Algolia\ScoutExtended\Contracts\TransformerContract;
+
+final class ConvertDatesToTimestamps implements TransformerContract
 {
     /**
      * Converts the given array numeric strings to numbers.
@@ -23,7 +25,7 @@ final class ConvertDatesToTimestamps
      *
      * @return array
      */
-    public function __invoke($searchable, array $array): array
+    public function transform($searchable, array $array): array
     {
         foreach ($array as $key => $value) {
             $attributeValue = $searchable->getModel()->getAttribute($key);
