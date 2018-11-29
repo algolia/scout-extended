@@ -275,6 +275,10 @@ $models = Article::search('query')
     ->get();
 ```
 
+## 🧹️ Transform Records
+
+TODO
+
 ## ✂️ Split Records
 
 For performance reasons, objects in Algolia should be 10kb or less. Large records can be split into smaller documents by splitting on a logical chunk such as **paragraphs or sentences**.

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended;
 
 use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
 use Algolia\AlgoliaSearch\AnalyticsClient;
@@ -47,6 +48,7 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
 
         $this->registerBinds();
         $this->registerCommands();
+        $this->registerMacros();
     }
 
     /**
@@ -107,5 +109,22 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
                 SyncCommand::class,
             ]);
         }
+    }
+
+    /**
+     * Register macros.
+     *
+     * @return void
+     */
+    private function registerMacros(): void
+    {
+        \Illuminate\Database\Eloquent\Builder::macro('transform', function (array $array, array $transformers = null) {
+
+            foreach ($transformers ?? UpdateJob::getTransformers() as $transformer) {
+                $array = (new $transformer)($this->getModel(), $array);
+            }
+
+            return $array;
+        });
     }
 }

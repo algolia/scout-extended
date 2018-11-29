@@ -24,7 +24,7 @@ final class User extends Authenticatable
     public function toSearchableArray()
     {
         return array_merge($this->toArray(), [
-            'views_count' => 100,
+            'views_count' => '100',
             'category_type' => 'published',
         ]);
     }

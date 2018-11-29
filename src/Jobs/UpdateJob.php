@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Jobs;
 
+use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
+use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
+use ReflectionClass;
 use function in_array;
 use function is_array;
 use function get_class;
@@ -46,6 +49,25 @@ final class UpdateJob
      * @var \Illuminate\Support\Collection
      */
     private $searchables;
+
+    /**
+     * Holds the searchables with a declared
+     * toSearchableArray method.
+     *
+     * @var array
+     */
+    private $searchablesWithToSearchableArray = [];
+
+    /**
+     * Holds a list of transformers to apply by
+     * default.
+     *
+     * @var array
+     */
+    private static $transformers = [
+        ConvertNumericStringsToNumbers::class,
+        ConvertDatesToTimestamps::class,
+    ];
 
     /**
      * UpdateJob constructor.
@@ -84,11 +106,13 @@ final class UpdateJob
                 continue;
             }
 
-            $array = $this->mutateArray($searchable, $array);
+            if (! $this->hasToSearchableArray($searchable)) {
+                $array = $searchable->getModel()->transform($array);
+            }
 
             $array['_tags'] = (array) ($array['_tags'] ?? []);
 
-            array_push($array['_tags'], ObjectIdEncrypter::encrypt($searchable));
+            $array['_tags'][] = ObjectIdEncrypter::encrypt($searchable);
 
             if ($this->shouldBeSplitted($searchable)) {
                 $objects = $this->splitSearchable($searchable, $array);
@@ -196,35 +220,31 @@ final class UpdateJob
     }
 
     /**
-     * Mutate the given array using searchable's model attributes.
+     * @param  object $searchable
      *
-     * @param  object  $searchable
-     * @param  array  $array
+     * @return bool
+     */
+    private function hasToSearchableArray($searchable): bool
+    {
+        $searchableClass = get_class($searchable);
+
+        if (! array_key_exists($searchableClass, $this->searchablesWithToSearchableArray)) {
+            $file = (new ReflectionClass(get_class($searchable)))->getMethod('toSearchableArray')->getFileName();
+
+            $this->searchablesWithToSearchableArray[$searchableClass] =
+                ! ends_with((string) $file, 'laravel/scout/src/Searchable.php');
+        }
+
+        return $this->searchablesWithToSearchableArray[$searchableClass];
+    }
+
+    /**
+     * Returns the default update job transformers.
      *
      * @return array
      */
-    private function mutateArray($searchable, array $array): array
+    public static function getTransformers(): array
     {
-        foreach ($array as $key => $value) {
-            $attributeValue = $searchable->getModel()->getAttribute($key);
-
-            /*
-             * Casts carbon instances to timestamp.
-             */
-            if ($attributeValue instanceof \Illuminate\Support\Carbon) {
-                $array[$key] = $attributeValue->getTimestamp();
-            }
-
-            /*
-             * Casts numeric strings to integers/floats.
-             */
-            if (is_string($attributeValue) && is_numeric($attributeValue)) {
-                $array[$key] = ctype_digit($attributeValue)
-                    ? (int) $attributeValue
-                    : (float) $attributeValue;
-            }
-        }
-
-        return $array;
+        return self::$transformers;
     }
 }
