@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use App\User;
+use App\Thread;
+use Tests\TestCase;
+use function is_int;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
 use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
-use App\Thread;
-use App\User;
-use Tests\TestCase;
-use function is_int;
 
 final class TransformersTest extends TestCase
 {
