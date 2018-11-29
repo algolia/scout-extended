@@ -24,6 +24,7 @@ use Illuminate\Support\Collection;
 use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Algolia\ScoutExtended\Contracts\SplitterContract;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
 use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
@@ -184,7 +185,7 @@ final class UpdateJob
                     case is_string($result):
                         $pieces[$splittedBy] = app($result)->split($model, $value);
                         break;
-                    case is_object($result):
+                    case $result instanceof SplitterContract:
                         $pieces[$splittedBy] = $result->split($model, $value);
                         break;
                 }
