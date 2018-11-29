@@ -62,7 +62,7 @@ final class UpdateJob
      * Holds a list of transformers to apply by
      * default.
      *
-     * @var array []string
+     * @var array
      */
     private $transformers = [
         ConvertNumericStringsToNumbers::class,
