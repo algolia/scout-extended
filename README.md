@@ -303,7 +303,7 @@ class Article extends Model
      * Splits the given value.
      *
      * @param  string $value
-     * @return mixed
+     * @return array
      */
     public function splitBody($value)
     {
@@ -345,7 +345,7 @@ class Article extends Model
 
 One of the primary benefits of creating a `Splitter` class is the ability to type-hint any dependencies your splitter may need in its constructor. The declared dependencies will automatically be **resolved and injected into the splitter instance**.
 
-Writing a splitter is simple. Create a new `Invokable` class, and the `__invoke` method should split the given `$value` as needed:
+Writing a splitter is simple. Create a new class that implemements `Algolia\ScoutExtended\Contracts\SplitterContract`, and the `split` method should split the given `$value` as needed:
 
 ```php
 <?php
@@ -353,8 +353,9 @@ Writing a splitter is simple. Create a new `Invokable` class, and the `__invoke`
 namespace App\Splitters;
 
 use App\Contracts\SplitterService;
+use Algolia\ScoutExtended\Contracts\SplitterContract;
 
-class CustomSplitter
+class CustomSplitter implements SplitterContract
 {
 	 /**
      * @var \App\Contracts\SplitterService
@@ -381,7 +382,7 @@ class CustomSplitter
      *
      * @return array
      */
-    public function __invoke($searchable, $value)
+    public function split($searchable, $value): array
     {
     	 $values = $this->service->split($searchable->articleType, $value);
 

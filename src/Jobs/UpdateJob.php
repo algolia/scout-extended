@@ -182,10 +182,10 @@ final class UpdateJob
                         $pieces[$splittedBy] = $result;
                         break;
                     case is_string($result):
-                        $pieces[$splittedBy] = app($result)($model, $value);
+                        $pieces[$splittedBy] = app($result)->split($model, $value);
                         break;
                     case is_object($result):
-                        $pieces[$splittedBy] = $result->__invoke($model, $value);
+                        $pieces[$splittedBy] = $result->split($model, $value);
                         break;
                 }
             }

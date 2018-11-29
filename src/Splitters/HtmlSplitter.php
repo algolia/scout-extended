@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Splitters;
 
 use DOMDocument;
+use Algolia\ScoutExtended\Contracts\SplitterContract;
 
-class HtmlSplitter
+class HtmlSplitter implements SplitterContract
 {
     /**
      * The list of html tags.
@@ -65,7 +66,7 @@ class HtmlSplitter
      *
      * @return array
      */
-    public function __invoke($searchable, $value): array
+    public function split($searchable, $value): array
     {
         $dom = new DOMDocument();
         $dom->loadHTML($value);
