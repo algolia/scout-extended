@@ -244,6 +244,15 @@ $models = Article::search('query')->where('created_at', '>=', now()->subDays(7))
 $models = Article::search('query')->where('views', 100); // views = 100
 ```
 
+#### `whereBetween()`
+
+The whereBetween method verifies that a field's value is between two values:
+
+```php
+$models = Article::search('query')->whereBetween('views', [100, 200]);
+$models = Article::search('query')->whereBetween('created_at', [now()->subDays(7), now()->subDays(1)]);
+```
+
 #### `count()`
 
 The `count` method returns the **number of hits** matched by the query.
