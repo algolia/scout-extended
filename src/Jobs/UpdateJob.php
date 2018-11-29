@@ -17,7 +17,6 @@ use ReflectionClass;
 use function in_array;
 use function is_array;
 use function get_class;
-use function is_object;
 use function is_string;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;

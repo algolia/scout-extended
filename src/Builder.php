@@ -70,6 +70,19 @@ final class Builder extends BaseBuilder
     }
 
     /**
+     * Customize the search adding a where between clause.
+     *
+     * @param  string $field
+     * @param  array $values
+     *
+     * @return $this
+     */
+    public function whereBetween($field, array $values): self
+    {
+        return $this->where("$field:", "{$values[0]} TO {$values[1]}");
+    }
+
+    /**
      * Customize the search with the provided search parameters.
      *
      * @link https://www.algolia.com/doc/api-reference/search-api-parameters

@@ -106,7 +106,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
      */
     protected function filters(Builder $builder): array
     {
-        $operators = ['<', '<=', '=', '!=', '>=', '>'];
+        $operators = ['<', '<=', '=', '!=', '>=', '>', ':'];
 
         $wheres = $this->mutateWheres($builder->wheres);
 
