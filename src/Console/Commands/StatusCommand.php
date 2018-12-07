@@ -62,7 +62,7 @@ final class StatusCommand extends Command
             if (! $status->bothAreEqual()) {
                 $description = "<fg=red>$description</>";
             } else {
-                $description = '<fg=green>synchronized</>';
+                $description = '<fg=green>Synchronized</>';
             }
 
             $row[] = $description;
