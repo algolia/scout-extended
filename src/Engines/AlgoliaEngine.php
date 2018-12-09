@@ -17,7 +17,6 @@ use Laravel\Scout\Builder;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Jobs\DeleteJob;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
-use Illuminate\Database\Eloquent\Collection;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
 use Laravel\Scout\Engines\AlgoliaEngine as BaseAlgoliaEngine;
 
