@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.1] - 2018-12-09
+### Fixed
+- `AlgoliaEngine::map()` returns `searchable`'s collection ([09ae017](https://github.com/algolia/scout-extended/commit/09ae017b050941ffef2e3e71ef86910f5b3fbc3e))
+
 ## [0.4.0] - 2018-11-29
 ### Added
 - `Builder::whereBetween` method to Builder ([4161a60](https://github.com/algolia/scout-extended/commit/4161a6048e6f6e2f54c2dc4e6f0af7bc108c1436))
