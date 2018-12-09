@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Events\ModelsImported;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
 use Algolia\ScoutExtended\Exceptions\ModelNotDefinedInAggregatorException;
@@ -217,10 +218,23 @@ abstract class Aggregator implements SearchableCountableContract
     }
 
     /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array  $searchables
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function newCollection(array $searchables = []): Collection
+    {
+        return new Collection($searchables);
+    }
+
+    /**
      * Handle dynamic method calls into the model.
      *
      * @param  string $method
      * @param  array $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)

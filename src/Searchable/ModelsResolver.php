@@ -17,7 +17,7 @@ use function in_array;
 use Laravel\Scout\Builder;
 use function call_user_func;
 use Laravel\Scout\Searchable;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -32,7 +32,7 @@ final class ModelsResolver
      * @param  string|object $searchable
      * @param  array $ids
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function from(Builder $builder, $searchable, array $ids): Collection
     {
@@ -40,8 +40,9 @@ final class ModelsResolver
 
         foreach ($ids as $id) {
             $modelClass = ObjectIdEncrypter::decryptSearchable($id);
-            $model = new $modelClass;
             $modelKey = ObjectIdEncrypter::decryptSearchableKey($id);
+
+            $model = new $modelClass;
 
             if (in_array(Searchable::class, class_uses_recursive($model), true)) {
                 if (! empty($models = $model->getScoutModelsByIds($builder, [$modelKey]))) {
@@ -63,6 +64,6 @@ final class ModelsResolver
             }
         }
 
-        return $instances;
+        return $searchable->newCollection($instances->values()->all());
     }
 }

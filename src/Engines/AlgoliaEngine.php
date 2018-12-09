@@ -83,7 +83,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     public function map(Builder $builder, $results, $searchable)
     {
         if (count($results['hits']) === 0) {
-            return Collection::make();
+            return $searchable->newCollection();
         }
 
         $ids = collect($results['hits'])->pluck('objectID')->values()->all();
