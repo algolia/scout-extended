@@ -136,8 +136,8 @@ final class SplittersTest extends TestCase
     {
         $index = $this->mockIndex(ThreadWithValueReturned::class);
 
-        $index->shouldReceive('saveObjects')->once();
-        $index->shouldReceive('deleteBy')->once();
+        $index->shouldReceive('saveObjects')->twice();
+        $index->shouldReceive('deleteBy')->twice();
 
         $body = implode('', [
             '<h1>Hello <strong>Foo!</strong></h1>',
@@ -145,6 +145,7 @@ final class SplittersTest extends TestCase
         ]);
 
         ThreadWithValueReturned::create(['body' => $body]);
+        ThreadWithValueReturned::create(['body' => 'Hello John']);
 
         $index->shouldReceive('search')->once()->andReturn([
             'hits' => [
@@ -166,7 +167,7 @@ final class SplittersTest extends TestCase
             ],
         ]);
         $models = ThreadWithValueReturned::search('Hello')->get();
-        $this->assertEquals(2, $models->count());
+        $this->assertEquals(3, $models->count());
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[0]);
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[1]);
     }

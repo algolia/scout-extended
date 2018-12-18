@@ -52,6 +52,16 @@ final class ObjectIdEncrypter
      *
      * @return string
      */
+    public static function withoutPart(string $objectId): string
+    {
+        return implode(self::$separator, [self::decryptSearchable($objectId), self::decryptSearchableKey($objectId)]);
+    }
+
+    /**
+     * @param  string $objectId
+     *
+     * @return string
+     */
     public static function decryptSearchable(string $objectId): string
     {
         return (string) explode(self::$separator, $objectId)[0];

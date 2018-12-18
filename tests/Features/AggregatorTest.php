@@ -146,37 +146,39 @@ final class AggregatorTest extends TestCase
         $threadIndexMock = $this->mockIndex(Thread::class);
         $wallIndexMock = $this->mockIndex('wall');
 
-        $threadIndexMock->shouldReceive('saveObjects')->once();
-        $wallIndexMock->shouldReceive('saveObjects')->twice();
+        $threadIndexMock->shouldReceive('saveObjects')->times(2);
+        $wallIndexMock->shouldReceive('saveObjects')->times(4);
         $wallIndexMock->shouldReceive('search')->once()->andReturn([
             'hits' => [
-                [
-                    'subject' => 'Sed neque est quos.',
-                    'id' => 1,
-                    'objectID' => 'App\Post::1',
-                ],
-                [
-                    'body' => 'Saepe et delectus quis dolor sit unde voluptatibus. Quas blanditiis enim accusamus veniam.',
-                    'id' => 1,
-                    'objectID' => 'App\Thread::1',
-                ],
+                ['objectID' => 'App\Post::1',],
+                ['objectID' => 'App\Thread::1',],
+                ['objectID' => 'App\Thread::2',],
+                ['objectID' => 'App\Post::2',],
             ],
         ]);
 
-        $post = factory(Post::class)->create();
-        $thread = factory(Thread::class)->create();
+        $post = factory(Post::class, 2)->create();
+        $thread = factory(Thread::class, 2)->create();
 
         $models = Wall::search('input')->get();
         /* @var $models \Illuminate\Database\Eloquent\Collection */
+        $this->assertCount(4, $models);
 
-        $this->assertCount(2, $models);
         $this->assertInstanceOf(Post::class, $models->get(0));
-        $this->assertEquals($post->subject, $models->get(0)->subject);
-        $this->assertEquals($post->id, $models->get(0)->id);
+        $this->assertEquals($post[0]->subject, $models->get(0)->subject);
+        $this->assertEquals($post[0]->id, $models->get(0)->id);
 
         $this->assertInstanceOf(Thread::class, $models->get(1));
-        $this->assertEquals($thread->body, $models->get(1)->body);
-        $this->assertEquals($thread->id, $models->get(1)->id);
+        $this->assertEquals($thread[0]->body, $models->get(1)->body);
+        $this->assertEquals($thread[0]->id, $models->get(1)->id);
+
+        $this->assertInstanceOf(Thread::class, $models->get(2));
+        $this->assertEquals($thread[1]->body, $models->get(2)->body);
+        $this->assertEquals($thread[1]->id, $models->get(2)->id);
+
+        $this->assertInstanceOf(Post::class, $models->get(3));
+        $this->assertEquals($post[1]->subject, $models->get(3)->subject);
+        $this->assertEquals($post[1]->id, $models->get(3)->id);
     }
 
     public function testSerializationOfCollection(): void

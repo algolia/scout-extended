@@ -38,14 +38,23 @@ final class ModelsResolver
     {
         $instances = collect();
 
+        $models = [];
         foreach ($ids as $id) {
             $modelClass = ObjectIdEncrypter::decryptSearchable($id);
             $modelKey = ObjectIdEncrypter::decryptSearchableKey($id);
+            if (! array_key_exists($modelClass, $models)) {
+                $models[$modelClass] = [];
+            }
+
+            $models[$modelClass][] = $modelKey;
+        }
+
+        foreach ($models as $modelClass => $modelKeys) {
 
             $model = new $modelClass;
 
             if (in_array(Searchable::class, class_uses_recursive($model), true)) {
-                if (! empty($models = $model->getScoutModelsByIds($builder, [$modelKey]))) {
+                if (! empty($models = $model->getScoutModelsByIds($builder, $modelKeys))) {
                     $instances = $instances->merge($models);
                 }
             } else {
@@ -58,12 +67,23 @@ final class ModelsResolver
 
                 $scoutKey = method_exists($model,
                     'getScoutKeyName') ? $model->getScoutKeyName() : $model->getQualifiedKeyName();
-                if ($instance = $query->where($scoutKey, $modelKey)->get()->first()) {
-                    $instances->push($instance);
+                if ($models = $query->whereIn($scoutKey, $modelKeys)->get()) {
+                    $instances = $instances->merge($models);
                 }
             }
         }
 
-        return $searchable->newCollection($instances->values()->all());
+        $result = $searchable->newCollection();
+
+        foreach ($ids as $id) {
+            foreach ($instances as $instance) {
+                if (ObjectIdEncrypter::encrypt($instance) === ObjectIdEncrypter::withoutPart($id)) {
+                    $result->push($instance);
+                    break;
+                }
+            }
+        }
+
+        return $result;
     }
 }
