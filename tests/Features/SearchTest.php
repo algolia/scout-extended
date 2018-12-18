@@ -29,9 +29,9 @@ final class SearchTest extends TestCase
         $threadIndexMock->shouldReceive('saveObjects')->times(3);
         $threadIndexMock->shouldReceive('search')->once()->andReturn([
             'hits' => [
-                ['objectID' => 'App\Thread::3',],
-                ['objectID' => 'App\Thread::1',],
-                ['objectID' => 'App\Thread::2',],
+                ['objectID' => 'App\Thread::3'],
+                ['objectID' => 'App\Thread::1'],
+                ['objectID' => 'App\Thread::2'],
             ],
         ]);
 

@@ -50,7 +50,6 @@ final class ModelsResolver
         }
 
         foreach ($models as $modelClass => $modelKeys) {
-
             $model = new $modelClass;
 
             if (in_array(Searchable::class, class_uses_recursive($model), true)) {
