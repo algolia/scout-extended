@@ -150,10 +150,10 @@ final class AggregatorTest extends TestCase
         $wallIndexMock->shouldReceive('saveObjects')->times(4);
         $wallIndexMock->shouldReceive('search')->once()->andReturn([
             'hits' => [
-                ['objectID' => 'App\Post::1',],
-                ['objectID' => 'App\Thread::1',],
-                ['objectID' => 'App\Thread::2',],
-                ['objectID' => 'App\Post::2',],
+                ['objectID' => 'App\Post::1'],
+                ['objectID' => 'App\Thread::1'],
+                ['objectID' => 'App\Thread::2'],
+                ['objectID' => 'App\Post::2'],
             ],
         ]);
 
