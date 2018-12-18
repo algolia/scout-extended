@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.2] - 2018-12-19
+### Fixed
+- Missing Eager loading in `search` method ([d98dcce](https://github.com/algolia/scout-extended/commit/d98dccee7032dbb5d9a3a101a65913f03da6904d))
+
 ## [0.4.1] - 2018-12-09
 ### Fixed
 - `AlgoliaEngine::map()` returns `searchable`'s collection ([09ae017](https://github.com/algolia/scout-extended/commit/09ae017b050941ffef2e3e71ef86910f5b3fbc3e))
