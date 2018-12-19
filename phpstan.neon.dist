@@ -14,3 +14,4 @@ parameters:
         - '#Algolia\\ScoutExtended\\ScoutExtendedServiceProvider::getModel\(\)#'
         - '#Cannot call static method create\(\) on string|null#'
         - '#Cannot call method newCollection\(\) on mixed.#'
+        - '#Casting to string something that#'
