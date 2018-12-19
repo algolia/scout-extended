@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.3] - 2018-12-19
+### Fixed
+- Using `null` on `Model::search` method ([46c9405](https://github.com/algolia/scout-extended/commit/46c9405f3f9c202e5f15551cadad731ed059eb94))
+
 ## [0.4.2] - 2018-12-19
 ### Fixed
 - Missing Eager loading in `search` method ([d98dcce](https://github.com/algolia/scout-extended/commit/d98dccee7032dbb5d9a3a101a65913f03da6904d))
