@@ -20,6 +20,16 @@ use Laravel\Scout\Builder as BaseBuilder;
 final class Builder extends BaseBuilder
 {
     /**
+     * {@inheritdoc}
+     *
+     * @see https://github.com/algolia/scout-extended/issues/98
+     */
+    public function __construct($model, $query, $callback = null, $softDelete = false)
+    {
+        parent::__construct($model, (string) $query, $callback, $softDelete);
+    }
+
+    /**
      * Customize the search to be around a given location.
      *
      * @link https://www.algolia.com/doc/guides/geo-search/geo-search-overview

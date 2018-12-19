@@ -32,4 +32,9 @@ final class BuilderTest extends TestCase
 
         User::search('bar')->aroundLatLng(48.8566, 2.3522)->get();
     }
+
+    public function testQueryIsString(): void
+    {
+        $this->assertTrue(User::search(null)->query === '');
+    }
 }
