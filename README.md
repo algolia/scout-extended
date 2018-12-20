@@ -37,7 +37,7 @@ Because everyone should be able to build great search, you can use Algolia's bas
 
 ## 💡 Documentation
 
-For full documentation, visit the [Scout Extended documentation](https://algolia.com/doc/framework-integration/laravel)**.
+For full documentation, visit the **[Scout Extended documentation](https://algolia.com/doc/framework-integration/laravel)**.
 
 > **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to **read the Scout documentation first**. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
 
