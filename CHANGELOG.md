@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.1] - 2019-01-02
 ### Fixed
-- User agent version
+- User agent version ([21eb42f](https://github.com/algolia/scout-extended/commit/21eb42f8a1223211d93de750ce75337ee914ffd2))
 
 ## [1.0.0] - 2018-12-20
 ### Added
