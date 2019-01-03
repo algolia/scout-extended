@@ -19,9 +19,6 @@ final class ReimportCommandTest extends TestCase
 
         $userOriginalIndex = $this->mockIndex(User::class);
 
-        // To check if index exists.
-        $userOriginalIndex->shouldReceive('search')->once()->andReturn(['hits' => []]);
-
         $userTemporaryIndex = $this->mockIndex('temp_'.(new User())->searchableAs());
 
         $client->shouldReceive('copyIndex')->with((new User())->searchableAs(), $userTemporaryIndex->getIndexName(), [

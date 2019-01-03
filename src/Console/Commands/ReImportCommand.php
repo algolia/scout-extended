@@ -61,7 +61,7 @@ final class ReImportCommand extends Command
             tap($this->output)->progressAdvance()->text("Creating temporary index <info>{$temporaryName}</info>");
 
             try {
-                $searchable::search()->get();
+                $index->getSettings();
 
                 $client->copyIndex($index->getIndexName(), $temporaryName, [
                     'scope' => [
