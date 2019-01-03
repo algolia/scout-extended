@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.2] - 2019-01-03
+### Fixed
+- Fixes `scout:reimport` with indexes imported using `laravel/scout` ([9aa9370](https://github.com/algolia/scout-extended/commit/9aa937089343c05460252b9a438c670b7beebabb))
+
 ## [1.0.1] - 2019-01-02
 ### Fixed
 - User agent version ([21eb42f](https://github.com/algolia/scout-extended/commit/21eb42f8a1223211d93de750ce75337ee914ffd2))
