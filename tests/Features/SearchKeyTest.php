@@ -18,8 +18,26 @@ final class SearchKeyTest extends TestCase
         $response = $this->mockResponse();
         $response->shouldReceive('getBody')->andReturn(['key' => 'bar']);
 
-        $this->mockClient()->shouldReceive('addApiKey')->with([
-            'acl' => ['search'],
+        $this->mockClient()->shouldReceive('addApiKey')->with(['search'],[
+            'description' => config('app.name').'::searchKey',
+        ])->andReturn($response);
+
+        $this->mockClient()->shouldReceive('generateSecuredApiKey')->with('bar', [
+            'restrictIndices' => 'users',
+            'validUntil' => time() + (3600 * 25),
+        ])->andReturn('barSecured');
+
+        $this->assertEquals(Algolia::searchKey(User::class), 'barSecured');
+    }
+
+    public function testWhenSearchApiDontExistsAndInvalidKeysExist(): void
+    {
+        $this->mockClient()->shouldReceive('listApiKeys')->andReturn(['keys' => [['foo' => 'bar']]]);
+
+        $response = $this->mockResponse();
+        $response->shouldReceive('getBody')->andReturn(['key' => 'bar']);
+
+        $this->mockClient()->shouldReceive('addApiKey')->with(['search'],[
             'description' => config('app.name').'::searchKey',
         ])->andReturn($response);
 

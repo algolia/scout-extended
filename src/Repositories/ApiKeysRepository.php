@@ -68,18 +68,18 @@ final class ApiKeysRepository
             $id = config('app.name').'::searchKey';
 
             $keys = $this->client->listApiKeys()['keys'];
+
             $searchKey = null;
 
             foreach ($keys as $key) {
-                if ($key['description'] === $id) {
+                if (array_key_exists('description', $key) && $key['description'] === $id) {
                     $searchKey = $key['value'];
                 }
             }
 
-            $searchKey = $searchKey ?? $this->client->addApiKey([
-                    'acl' => ['search'],
-                    'description' => config('app.name').'::searchKey',
-                ])->getBody()['key'];
+            $searchKey = $searchKey ?? $this->client->addApiKey(['search'], [
+                'description' => config('app.name').'::searchKey',
+            ])->getBody()['key'];
 
             // Key will be valid for 25 hours.
             $validUntil = time() + (3600 * 25);
