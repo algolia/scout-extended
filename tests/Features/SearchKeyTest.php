@@ -18,7 +18,7 @@ final class SearchKeyTest extends TestCase
         $response = $this->mockResponse();
         $response->shouldReceive('getBody')->andReturn(['key' => 'bar']);
 
-        $this->mockClient()->shouldReceive('addApiKey')->with(['search'],[
+        $this->mockClient()->shouldReceive('addApiKey')->with(['search'], [
             'description' => config('app.name').'::searchKey',
         ])->andReturn($response);
 
@@ -37,7 +37,7 @@ final class SearchKeyTest extends TestCase
         $response = $this->mockResponse();
         $response->shouldReceive('getBody')->andReturn(['key' => 'bar']);
 
-        $this->mockClient()->shouldReceive('addApiKey')->with(['search'],[
+        $this->mockClient()->shouldReceive('addApiKey')->with(['search'], [
             'description' => config('app.name').'::searchKey',
         ])->andReturn($response);
 
