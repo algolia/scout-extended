@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.3] - 2019-01-04
+### Fixed
+- Fixes creation of search key using `Algolia::searchKey` ([ba0afdf](https://github.com/algolia/scout-extended/commit/ba0afdf7eeabf6b26cb1117c7387b27bc6e7bed9))
+
 ## [1.0.2] - 2019-01-03
 ### Fixed
 - Fixes `scout:reimport` with indexes imported using `laravel/scout` ([9aa9370](https://github.com/algolia/scout-extended/commit/9aa937089343c05460252b9a438c670b7beebabb))
