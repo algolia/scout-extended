@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
+use Illuminate\Support\Collection;
 use Laravel\Scout\Events\ModelsImported;
 use Illuminate\Contracts\Events\Dispatcher;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
@@ -70,6 +70,6 @@ final class ImportCommand extends Command
 
         $last = ObjectIdEncrypter::encrypt($models->last());
 
-        $this->line('<comment>Imported [' . $searchable . '] models up to ID:</comment> ' . $last);
+        $this->line('<comment>Imported ['.$searchable.'] models up to ID:</comment> '.$last);
     }
 }
