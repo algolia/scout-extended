@@ -67,7 +67,7 @@ final class ImportCommand extends Command
         if ($models->count() > 0) {
             $last = ObjectIdEncrypter::encrypt($models->last());
 
-            $this->line('<comment>Imported [' . $searchable . '] models up to ID:</comment> ' . $last);
+            $this->line('<comment>Imported ['.$searchable.'] models up to ID:</comment> '.$last);
         }
     }
 }
