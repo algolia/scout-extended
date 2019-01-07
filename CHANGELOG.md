@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.4] - 2019-01-04
+### Fixed
+- Fixes exception when importing with no searchables with `scout:import` ([#109](https://github.com/algolia/scout-extended/pull/109))
+
 ## [1.0.3] - 2019-01-04
 ### Fixed
 - Fixes creation of search key using `Algolia::searchKey` ([ba0afdf](https://github.com/algolia/scout-extended/commit/ba0afdf7eeabf6b26cb1117c7387b27bc6e7bed9))
