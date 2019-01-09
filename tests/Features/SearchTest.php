@@ -53,4 +53,20 @@ final class SearchTest extends TestCase
         $this->assertEquals($threads[1]->subject, $models->get(2)->subject);
         $this->assertEquals($threads[1]->id, $models->get(2)->id);
     }
+
+    /**
+     * @expectedException \Algolia\ScoutExtended\Exceptions\ShouldReimportSearchableException
+     */
+    public function testInvalidObjectId(): void
+    {
+        $threadIndexMock = $this->mockIndex(Thread::class);
+
+        $threadIndexMock->shouldReceive('search')->once()->andReturn([
+            'hits' => [
+                ['objectID' => '1'],
+            ],
+        ]);
+
+        Thread::search('input')->get();
+    }
 }
