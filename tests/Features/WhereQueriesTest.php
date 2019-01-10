@@ -82,7 +82,7 @@ final class WhereQueriesTest extends TestCase
     {
         $this->mockIndex(User::class)->shouldReceive('search')->once()->with('foo', [
             'numericFilters' => [
-                ['id=1', 'id=2', 'id=3', 'id=4',],
+                ['id=1', 'id=2', 'id=3', 'id=4'],
             ],
         ])->andReturn(['hits' => []]);
 
