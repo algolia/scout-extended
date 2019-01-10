@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Engines;
 
-use function is_string;
+use function is_array;
 use Laravel\Scout\Builder;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Jobs\DeleteJob;
@@ -109,7 +109,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
         $operators = ['<', '<=', '=', '!=', '>=', '>', ':'];
 
         return collect($builder->wheres)->map(function ($value, $key) use ($operators) {
-            if (is_string($value)) {
+            if (! is_array($value)) {
                 if (ends_with($key, $operators) || starts_with($value, $operators)) {
                     return $key.' '.$value;
                 }
