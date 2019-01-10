@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2019-01-10
+### Added
+- Method `whereIn` on the query builder ([#115](https://github.com/algolia/scout-extended/pull/115))
+
 ## [1.0.5] - 2019-01-09
 ### Fixed
 - Warns the user to `scout:reimport` if objectID invalid ([3048d74](https://github.com/algolia/scout-extended/commit/3048d74302c4e8e5bf8a02310a72d939b2c2a15b))
