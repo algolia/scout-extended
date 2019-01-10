@@ -93,6 +93,25 @@ final class Builder extends BaseBuilder
     }
 
     /**
+     * Customize the search adding a where in clause.
+     *
+     * @param  string $field
+     * @param  array $values
+     *
+     * @return $this
+     */
+    public function whereIn($field, array $values): self
+    {
+        $wheres = array_map(function ($value) use ($field) {
+            return "$field={$this->transform($value)}";
+        }, array_values($values));
+
+        $this->wheres[] = $wheres;
+
+        return $this;
+    }
+
+    /**
      * Customize the search with the provided search parameters.
      *
      * @link https://www.algolia.com/doc/api-reference/search-api-parameters

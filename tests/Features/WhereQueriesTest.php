@@ -77,4 +77,27 @@ final class WhereQueriesTest extends TestCase
 
         User::search('foo')->whereBetween('created_at', [$date1, $date2])->get();
     }
+
+    public function testWhereIn(): void
+    {
+        $this->mockIndex(User::class)->shouldReceive('search')->once()->with('foo', [
+            'numericFilters' => [
+                ['id=1', 'id=2', 'id=3', 'id=4',],
+            ],
+        ])->andReturn(['hits' => []]);
+
+        User::search('foo')->whereIn('id', [1, 2, 3, 4])->get();
+    }
+
+    public function testMultipleWheres(): void
+    {
+        $this->mockIndex(User::class)->shouldReceive('search')->once()->with('foo', [
+            'numericFilters' => [
+                ['id=1', 'id=2'],
+                'key=value',
+            ],
+        ])->andReturn(['hits' => []]);
+
+        User::search('foo')->whereIn('id', [1, 2])->where('key', 'value')->get();
+    }
 }
