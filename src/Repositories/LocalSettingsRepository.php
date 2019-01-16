@@ -72,12 +72,12 @@ final class LocalSettingsRepository
         $name = is_array($name) ? current($name) : $name;
 
         if (config('scout.settings_path')) {
-            if (! $this->files->exists(config('scout.settings_path'))) {
-                $this->files->makeDirectory(config('scout.settings_path'), 0755, true);
+            if (! $this->files->exists(config('scout.algolia.settings_path'))) {
+                $this->files->makeDirectory(config('scout.algolia.settings_path'), 0755, true);
             }
 
             return implode(DIRECTORY_SEPARATOR, [
-                config('scout.settings_path'),
+                config('scout.algolia.settings_path'),
                 'scout-'.Str::lower($name).'.php',
             ]);
         }
