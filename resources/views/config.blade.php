@@ -12,7 +12,7 @@ return [
     | you direct control over what information the search engine should look at.
     |
     | Supported: Null, Array
-    | Example: ["name", "ordered(email)", "unordered(city)"]
+    | Example: ["name", "email", "unordered(city)"]
     |
     */
 
