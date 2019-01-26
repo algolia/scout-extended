@@ -6,12 +6,12 @@ namespace Tests\Features;
 
 use App\User;
 use App\Thread;
-use Tests\Features\Fixtures\ThreadWithSearchableArray;
-use Tests\Features\Fixtures\ThreadWithSearchableArrayUsingTransform;
 use Tests\TestCase;
 use function is_int;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
+use Tests\Features\Fixtures\ThreadWithSearchableArray;
 use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
+use Tests\Features\Fixtures\ThreadWithSearchableArrayUsingTransform;
 use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
 
 final class TransformersTest extends TestCase

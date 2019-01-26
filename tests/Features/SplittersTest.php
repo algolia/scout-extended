@@ -6,11 +6,11 @@ namespace Tests\Features;
 
 use Mockery;
 use function count;
+use Tests\TestCase;
 use Tests\Features\Fixtures\ThreadMultipleSplits;
 use Tests\Features\Fixtures\ThreadWithSplitterClass;
-use Tests\Features\Fixtures\ThreadWithSplitterInstance;
 use Tests\Features\Fixtures\ThreadWithValueReturned;
-use Tests\TestCase;
+use Tests\Features\Fixtures\ThreadWithSplitterInstance;
 
 final class SplittersTest extends TestCase
 {

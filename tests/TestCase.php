@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Algolia\AlgoliaSearch\Response\AbstractResponse;
-use Algolia\ScoutExtended\Facades\Algolia as AlgoliaFacade;
-use Algolia\ScoutExtended\ScoutExtendedServiceProvider;
-use function get_class;
-use Laravel\Scout\ScoutServiceProvider;
 use Mockery;
+use function get_class;
 use Mockery\MockInterface;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Scout\ScoutServiceProvider;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Managers\EngineManager;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Algolia\AlgoliaSearch\Response\AbstractResponse;
+use Algolia\ScoutExtended\ScoutExtendedServiceProvider;
+use Algolia\ScoutExtended\Facades\Algolia as AlgoliaFacade;
 
 abstract class TestCase extends BaseTestCase
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use Mockery;
 use App\Post;
 use App\User;
 use App\Wall;
 use App\Thread;
-use Mockery;
 use Tests\TestCase;
 use Algolia\ScoutExtended\Searchable\AggregatorCollection;
 
