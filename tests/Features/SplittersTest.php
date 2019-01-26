@@ -167,7 +167,7 @@ final class SplittersTest extends TestCase
             ],
         ]);
         $models = ThreadWithValueReturned::search('Hello')->get();
-        $this->assertEquals(3, $models->count());
+        $this->assertSame(3, $models->count());
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[0]);
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[1]);
     }

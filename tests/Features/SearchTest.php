@@ -42,16 +42,16 @@ final class SearchTest extends TestCase
         $this->assertCount(3, $models);
 
         $this->assertInstanceOf(Thread::class, $models->get(0));
-        $this->assertEquals($threads[2]->subject, $models->get(0)->subject);
-        $this->assertEquals($threads[2]->id, $models->get(0)->id);
+        $this->assertSame($threads[2]->subject, $models->get(0)->subject);
+        $this->assertSame($threads[2]->id, $models->get(0)->id);
 
         $this->assertInstanceOf(Thread::class, $models->get(1));
-        $this->assertEquals($threads[0]->subject, $models->get(1)->subject);
-        $this->assertEquals($threads[0]->id, $models->get(1)->id);
+        $this->assertSame($threads[0]->subject, $models->get(1)->subject);
+        $this->assertSame($threads[0]->id, $models->get(1)->id);
 
         $this->assertInstanceOf(Thread::class, $models->get(2));
-        $this->assertEquals($threads[1]->subject, $models->get(2)->subject);
-        $this->assertEquals($threads[1]->id, $models->get(2)->id);
+        $this->assertSame($threads[1]->subject, $models->get(2)->subject);
+        $this->assertSame($threads[1]->id, $models->get(2)->id);
     }
 
     /**

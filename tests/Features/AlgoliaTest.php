@@ -28,7 +28,7 @@ final class AlgoliaTest extends TestCase
 
         $index = $this->algolia->index($model = new User);
         $this->assertInstanceOf(SearchIndex::class, $index);
-        $this->assertEquals($model->searchableAs(), $index->getIndexName());
+        $this->assertSame($model->searchableAs(), $index->getIndexName());
     }
 
     public function testClientGetter(): void
