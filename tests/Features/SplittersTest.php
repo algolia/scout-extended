@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Features;
 
 use Mockery;
-use App\Thread;
 use function count;
+use Tests\Features\Fixtures\ThreadMultipleSplits;
+use Tests\Features\Fixtures\ThreadWithSplitterClass;
+use Tests\Features\Fixtures\ThreadWithSplitterInstance;
+use Tests\Features\Fixtures\ThreadWithValueReturned;
 use Tests\TestCase;
-use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 
 final class SplittersTest extends TestCase
 {
@@ -18,14 +20,14 @@ final class SplittersTest extends TestCase
 
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 2 &&
-                $argument[0]['objectID'] === 'Tests\Features\ThreadWithSplitterClass::1::0' &&
-                $argument[1]['objectID'] === 'Tests\Features\ThreadWithSplitterClass::1::1' &&
+                $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadWithSplitterClass::1::0' &&
+                $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadWithSplitterClass::1::1' &&
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
 
         $index->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
-                'Tests\Features\ThreadWithSplitterClass::1',
+                'Tests\Features\Fixtures\ThreadWithSplitterClass::1',
             ],
         ]);
 
@@ -43,14 +45,14 @@ final class SplittersTest extends TestCase
 
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 2 &&
-                $argument[0]['objectID'] === 'Tests\Features\ThreadWithValueReturned::1::0' &&
-                $argument[1]['objectID'] === 'Tests\Features\ThreadWithValueReturned::1::1' &&
+                $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadWithValueReturned::1::0' &&
+                $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadWithValueReturned::1::1' &&
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
 
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
-                'Tests\Features\ThreadWithValueReturned::1',
+                'Tests\Features\Fixtures\ThreadWithValueReturned::1',
             ],
         ]);
 
@@ -68,14 +70,14 @@ final class SplittersTest extends TestCase
 
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 2 &&
-                $argument[0]['objectID'] === 'Tests\Features\ThreadWithSplitterInstance::1::0' &&
-                $argument[1]['objectID'] === 'Tests\Features\ThreadWithSplitterInstance::1::1' &&
+                $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadWithSplitterInstance::1::0' &&
+                $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadWithSplitterInstance::1::1' &&
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
 
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
-                'Tests\Features\ThreadWithSplitterInstance::1',
+                'Tests\Features\Fixtures\ThreadWithSplitterInstance::1',
             ],
         ]);
 
@@ -92,14 +94,14 @@ final class SplittersTest extends TestCase
         $index = $this->mockIndex(ThreadMultipleSplits::class);
 
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 8 && $argument[0]['objectID'] === 'Tests\Features\ThreadMultipleSplits::1::0' &&
-                $argument[1]['objectID'] === 'Tests\Features\ThreadMultipleSplits::1::1' &&
-                $argument[2]['objectID'] === 'Tests\Features\ThreadMultipleSplits::1::2' &&
-                $argument[3]['objectID'] === 'Tests\Features\ThreadMultipleSplits::1::3' &&
-                $argument[4]['objectID'] === 'Tests\Features\ThreadMultipleSplits::1::4' &&
-                $argument[5]['objectID'] === 'Tests\Features\ThreadMultipleSplits::1::5' &&
-                $argument[6]['objectID'] === 'Tests\Features\ThreadMultipleSplits::1::6' &&
-                $argument[7]['objectID'] === 'Tests\Features\ThreadMultipleSplits::1::7' &&
+            return count($argument) === 8 && $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::0' &&
+                $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::1' &&
+                $argument[2]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::2' &&
+                $argument[3]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::3' &&
+                $argument[4]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::4' &&
+                $argument[5]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::5' &&
+                $argument[6]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::6' &&
+                $argument[7]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::7' &&
                 $argument[0]['body'] === 'Hello Foo!' && $argument[0]['slug'] === 'first' &&
                 $argument[0]['description_at_the_letter'] === 1 && $argument[1]['body'] === 'Hello Bar!' &&
                 $argument[1]['slug'] === 'first' && $argument[1]['description_at_the_letter'] === 1 &&
@@ -116,7 +118,7 @@ final class SplittersTest extends TestCase
 
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
-                'Tests\Features\ThreadMultipleSplits::1',
+                'Tests\Features\Fixtures\ThreadMultipleSplits::1',
             ],
         ]);
 
@@ -152,17 +154,17 @@ final class SplittersTest extends TestCase
                 [
                     'body' => 'Hello Foo!',
                     'id' => 1,
-                    'objectID' => "Tests\Features\ThreadWithValueReturned::1::0",
+                    'objectID' => "Tests\Features\Fixtures\ThreadWithValueReturned::1::0",
                 ],
                 [
                     'body' => 'Hello Bar!',
                     'id' => 1,
-                    'objectID' => "Tests\Features\ThreadWithValueReturned::1::1",
+                    'objectID' => "Tests\Features\Fixtures\ThreadWithValueReturned::1::1",
                 ],
                 [
                     'body' => 'Hello John!',
                     'id' => 2,
-                    'objectID' => "Tests\Features\ThreadWithValueReturned::2::0",
+                    'objectID' => "Tests\Features\Fixtures\ThreadWithValueReturned::2::0",
                 ],
             ],
         ]);
@@ -170,65 +172,5 @@ final class SplittersTest extends TestCase
         $this->assertSame(3, $models->count());
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[0]);
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[1]);
-    }
-}
-
-class ThreadWithSplitterClass extends Thread
-{
-    protected $table = 'threads';
-
-    public function splitBody($value): string
-    {
-        return HtmlSplitter::class;
-    }
-}
-
-class ThreadWithSplitterInstance extends Thread
-{
-    protected $table = 'threads';
-
-    public function splitBody($value)
-    {
-        return HtmlSplitter::by('h1');
-    }
-}
-
-class ThreadWithValueReturned extends Thread
-{
-    protected $table = 'threads';
-
-    public function splitBody($value): array
-    {
-        return explode(',', $value);
-    }
-}
-
-class ThreadText extends Thread
-{
-    protected $table = 'threads';
-
-    public function splitBody($value): array
-    {
-        return explode(',', $value);
-    }
-}
-
-class ThreadMultipleSplits extends Thread
-{
-    protected $table = 'threads';
-
-    public function splitBody($value)
-    {
-        return HtmlSplitter::by('h1');
-    }
-
-    public function splitSlug($value): array
-    {
-        return explode('-', $value);
-    }
-
-    public function splitDescriptionAtTheLetter($value)
-    {
-        return range(1, $value);
     }
 }

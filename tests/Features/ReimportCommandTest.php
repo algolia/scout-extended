@@ -17,7 +17,7 @@ final class ReimportCommandTest extends TestCase
 
         $client = $this->mockClient();
 
-        $userOriginalIndex = $this->mockIndex(User::class);
+        $this->mockIndex(User::class);
 
         $userTemporaryIndex = $this->mockIndex('temp_'.(new User())->searchableAs());
 

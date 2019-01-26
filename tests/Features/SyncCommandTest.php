@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Features;
 
 use App\User;
+use Tests\Features\Fixtures\FakeException;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 use Algolia\ScoutExtended\Settings\Synchronizer;
@@ -12,7 +13,7 @@ use Algolia\ScoutExtended\Settings\Synchronizer;
 final class SyncCommandTest extends TestCase
 {
     /**
-     * @expectedException \Tests\Features\FakeException
+     * @expectedException \Tests\Features\Fixtures\FakeException
      */
     public function testModelsAreDiscovered(): void
     {
@@ -151,8 +152,4 @@ final class SyncCommandTest extends TestCase
 
         $this->assertLocalHas($remoteWithoutDefaults);
     }
-}
-
-class FakeException extends \Exception
-{
 }
