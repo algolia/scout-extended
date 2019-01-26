@@ -15,6 +15,7 @@ namespace Algolia\ScoutExtended\Engines;
 
 use function is_array;
 use Laravel\Scout\Builder;
+use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Jobs\DeleteJob;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
@@ -110,7 +111,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
 
         return collect($builder->wheres)->map(function ($value, $key) use ($operators) {
             if (! is_array($value)) {
-                if (ends_with($key, $operators) || starts_with($value, $operators)) {
+                if (Str::endsWith($key, $operators) || Str::startsWith($value, $operators)) {
                     return $key.' '.$value;
                 }
 

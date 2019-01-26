@@ -15,6 +15,7 @@ namespace Algolia\ScoutExtended\Settings;
 
 use function in_array;
 use function is_string;
+use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Illuminate\Database\QueryException;
 use Algolia\ScoutExtended\Searchable\Aggregator;
@@ -182,8 +183,8 @@ final class LocalFactory
     public function isSearchableAttributes(string $key, $value): bool
     {
         return ! is_object($value) && ! is_array($value) &&
-            ! str_is(self::$unsearchableAttributesKeys, $key) &&
-            ! str_is(self::$unsearchableAttributesValues, $value);
+            ! Str::is(self::$unsearchableAttributesKeys, $key) &&
+            ! Str::is(self::$unsearchableAttributesValues, $value);
     }
 
     /**
@@ -196,7 +197,7 @@ final class LocalFactory
      */
     public function isAttributesForFaceting(string $key, $value): bool
     {
-        return str_is(self::$attributesForFacetingKeys, $key);
+        return Str::is(self::$attributesForFacetingKeys, $key);
     }
 
     /**
@@ -209,7 +210,7 @@ final class LocalFactory
      */
     public function isCustomRanking(string $key, $value): bool
     {
-        return str_is(self::$customRankingKeys, $key);
+        return Str::is(self::$customRankingKeys, $key);
     }
 
     /**
@@ -222,7 +223,7 @@ final class LocalFactory
      */
     public function isDisableTypoToleranceOnAttributes(string $key, $value): bool
     {
-        return is_string($key) && str_is(self::$disableTypoToleranceOnAttributesKeys, $key);
+        return is_string($key) && Str::is(self::$disableTypoToleranceOnAttributesKeys, $key);
     }
 
     /**
@@ -235,7 +236,7 @@ final class LocalFactory
      */
     public function isUnretrievableAttributes(string $key, $value): bool
     {
-        return is_string($key) && str_is(self::$unretrievableAttributes, $key);
+        return is_string($key) && Str::is(self::$unretrievableAttributes, $key);
     }
 
     /**
