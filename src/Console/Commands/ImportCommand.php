@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
-use Algolia\ScoutExtended\Algolia;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Events\ModelsImported;
 use Illuminate\Contracts\Events\Dispatcher;
