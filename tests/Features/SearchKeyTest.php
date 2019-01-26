@@ -27,7 +27,7 @@ final class SearchKeyTest extends TestCase
             'validUntil' => time() + (3600 * 25),
         ])->andReturn('barSecured');
 
-        $this->assertEquals(Algolia::searchKey(User::class), 'barSecured');
+        $this->assertSame(Algolia::searchKey(User::class), 'barSecured');
     }
 
     public function testWhenSearchApiDontExistsAndInvalidKeysExist(): void
@@ -46,7 +46,7 @@ final class SearchKeyTest extends TestCase
             'validUntil' => time() + (3600 * 25),
         ])->andReturn('barSecured');
 
-        $this->assertEquals(Algolia::searchKey(User::class), 'barSecured');
+        $this->assertSame(Algolia::searchKey(User::class), 'barSecured');
     }
 
     public function testWhenSearchApiAlreadyExists(): void
@@ -63,6 +63,6 @@ final class SearchKeyTest extends TestCase
             'validUntil' => time() + (3600 * 25),
         ])->andReturn('barSecured');
 
-        $this->assertEquals(Algolia::searchKey(new Wall()), 'barSecured');
+        $this->assertSame(Algolia::searchKey(new Wall()), 'barSecured');
     }
 }

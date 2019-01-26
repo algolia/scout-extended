@@ -165,20 +165,20 @@ final class AggregatorTest extends TestCase
         $this->assertCount(4, $models);
 
         $this->assertInstanceOf(Post::class, $models->get(0));
-        $this->assertEquals($post[0]->subject, $models->get(0)->subject);
-        $this->assertEquals($post[0]->id, $models->get(0)->id);
+        $this->assertSame($post[0]->subject, $models->get(0)->subject);
+        $this->assertSame($post[0]->id, $models->get(0)->id);
 
         $this->assertInstanceOf(Thread::class, $models->get(1));
-        $this->assertEquals($thread[0]->body, $models->get(1)->body);
-        $this->assertEquals($thread[0]->id, $models->get(1)->id);
+        $this->assertSame($thread[0]->body, $models->get(1)->body);
+        $this->assertSame($thread[0]->id, $models->get(1)->id);
 
         $this->assertInstanceOf(Thread::class, $models->get(2));
-        $this->assertEquals($thread[1]->body, $models->get(2)->body);
-        $this->assertEquals($thread[1]->id, $models->get(2)->id);
+        $this->assertSame($thread[1]->body, $models->get(2)->body);
+        $this->assertSame($thread[1]->id, $models->get(2)->id);
 
         $this->assertInstanceOf(Post::class, $models->get(3));
-        $this->assertEquals($post[1]->subject, $models->get(3)->subject);
-        $this->assertEquals($post[1]->id, $models->get(3)->id);
+        $this->assertSame($post[1]->subject, $models->get(3)->subject);
+        $this->assertSame($post[1]->id, $models->get(3)->id);
     }
 
     public function testSerializationOfCollection(): void
@@ -191,7 +191,7 @@ final class AggregatorTest extends TestCase
 
         $collectionQueued = unserialize(serialize(clone $collection));
 
-        $this->assertEquals(Wall::class, $collectionQueued->aggregator);
+        $this->assertSame(Wall::class, $collectionQueued->aggregator);
         $this->assertEquals($collection->toArray(), $collectionQueued->toArray());
     }
 }

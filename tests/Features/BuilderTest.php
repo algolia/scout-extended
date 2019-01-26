@@ -16,7 +16,7 @@ final class BuilderTest extends TestCase
             'nbHits' => 5,
         ]);
 
-        $this->assertEquals(5, User::search('')->count());
+        $this->assertSame(5, User::search('')->count());
     }
 
     public function testWith(): void

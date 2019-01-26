@@ -46,7 +46,7 @@ final class TransformersTest extends TestCase
 
         $array = (new ConvertDatesToTimestamps())->transform($thread, $thread->toSearchableArray());
 
-        $this->assertEquals($thread->created_at->getTimestamp(), $array['created_at']);
+        $this->assertSame($thread->created_at->getTimestamp(), $array['created_at']);
     }
 
     public function testConvertNumericStringsToNumbers(): void
@@ -55,7 +55,7 @@ final class TransformersTest extends TestCase
 
         $array = (new ConvertNumericStringsToNumbers())->transform($user, $user->toSearchableArray());
 
-        $this->assertEquals(100, $array['views_count']);
+        $this->assertSame(100, $array['views_count']);
     }
 
     public function testTransformMethod(): void
