@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 /**
  * This file is part of Scout Extended.
@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use function is_array;
-use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Settings\Settings;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 /**
  * @internal
@@ -71,17 +70,15 @@ final class LocalSettingsRepository
 
         $name = is_array($name) ? current($name) : $name;
 
-        $fileName = 'scout-'.Str::lower($name).'.php';
+        $fileName = 'scout-' . Str::lower($name) . '.php';
+        $settingsPath = config('scout.algolia.settings_path');
 
-        if (config('scout.algolia.settings_path')) {
-            if (! $this->files->exists(config('scout.algolia.settings_path'))) {
-                $this->files->makeDirectory(config('scout.algolia.settings_path'), 0755, true);
+        if ($settingsPath) {
+            if (!$this->files->exists($settingsPath)) {
+                $this->files->makeDirectory($settingsPath, 0755, true);
             }
 
-            return implode(DIRECTORY_SEPARATOR, [
-                config('scout.algolia.settings_path'),
-                $fileName,
-            ]);
+            return $settingsPath . DIRECTORY_SEPARATOR . $fileName;
         }
 
         return config_path($fileName);
