@@ -74,10 +74,10 @@ class TestCase extends BaseTestCase
         return $defaults;
     }
 
-    protected function assertLocalHas(array $settings, string $settings_path = 'scout-users.php'): void
+    protected function assertLocalHas(array $settings, string $settingsPath = 'scout-users.php'): void
     {
-        $this->assertFileExists(config_path($settings_path));
-        $this->assertEquals($settings, require config_path($settings_path));
+        $this->assertFileExists(config_path($settingsPath));
+        $this->assertEquals($settings, require config_path($settingsPath));
     }
 
     protected function local(): array
