@@ -125,9 +125,9 @@ abstract class Aggregator implements SearchableCountableContract
 
     /**
      * Get the relations to load.
-     * 
+     *
      * @param  string  $modelClass
-     * 
+     *
      * @return  array
      */
     public function getRelations($modelClass): array
