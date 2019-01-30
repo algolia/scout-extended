@@ -44,7 +44,7 @@ abstract class Aggregator implements SearchableCountableContract
     /**
      * Map of model relations to load.
      *
-     * @var string[]
+     * @var mixed[]
      */
     protected $relations = [];
 
