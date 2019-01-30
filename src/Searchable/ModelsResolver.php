@@ -29,7 +29,7 @@ final class ModelsResolver
      * Get a set of models from the provided ids.
      *
      * @param \Laravel\Scout\Builder $builder
-     * @param  string|object $searchable
+     * @param  object $searchable
      * @param  array $ids
      *
      * @return \Illuminate\Database\Eloquent\Collection
