@@ -73,15 +73,15 @@ final class LocalSettingsRepository
         $fileName = 'scout-'.Str::lower($name).'.php';
         $settingsPath = config('scout.algolia.settings_path');
 
-        if ($settingsPath) {
-            if (! $this->files->exists($settingsPath)) {
-                $this->files->makeDirectory($settingsPath, 0755, true);
-            }
-
-            return $settingsPath.DIRECTORY_SEPARATOR.$fileName;
+        if ($settingsPath === null) {
+            return config_path($fileName);
         }
 
-        return config_path($fileName);
+        if (! $this->files->exists($settingsPath)) {
+            $this->files->makeDirectory($settingsPath, 0755, true);
+        }
+
+        return $settingsPath.DIRECTORY_SEPARATOR.$fileName;
     }
 
     /**
