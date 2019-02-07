@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use function is_array;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use Algolia\AlgoliaSearch\SearchIndex;
@@ -71,7 +70,18 @@ final class LocalSettingsRepository
 
         $name = is_array($name) ? current($name) : $name;
 
-        return config_path('scout-'.Str::lower($name).'.php');
+        $fileName = 'scout-'.Str::lower($name).'.php';
+        $settingsPath = config('scout.algolia.settings_path');
+
+        if ($settingsPath === null) {
+            return config_path($fileName);
+        }
+
+        if (! $this->files->exists($settingsPath)) {
+            $this->files->makeDirectory($settingsPath, 0755, true);
+        }
+
+        return $settingsPath.DIRECTORY_SEPARATOR.$fileName;
     }
 
     /**

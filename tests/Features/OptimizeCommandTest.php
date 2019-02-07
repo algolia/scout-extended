@@ -21,6 +21,22 @@ final class OptimizeCommandTest extends TestCase
         $this->assertLocalHas($this->local());
     }
 
+    public function testCreationOfLocalSettingsWithCustomPath(): void
+    {
+        config(['scout.algolia.settings_path' => config_path('algolia')]);
+
+        factory(User::class)->create();
+
+        $this->mockIndex(User::class, $this->defaults());
+
+        Artisan::call('scout:optimize', ['searchable' => User::class, '--no-interaction']);
+
+        $this->assertLocalHas($this->local(), 'algolia/scout-users.php');
+
+        unlink(config_path('algolia/scout-users.php'));
+        rmdir(config_path('algolia'));
+    }
+
     public function testThatRequiresARowOnTheDatabase(): void
     {
         $this->mockIndex(User::class, $this->defaults());
