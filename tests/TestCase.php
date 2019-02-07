@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Mockery;
 use function get_class;
 use Mockery\MockInterface;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Scout\ScoutServiceProvider;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Managers\EngineManager;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Algolia\AlgoliaSearch\Response\AbstractResponse;
+use Algolia\ScoutExtended\ScoutExtendedServiceProvider;
+use Algolia\ScoutExtended\Facades\Algolia as AlgoliaFacade;
 
-class TestCase extends BaseTestCase
+abstract class TestCase extends BaseTestCase
 {
     public function setUp()
     {
@@ -31,21 +36,23 @@ class TestCase extends BaseTestCase
     {
         @unlink(__DIR__.'/laravel/config/scout-users.php');
 
+        Mockery::close();
+
         parent::tearDown();
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            \Laravel\Scout\ScoutServiceProvider::class,
-            \Algolia\ScoutExtended\ScoutExtendedServiceProvider::class,
+            ScoutServiceProvider::class,
+            ScoutExtendedServiceProvider::class,
         ];
     }
 
     protected function getPackageAliases($app)
     {
         return [
-            'Algolia' => \Algolia\ScoutExtended\Facades\Algolia::class,
+            'Algolia' => AlgoliaFacade::class,
         ];
     }
 
@@ -180,7 +187,7 @@ class TestCase extends BaseTestCase
 
     protected function mockResponse(): MockInterface
     {
-        $responseMock = mock(\Algolia\AlgoliaSearch\Response\AbstractResponse::class);
+        $responseMock = mock(AbstractResponse::class);
 
         $responseMock->shouldReceive('wait')->zeroOrMoreTimes();
 

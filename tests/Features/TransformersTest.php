@@ -9,8 +9,9 @@ use App\Thread;
 use Tests\TestCase;
 use function is_int;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
-use Algolia\ScoutExtended\Contracts\TransformerContract;
+use Tests\Features\Fixtures\ThreadWithSearchableArray;
 use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
+use Tests\Features\Fixtures\ThreadWithSearchableArrayUsingTransform;
 use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
 
 final class TransformersTest extends TestCase
@@ -74,35 +75,5 @@ final class TransformersTest extends TestCase
         $threadWithSearchableArrayUsingTransform->created_at = now();
 
         dispatch(new UpdateJob(collect([$threadWithSearchableArrayUsingTransform])));
-    }
-}
-
-class ThreadWithSearchableArray extends Thread
-{
-    public function toSearchableArray(): array
-    {
-        return $this->toArray();
-    }
-}
-
-class ThreadWithSearchableArrayUsingTransform extends Thread
-{
-    public function toSearchableArray(): array
-    {
-        return $this->transform($this->toArray(), [
-            ConvertToFoo::class,
-        ]);
-    }
-}
-
-class ConvertToFoo implements TransformerContract
-{
-    public function transform($searchable, array $array): array
-    {
-        foreach ($array as $key => $value) {
-            $array[$key] = 'Foo';
-        }
-
-        return $array;
     }
 }
