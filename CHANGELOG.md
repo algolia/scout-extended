@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2019-02-07
+### Added
+- Added configurable settings path ([#120](https://github.com/algolia/scout-extended/pull/120))
+
 ## [1.1.1] - 2019-01-22
 ### Added
 - Fixes generated settings file docs example ([1622cb0](https://github.com/algolia/scout-extended/commit/1622cb0399269d0b787194dcb8ac2e77f6005cf6))
