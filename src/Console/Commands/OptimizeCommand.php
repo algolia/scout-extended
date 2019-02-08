@@ -26,7 +26,9 @@ final class OptimizeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:optimize {searchable? : The name of the searchable} {--prefix=}';
+    protected $signature = 'scout:optimize 
+                            {searchable? : The name of the searchable} 
+                            {--prefix= : A custom `scout.prefix` configuration key}';
 
     /**
      * {@inheritdoc}
