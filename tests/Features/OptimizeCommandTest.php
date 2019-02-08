@@ -45,4 +45,20 @@ final class OptimizeCommandTest extends TestCase
 
         $this->assertFileNotExists(config_path('scout-users.php'));
     }
+
+    public function testCreationOfLocalSettingsWithCustomPrefix(): void
+    {
+        factory(User::class)->create();
+
+        $prefix = config('scout.prefix');
+        config(['scout.prefix' => 'custom_']);
+        $this->mockIndex(User::class, $this->defaults());
+        config(['scout.prefix' => $prefix]);
+
+        Artisan::call('scout:optimize', ['searchable' => User::class, '--prefix' => 'custom_']);
+
+        $this->assertLocalHas($this->local(), config_path('scout-custom-users.php'));
+
+        unlink(config_path('scout-custom-users.php'));
+    }
 }

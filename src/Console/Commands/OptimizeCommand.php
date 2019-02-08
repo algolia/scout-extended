@@ -26,7 +26,7 @@ final class OptimizeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'scout:optimize {searchable? : The name of the searchable}';
+    protected $signature = 'scout:optimize {searchable? : The name of the searchable} {--prefix=}';
 
     /**
      * {@inheritdoc}
@@ -43,6 +43,9 @@ final class OptimizeCommand extends Command
         SearchableFinder $searchableFinder,
         LocalSettingsRepository $localRepository
     ) {
+        if ($prefix = $this->option('prefix')) {
+            config(['scout.prefix' => $prefix]);
+        }
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
             $index = $algolia->index($searchable);
