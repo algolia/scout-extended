@@ -45,11 +45,12 @@ final class OptimizeCommand extends Command
         SearchableFinder $searchableFinder,
         LocalSettingsRepository $localRepository
     ) {
-        if ($prefix = $this->option('prefix')) {
-            config(['scout.prefix' => $prefix]);
-        }
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
+            if ($prefix = $this->option('prefix')) {
+                $originalPrefix = config('scout.prefix');
+                config(['scout.prefix' => $prefix]);
+            }
             $index = $algolia->index($searchable);
             if (! $localRepository->exists($index) ||
                 $this->confirm('Local settings already exists, do you wish to overwrite?')) {
@@ -60,6 +61,10 @@ final class OptimizeCommand extends Command
                     $this->output->error("Model not found [$model] resolving [$searchable] settings. Please seed your database with records of this model.");
 
                     return 1;
+                } finally {
+                    if (isset($originalPrefix)) {
+                        config(['scout.prefix' => $originalPrefix]);
+                    }
                 }
                 $path = $localRepository->getPath($index);
                 $compiler->compile($settings, $path);
