@@ -27,7 +27,8 @@ final class SyncCommand extends Command
      */
     protected $signature = 'scout:sync
                             {searchable? : The name of the searchable}
-                            {--keep=none} : In conflict keep the given option';
+                            {--keep=none} : In conflict keep the given option
+                            {--prefix= : A custom `scout.prefix` configuration key}';
 
     /**
      * {@inheritdoc}
@@ -45,6 +46,10 @@ final class SyncCommand extends Command
     ): void {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Analysing settings from: <info>['.$searchable.']</info>');
+            if ($prefix = $this->option('prefix')) {
+                $originalPrefix = config('scout.prefix');
+                config(['scout.prefix' => $prefix]);
+            }
             $status = $synchronizer->analyse($index = $algolia->index($searchable));
             $path = $localRepository->getPath($index);
 
@@ -107,6 +112,9 @@ final class SyncCommand extends Command
                             break;
                     }
                     break;
+            }
+            if (isset($originalPrefix)) {
+                config(['scout.prefix' => $originalPrefix]);
             }
         }
 

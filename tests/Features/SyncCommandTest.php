@@ -152,4 +152,27 @@ final class SyncCommandTest extends TestCase
 
         $this->assertLocalHas($remoteWithoutDefaults);
     }
+
+    public function testSynchronizingSettingsWithCustomPrefix(): void
+    {
+        $customSettings = array_merge($this->local(), ['customSetting' => true]);
+        file_put_contents(config_path('scout-custom-users.php'), '<?php return '.var_export($customSettings, true).';');
+
+        $prefix = config('scout.prefix');
+        config(['scout.prefix' => 'custom_']);
+        $usersIndex = $this->mockIndex(User::class, array_merge($this->defaults(), $customSettings), [
+            'settingsHash' => $this->localMd5(),
+        ]);
+        config(['scout.prefix' => $prefix]);
+
+        ksort($customSettings);
+
+        $this->assertSettingsSet($usersIndex, $customSettings, ['settingsHash' => md5(serialize($customSettings))]);
+
+        Artisan::call('scout:sync', ['searchable' => User::class, '--no-interaction' => true, '--keep' => 'local', '--prefix' => 'custom_']);
+
+        $this->assertLocalHas($customSettings, config_path('scout-custom-users.php'));
+
+        unlink(config_path('scout-custom-users.php'));
+    }
 }
