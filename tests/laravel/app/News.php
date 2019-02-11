@@ -13,6 +13,6 @@ final class News extends Aggregator
     ];
 
     protected $relations = [
-        User::class => ['threads']
+        User::class => ['threads'],
     ];
 }
