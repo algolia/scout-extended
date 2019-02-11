@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Features;
 
 use Mockery;
+use App\News;
 use App\Post;
 use App\User;
 use App\Wall;
@@ -194,5 +195,28 @@ final class AggregatorTest extends TestCase
 
         $this->assertSame(Wall::class, $collectionQueued->aggregator);
         $this->assertEquals($collection->toArray(), $collectionQueued->toArray());
+    }
+
+    public function testRelationLoad(): void
+    {
+        Wall::bootSearchable();
+        News::bootSearchable();
+
+        $usersIndexMock = $this->mockIndex('users');
+        $wallIndexMock = $this->mockIndex('wall');
+        $newsIndexMock = $this->mockIndex('news');
+
+        $usersIndexMock->shouldReceive('saveObjects');
+        $wallIndexMock->shouldReceive('saveObjects');
+        $newsIndexMock->shouldReceive('saveObjects');
+
+        $user = factory(User::class)->create();
+
+        $response = ['hits' => [['objectID' => 'App\User::1']]];
+        $wallIndexMock->shouldReceive('search')->once()->andReturn($response);
+        $newsIndexMock->shouldReceive('search')->once()->andReturn($response);
+
+        $this->assertFalse(Wall::search()->get()->first()->relationLoaded('threads'));
+        $this->assertTrue(News::search()->get()->first()->relationLoaded('threads'));
     }
 }

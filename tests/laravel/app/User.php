@@ -21,6 +21,11 @@ final class User extends Authenticatable
         'remember_token',
     ];
 
+    public function threads()
+    {
+        return $this->hasMany('App\Thread');
+    }
+
     public function toSearchableArray()
     {
         return array_merge($this->toArray(), [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use App\News;
 use App\User;
 use App\Wall;
 use App\Thread;
@@ -13,6 +14,7 @@ final class FlushCommandTest extends TestCase
 {
     public function testClearsIndex(): void
     {
+        $this->mockIndex(News::class)->expects('clearObjects')->once();
         $this->mockIndex(User::class)->expects('clearObjects')->once();
         $this->mockIndex(Thread::class)->expects('clearObjects')->once();
         $this->mockIndex(Wall::class)->expects('clearObjects')->once();
