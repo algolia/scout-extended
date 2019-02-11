@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2019-02-11
+### Added
+- Support to Laravel Scout 7.0 ([#137](https://github.com/algolia/scout-extended/pull/137))
+
 ## [1.2.0] - 2019-02-07
 ### Added
 - Added configurable settings path ([#120](https://github.com/algolia/scout-extended/pull/120))
