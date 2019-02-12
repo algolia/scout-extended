@@ -6,7 +6,6 @@ namespace Tests\Features;
 
 use App\User;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Artisan;
 
 final class UnsearchableTest extends TestCase
 {
@@ -17,7 +16,7 @@ final class UnsearchableTest extends TestCase
         $usersIndex = $this->mockIndex(User::class);
         $usersIndex->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
-                ['App\User::1', 'App\User::2','App\User::3','App\User::4','App\User::5',],
+                ['App\User::1', 'App\User::2', 'App\User::3', 'App\User::4', 'App\User::5'],
             ],
         ]);
 
