@@ -27,7 +27,7 @@ final class SplittersTest extends TestCase
 
         $index->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
-                'Tests\Features\Fixtures\ThreadWithSplitterClass::1',
+                ['Tests\Features\Fixtures\ThreadWithSplitterClass::1'],
             ],
         ]);
 
@@ -52,7 +52,7 @@ final class SplittersTest extends TestCase
 
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
-                'Tests\Features\Fixtures\ThreadWithValueReturned::1',
+                ['Tests\Features\Fixtures\ThreadWithValueReturned::1'],
             ],
         ]);
 
@@ -77,7 +77,7 @@ final class SplittersTest extends TestCase
 
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
-                'Tests\Features\Fixtures\ThreadWithSplitterInstance::1',
+                ['Tests\Features\Fixtures\ThreadWithSplitterInstance::1'],
             ],
         ]);
 
@@ -118,7 +118,7 @@ final class SplittersTest extends TestCase
 
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
-                'Tests\Features\Fixtures\ThreadMultipleSplits::1',
+                ['Tests\Features\Fixtures\ThreadMultipleSplits::1'],
             ],
         ]);
 
