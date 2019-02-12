@@ -56,7 +56,7 @@ final class DeleteJob
             'tagFilters' => [
                 $this->searchables->map(function ($searchable) {
                     return ObjectIdEncrypter::encrypt($searchable);
-                })->toArray()
+                })->toArray(),
             ],
         ]);
 
