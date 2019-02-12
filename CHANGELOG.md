@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.1] - 2019-02-12
+### Fixes
+- Issue while making unsearchable multiple models ([#143](https://github.com/algolia/scout-extended/pull/143))
+
 ## [1.3.0] - 2019-02-11
 ### Added
 - Support to Laravel Scout 7.0 ([#137](https://github.com/algolia/scout-extended/pull/137))
