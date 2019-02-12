@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
+use DateInterval;
 use function is_string;
 use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Contracts\Cache\Repository;
@@ -89,7 +90,9 @@ final class ApiKeysRepository
                 'validUntil' => $validUntil,
             ]);
 
-            $this->cache->put(self::SEARCH_KEY.'.'.$searchableAs, $securedSearchKey, 1440);
+            $this->cache->put(
+                self::SEARCH_KEY.'.'.$searchableAs, $securedSearchKey, DateInterval::createFromDateString('24 hours')
+            );
         }
 
         return $securedSearchKey;
