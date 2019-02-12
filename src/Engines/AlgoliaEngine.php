@@ -97,7 +97,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
         return $models->map(function ($model) use ($hits) {
             if ($hit = $hits->get(ObjectIdEncrypter::encrypt($model))) {
                 foreach (Arr::only($hit, ['_highlightResult', '_rankingInfo']) as $key => $value) {
-                    $model->setAttribute($key, $value);
+                    $model->withScoutMetadata($key, $value);
                 }
             }
 
