@@ -22,7 +22,7 @@
         "illuminate/database": "5.6.*|5.7.*|5.8.*",
         "illuminate/filesystem": "5.6.*|5.7.*|5.8.*",
         "illuminate/support": "5.6.*|5.7.*|5.8.*",
-        "laravel/scout": "^6.1.1",
+        "laravel/scout": "^6.1.1|^7.0",
         "riimu/kit-phpencoder": "^2.3"
     },
     "suggest": {
@@ -33,7 +33,7 @@
         "mockery/mockery": "^1.1",
         "nunomaduro/larastan": "^0.3",
         "orchestra/testbench": "^3.0",
-        "phpstan/phpstan": "^0.10",
+        "phpstan/phpstan": "^0.11",
         "phpunit/phpunit": "^7.4"
     },
     "autoload-dev": {
