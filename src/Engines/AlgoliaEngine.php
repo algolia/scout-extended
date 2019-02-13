@@ -15,7 +15,6 @@ namespace Algolia\ScoutExtended\Engines;
 
 use function is_array;
 use Laravel\Scout\Builder;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Jobs\DeleteJob;
@@ -89,20 +88,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
             return $searchable->newCollection();
         }
 
-        $hits = collect($results['hits'])->keyBy('objectID');
-        $ids = $hits->pluck('objectID')->all();
-
-        $models = resolve(ModelsResolver::class)->from($builder, $searchable, $ids);
-
-        return $models->map(function ($model) use ($hits) {
-            if ($hit = $hits->get(ObjectIdEncrypter::encrypt($model))) {
-                foreach (Arr::only($hit, ['_highlightResult', '_rankingInfo']) as $key => $value) {
-                    $model->withScoutMetadata($key, $value);
-                }
-            }
-
-            return $model;
-        });
+        return resolve(ModelsResolver::class)->from($builder, $searchable, $results['hits']);
     }
 
     /**

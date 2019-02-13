@@ -15,6 +15,7 @@ namespace Algolia\ScoutExtended\Searchable;
 
 use function in_array;
 use Laravel\Scout\Builder;
+use Illuminate\Support\Arr;
 use function call_user_func;
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Collection;
@@ -26,17 +27,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 final class ModelsResolver
 {
     /**
-     * Get a set of models from the provided ids.
+     * Get a set of models from the provided hits.
      *
      * @param \Laravel\Scout\Builder $builder
      * @param  string|object $searchable
-     * @param  array $ids
+     * @param  array $hits
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function from(Builder $builder, $searchable, array $ids): Collection
+    public function from(Builder $builder, $searchable, array $hits): Collection
     {
         $instances = collect();
+
+        $ids = collect($hits)->pluck('objectID')->values()->all();
 
         $models = [];
         foreach ($ids as $id) {
@@ -83,6 +86,15 @@ final class ModelsResolver
             }
         }
 
-        return $result;
+        $hits = collect($hits)->keyBy('objectID');
+
+        return $result->map(function ($model) use ($hits) {
+            if ($hit = $hits->get(ObjectIdEncrypter::encrypt($model))) {
+                foreach (Arr::only($hit, ['_highlightResult', '_rankingInfo']) as $key => $value) {
+                    $model->withScoutMetadata($key, $value);
+                }
+            }
+             return $model;
+        });
     }
 }
