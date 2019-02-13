@@ -94,7 +94,8 @@ final class ModelsResolver
                     $model->withScoutMetadata($key, $value);
                 }
             }
-             return $model;
+
+            return $model;
         });
     }
 }
