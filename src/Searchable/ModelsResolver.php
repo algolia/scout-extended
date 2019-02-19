@@ -31,7 +31,7 @@ final class ModelsResolver
      */
     private static $metadata = [
         '_highlightResult',
-        '_rankingInfo'
+        '_rankingInfo',
     ];
 
     /**
