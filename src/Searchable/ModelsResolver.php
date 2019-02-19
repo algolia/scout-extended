@@ -29,7 +29,6 @@ final class ModelsResolver
     /**
      * If the following metadata keys are present in the algolia result,
      * it will be made available with the resolved model.
-     *
      */
     const METADATA = ['_highlightResult', '_rankingInfo'];
 
