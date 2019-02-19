@@ -27,21 +27,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 final class ModelsResolver
 {
     /**
-     * Get a set of models from the provided hits.
+     * If the following metadata keys are present in the algolia result,
+     * it will be made available with the resolved model.
+     *
+     */
+    const METADATA = ['_highlightResult', '_rankingInfo'];
+
+    /**
+     * Get a set of models from the provided results.
      *
      * @param \Laravel\Scout\Builder $builder
      * @param  string|object $searchable
-     * @param  array $hits
+     * @param  array $results
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function from(Builder $builder, $searchable, array $hits): Collection
+    public function from(Builder $builder, $searchable, array $results): Collection
     {
         $instances = collect();
-
-        $ids = collect($hits)->pluck('objectID')->values()->all();
+        $hits = collect($results['hits']);
 
         $models = [];
+        $ids = $hits->pluck('objectID')->values()->all();
         foreach ($ids as $id) {
             $modelClass = ObjectIdEncrypter::decryptSearchable($id);
             $modelKey = ObjectIdEncrypter::decryptSearchableKey($id);
@@ -76,26 +83,23 @@ final class ModelsResolver
         }
 
         $result = $searchable->newCollection();
+        $hits = $hits->keyBy('objectID');
 
         foreach ($ids as $id) {
             foreach ($instances as $instance) {
-                if (ObjectIdEncrypter::encrypt($instance) === ObjectIdEncrypter::withoutPart($id)) {
+                if (($instanceKey = ObjectIdEncrypter::encrypt($instance)) === ObjectIdEncrypter::withoutPart($id)) {
+                    if ($hit = $hits->get($instanceKey)) {
+                        foreach (Arr::only($hit, self::METADATA) as $metadataKey => $metadataValue) {
+                            $instance->withScoutMetadata($metadataKey, $metadataValue);
+                        }
+                    }
+
                     $result->push($instance);
                     break;
                 }
             }
         }
 
-        $hits = collect($hits)->keyBy('objectID');
-
-        return $result->map(function ($model) use ($hits) {
-            if ($hit = $hits->get(ObjectIdEncrypter::encrypt($model))) {
-                foreach (Arr::only($hit, ['_highlightResult', '_rankingInfo']) as $key => $value) {
-                    $model->withScoutMetadata($key, $value);
-                }
-            }
-
-            return $model;
-        });
+        return $result;
     }
 }

@@ -87,7 +87,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
             return $searchable->newCollection();
         }
 
-        return resolve(ModelsResolver::class)->from($builder, $searchable, $results['hits']);
+        return resolve(ModelsResolver::class)->from($builder, $searchable, $results);
     }
 
     /**
