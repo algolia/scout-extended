@@ -63,7 +63,7 @@ final class SearchTest extends TestCase
 
         $threadIndexMock->shouldReceive('search')->once()->andReturn([
             'hits' => [
-                ['objectID' => '1'],
+                ['objectID' => 'App\Model:1'],
             ],
         ]);
 

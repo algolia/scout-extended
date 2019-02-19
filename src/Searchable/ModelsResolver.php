@@ -27,10 +27,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 final class ModelsResolver
 {
     /**
-     * If the following metadata keys are present in the algolia result,
-     * it will be made available with the resolved model.
+     * @var string[]
      */
-    const METADATA = ['_highlightResult', '_rankingInfo'];
+    private static $metadata = [
+        '_highlightResult',
+        '_rankingInfo'
+    ];
 
     /**
      * Get a set of models from the provided results.
@@ -44,11 +46,10 @@ final class ModelsResolver
     public function from(Builder $builder, $searchable, array $results): Collection
     {
         $instances = collect();
-        $hits = collect($results['hits']);
+        $hits = collect($results['hits'])->keyBy('objectID');
 
         $models = [];
-        $ids = $hits->pluck('objectID')->values()->all();
-        foreach ($ids as $id) {
+        foreach ($hits->keys() as $id) {
             $modelClass = ObjectIdEncrypter::decryptSearchable($id);
             $modelKey = ObjectIdEncrypter::decryptSearchableKey($id);
             if (! array_key_exists($modelClass, $models)) {
@@ -82,15 +83,13 @@ final class ModelsResolver
         }
 
         $result = $searchable->newCollection();
-        $hits = $hits->keyBy('objectID');
 
-        foreach ($ids as $id) {
+        foreach ($hits as $id => $hit) {
             foreach ($instances as $instance) {
-                if (($instanceKey = ObjectIdEncrypter::encrypt($instance)) === ObjectIdEncrypter::withoutPart($id)) {
-                    if ($hit = $hits->get($instanceKey)) {
-                        foreach (Arr::only($hit, self::METADATA) as $metadataKey => $metadataValue) {
-                            $instance->withScoutMetadata($metadataKey, $metadataValue);
-                        }
+                if (ObjectIdEncrypter::encrypt($instance) === ObjectIdEncrypter::withoutPart($id)) {
+
+                    foreach (Arr::only($hit, self::$metadata) as $metadataKey => $metadataValue) {
+                        $instance->withScoutMetadata($metadataKey, $metadataValue);
                     }
 
                     $result->push($instance);
