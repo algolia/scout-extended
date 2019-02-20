@@ -50,8 +50,8 @@ final class ModelsResolver
 
         $models = [];
         foreach ($hits->keys() as $id) {
-            $modelClass = ObjectIdEncrypter::decryptSearchable($id);
-            $modelKey = ObjectIdEncrypter::decryptSearchableKey($id);
+            $modelClass = ObjectIdEncrypter::decryptSearchable((string) $id);
+            $modelKey = ObjectIdEncrypter::decryptSearchableKey((string) $id);
             if (! array_key_exists($modelClass, $models)) {
                 $models[$modelClass] = [];
             }
