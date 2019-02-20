@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Tests\Features;
 
@@ -19,7 +19,7 @@ final class SearchableTest extends TestCase
 
         $usersIndex = $this->mockIndex(User::class);
         $usersIndex->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return !in_array('_rankingInfo', $argument[0]) && !in_array('_highlightResult', $argument[0]);
+            return ! in_array('_rankingInfo', $argument[0]) && ! in_array('_highlightResult', $argument[0]);
         }));
 
         $user->searchable();
