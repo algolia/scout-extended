@@ -18,11 +18,13 @@ use function in_array;
 use function is_array;
 use function get_class;
 use function is_string;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Algolia\ScoutExtended\Searchable\ModelsResolver;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
@@ -102,7 +104,9 @@ final class UpdateJob
         $searchablesToDelete = [];
 
         foreach ($this->searchables as $key => $searchable) {
-            if (empty($array = array_merge($searchable->toSearchableArray(), $searchable->scoutMetadata()))) {
+            $metadata = Arr::except($searchable->scoutMetadata(), ModelsResolver::$metadata);
+
+            if (empty($array = array_merge($searchable->toSearchableArray(), $metadata))) {
                 continue;
             }
 
