@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Algolia `_highlightResult` and `_rankingInfo` to Scout Metadata ([#147](https://github.com/algolia/scout-extended/pull/147))
+- Support to Laravel 5.8 ([#141](https://github.com/algolia/scout-extended/pull/141))
 
 ## [1.3.1] - 2019-02-12
 ### Fixes
