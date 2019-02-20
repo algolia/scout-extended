@@ -15,6 +15,7 @@ namespace Algolia\ScoutExtended\Searchable;
 
 use function in_array;
 use Laravel\Scout\Builder;
+use Illuminate\Support\Arr;
 use function call_user_func;
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Collection;
@@ -26,22 +27,31 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 final class ModelsResolver
 {
     /**
-     * Get a set of models from the provided ids.
+     * @var string[]
+     */
+    private static $metadata = [
+        '_highlightResult',
+        '_rankingInfo',
+    ];
+
+    /**
+     * Get a set of models from the provided results.
      *
      * @param \Laravel\Scout\Builder $builder
      * @param  string|object $searchable
-     * @param  array $ids
+     * @param  array $results
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function from(Builder $builder, $searchable, array $ids): Collection
+    public function from(Builder $builder, $searchable, array $results): Collection
     {
         $instances = collect();
+        $hits = collect($results['hits'])->keyBy('objectID');
 
         $models = [];
-        foreach ($ids as $id) {
-            $modelClass = ObjectIdEncrypter::decryptSearchable($id);
-            $modelKey = ObjectIdEncrypter::decryptSearchableKey($id);
+        foreach ($hits->keys() as $id) {
+            $modelClass = ObjectIdEncrypter::decryptSearchable((string) $id);
+            $modelKey = ObjectIdEncrypter::decryptSearchableKey((string) $id);
             if (! array_key_exists($modelClass, $models)) {
                 $models[$modelClass] = [];
             }
@@ -74,9 +84,13 @@ final class ModelsResolver
 
         $result = $searchable->newCollection();
 
-        foreach ($ids as $id) {
+        foreach ($hits as $id => $hit) {
             foreach ($instances as $instance) {
-                if (ObjectIdEncrypter::encrypt($instance) === ObjectIdEncrypter::withoutPart($id)) {
+                if (ObjectIdEncrypter::encrypt($instance) === ObjectIdEncrypter::withoutPart((string) $id)) {
+                    foreach (Arr::only($hit, self::$metadata) as $metadataKey => $metadataValue) {
+                        $instance->withScoutMetadata($metadataKey, $metadataValue);
+                    }
+
                     $result->push($instance);
                     break;
                 }
