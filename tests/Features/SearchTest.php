@@ -81,7 +81,7 @@ final class SearchTest extends TestCase
                     'objectID' => 'App\User::1',
                     '_highlightResult' => [],
                     '_rankingInfo' => [],
-                ]
+                ],
             ],
         ]);
 
