@@ -7,7 +7,6 @@ namespace Tests\Features;
 use App\User;
 use Tests\TestCase;
 use Laravel\Scout\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
 
 final class ModelsResolverTest extends TestCase
@@ -21,7 +20,7 @@ final class ModelsResolverTest extends TestCase
                 [
                     'objectID' => 'App\User::1',
                     '_highlightResult' => [],
-                    '_rankingInfo' => []
+                    '_rankingInfo' => [],
                 ]
             ],
         ]);
