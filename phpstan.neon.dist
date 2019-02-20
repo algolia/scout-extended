@@ -15,4 +15,3 @@ parameters:
         - '#Cannot call static method create\(\) on string|null#'
         - '#Cannot call method newCollection\(\) on mixed.#'
         - '#Casting to string something that#'
-        - '#Parameter \#1 \$objectId of static method Algolia\\ScoutExtended\\Searchable\\ObjectIdEncrypter::withoutPart\(\) expects string, int|string|false given.#'
