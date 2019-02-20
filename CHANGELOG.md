@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Algolia `_highlightResult` and `_rankingInfo` to Scout Metadata ([#147](https://github.com/algolia/scout-extended/pull/147))
+
 ## [1.3.1] - 2019-02-12
 ### Fixes
 - Issue while making unsearchable multiple models ([#143](https://github.com/algolia/scout-extended/pull/143))
