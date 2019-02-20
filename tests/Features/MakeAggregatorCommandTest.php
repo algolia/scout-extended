@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 
 final class MakeAggregatorCommandTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -17,7 +17,7 @@ final class MakeAggregatorCommandTest extends TestCase
         @unlink(app_path('Search/Forum.php'));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         @unlink(app_path('Search/News.php'));
         @unlink(app_path('Search/Forum.php'));

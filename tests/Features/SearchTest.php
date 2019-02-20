@@ -7,6 +7,7 @@ namespace Tests\Features;
 use App\User;
 use App\Thread;
 use Tests\TestCase;
+use Algolia\ScoutExtended\Exceptions\ShouldReimportSearchableException;
 
 final class SearchTest extends TestCase
 {
@@ -55,11 +56,10 @@ final class SearchTest extends TestCase
         $this->assertSame($threads[1]->id, $models->get(2)->id);
     }
 
-    /**
-     * @expectedException \Algolia\ScoutExtended\Exceptions\ShouldReimportSearchableException
-     */
     public function testInvalidObjectId(): void
     {
+        $this->expectException(ShouldReimportSearchableException::class);
+
         $threadIndexMock = $this->mockIndex(Thread::class);
 
         $threadIndexMock->shouldReceive('search')->once()->andReturn([
