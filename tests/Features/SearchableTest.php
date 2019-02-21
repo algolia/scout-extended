@@ -22,7 +22,7 @@ final class SearchableTest extends TestCase
         $metadataKeys = ModelsResolver::$metadata;
 
         $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('saveObjects')->once()->with(Mockery::on(function ($argument) use($metadataKeys) {
+        $usersIndex->expects('saveObjects')->once()->with(Mockery::on(function ($argument) use ($metadataKeys) {
             return count(Arr::only($argument[0], $metadataKeys)) === 0;
         }));
 
