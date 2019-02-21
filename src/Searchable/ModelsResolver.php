@@ -29,7 +29,7 @@ final class ModelsResolver
     /**
      * @var string[]
      */
-    private static $metadata = [
+    public static $metadata = [
         '_highlightResult',
         '_rankingInfo',
     ];
