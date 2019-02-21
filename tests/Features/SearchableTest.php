@@ -7,6 +7,8 @@ namespace Tests\Features;
 use Mockery;
 use App\User;
 use Tests\TestCase;
+use Illuminate\Support\Arr;
+use Algolia\ScoutExtended\Searchable\ModelsResolver;
 
 final class SearchableTest extends TestCase
 {
@@ -17,9 +19,11 @@ final class SearchableTest extends TestCase
         $user->withScoutMetaData('_rankingInfo', []);
         $user->withScoutMetaData('_highlightResult', []);
 
+        $metadataKeys = ModelsResolver::$metadata;
+
         $usersIndex = $this->mockIndex(User::class);
-        $usersIndex->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return ! in_array('_rankingInfo', $argument[0]) && ! in_array('_highlightResult', $argument[0]);
+        $usersIndex->expects('saveObjects')->once()->with(Mockery::on(function ($argument) use($metadataKeys) {
+            return count(Arr::only($argument[0], $metadataKeys)) === 0;
         }));
 
         $user->searchable();
