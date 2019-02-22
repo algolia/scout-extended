@@ -33,7 +33,7 @@ great features, and at the same time leverage the complete set of Algolia’s se
 
 ## 💕 Community Plan
 
-Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's **free** up to a certain number of records and writing operations. Search operations are not part of any quota and will not be charged in any way.
+Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's **free** up to a certain number of records and operations.
 
 ## 💡 Documentation
 
