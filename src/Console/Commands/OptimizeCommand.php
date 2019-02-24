@@ -60,7 +60,7 @@ final class OptimizeCommand extends Command
                 $compiler->compile($settings, $path);
                 $this->output->success('Settings file created at: '.$path);
                 $this->output->note('Please review the settings file and synchronize it with Algolia using: "'.
-                    ARTISAN_BINARY.' scout:sync"');
+                    $this->getApplication()->artisanBinary().' scout:sync"');
             }
         }
     }
