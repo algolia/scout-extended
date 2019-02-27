@@ -87,8 +87,11 @@ final class ModelsResolver
         foreach ($hits as $id => $hit) {
             foreach ($instances as $instance) {
                 if (ObjectIdEncrypter::encrypt($instance) === ObjectIdEncrypter::withoutPart((string) $id)) {
-                    foreach (Arr::only($hit, self::$metadata) as $metadataKey => $metadataValue) {
-                        $instance->withScoutMetadata($metadataKey, $metadataValue);
+
+                    if (method_exists($instance, 'withScoutMetadata')) {
+                        foreach (Arr::only($hit, self::$metadata) as $metadataKey => $metadataValue) {
+                            $instance->withScoutMetadata($metadataKey, $metadataValue);
+                        }
                     }
 
                     $result->push($instance);
