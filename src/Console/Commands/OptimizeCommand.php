@@ -15,7 +15,6 @@ namespace Algolia\ScoutExtended\Console\Commands;
 
 use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
-use Illuminate\Console\Application;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Settings\LocalFactory;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
@@ -60,8 +59,8 @@ final class OptimizeCommand extends Command
                 $path = $localRepository->getPath($index);
                 $compiler->compile($settings, $path);
                 $this->output->success('Settings file created at: '.$path);
-                $this->output->note('Please review the settings file and synchronize it with Algolia using: "'.
-                    Application::artisanBinary().' scout:sync"');
+                $this->output->note('Please review the settings file and synchronize it with Algolia using '.
+                    'the Artisan command `scout:sync`.');
             }
         }
     }
