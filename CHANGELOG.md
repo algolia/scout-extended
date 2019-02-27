@@ -6,13 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.0] - 2019-02-27
+### Added
+- Support to Lumen ([#156](https://github.com/algolia/scout-extended/pull/156))
+
+### Fixed
+- No longer sets scout metadata on non searchable models ([bb1cefb](https://github.com/algolia/scout-extended/commit/bb1cefb2397c27d141a70e0cf7177a8ac24145e9))
+
 ## [1.4.0] - 2019-02-21
 ### Added
 - Algolia `_highlightResult` and `_rankingInfo` to Scout Metadata ([#147](https://github.com/algolia/scout-extended/pull/147))
 - Support to Laravel 5.8 ([#141](https://github.com/algolia/scout-extended/pull/141))
 
 ## [1.3.1] - 2019-02-12
-### Fixes
+### Fixed
 - Issue while making unsearchable multiple models ([#143](https://github.com/algolia/scout-extended/pull/143))
 
 ## [1.3.0] - 2019-02-11
@@ -25,7 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.1] - 2019-01-22
 ### Added
-- Fixes generated settings file docs example ([1622cb0](https://github.com/algolia/scout-extended/commit/1622cb0399269d0b787194dcb8ac2e77f6005cf6))
+- Generated settings file docs example ([1622cb0](https://github.com/algolia/scout-extended/commit/1622cb0399269d0b787194dcb8ac2e77f6005cf6))
 
 ## [1.1.0] - 2019-01-10
 ### Added
@@ -37,15 +44,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.4] - 2019-01-04
 ### Fixed
-- Fixes exception when importing with no searchables with `scout:import` ([#109](https://github.com/algolia/scout-extended/pull/109))
+- Exception when importing with no searchables with `scout:import` ([#109](https://github.com/algolia/scout-extended/pull/109))
 
 ## [1.0.3] - 2019-01-04
 ### Fixed
-- Fixes creation of search key using `Algolia::searchKey` ([ba0afdf](https://github.com/algolia/scout-extended/commit/ba0afdf7eeabf6b26cb1117c7387b27bc6e7bed9))
+- Creation of search key using `Algolia::searchKey` ([ba0afdf](https://github.com/algolia/scout-extended/commit/ba0afdf7eeabf6b26cb1117c7387b27bc6e7bed9))
 
 ## [1.0.2] - 2019-01-03
 ### Fixed
-- Fixes `scout:reimport` with indexes imported using `laravel/scout` ([9aa9370](https://github.com/algolia/scout-extended/commit/9aa937089343c05460252b9a438c670b7beebabb))
+- `scout:reimport` with indexes imported using `laravel/scout` ([9aa9370](https://github.com/algolia/scout-extended/commit/9aa937089343c05460252b9a438c670b7beebabb))
 
 ## [1.0.1] - 2019-01-02
 ### Fixed
@@ -75,7 +82,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Custom splitters must implement `Algolia\ScoutExtended\Contracts\SplitterContract`.
 
 ### Fixed
-- Fixes queuing aggregators ([#77](https://github.com/algolia/scout-extended/pull/77))
+- Queuing aggregators ([#77](https://github.com/algolia/scout-extended/pull/77))
 
 ## [0.3.2] - 2018-11-21
 ### Changed
