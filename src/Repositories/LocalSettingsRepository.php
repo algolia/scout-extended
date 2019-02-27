@@ -74,7 +74,7 @@ final class LocalSettingsRepository
         $settingsPath = config('scout.algolia.settings_path');
 
         if ($settingsPath === null) {
-            return config_path($fileName);
+            return app('path.config').DIRECTORY_SEPARATOR.$fileName;
         }
 
         if (! $this->files->exists($settingsPath)) {

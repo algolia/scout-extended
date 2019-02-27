@@ -18,7 +18,6 @@ use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
 use Symfony\Component\Finder\Finder;
-use Illuminate\Foundation\Application;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
@@ -32,18 +31,17 @@ final class SearchableFinder
     private static $declaredClasses;
 
     /**
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     private $app;
 
     /**
      * SearchableModelsFinder constructor.
      *
-     * @param \Illuminate\Foundation\Application $app
-     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
      * @return void
      */
-    public function __construct(Application $app)
+    public function __construct($app)
     {
         $this->app = $app;
     }
