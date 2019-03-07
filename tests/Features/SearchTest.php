@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use App\User;
 use App\Thread;
 use Tests\TestCase;
+use Algolia\ScoutExtended\Exceptions\ShouldReimportSearchableException;
 
 final class SearchTest extends TestCase
 {
@@ -54,11 +56,10 @@ final class SearchTest extends TestCase
         $this->assertSame($threads[1]->id, $models->get(2)->id);
     }
 
-    /**
-     * @expectedException \Algolia\ScoutExtended\Exceptions\ShouldReimportSearchableException
-     */
     public function testInvalidObjectId(): void
     {
+        $this->expectException(ShouldReimportSearchableException::class);
+
         $threadIndexMock = $this->mockIndex(Thread::class);
 
         $threadIndexMock->shouldReceive('search')->once()->andReturn([
@@ -68,5 +69,27 @@ final class SearchTest extends TestCase
         ]);
 
         Thread::search('input')->get();
+    }
+
+    public function testSearchContainsMetadata(): void
+    {
+        $indexMock = $this->mockIndex(User::class);
+        $indexMock->expects('saveObjects')->once();
+        $indexMock->shouldReceive('search')->once()->andReturn([
+            'hits' => [
+                [
+                    'objectID' => 'App\User::1',
+                    '_highlightResult' => [],
+                    '_rankingInfo' => [],
+                ],
+            ],
+        ]);
+
+        factory(User::class)->create();
+
+        $scoutMetaData = User::search('')->get()->first()->scoutMetaData();
+
+        $this->assertArrayHasKey('_highlightResult', $scoutMetaData);
+        $this->assertArrayHasKey('_rankingInfo', $scoutMetaData);
     }
 }

@@ -12,11 +12,10 @@ use Algolia\ScoutExtended\Settings\Synchronizer;
 
 final class SyncCommandTest extends TestCase
 {
-    /**
-     * @expectedException \Tests\Features\Fixtures\FakeException
-     */
     public function testModelsAreDiscovered(): void
     {
+        $this->expectException(FakeException::class);
+
         $synchronizerMock = mock(Synchronizer::class);
         $synchronizerMock->shouldReceive('analyse')->once()->with($this->mockIndex(User::class))->andThrow(FakeException::class);
         $this->swap(Synchronizer::class, $synchronizerMock);

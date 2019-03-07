@@ -87,9 +87,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
             return $searchable->newCollection();
         }
 
-        $ids = collect($results['hits'])->pluck('objectID')->values()->all();
-
-        return resolve(ModelsResolver::class)->from($builder, $searchable, $ids);
+        return app(ModelsResolver::class)->from($builder, $searchable, $results);
     }
 
     /**

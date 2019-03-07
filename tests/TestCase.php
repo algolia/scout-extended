@@ -21,7 +21,7 @@ use Algolia\ScoutExtended\Facades\Algolia as AlgoliaFacade;
 
 abstract class TestCase extends BaseTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -32,7 +32,7 @@ abstract class TestCase extends BaseTestCase
         @unlink(config_path('scout-users.php'));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         @unlink(__DIR__.'/laravel/config/scout-users.php');
 

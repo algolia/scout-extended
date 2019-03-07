@@ -53,9 +53,11 @@ final class DeleteJob
         $index = $client->initIndex($this->searchables->first()->searchableAs());
 
         $result = $index->deleteBy([
-            'tagFilters' => $this->searchables->map(function ($searchable) {
-                return ObjectIdEncrypter::encrypt($searchable);
-            })->toArray(),
+            'tagFilters' => [
+                $this->searchables->map(function ($searchable) {
+                    return ObjectIdEncrypter::encrypt($searchable);
+                })->toArray(),
+            ],
         ]);
 
         if (config('scout.synchronous', false)) {

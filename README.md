@@ -31,15 +31,13 @@ great features, and at the same time leverage the complete set of Algolia’s se
 - **Beautiful** [overview](https://algolia.com/doc/framework-integration/laravel/production/get-status-overview) of your application indexes.
 - A useful collection of [macros](https://algolia.com/doc/framework-integration/laravel/searching/server-side-search), [facades](https://algolia.com/doc/framework-integration/laravel/advanced-use-cases/access-api-directly), and much more.
 
-## 💕 Community Plan
-
-Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's **free** up to a certain number of records and writing operations. Search operations are not part of any quota and will not be charged in any way.
-
 ## 💡 Documentation
 
 For full documentation, visit the **[Scout Extended documentation](https://algolia.com/doc/framework-integration/laravel)**.
 
 > **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to **read the Scout documentation first**. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
+
+Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's **free** up to a certain number of records and operations.
 
 ## 🆓 License
 Scout Extended is an open-sourced software licensed under the [MIT license](LICENSE.md).

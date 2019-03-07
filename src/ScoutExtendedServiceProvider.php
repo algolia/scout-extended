@@ -20,6 +20,7 @@ use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\AlgoliaSearch\AnalyticsClient;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Managers\EngineManager;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use Algolia\ScoutExtended\Console\Commands\SyncCommand;
 use Algolia\ScoutExtended\Console\Commands\FlushCommand;
 use Algolia\ScoutExtended\Searchable\AggregatorObserver;
@@ -89,6 +90,10 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
 
         $this->app->singleton(AggregatorObserver::class, AggregatorObserver::class);
         $this->app->bind(\Laravel\Scout\Builder::class, Builder::class);
+
+        $this->app->bind(SearchableFinder::class, function () {
+            return new SearchableFinder($this->app);
+        });
     }
 
     /**
