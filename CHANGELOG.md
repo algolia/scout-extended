@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.6.0] - 2019-03-07
+### Added
+- Allow eager loading relationships on aggregated models ([#131](https://github.com/algolia/scout-extended/pull/131))
+
 ## [1.5.0] - 2019-02-27
 ### Added
 - Support to Lumen ([#156](https://github.com/algolia/scout-extended/pull/156))
