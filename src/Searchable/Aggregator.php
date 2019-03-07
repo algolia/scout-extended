@@ -42,6 +42,13 @@ abstract class Aggregator implements SearchableCountableContract
     protected $model;
 
     /**
+     * The relationships per model that should be loaded.
+     *
+     * @var mixed[]
+     */
+    protected $relations = [];
+
+    /**
      * Returns the index name.
      *
      * @var string
@@ -114,6 +121,18 @@ abstract class Aggregator implements SearchableCountableContract
         $this->model = $model;
 
         return $this;
+    }
+
+    /**
+     * Get the relations to load.
+     *
+     * @param  string  $modelClass
+     *
+     * @return  array
+     */
+    public function getRelations($modelClass): array
+    {
+        return $this->relations[$modelClass] ?? [];
     }
 
     /**

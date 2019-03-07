@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Features;
 
 use Mockery;
+use App\News;
 use App\User;
 use App\Wall;
 use App\Thread;
@@ -17,6 +18,7 @@ final class ImportCommandTest extends TestCase
     public function testImport(): void
     {
         Wall::bootSearchable();
+        News::bootSearchable();
 
         factory(User::class, 5)->create();
 
@@ -31,6 +33,12 @@ final class ImportCommandTest extends TestCase
         $wallIndexMock = $this->mockIndex(Wall::class);
         $wallIndexMock->expects('clearObjects')->once();
         $wallIndexMock->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';
+        }));
+
+        $newsIndexMock = $this->mockIndex(News::class);
+        $newsIndexMock->expects('clearObjects')->once();
+        $newsIndexMock->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';
         }));
 

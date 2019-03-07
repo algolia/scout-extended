@@ -38,7 +38,7 @@ final class ModelsResolver
      * Get a set of models from the provided results.
      *
      * @param \Laravel\Scout\Builder $builder
-     * @param  string|object $searchable
+     * @param  object $searchable
      * @param  array $results
      *
      * @return \Illuminate\Database\Eloquent\Collection
@@ -64,7 +64,7 @@ final class ModelsResolver
 
             if (in_array(Searchable::class, class_uses_recursive($model), true)) {
                 if (! empty($models = $model->getScoutModelsByIds($builder, $modelKeys))) {
-                    $instances = $instances->merge($models);
+                    $instances = $instances->merge($models->load($searchable->getRelations($modelClass)));
                 }
             } else {
                 $query = in_array(SoftDeletes::class, class_uses_recursive($model),
@@ -77,7 +77,7 @@ final class ModelsResolver
                 $scoutKey = method_exists($model,
                     'getScoutKeyName') ? $model->getScoutKeyName() : $model->getQualifiedKeyName();
                 if ($models = $query->whereIn($scoutKey, $modelKeys)->get()) {
-                    $instances = $instances->merge($models);
+                    $instances = $instances->merge($models->load($searchable->getRelations($modelClass)));
                 }
             }
         }
