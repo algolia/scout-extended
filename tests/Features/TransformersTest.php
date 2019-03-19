@@ -13,6 +13,7 @@ use Tests\Features\Fixtures\ThreadWithSearchableArray;
 use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
 use Tests\Features\Fixtures\ThreadWithSearchableArrayUsingTransform;
 use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
+use Tests\Features\Fixtures\ThreadWithSearchableArrayUsingDateTransform;
 
 final class TransformersTest extends TestCase
 {
@@ -76,4 +77,22 @@ final class TransformersTest extends TestCase
 
         dispatch(new UpdateJob(collect([$threadWithSearchableArrayUsingTransform])));
     }
+
+  public function testTransformsAreRespectedOnSingleModel(): void
+  {
+    $thread = factory(Thread::class)->create();
+
+    $extendedThread = new ThreadWithSearchableArrayUsingDateTransform($thread->toArray());
+
+    $threadsIndexMock = $this->mockIndex($extendedThread->searchableAs());
+
+    $threadsIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
+        // Assert subscriber count has not been transformed
+        return $argument[0]['subscriber_count'] === '100';
+    }));
+
+    $extendedThread->created_at = now();
+
+    dispatch(new UpdateJob(collect([$extendedThread])));
+  }
 }

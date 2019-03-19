@@ -12,6 +12,8 @@ use App\Wall;
 use App\Thread;
 use Tests\TestCase;
 use Algolia\ScoutExtended\Searchable\AggregatorCollection;
+use Tests\Features\Fixtures\ThreadAggregatorUsingOnlyDateTransform;
+use Tests\Features\Fixtures\ThreadWithSearchableArrayUsingDateTransform;
 
 final class AggregatorTest extends TestCase
 {
@@ -218,5 +220,25 @@ final class AggregatorTest extends TestCase
 
         $this->assertFalse(Wall::search()->get()->first()->relationLoaded('threads'));
         $this->assertTrue(News::search()->get()->first()->relationLoaded('threads'));
+    }
+
+  public function testModelTransformsAreRespectedOnAggregators(): void
+  {
+        ThreadAggregatorUsingOnlyDateTransform::bootSearchable();
+
+        $threadsIndexMock = $this->mockIndex('threads');
+        $threadsAggregator = $this->mockIndex((new ThreadAggregatorUsingOnlyDateTransform)->searchableAs());
+
+        $threadsIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            // Ensure the subscriber count on the single thread index has not been transformed
+            return $argument[0]['subscriber_count'] === '100';
+        }));
+
+        $threadsAggregator->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            // Ensure the subscriber count on the aggregator index has not been transformed
+            return $argument[0]['subscriber_count'] === '100';
+        }));
+
+        ThreadWithSearchableArrayUsingDateTransform::create(factory(Thread::class)->raw());
     }
 }
