@@ -57,9 +57,9 @@ class UnsearcheableAttribute implements SettingContract
      */
     public static function exist(string $key, $value, array $searchableAttributes): array
     {
-        if (!is_object($value) && !is_array($value) &&
-            !Str::is(self::$unsearchableAttributesKeys, $key) &&
-            !Str::is(self::$unsearchableAttributesValues, $value)) {
+        if (! is_object($value) && ! is_array($value) &&
+            ! Str::is(self::$unsearchableAttributesKeys, $key) &&
+            ! Str::is(self::$unsearchableAttributesValues, $value)) {
             $searchableAttributes[] = $key;
 
             return $searchableAttributes;
