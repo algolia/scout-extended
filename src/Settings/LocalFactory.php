@@ -15,15 +15,15 @@ namespace Algolia\ScoutExtended\Settings;
 
 use function in_array;
 use Algolia\AlgoliaSearch\SearchIndex;
+use Illuminate\Database\QueryException;
+use Algolia\ScoutExtended\Searchable\Aggregator;
+use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
+use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
 use Algolia\ScoutExtended\Settings\SettingAttribute\UnsearcheableAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\FacetingAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\DisableTypoToleranceAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\UnretrievableAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\CustomRankingAttribute;
-use Illuminate\Database\QueryException;
-use Algolia\ScoutExtended\Searchable\Aggregator;
-use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
-use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException as BaseModelNotFoundException;
 
 /**
@@ -72,16 +72,16 @@ final class LocalFactory
         $attributes = $this->getAttributes($model);
         $attributesArray = [];
         foreach (self::$settings as $key => $value) {
-            $attributesArray[$key] = array();
+            $attributesArray[$key] = [];
         }
         foreach ($attributes as $key => $value) {
-            $key = (string)$key;
+            $key = (string) $key;
             foreach (self::$settings as $setting => $class) {
                 $attributesArray[$setting] = $class::exist($key, $value, $attributesArray[$setting]);
             }
         }
         foreach ($attributesArray as $key => $value) {
-            $detectedSettings[$key] = !empty($value) ? $value : null;
+            $detectedSettings[$key] = ! empty($value) ? $value : null;
         }
         $detectedSettings['queryLanguages'] = array_unique([config('app.locale'), config('app.fallback_locale')]);
 
