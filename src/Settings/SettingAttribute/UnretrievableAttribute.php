@@ -42,7 +42,7 @@ class UnretrievableAttribute implements SettingContract
         if (is_string($key) && Str::is(self::$unretrievableAttributesKeys, $key)) {
             $unretrievableAttributes[] = $key;
 
-            return $key;
+            return $unretrievableAttributes;
         }
 
         return $unretrievableAttributes;
