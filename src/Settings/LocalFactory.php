@@ -19,10 +19,10 @@ use Illuminate\Database\QueryException;
 use Algolia\ScoutExtended\Searchable\Aggregator;
 use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
 use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
+use Algolia\ScoutExtended\Settings\SettingAttribute\searchableAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\attributeForFaceting;
 use Algolia\ScoutExtended\Settings\SettingAttribute\CustomRankingAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\UnretrievableAttribute;
-use Algolia\ScoutExtended\Settings\SettingAttribute\searchableAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\DisableTypoToleranceAttribute;
 use Illuminate\Database\Eloquent\ModelNotFoundException as BaseModelNotFoundException;
 

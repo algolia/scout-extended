@@ -17,7 +17,6 @@ namespace Algolia\ScoutExtended\Contracts;
  * This interface is use to check if key exist.
  *
  * @internal the interface uses the public methods {@getValue}
- *
  */
 interface SettingContract
 {
