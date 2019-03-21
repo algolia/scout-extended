@@ -33,7 +33,7 @@ class CustomRankingAttribute implements SettingContract
      * Checks if the given key/value is a 'CustomRanking'.
      *
      * @param  string $key
-     * @param  mixed $value
+     * @param  array|null|string $value
      * @param  array $customRanking
      *
      * @return array

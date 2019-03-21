@@ -33,7 +33,7 @@ class attributeForFaceting implements SettingContract
      * Checks if the given key/value is a 'attributesForFaceting'.
      *
      * @param  string $key
-     * @param  mixed $value
+     * @param  array|null|string $value
      * @param  array $attributesForFaceting
      *
      * @return array

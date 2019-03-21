@@ -34,7 +34,7 @@ class DisableTypoToleranceAttribute implements SettingContract
      * Checks if the given key/value is a 'disableTypoToleranceOnAttributes'.
      *
      * @param  string $key
-     * @param  mixed $value
+     * @param  array|null|string $value
      * @param  array $disableTypoToleranceOnAttributes
      *
      * @return array

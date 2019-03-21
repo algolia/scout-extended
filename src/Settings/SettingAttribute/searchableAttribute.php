@@ -50,8 +50,8 @@ class searchableAttribute implements SettingContract
      * Checks if the given key/value is a 'searchableAttributes'.
      *
      * @param  string $key
-     * @param  mixed $value
-     * @param array $searchableAttributes
+     * @param  array|null|string $value
+     * @param  array $searchableAttributes
      *
      * @return array
      */
