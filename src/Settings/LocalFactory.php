@@ -70,17 +70,16 @@ final class LocalFactory
     public function create(SearchIndex $index, string $model): Settings
     {
         $attributes = $this->getAttributes($model);
-        $arrayFillKeys = [];
-        foreach (self::$settings as $key => $value) {
-            $arrayFillKeys[$key] = [];
-        }
+
+        $attributeArray = array_fill_keys(array_keys(self::$settings),array());
+
         foreach ($attributes as $key => $value) {
             $key = (string) $key;
             foreach (self::$settings as $setting => $settingClass) {
-                $arrayFillKeys[$setting] = (new $settingClass)->getValue($key, $value, $arrayFillKeys[$setting]);
+                $attributeArray[$setting] = (new $settingClass)->getValue($key, $value, $attributeArray[$setting]);
             }
         }
-        foreach ($arrayFillKeys as $key => $value) {
+        foreach ($attributeArray as $key => $value) {
             $detectedSettings[$key] = ! empty($value) ? $value : null;
         }
         $detectedSettings['queryLanguages'] = array_unique([config('app.locale'), config('app.fallback_locale')]);
