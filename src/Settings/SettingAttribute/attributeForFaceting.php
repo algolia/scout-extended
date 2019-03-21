@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Settings\SettingAttribute;
 use Illuminate\Support\Str;
 use Algolia\ScoutExtended\Contracts\SettingContract;
 
-class FacetingAttribute implements SettingContract
+class attributeForFaceting implements SettingContract
 {
     /**
      * @var string[]
@@ -34,16 +34,14 @@ class FacetingAttribute implements SettingContract
      *
      * @param  string $key
      * @param  mixed $value
-     * @param array $attributesForFaceting
+     * @param  array $attributesForFaceting
      *
      * @return array
      */
-    public static function exist(string $key, $value, array $attributesForFaceting): array
+    public function getValue(string $key, $value, array $attributesForFaceting): array
     {
         if (Str::is(self::$attributesForFacetingKeys, $key)) {
             $attributesForFaceting[] = $key;
-
-            return $attributesForFaceting;
         }
 
         return $attributesForFaceting;

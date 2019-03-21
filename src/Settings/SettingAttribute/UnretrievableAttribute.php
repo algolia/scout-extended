@@ -32,17 +32,15 @@ class UnretrievableAttribute implements SettingContract
      * Checks if the given key/value is a 'UnretrieableAttribute'.
      *
      * @param  string $key
-     * @param  mixed $value
-     * @param array $unretrievableAttributes
+     * @param  array|null|string $value
+     * @param  array $unretrievableAttributes
      *
      * @return array
      */
-    public static function exist(string $key, $value, array $unretrievableAttributes): array
+    public function getValue(string $key, $value, array $unretrievableAttributes): array
     {
         if (is_string($key) && Str::is(self::$unretrievableAttributesKeys, $key)) {
             $unretrievableAttributes[] = $key;
-
-            return $unretrievableAttributes;
         }
 
         return $unretrievableAttributes;

@@ -34,16 +34,14 @@ class CustomRankingAttribute implements SettingContract
      *
      * @param  string $key
      * @param  mixed $value
-     * @param array $customRanking
+     * @param  array $customRanking
      *
      * @return array
      */
-    public static function exist(string $key, $value, array $customRanking): array
+    public function getValue(string $key, $value, array $customRanking): array
     {
         if (Str::is(self::$customRankingKeys, $key)) {
             $customRanking[] = "desc({$key})";
-
-            return $customRanking;
         }
 
         return $customRanking;

@@ -19,10 +19,10 @@ use Illuminate\Database\QueryException;
 use Algolia\ScoutExtended\Searchable\Aggregator;
 use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
 use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
-use Algolia\ScoutExtended\Settings\SettingAttribute\FacetingAttribute;
+use Algolia\ScoutExtended\Settings\SettingAttribute\attributeForFaceting;
 use Algolia\ScoutExtended\Settings\SettingAttribute\CustomRankingAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\UnretrievableAttribute;
-use Algolia\ScoutExtended\Settings\SettingAttribute\UnsearcheableAttribute;
+use Algolia\ScoutExtended\Settings\SettingAttribute\searchableAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\DisableTypoToleranceAttribute;
 use Illuminate\Database\Eloquent\ModelNotFoundException as BaseModelNotFoundException;
 
@@ -40,8 +40,8 @@ final class LocalFactory
      * @var string[]
      */
     private static $settings = [
-        'searchableAttributes' => UnsearcheableAttribute::class,
-        'attributesForFaceting' => FacetingAttribute::class,
+        'searchableAttributes' => searchableAttribute::class,
+        'attributesForFaceting' => attributeForFaceting::class,
         'customRanking' => CustomRankingAttribute::class,
         'disableTypoToleranceOnAttributes' => DisableTypoToleranceAttribute::class,
         'unretrievableAttributes' => UnretrievableAttribute::class,
@@ -70,17 +70,17 @@ final class LocalFactory
     public function create(SearchIndex $index, string $model): Settings
     {
         $attributes = $this->getAttributes($model);
-        $attributesArray = [];
+        $arrayFillKeys = [];
         foreach (self::$settings as $key => $value) {
-            $attributesArray[$key] = [];
+            $arrayFillKeys[$key] = [];
         }
         foreach ($attributes as $key => $value) {
             $key = (string) $key;
-            foreach (self::$settings as $setting => $class) {
-                $attributesArray[$setting] = $class::exist($key, $value, $attributesArray[$setting]);
+            foreach (self::$settings as $setting => $settingClass) {
+                $arrayFillKeys[$setting] = (new $settingClass)->getValue($key, $value, $arrayFillKeys[$setting]);
             }
         }
-        foreach ($attributesArray as $key => $value) {
+        foreach ($arrayFillKeys as $key => $value) {
             $detectedSettings[$key] = ! empty($value) ? $value : null;
         }
         $detectedSettings['queryLanguages'] = array_unique([config('app.locale'), config('app.fallback_locale')]);

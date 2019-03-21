@@ -35,16 +35,14 @@ class DisableTypoToleranceAttribute implements SettingContract
      *
      * @param  string $key
      * @param  mixed $value
-     * @param array $disableTypoToleranceOnAttributes
+     * @param  array $disableTypoToleranceOnAttributes
      *
      * @return array
      */
-    public static function exist(string $key, $value, array $disableTypoToleranceOnAttributes): array
+    public function getValue(string $key, $value, array $disableTypoToleranceOnAttributes): array
     {
         if (is_string($key) && Str::is(self::$disableTypoToleranceOnAttributesKeys, $key)) {
             $disableTypoToleranceOnAttributes[] = $key;
-
-            return $disableTypoToleranceOnAttributes;
         }
 
         return $disableTypoToleranceOnAttributes;

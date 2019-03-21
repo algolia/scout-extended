@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Settings\SettingAttribute;
 use Illuminate\Support\Str;
 use Algolia\ScoutExtended\Contracts\SettingContract;
 
-class UnsearcheableAttribute implements SettingContract
+class searchableAttribute implements SettingContract
 {
     /**
      * @var string[]
@@ -55,14 +55,12 @@ class UnsearcheableAttribute implements SettingContract
      *
      * @return array
      */
-    public static function exist(string $key, $value, array $searchableAttributes): array
+    public function getValue(string $key, $value, array $searchableAttributes): array
     {
         if (! is_object($value) && ! is_array($value) &&
             ! Str::is(self::$unsearchableAttributesKeys, $key) &&
             ! Str::is(self::$unsearchableAttributesValues, $value)) {
             $searchableAttributes[] = $key;
-
-            return $searchableAttributes;
         }
 
         return $searchableAttributes;
