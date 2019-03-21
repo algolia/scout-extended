@@ -71,7 +71,7 @@ final class LocalFactory
     {
         $attributes = $this->getAttributes($model);
 
-        $attributeArray = array_fill_keys(array_keys(self::$settings),array());
+        $attributeArray = array_fill_keys(array_keys(self::$settings),[]);
 
         foreach ($attributes as $key => $value) {
             $key = (string) $key;
