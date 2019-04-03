@@ -32,8 +32,8 @@ final class SplittersTest extends TestCase
         ]);
 
         $body = implode('', [
-            '<p>Hello <a href="example.com">Foo</a>!</p>',
-            '<p>Hello <a href="example.com">Bar</a>!</p>',
+            '<h1>Hello <a href="example.com">Foo</a>!</h1>',
+            '<h2>Hello <a href="example.com">Bar</a>!</h2>',
         ]);
 
         ThreadWithSplitterClass::create(['body' => $body]);
