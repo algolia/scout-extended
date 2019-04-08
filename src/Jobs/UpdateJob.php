@@ -174,9 +174,10 @@ final class UpdateJob
     private function splitSearchable($searchable, array $array): array
     {
         $pieces = [];
+        $model = $searchable->getModel();
         foreach ($array as $key => $value) {
             $method = 'split'.Str::camel((string) $key);
-            $model = $searchable->getModel();
+
             if (method_exists($model, $method)) {
                 $result = $model->{$method}($value);
                 $splittedBy = $key;
@@ -186,29 +187,39 @@ final class UpdateJob
                         $pieces[$splittedBy] = $result;
                         break;
                     case is_string($result):
-                        $pieces[$splittedBy] = app($result)->split($model, $value);
+                        $pieces = app($result)->split($model, $value);
                         break;
                     case $result instanceof SplitterContract:
-                        $pieces[$splittedBy] = $result->split($model, $value);
+                        $pieces = $result->split($model, $value);
                         break;
                 }
             }
         }
 
-        $objects = [[]];
-        foreach ($pieces as $splittedBy => $values) {
-            $temp = [];
-            foreach ($objects as $object) {
-                foreach ($values as $value) {
-                    $temp[] = array_merge($object, [$splittedBy => $value]);
+        if (is_array($result)) {
+            $objects = [[]];
+            foreach ($pieces as $splittedBy => $values) {
+                $temp = [];
+                foreach ($objects as $object) {
+                    foreach ($values as $value) {
+                        $temp[] = array_merge($object, [$splittedBy => $value]);
+                    }
                 }
+                $objects = $temp;
             }
-            $objects = $temp;
-        }
 
-        return array_map(function ($object) use ($array) {
-            return array_merge($array, $object);
-        }, $objects);
+            return array_map(function ($object) use ($array) {
+                return array_merge($array, $object);
+            }, $objects);
+        } else {
+            $objects = [];
+            unset($array['body']);
+            foreach ($pieces as $piece) {
+                $objects[] = array_merge($piece, $array);
+            }
+
+            return $objects;
+        }
     }
 
     /**
@@ -235,9 +246,7 @@ final class UpdateJob
         if (! array_key_exists($searchableClass, $this->searchablesWithToSearchableArray)) {
             $reflectionClass = new ReflectionClass(get_class($searchable));
 
-            $this->searchablesWithToSearchableArray[$searchableClass] =
-                ends_with((string) $reflectionClass->getMethod('toSearchableArray')->getFileName(),
-                    (string) $reflectionClass->getFileName());
+            $this->searchablesWithToSearchableArray[$searchableClass] = ends_with((string) $reflectionClass->getMethod('toSearchableArray')->getFileName(), (string) $reflectionClass->getFileName());
         }
 
         return $this->searchablesWithToSearchableArray[$searchableClass];

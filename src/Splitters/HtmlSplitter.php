@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Splitters;
 
 use DOMDocument;
+use DOMXPath;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
 
 class HtmlSplitter implements SplitterContract
@@ -23,27 +24,116 @@ class HtmlSplitter implements SplitterContract
      *
      * @var string[]
      */
-    protected $tags = [
-        'h1',
-        'h2',
-        'h3',
-        'h4',
-        'h5',
-        'p',
+    protected $acceptedNodes = [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "p",
     ];
 
     /**
      * Creates a new instance of the class.
      *
-     * @param array $tags
+     * @param array $acceptedNodes
      *
      * @return void
      */
-    public function __construct(array $tags = null)
+    public function __construct(array $acceptedNodes = null)
     {
-        if ($tags !== null) {
-            $this->tags = $tags;
+        if ($acceptedNodes !== null) {
+            $this->acceptedNodes = $acceptedNodes;
         }
+    }
+
+    /**
+     * Find it's value in $acceptedNodes.
+     *
+     * @param array $object
+     *
+     * @return int
+     */
+    public function findValue($object): int
+    {
+        return array_search((key($object)), $this->acceptedNodes);
+    }
+
+    /**
+     * Add object to queue.
+     *
+     * @param array $object
+     * @param array $queue
+     *
+     * @return array
+     */
+    public function addObjectToQueue($object, $queue): array
+    {
+        if (count($queue) == 0) {
+            $queue[] = $object;
+
+            return $queue;
+        } else {
+
+            if ($this->findValue($object) > $this->findValue(end($queue))) {
+                $queue[] = $object;
+
+                return $queue;
+            } else {
+                array_pop($queue);
+
+                return $this->addObjectToQueue($object, $queue);
+            }
+        }
+    }
+
+    /**
+     * Importance formula.
+     * Give integer from tags ranking.
+     *
+     * @param \DOMElement $node
+     * @param array $queue
+     *
+     * @return int
+     */
+    public function importanceWeight($node, $queue): int
+    {
+        if ($node->nodeName == 'p') {
+            if (empty(end($queue))) {
+                return 0;
+            }
+
+            return (count($this->acceptedNodes) - 1) + (array_search(key(end($queue)), $this->acceptedNodes));
+        }
+
+        return array_search($node->nodeName, $this->acceptedNodes);
+    }
+
+    /**
+     * Clean Records to have a correct format.
+     *
+     *
+     * @param array $records
+     *
+     * @return array
+     */
+    function cleanRecords($records): array
+    {
+        $newRecords = [];
+        foreach ($records as $record) {
+            foreach ($record as $r) {
+                foreach ($r as $res => $values) {
+                    $newRecord[$res] = $values;
+                    if ($res == 'importance') {
+                        $newRecords[] = $newRecord;
+                        $newRecord = [];
+                    }
+                }
+            }
+        }
+
+        return $newRecords;
     }
 
     /**
@@ -66,22 +156,27 @@ class HtmlSplitter implements SplitterContract
      *
      * @return array
      */
+
     public function split($searchable, $value): array
     {
         $dom = new DOMDocument();
         $dom->loadHTML($value);
-        $values = [];
+        $xpath = new DOMXpath($dom);
+        $queue = [];
+        $xpathQuery = "//".implode(" | //", $this->acceptedNodes);
+        $nodes = $xpath->query($xpathQuery);
 
-        foreach ($this->tags as $tag) {
-            foreach ($dom->getElementsByTagName($tag) as $node) {
-                $values[] = $node->textContent;
-
-                while (($node = $node->nextSibling) && $node->nodeName !== $tag) {
-                    $values[] = $node->textContent;
-                }
-            }
+        foreach ($nodes as $node) {
+            $object = [$node->nodeName => $node->textContent];
+            $importance = $this->importanceWeight($node, $queue);
+            $queue = $this->addObjectToQueue($object, $queue);
+            $cloneQueue = $queue;
+            $cloneQueue[] = ['importance' => $importance];
+            $records[] = $cloneQueue;
         }
 
-        return $values;
+        $records = $this->cleanRecords($records);
+
+        return $records;
     }
 }

@@ -62,6 +62,7 @@ abstract class TestCase extends BaseTestCase
      * @param  \Illuminate\Foundation\Application $app
      * @return void
      */
+
     protected function getEnvironmentSetUp($app)
     {
         // Setup default database to use sqlite :memory:
@@ -180,8 +181,7 @@ abstract class TestCase extends BaseTestCase
         }
 
         if (! empty($userData)) {
-            $indexMock->shouldReceive('setSettings')->once()->with(['userData' => @json_encode($userData)])
-                ->andReturn($this->mockResponse());
+            $indexMock->shouldReceive('setSettings')->once()->with(['userData' => @json_encode($userData)])->andReturn($this->mockResponse());
         }
     }
 

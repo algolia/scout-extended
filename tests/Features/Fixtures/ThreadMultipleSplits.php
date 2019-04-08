@@ -11,6 +11,7 @@ class ThreadMultipleSplits extends Thread
 
     public function splitBody($value)
     {
+
         return HtmlSplitter::by('h1');
     }
 
