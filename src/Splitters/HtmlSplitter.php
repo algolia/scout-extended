@@ -24,7 +24,7 @@ class HtmlSplitter implements SplitterContract
      *
      * @var string[]
      */
-    protected $acceptedNodes = [
+    protected $nodes = [
         'h1',
         'h2',
         'h3',
@@ -35,29 +35,36 @@ class HtmlSplitter implements SplitterContract
     ];
 
     /**
+     * String for key check purpose
+     *
+     * @const string IMPORTANCE
+     */
+    const IMPORTANCE = 'importance';
+
+    /**
      * Creates a new instance of the class.
      *
-     * @param array $acceptedNodes
+     * @param array $nodes
      *
      * @return void
      */
-    public function __construct(array $acceptedNodes = null)
+    public function __construct(array $nodes = null)
     {
-        if ($acceptedNodes !== null) {
-            $this->acceptedNodes = $acceptedNodes;
+        if ($nodes !== null) {
+            $this->nodes = $nodes;
         }
     }
 
     /**
-     * Find it's value in $acceptedNodes.
+     * Find weight of current nodes
      *
      * @param array $object
      *
      * @return int
      */
-    public function findValue($object): int
+    public function findWeight(array $object): int
     {
-        return (int) array_search((key($object)), $this->acceptedNodes);
+        return (int) array_search((key($object)), $this->nodes);
     }
 
     /**
@@ -68,14 +75,14 @@ class HtmlSplitter implements SplitterContract
      *
      * @return array
      */
-    public function addObjectToQueue($object, $queue): array
+    public function addObjectToQueue(array $object,array $queue): array
     {
         if (count($queue) == 0) {
             $queue[] = $object;
 
             return $queue;
         } else {
-            if ($this->findValue($object) > $this->findValue(end($queue))) {
+            if ($this->findWeight($object) > $this->findWeight(end($queue))) {
                 $queue[] = $object;
 
                 return $queue;
@@ -96,43 +103,42 @@ class HtmlSplitter implements SplitterContract
      *
      * @return int
      */
-    public function importanceWeight($node, $queue): int
+    public function importanceWeight(\DOMElement $node,array $queue): int
     {
-        if ($node->nodeName == 'p') {
+        if ($node->nodeName === 'p') {
             if (empty(end($queue))) {
                 return 0;
             }
 
-            return (int) (count($this->acceptedNodes) - 1) + (int) (array_search(key(end($queue)), $this->acceptedNodes));
+            return (int) (count($this->nodes) - 1) + (int) (array_search(key(end($queue)), $this->nodes));
         }
 
-        return (int) array_search($node->nodeName, $this->acceptedNodes);
+        return (int) array_search($node->nodeName, $this->nodes);
     }
 
     /**
      * Clean Records to have a correct format.
      *
      *
-     * @param array $records
+     * @param array $objects
      *
      * @return array
      */
-    public function cleanRecords($records): array
+    public function cleanRecords(array $objects): array
     {
-        $newRecords = [];
-        foreach ($records as $record) {
-            foreach ($record as $r) {
-                foreach ($r as $res => $values) {
-                    $newRecord[$res] = $values;
-                    if ($res == 'importance') {
-                        $newRecords[] = $newRecord;
-                        $newRecord = [];
+        $records = [];
+        foreach ($objects as $object) {
+            foreach ($object as $data) {
+                foreach ($data as $key => $value) {
+                    $record[$key] = $value;
+                    if ($key === self::IMPORTANCE) {
+                        $records[] = $record;
+                        $record = [];
                     }
                 }
             }
         }
-
-        return $newRecords;
+        return $records;
     }
 
     /**
@@ -161,8 +167,8 @@ class HtmlSplitter implements SplitterContract
         $dom->loadHTML($value);
         $xpath = new DOMXpath($dom);
         $queue = [];
-        $records = [];
-        $xpathQuery = '//'.implode(' | //', $this->acceptedNodes);
+        $objects = [];
+        $xpathQuery = '//'.implode(' | //', $this->nodes);
         $nodes = $xpath->query($xpathQuery);
 
         foreach ($nodes as $node) {
@@ -170,11 +176,11 @@ class HtmlSplitter implements SplitterContract
             $importance = $this->importanceWeight($node, $queue);
             $queue = $this->addObjectToQueue($object, $queue);
             $cloneQueue = $queue;
-            $cloneQueue[] = ['importance' => $importance];
-            $records[] = $cloneQueue;
+            $cloneQueue[] = [self::IMPORTANCE => $importance];
+            $objects[] = $cloneQueue;
         }
 
-        $records = $this->cleanRecords($records);
+        $records = $this->cleanRecords($objects);
 
         return $records;
     }

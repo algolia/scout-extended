@@ -19,7 +19,17 @@ final class SplittersTest extends TestCase
         $index = $this->mockIndex(ThreadWithSplitterClass::class);
 
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 4 && $argument[0]['h1'] === 'Hello Foo!' && $argument[0]['importance'] === 0 && $argument[1]['h1'] === 'Hello Foo!' && $argument[1]['h2'] === 'Hello Bar!' && $argument[1]['importance'] === 1 && $argument[2]['h1'] === 'Hello Baz!' && $argument[2]['importance'] === 0 && $argument[3]['h1'] === 'Hello Baz!' && $argument[3]['p'] === 'Hello Bam!' && $argument[3]['importance'] === 6;
+            return count($argument) === 4 &&
+                $argument[0]['h1'] === 'Hello Foo!' &&
+                $argument[0]['importance'] === 0 &&
+                $argument[1]['h1'] === 'Hello Foo!' &&
+                $argument[1]['h2'] === 'Hello Bar!' &&
+                $argument[1]['importance'] === 1 &&
+                $argument[2]['h1'] === 'Hello Baz!' &&
+                $argument[2]['importance'] === 0 &&
+                $argument[3]['h1'] === 'Hello Baz!' &&
+                $argument[3]['p'] === 'Hello Bam!' &&
+                $argument[3]['importance'] === 6;
         }))->andReturn($this->mockResponse());
 
         $index->shouldReceive('deleteBy')->once()->with([
@@ -43,7 +53,10 @@ final class SplittersTest extends TestCase
         $index = $this->mockIndex(ThreadWithValueReturned::class);
 
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 2 && $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadWithValueReturned::1::0' && $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadWithValueReturned::1::1' && $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
+            return count($argument) === 2 &&
+                $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadWithValueReturned::1::0' &&
+                $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadWithValueReturned::1::1' &&
+                $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
 
         $index->shouldReceive('deleteBy')->with([
@@ -65,7 +78,11 @@ final class SplittersTest extends TestCase
         $index = $this->mockIndex(ThreadWithSplitterInstance::class);
 
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 2 && $argument[0]['h1'] === 'Hello Foo!' && $argument[0]['importance'] === 0 && $argument[1]['h1'] === 'Hello Bar!' && $argument[1]['importance'] === 0;
+            return count($argument) === 2 &&
+                $argument[0]['h1'] === 'Hello Foo!' &&
+                $argument[0]['importance'] === 0 &&
+                $argument[1]['h1'] === 'Hello Bar!' &&
+                $argument[1]['importance'] === 0;
         }))->andReturn($this->mockResponse());
 
         $index->shouldReceive('deleteBy')->with([
@@ -87,7 +104,11 @@ final class SplittersTest extends TestCase
         $index = $this->mockIndex(ThreadMultipleSplits::class);
 
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 2 && $argument[0]['h1'] === 'Hello Foo!' && $argument[0]['importance'] === 0 && $argument[1]['h1'] === 'Hello Bar!' && $argument[1]['importance'] === 0;
+            return count($argument) === 2 &&
+                $argument[0]['h1'] === 'Hello Foo!' &&
+                $argument[0]['importance'] === 0 &&
+                $argument[1]['h1'] === 'Hello Bar!' &&
+                $argument[1]['importance'] === 0;
         }))->andReturn($this->mockResponse());
 
         $index->shouldReceive('deleteBy')->with([
