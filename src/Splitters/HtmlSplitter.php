@@ -138,7 +138,7 @@ class HtmlSplitter implements SplitterContract
                 }
             }
         }
-        
+
         return $records;
     }
 
