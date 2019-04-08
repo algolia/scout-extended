@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Splitters;
 
-use DOMDocument;
 use DOMXPath;
+use DOMDocument;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
 
 class HtmlSplitter implements SplitterContract
@@ -75,7 +75,6 @@ class HtmlSplitter implements SplitterContract
 
             return $queue;
         } else {
-
             if ($this->findValue($object) > $this->findValue(end($queue))) {
                 $queue[] = $object;
 
@@ -145,7 +144,7 @@ class HtmlSplitter implements SplitterContract
      */
     public static function by($tags)
     {
-        return new static((array)$tags);
+        return new static((array) $tags);
     }
 
     /**
@@ -156,7 +155,6 @@ class HtmlSplitter implements SplitterContract
      *
      * @return array
      */
-
     public function split($searchable, $value): array
     {
         $dom = new DOMDocument();
