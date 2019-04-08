@@ -62,7 +62,6 @@ abstract class TestCase extends BaseTestCase
      * @param  \Illuminate\Foundation\Application $app
      * @return void
      */
-
     protected function getEnvironmentSetUp($app)
     {
         // Setup default database to use sqlite :memory:

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Splitters;
 
-use DOMDocument;
 use DOMXPath;
+use DOMDocument;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
 
 class HtmlSplitter implements SplitterContract
@@ -25,13 +25,13 @@ class HtmlSplitter implements SplitterContract
      * @var string[]
      */
     protected $acceptedNodes = [
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "p",
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'p',
     ];
 
     /**
@@ -75,7 +75,6 @@ class HtmlSplitter implements SplitterContract
 
             return $queue;
         } else {
-
             if ($this->findValue($object) > $this->findValue(end($queue))) {
                 $queue[] = $object;
 
@@ -118,7 +117,7 @@ class HtmlSplitter implements SplitterContract
      *
      * @return array
      */
-    function cleanRecords($records): array
+    public function cleanRecords($records): array
     {
         $newRecords = [];
         foreach ($records as $record) {
@@ -156,14 +155,13 @@ class HtmlSplitter implements SplitterContract
      *
      * @return array
      */
-
     public function split($searchable, $value): array
     {
         $dom = new DOMDocument();
         $dom->loadHTML($value);
         $xpath = new DOMXpath($dom);
         $queue = [];
-        $xpathQuery = "//".implode(" | //", $this->acceptedNodes);
+        $xpathQuery = '//'.implode(' | //', $this->acceptedNodes);
         $nodes = $xpath->query($xpathQuery);
 
         foreach ($nodes as $node) {
