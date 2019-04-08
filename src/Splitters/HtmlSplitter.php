@@ -75,7 +75,6 @@ class HtmlSplitter implements SplitterContract
 
             return $queue;
         } else {
-
             if ($this->findValue($object) > $this->findValue(end($queue))) {
                 $queue[] = $object;
 
@@ -156,7 +155,6 @@ class HtmlSplitter implements SplitterContract
      *
      * @return array
      */
-
     public function split($searchable, $value): array
     {
         $dom = new DOMDocument();
