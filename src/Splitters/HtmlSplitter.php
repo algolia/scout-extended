@@ -25,13 +25,13 @@ class HtmlSplitter implements SplitterContract
      * @var string[]
      */
     protected $acceptedNodes = [
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "p",
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'p',
     ];
 
     /**
@@ -118,7 +118,7 @@ class HtmlSplitter implements SplitterContract
      *
      * @return array
      */
-    function cleanRecords($records): array
+    public function cleanRecords($records): array
     {
         $newRecords = [];
         foreach ($records as $record) {
@@ -145,7 +145,7 @@ class HtmlSplitter implements SplitterContract
      */
     public static function by($tags)
     {
-        return new static((array) $tags);
+        return new static((array)$tags);
     }
 
     /**
@@ -163,7 +163,7 @@ class HtmlSplitter implements SplitterContract
         $dom->loadHTML($value);
         $xpath = new DOMXpath($dom);
         $queue = [];
-        $xpathQuery = "//".implode(" | //", $this->acceptedNodes);
+        $xpathQuery = '//'.implode(' | //', $this->acceptedNodes);
         $nodes = $xpath->query($xpathQuery);
 
         foreach ($nodes as $node) {
