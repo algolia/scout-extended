@@ -175,12 +175,14 @@ final class UpdateJob
     {
         $pieces = [];
         $model = $searchable->getModel();
+
         foreach ($array as $key => $value) {
             $method = 'split'.Str::camel((string) $key);
 
             if (method_exists($model, $method)) {
                 $result = $model->{$method}($value);
                 $splittedBy = $key;
+
                 $pieces[$splittedBy] = [];
                 switch (true) {
                     case is_array($result):
@@ -196,29 +198,31 @@ final class UpdateJob
             }
         }
 
-        if (is_array($result)) {
-            $objects = [[]];
-            foreach ($pieces as $splittedBy => $values) {
-                $temp = [];
-                foreach ($objects as $object) {
-                    foreach ($values as $value) {
-                        $temp[] = array_merge($object, [$splittedBy => $value]);
+        if (! empty($result)) {
+            if (is_array($result)) {
+                $objects = [[]];
+                foreach ($pieces as $splittedBy => $values) {
+                    $temp = [];
+                    foreach ($objects as $object) {
+                        foreach ($values as $value) {
+                            $temp[] = array_merge($object, [$splittedBy => $value]);
+                        }
                     }
+                    $objects = $temp;
                 }
-                $objects = $temp;
-            }
 
-            return array_map(function ($object) use ($array) {
-                return array_merge($array, $object);
-            }, $objects);
-        } else {
-            $objects = [];
-            unset($array['body']);
-            foreach ($pieces as $piece) {
-                $objects[] = array_merge($piece, $array);
-            }
+                return array_map(function ($object) use ($array) {
+                    return array_merge($array, $object);
+                }, $objects);
+            } else {
+                $objects = [];
+                unset($array['body']);
+                foreach ($pieces as $piece) {
+                    $objects[] = array_merge($piece, $array);
+                }
 
-            return $objects;
+                return $objects;
+            }
         }
     }
 
