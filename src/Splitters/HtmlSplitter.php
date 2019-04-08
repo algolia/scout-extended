@@ -57,7 +57,7 @@ class HtmlSplitter implements SplitterContract
      */
     public function findValue($object): int
     {
-        return (int)array_search((key($object)), $this->acceptedNodes);
+        return (int) array_search((key($object)), $this->acceptedNodes);
     }
 
     /**
@@ -103,10 +103,10 @@ class HtmlSplitter implements SplitterContract
                 return 0;
             }
 
-            return (int)(count($this->acceptedNodes) - 1) + (int)(array_search(key(end($queue)), $this->acceptedNodes));
+            return (int) (count($this->acceptedNodes) - 1) + (int) (array_search(key(end($queue)), $this->acceptedNodes));
         }
 
-        return (int)array_search($node->nodeName, $this->acceptedNodes);
+        return (int) array_search($node->nodeName, $this->acceptedNodes);
     }
 
     /**
