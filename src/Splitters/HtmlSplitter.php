@@ -35,7 +35,7 @@ class HtmlSplitter implements SplitterContract
     ];
 
     /**
-     * String for key check purpose
+     * String for key check purpose.
      *
      * @const string IMPORTANCE
      */
@@ -56,7 +56,7 @@ class HtmlSplitter implements SplitterContract
     }
 
     /**
-     * Find weight of current nodes
+     * Find weight of current nodes.
      *
      * @param array $object
      *
@@ -75,7 +75,7 @@ class HtmlSplitter implements SplitterContract
      *
      * @return array
      */
-    public function addObjectToQueue(array $object,array $queue): array
+    public function addObjectToQueue(array $object, array $queue): array
     {
         if (count($queue) == 0) {
             $queue[] = $object;
@@ -103,7 +103,7 @@ class HtmlSplitter implements SplitterContract
      *
      * @return int
      */
-    public function importanceWeight(\DOMElement $node,array $queue): int
+    public function importanceWeight(\DOMElement $node, array $queue): int
     {
         if ($node->nodeName === 'p') {
             if (empty(end($queue))) {
@@ -138,6 +138,7 @@ class HtmlSplitter implements SplitterContract
                 }
             }
         }
+
         return $records;
     }
 
