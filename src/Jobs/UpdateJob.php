@@ -153,7 +153,7 @@ final class UpdateJob
             $this->splittables[$class] = false;
 
             foreach ($searchable->toSearchableArray() as $key => $value) {
-                $method = 'split' . Str::camel($key);
+                $method = 'split'.Str::camel($key);
                 $model = $searchable->getModel();
                 if (method_exists($model, $method)) {
                     $this->splittables[$class] = true;
@@ -177,7 +177,7 @@ final class UpdateJob
         $model = $searchable->getModel();
 
         foreach ($array as $key => $value) {
-            $method = 'split' . Str::camel((string) $key);
+            $method = 'split'.Str::camel((string) $key);
 
             if (method_exists($model, $method)) {
                 $result = $model->{$method}($value);
@@ -220,6 +220,7 @@ final class UpdateJob
                 foreach ($pieces as $piece) {
                     $objects[] = array_merge($piece, $array);
                 }
+
                 return $objects;
             }
         }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 use Mockery;
 use function count;
 use Tests\TestCase;
+use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 use Tests\Features\Fixtures\ThreadMultipleSplits;
 use Tests\Features\Fixtures\ThreadWithSplitterClass;
 use Tests\Features\Fixtures\ThreadWithValueReturned;
@@ -15,19 +15,18 @@ use Tests\Features\Fixtures\ThreadWithSplitterInstance;
 
 final class SplittersTest extends TestCase
 {
-
     public function testHtmlPageCanBeSPlitted(): void
     {
-        $file = file_get_contents(__DIR__ . "/Fixtures/content/article.html");
-        $expectedRecords = require __DIR__ . "/Fixtures/content/article.php";
+        $file = file_get_contents(__DIR__.'/Fixtures/content/article.html');
+        $expectedRecords = require __DIR__.'/Fixtures/content/article.php';
         $splitter = new HtmlSplitter();
         static::assertEquals($expectedRecords, $splitter->split(null, $file));
     }
 
     public function testHtmlPageWithNoStandardCanBeSPlitted(): void
     {
-        $file = file_get_contents(__DIR__ . "/Fixtures/content/article2.html");
-        $expectedRecords = require __DIR__ . "/Fixtures/content/article2.php";
+        $file = file_get_contents(__DIR__.'/Fixtures/content/article2.html');
+        $expectedRecords = require __DIR__.'/Fixtures/content/article2.php';
         $splitter = new HtmlSplitter();
         static::assertEquals($expectedRecords, $splitter->split(null, $file));
     }

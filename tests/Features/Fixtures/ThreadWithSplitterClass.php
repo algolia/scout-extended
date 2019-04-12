@@ -13,6 +13,4 @@ class ThreadWithSplitterClass extends Thread
     {
         return HtmlSplitter::class;
     }
-
-
 }
