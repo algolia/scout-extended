@@ -17,6 +17,11 @@ use DOMXPath;
 use DOMDocument;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
 
+/**
+ * Class HtmlSplitter
+ *
+ * @package Algolia\ScoutExtended\Splitters
+ */
 class HtmlSplitter implements SplitterContract
 {
     /**
@@ -39,7 +44,14 @@ class HtmlSplitter implements SplitterContract
      *
      * @const string IMPORTANCE
      */
-    const IMPORTANCE = 'importance';
+    private const IMPORTANCE = 'importance';
+
+    /**
+     * String for exception purpose.
+     *
+     * @const string PARAGRAPH
+     */
+    private const PARAGRAPH = 'p';
 
     /**
      * Creates a new instance of the class.
@@ -58,69 +70,72 @@ class HtmlSplitter implements SplitterContract
     /**
      * Find weight of current nodes.
      *
-     * @param array $object
+     * @param array<string, string> $object
      *
      * @return int
      */
     public function findWeight(array $object): int
     {
-        return (int) array_search((key($object)), $this->nodes);
+        return (int) array_search((key($object)), $this->nodes, true);
     }
 
     /**
      * Add object to queue.
      *
-     * @param array $object
+     * @param array<array<string, string>> $object
      * @param array $queue
      *
      * @return array
      */
     public function addObjectToQueue(array $object, array $queue): array
     {
-        if (count($queue) == 0) {
+        if (count($queue) === 0) {
             $queue[] = $object;
-
             return $queue;
-        } else {
-            if ($this->findWeight($object) > $this->findWeight(end($queue))) {
-                $queue[] = $object;
-
-                return $queue;
-            } else {
-                array_pop($queue);
-
-                return $this->addObjectToQueue($object, $queue);
-            }
         }
+
+        if ($this->findWeight($object) > $this->findWeight(end($queue))) {
+            $queue[] = $object;
+            return $queue;
+        }
+
+        array_pop($queue);
+        return $this->addObjectToQueue($object, $queue);
     }
+
 
     /**
      * Importance formula.
      * Give integer from tags ranking.
      *
      * @param \DOMElement $node
-     * @param array $queue
+     * @param array<array<array<string, string>, <array<string, int>>> $queue
      *
      * @return int
      */
     public function importanceWeight(\DOMElement $node, array $queue): int
     {
-        if ($node->nodeName === 'p') {
+        if ($node->nodeName === self::PARAGRAPH) {
             if (empty(end($queue))) {
                 return 0;
             }
+            if (key(end($queue)) === self::PARAGRAPH) {
+                $key = key(prev($queue));
+            } else {
+                $key = key(end($queue));
+            }
 
-            return (int) (count($this->nodes) - 1) + (int) (array_search(key(end($queue)), $this->nodes));
+            return (int) (count($this->nodes) - 1) + (int) array_search($key, $this->nodes, true);
         }
 
-        return (int) array_search($node->nodeName, $this->nodes);
+        return (int) array_search($node->nodeName, $this->nodes, true);
     }
 
     /**
      * Clean Records to have a correct format.
      *
      *
-     * @param array $objects
+     * @param array<array<array<string, string>, <array<string, int>>> $objects
      *
      * @return array
      */
@@ -143,9 +158,22 @@ class HtmlSplitter implements SplitterContract
     }
 
     /**
+     * Clean Content from Html tag.
+     * Remove space at the begin and end, useless space, return
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    public function cleanContent(string $content): string
+    {
+        return trim(preg_replace('/\s+/', ' ', str_replace('\n', '', $content)));
+    }
+
+    /**
      * Acts a static factory.
      *
-     * @param  string|array $tags
+     * @param string|array<string> $tags
      *
      * @return static
      */
@@ -157,32 +185,34 @@ class HtmlSplitter implements SplitterContract
     /**
      * Splits the given value.
      *
-     * @param  object $searchable
-     * @param  string $value
+     * @param object $searchable
+     * @param string $value
      *
      * @return array
      */
     public function split($searchable, $value): array
     {
         $dom = new DOMDocument();
-        $dom->loadHTML($value);
+        try {
+            $dom->loadHTML($value);
+        } catch (\ErrorException $exception) {
+        }
+
         $xpath = new DOMXpath($dom);
         $queue = [];
         $objects = [];
-        $xpathQuery = '//'.implode(' | //', $this->nodes);
+        $xpathQuery = '//' . implode(' | //', $this->nodes);
         $nodes = $xpath->query($xpathQuery);
 
         foreach ($nodes as $node) {
-            $object = [$node->nodeName => $node->textContent];
+            $content = $this->cleanContent($node->textContent);
+            $object = [$node->nodeName => $content];
             $importance = $this->importanceWeight($node, $queue);
             $queue = $this->addObjectToQueue($object, $queue);
             $cloneQueue = $queue;
             $cloneQueue[] = [self::IMPORTANCE => $importance];
             $objects[] = $cloneQueue;
         }
-
-        $records = $this->cleanRecords($objects);
-
-        return $records;
+        return $this->cleanRecords($objects);
     }
 }

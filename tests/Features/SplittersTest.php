@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 use Mockery;
 use function count;
 use Tests\TestCase;
@@ -14,12 +15,30 @@ use Tests\Features\Fixtures\ThreadWithSplitterInstance;
 
 final class SplittersTest extends TestCase
 {
+
+    public function testHtmlPageCanBeSPlitted(): void
+    {
+        $file = file_get_contents(__DIR__ . "/Fixtures/content/article.html");
+        $expectedRecords = require __DIR__ . "/Fixtures/content/article.php";
+        $splitter = new HtmlSplitter();
+        static::assertEquals($expectedRecords, $splitter->split(null, $file));
+    }
+
+    public function testHtmlPageWithNoStandardCanBeSPlitted(): void
+    {
+        $file = file_get_contents(__DIR__ . "/Fixtures/content/article2.html");
+        $expectedRecords = require __DIR__ . "/Fixtures/content/article2.php";
+        $splitter = new HtmlSplitter();
+        static::assertEquals($expectedRecords, $splitter->split(null, $file));
+    }
+
     public function testRecordsAreSplittedByASplitter(): void
     {
         $index = $this->mockIndex(ThreadWithSplitterClass::class);
 
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 4 &&
+                empty($argument['body']) &&
                 $argument[0]['h1'] === 'Hello Foo!' &&
                 $argument[0]['importance'] === 0 &&
                 $argument[1]['h1'] === 'Hello Foo!' &&
@@ -132,7 +151,6 @@ final class SplittersTest extends TestCase
     public function testSearchMethod(): void
     {
         $index = $this->mockIndex(ThreadWithValueReturned::class);
-
         $index->shouldReceive('saveObjects')->twice();
         $index->shouldReceive('deleteBy')->twice();
 
