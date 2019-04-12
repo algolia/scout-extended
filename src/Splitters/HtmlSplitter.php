@@ -18,9 +18,7 @@ use DOMDocument;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
 
 /**
- * Class HtmlSplitter
- *
- * @package Algolia\ScoutExtended\Splitters
+ * Class HtmlSplitter.
  */
 class HtmlSplitter implements SplitterContract
 {
@@ -91,18 +89,20 @@ class HtmlSplitter implements SplitterContract
     {
         if (count($queue) === 0) {
             $queue[] = $object;
+
             return $queue;
         }
 
         if ($this->findWeight($object) > $this->findWeight(end($queue))) {
             $queue[] = $object;
+
             return $queue;
         }
 
         array_pop($queue);
+
         return $this->addObjectToQueue($object, $queue);
     }
-
 
     /**
      * Importance formula.
@@ -159,7 +159,7 @@ class HtmlSplitter implements SplitterContract
 
     /**
      * Clean Content from Html tag.
-     * Remove space at the begin and end, useless space, return
+     * Remove space at the begin and end, useless space, return.
      *
      * @param string $content
      *
@@ -201,7 +201,7 @@ class HtmlSplitter implements SplitterContract
         $xpath = new DOMXpath($dom);
         $queue = [];
         $objects = [];
-        $xpathQuery = '//' . implode(' | //', $this->nodes);
+        $xpathQuery = '//'.implode(' | //', $this->nodes);
         $nodes = $xpath->query($xpathQuery);
 
         foreach ($nodes as $node) {
@@ -213,6 +213,7 @@ class HtmlSplitter implements SplitterContract
             $cloneQueue[] = [self::IMPORTANCE => $importance];
             $objects[] = $cloneQueue;
         }
+
         return $this->cleanRecords($objects);
     }
 }
