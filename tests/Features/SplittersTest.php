@@ -38,16 +38,16 @@ final class SplittersTest extends TestCase
 
     public function testHtmlPageCanBeSPlitted(): void
     {
-        $file = file_get_contents(__DIR__ . '/Fixtures/content/article.html');
-        $expectedRecords = require __DIR__ . '/Fixtures/content/article.php';
+        $file = file_get_contents(__DIR__.'/Fixtures/content/article.html');
+        $expectedRecords = require __DIR__.'/Fixtures/content/article.php';
         $splitter = new HtmlSplitter();
         static::assertEquals($expectedRecords, $splitter->split(null, $file));
     }
 
     public function testHtmlPageWithNoStandardCanBeSPlitted(): void
     {
-        $file = file_get_contents(__DIR__ . '/Fixtures/content/article2.html');
-        $expectedRecords = require __DIR__ . '/Fixtures/content/article2.php';
+        $file = file_get_contents(__DIR__.'/Fixtures/content/article2.html');
+        $expectedRecords = require __DIR__.'/Fixtures/content/article2.php';
         $splitter = new HtmlSplitter();
         static::assertEquals($expectedRecords, $splitter->split(null, $file));
     }
@@ -135,7 +135,6 @@ final class SplittersTest extends TestCase
         ]);
     }
 
-
     public function testSearchMethod(): void
     {
         $index = $this->mockIndex(ThreadWithValueReturned::class);
@@ -174,5 +173,4 @@ final class SplittersTest extends TestCase
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[0]);
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[1]);
     }
-
 }
