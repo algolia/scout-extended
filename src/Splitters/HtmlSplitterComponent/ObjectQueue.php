@@ -47,7 +47,6 @@ final class ObjectQueue
     }
 
     /**
-     *
      * Clean Content from Html tag.
      * Remove space at the begin and end, useless space, return.
      *

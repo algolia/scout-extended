@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Splitters;
 
-use Algolia\ScoutExtended\Splitters\HtmlSplitterComponent\ObjectQueue;
-use Algolia\ScoutExtended\Splitters\HtmlSplitterComponent\Queue;
 use DOMXPath;
 use DOMDocument;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
+use Algolia\ScoutExtended\Splitters\HtmlSplitterComponent\Queue;
+use Algolia\ScoutExtended\Splitters\HtmlSplitterComponent\ObjectQueue;
 
 final class HtmlSplitter implements SplitterContract
 {
@@ -80,7 +80,7 @@ final class HtmlSplitter implements SplitterContract
         }
         $xpath = new DOMXpath($dom);
         $queue = new Queue();
-        $xpathQuery = '//' . implode(' | //', $this->tags);
+        $xpathQuery = '//'.implode(' | //', $this->tags);
         $tags = $xpath->query($xpathQuery);
 
         foreach ($tags as $node) {

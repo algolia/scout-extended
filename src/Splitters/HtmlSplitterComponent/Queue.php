@@ -64,7 +64,7 @@ final class Queue
         if ($this->lengthQueue() === 0) {
             $this->queue[] = $object;
             $this->cloneQueue();
-        } else if ($this->findWeight($object) > $this->findWeight(end($this->queue))) {
+        } elseif ($this->findWeight($object) > $this->findWeight(end($this->queue))) {
             $this->queue[] = $object;
             $this->cloneQueue();
         } else {
@@ -97,7 +97,7 @@ final class Queue
     }
 
     /**
-     * Importance need to be add after to avoid polluted queue
+     * Importance need to be add after to avoid polluted queue.
      *
      * @return void
      */
@@ -142,7 +142,7 @@ final class Queue
     }
 
     /**
-     * Give the length of the queue
+     * Give the length of the queue.
      *
      * @return int
      */
@@ -150,5 +150,4 @@ final class Queue
     {
         return count($this->queue);
     }
-
 }
