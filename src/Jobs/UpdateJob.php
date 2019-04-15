@@ -153,7 +153,7 @@ final class UpdateJob
             $this->splittables[$class] = false;
 
             foreach ($searchable->toSearchableArray() as $key => $value) {
-                $method = 'split'.Str::camel($key);
+                $method = 'split' . Str::camel($key);
                 $model = $searchable->getModel();
                 if (method_exists($model, $method)) {
                     $this->splittables[$class] = true;
@@ -177,7 +177,7 @@ final class UpdateJob
         $model = $searchable->getModel();
 
         foreach ($array as $key => $value) {
-            $method = 'split'.Str::camel((string) $key);
+            $method = 'split' . Str::camel((string) $key);
 
             if (method_exists($model, $method)) {
                 $result = $model->{$method}($value);
@@ -189,41 +189,28 @@ final class UpdateJob
                         $pieces[$splittedBy] = $result;
                         break;
                     case is_string($result):
-                        $pieces = app($result)->split($model, $value);
+                        $pieces[$splittedBy] = app($result)->split($model, $value);
                         break;
                     case $result instanceof SplitterContract:
-                        $pieces = $result->split($model, $value);
+                        $pieces[$splittedBy] = $result->split($model, $value);
                         break;
                 }
             }
         }
-
-        if (! empty($result)) {
-            if (is_array($result)) {
-                $objects = [[]];
-                foreach ($pieces as $splittedBy => $values) {
-                    $temp = [];
-                    foreach ($objects as $object) {
-                        foreach ($values as $value) {
-                            $temp[] = array_merge($object, [$splittedBy => $value]);
-                        }
-                    }
-                    $objects = $temp;
+        $objects = [[]];
+        foreach ($pieces as $splittedBy => $values) {
+            $temp = [];
+            foreach ($objects as $object) {
+                foreach ($values as $value) {
+                    $temp[] = array_merge($object, [$splittedBy => $value]);
                 }
-
-                return array_map(function ($object) use ($array) {
-                    return array_merge($array, $object);
-                }, $objects);
-            } else {
-                $objects = [];
-                unset($array['body']);
-                foreach ($pieces as $piece) {
-                    $objects[] = array_merge($piece, $array);
-                }
-
-                return $objects;
             }
+            $objects = $temp;
         }
+
+        return array_map(function ($object) use ($array) {
+            return array_merge($array, $object);
+        }, $objects);
     }
 
     /**

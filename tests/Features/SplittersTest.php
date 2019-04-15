@@ -15,137 +15,126 @@ use Tests\Features\Fixtures\ThreadWithSplitterInstance;
 
 final class SplittersTest extends TestCase
 {
+    public function testRecordsAreSplittedByASplitter(): void
+    {
+        $index = $this->mockIndex(ThreadWithSplitterClass::class);
+        $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 2 &&
+                $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadWithSplitterClass::1::0' &&
+                $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadWithSplitterClass::1::1' &&
+                $argument[0]['body']['h1'] === 'Hello Foo!' && $argument[1]['body']['h1'] === 'Hello Foo!' && $argument[1]['body']['p'] === 'Hello Bar!';
+        }))->andReturn($this->mockResponse());
+        $index->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['Tests\Features\Fixtures\ThreadWithSplitterClass::1'],
+            ],
+        ]);
+        $body = implode('', [
+            '<h1>Hello <a href="example.com">Foo</a>!</h1>',
+            '<p>Hello <a href="example.com">Bar</a>!</p>',
+        ]);
+        ThreadWithSplitterClass::create(['body' => $body]);
+    }
+
     public function testHtmlPageCanBeSPlitted(): void
     {
-        $file = file_get_contents(__DIR__.'/Fixtures/content/article.html');
-        $expectedRecords = require __DIR__.'/Fixtures/content/article.php';
+        $file = file_get_contents(__DIR__ . '/Fixtures/content/article.html');
+        $expectedRecords = require __DIR__ . '/Fixtures/content/article.php';
         $splitter = new HtmlSplitter();
         static::assertEquals($expectedRecords, $splitter->split(null, $file));
     }
 
     public function testHtmlPageWithNoStandardCanBeSPlitted(): void
     {
-        $file = file_get_contents(__DIR__.'/Fixtures/content/article2.html');
-        $expectedRecords = require __DIR__.'/Fixtures/content/article2.php';
+        $file = file_get_contents(__DIR__ . '/Fixtures/content/article2.html');
+        $expectedRecords = require __DIR__ . '/Fixtures/content/article2.php';
         $splitter = new HtmlSplitter();
         static::assertEquals($expectedRecords, $splitter->split(null, $file));
-    }
-
-    public function testRecordsAreSplittedByASplitter(): void
-    {
-        $index = $this->mockIndex(ThreadWithSplitterClass::class);
-
-        $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 4 &&
-                empty($argument['body']) &&
-                $argument[0]['h1'] === 'Hello Foo!' &&
-                $argument[0]['importance'] === 0 &&
-                $argument[1]['h1'] === 'Hello Foo!' &&
-                $argument[1]['h2'] === 'Hello Bar!' &&
-                $argument[1]['importance'] === 1 &&
-                $argument[2]['h1'] === 'Hello Baz!' &&
-                $argument[2]['importance'] === 0 &&
-                $argument[3]['h1'] === 'Hello Baz!' &&
-                $argument[3]['p'] === 'Hello Bam!' &&
-                $argument[3]['importance'] === 6;
-        }))->andReturn($this->mockResponse());
-
-        $index->shouldReceive('deleteBy')->once()->with([
-            'tagFilters' => [
-                ['Tests\Features\Fixtures\ThreadWithSplitterClass::1'],
-            ],
-        ]);
-
-        $body = implode('', [
-            '<h1>Hello Foo!</h1>',
-            '<h2>Hello Bar!</h2>',
-            '<h1>Hello Baz!</h1>',
-            '<p>Hello Bam!</p>',
-        ]);
-
-        ThreadWithSplitterClass::create(['body' => $body]);
     }
 
     public function testRecordsAreTextSplittedByValue(): void
     {
         $index = $this->mockIndex(ThreadWithValueReturned::class);
-
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 2 &&
                 $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadWithValueReturned::1::0' &&
                 $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadWithValueReturned::1::1' &&
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
-
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
                 ['Tests\Features\Fixtures\ThreadWithValueReturned::1'],
             ],
         ]);
-
         $body = implode(',', [
             'Hello Foo!',
             'Hello Bar!',
         ]);
-
         ThreadWithValueReturned::create(['body' => $body]);
     }
 
     public function testRecordsAreTextSplittedSplitterInstance(): void
     {
         $index = $this->mockIndex(ThreadWithSplitterInstance::class);
-
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 2 &&
-                $argument[0]['h1'] === 'Hello Foo!' &&
-                $argument[0]['importance'] === 0 &&
-                $argument[1]['h1'] === 'Hello Bar!' &&
-                $argument[1]['importance'] === 0;
+                $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadWithSplitterInstance::1::0' &&
+                $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadWithSplitterInstance::1::1' &&
+                $argument[0]['body']['h1'] === 'Hello Foo!' && $argument[1]['body']['h1'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
-
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
                 ['Tests\Features\Fixtures\ThreadWithSplitterInstance::1'],
             ],
         ]);
-
         $body = implode('', [
             '<h1>Hello <strong>Foo!</strong></h1>',
             '<h1>Hello <strong>Bar</strong>!</h1>',
         ]);
-
         ThreadWithSplitterInstance::create(['body' => $body]);
     }
 
     public function testRecordsCanHaveMultipleSplits(): void
     {
         $index = $this->mockIndex(ThreadMultipleSplits::class);
-
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
-            return count($argument) === 2 &&
-                $argument[0]['h1'] === 'Hello Foo!' &&
-                $argument[0]['importance'] === 0 &&
-                $argument[1]['h1'] === 'Hello Bar!' &&
-                $argument[1]['importance'] === 0;
+            return count($argument) === 8 && $argument[0]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::0' &&
+                $argument[1]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::1' &&
+                $argument[2]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::2' &&
+                $argument[3]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::3' &&
+                $argument[4]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::4' &&
+                $argument[5]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::5' &&
+                $argument[6]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::6' &&
+                $argument[7]['objectID'] === 'Tests\Features\Fixtures\ThreadMultipleSplits::1::7' &&
+                $argument[0]['body']['h1'] === 'Hello Foo!' && $argument[0]['slug'] === 'first' &&
+                $argument[0]['description_at_the_letter'] === 1 && $argument[1]['body']['h1'] === 'Hello Bar!' &&
+                $argument[1]['slug'] === 'first' && $argument[1]['description_at_the_letter'] === 1 &&
+                $argument[2]['body']['h1'] === 'Hello Foo!' && $argument[2]['slug'] === 'first' &&
+                $argument[2]['description_at_the_letter'] === 2 && $argument[3]['body']['h1'] === 'Hello Bar!' &&
+                $argument[3]['slug'] === 'first' && $argument[3]['description_at_the_letter'] === 2 &&
+                $argument[4]['body']['h1'] === 'Hello Foo!' && $argument[4]['slug'] === 'second' &&
+                $argument[4]['description_at_the_letter'] === 1 && $argument[5]['body']['h1'] === 'Hello Bar!' &&
+                $argument[5]['slug'] === 'second' && $argument[5]['description_at_the_letter'] === 1 &&
+                $argument[6]['body']['h1'] === 'Hello Foo!' && $argument[6]['slug'] === 'second' &&
+                $argument[6]['description_at_the_letter'] === 2 && $argument[7]['body']['h1'] === 'Hello Bar!' &&
+                $argument[7]['slug'] === 'second' && $argument[7]['description_at_the_letter'] === 2;
         }))->andReturn($this->mockResponse());
-
         $index->shouldReceive('deleteBy')->with([
             'tagFilters' => [
                 ['Tests\Features\Fixtures\ThreadMultipleSplits::1'],
             ],
         ]);
-
         $body = implode('', [
             '<h1>Hello <strong>Foo!</strong></h1>',
             '<h1>Hello <strong>Bar</strong>!</h1>',
         ]);
-
         ThreadMultipleSplits::create([
             'slug' => 'first-second',
             'description_at_the_letter' => 2,
             'body' => $body,
         ]);
     }
+
 
     public function testSearchMethod(): void
     {
@@ -185,4 +174,5 @@ final class SplittersTest extends TestCase
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[0]);
         $this->assertInstanceOf(ThreadWithValueReturned::class, $models[1]);
     }
+
 }
