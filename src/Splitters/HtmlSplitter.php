@@ -19,7 +19,6 @@ use Algolia\ScoutExtended\Contracts\SplitterContract;
 use Algolia\ScoutExtended\Splitters\HtmlSplitter\Node;
 use Algolia\ScoutExtended\Splitters\HtmlSplitter\NodeCollection;
 
-
 final class HtmlSplitter implements SplitterContract
 {
     /**
@@ -81,7 +80,7 @@ final class HtmlSplitter implements SplitterContract
         }
 
         $xpath = new DOMXpath($dom);
-        $xpathQuery = '//' . implode(' | //', $this->tags);
+        $xpathQuery = '//'.implode(' | //', $this->tags);
         $nodes = $xpath->query($xpathQuery);
         $nodeCollection = new NodeCollection($this->tags);
 

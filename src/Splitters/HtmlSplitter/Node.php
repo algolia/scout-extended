@@ -14,27 +14,26 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Splitters\HtmlSplitter;
 
 /**
- * @package Algolia\ScoutExtended\Splitters\HtmlSplitter
  * @internal
  */
 final class Node
 {
     /**
-     * Contains node name
+     * Contains node name.
      *
      * @var string tag
      */
     private $tag;
 
     /**
-     * Contains content of node
+     * Contains content of node.
      *
-     * @var string $content
+     * @var string
      */
     private $content;
 
     /**
-     * Create a new instance of Node
+     * Create a new instance of Node.
      *
      * @param string $tag
      * @param string $content
