@@ -14,20 +14,19 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Splitters\HtmlSplitter;
 
 /**
- * @package Algolia\ScoutExtended\Splitters\HtmlSplitter
  * @internal
  */
 final class NodeCollection
 {
     /**
-     * Collection of \Algolia\ScoutExtended\Splitters\HtmlSplitter\Node
+     * Collection of \Algolia\ScoutExtended\Splitters\HtmlSplitter\Node.
      *
      * @var array
      */
     private $nodes = [];
 
     /**
-     * Clone of \Algolia\ScoutExtended\Splitters\HtmlSplitter\NodeCollection
+     * Clone of \Algolia\ScoutExtended\Splitters\HtmlSplitter\NodeCollection.
      *
      * @var array
      */
@@ -41,12 +40,12 @@ final class NodeCollection
     private $tags = [];
 
     /**
-     * String
+     * String.
      */
     private const IMPORTANCE = 'importance';
 
     /**
-     * String
+     * String.
      */
     private const PARAGRAPH = 'p';
 
@@ -72,7 +71,7 @@ final class NodeCollection
         if ($this->lengthNodes() === 0) {
             $this->nodes[] = $node;
             $this->cloneNodes();
-        } else if ($this->findWeight($node) > $this->findWeight(end($this->nodes))) {
+        } elseif ($this->findWeight($node) > $this->findWeight(end($this->nodes))) {
             $this->nodes[] = $node;
             $this->cloneNodes();
         } else {
@@ -82,7 +81,7 @@ final class NodeCollection
     }
 
     /**
-     * Convert to array
+     * Convert to array.
      *
      * @return array
      */
