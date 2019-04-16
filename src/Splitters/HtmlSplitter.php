@@ -16,8 +16,9 @@ namespace Algolia\ScoutExtended\Splitters;
 use DOMXPath;
 use DOMDocument;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
-use Algolia\ScoutExtended\Splitters\HtmlSplitterComponent\Queue;
-use Algolia\ScoutExtended\Splitters\HtmlSplitterComponent\ObjectQueue;
+use Algolia\ScoutExtended\Splitters\HtmlSplitter\Node;
+use Algolia\ScoutExtended\Splitters\HtmlSplitter\NodeCollection;
+
 
 final class HtmlSplitter implements SplitterContract
 {
@@ -26,7 +27,7 @@ final class HtmlSplitter implements SplitterContract
      *
      * @var string[]
      */
-    protected $tags = [
+    private $tags = [
         'h1',
         'h2',
         'h3',
@@ -78,16 +79,16 @@ final class HtmlSplitter implements SplitterContract
             $dom->loadHTML($value);
         } catch (\ErrorException $exception) {
         }
-        $xpath = new DOMXpath($dom);
-        $queue = new Queue();
-        $xpathQuery = '//'.implode(' | //', $this->tags);
-        $tags = $xpath->query($xpathQuery);
 
-        foreach ($tags as $node) {
-            $objectQueue = new ObjectQueue($node->nodeName, $node->textContent);
-            $queue->addObjectQueue($objectQueue);
+        $xpath = new DOMXpath($dom);
+        $xpathQuery = '//' . implode(' | //', $this->tags);
+        $nodes = $xpath->query($xpathQuery);
+        $nodeCollection = new NodeCollection($this->tags);
+
+        foreach ($nodes as $node) {
+            $nodeCollection->push(new Node($node->nodeName, $node->textContent));
         }
 
-        return $queue->sanitizeQueue();
+        return $nodeCollection->toArray();
     }
 }
