@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Splitters;
 
-use Algolia\ScoutExtended\Splitters\HtmlSplitter\NodesCollection;
 use DOMXPath;
 use DOMDocument;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
 use Algolia\ScoutExtended\Splitters\HtmlSplitter\Node;
 use Algolia\ScoutExtended\Contracts\SettingsUpdaterContract;
 use Algolia\ScoutExtended\Splitters\HtmlSplitter\NodeCollection;
+use Algolia\ScoutExtended\Splitters\HtmlSplitter\NodesCollection;
 
 final class HtmlSplitter implements SplitterContract, SettingsUpdaterContract
 {
@@ -85,7 +85,7 @@ final class HtmlSplitter implements SplitterContract, SettingsUpdaterContract
         $xpathQuery = '//'.implode(' | //', $this->tags);
         $nodes = $xpath->query($xpathQuery);
         $nodesCollection = new NodesCollection();
-        $nodeCollection = new NodeCollection($this->tags,$nodesCollection);
+        $nodeCollection = new NodeCollection($this->tags, $nodesCollection);
 
         foreach ($nodes as $node) {
             $nodeCollection->push(new Node($node->nodeName, $node->textContent));
