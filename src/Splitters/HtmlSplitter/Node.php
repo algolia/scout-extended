@@ -69,6 +69,6 @@ final class Node
      */
     private function cleanContent(string $content): string
     {
-        return trim(preg_replace('/\s+/', ' ', str_replace('\n', '', $content)));
+        return trim(preg_replace('/\s+/', ' ', str_replace('\n', '', str_replace("’", '\'', $content))));
     }
 }

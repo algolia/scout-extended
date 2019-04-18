@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
+use Algolia\ScoutExtended\Contracts\ModifySettingContract;
+use Algolia\ScoutExtended\Contracts\SettingsUpdaterContract;
+use Illuminate\Support\Str;
 use function in_array;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Illuminate\Database\QueryException;
@@ -85,7 +88,18 @@ final class LocalFactory
         $detectedSettings['queryLanguages'] = array_unique([config('app.locale'), config('app.fallback_locale')]);
 
         $settings = array_merge($this->remoteRepository->find($index)->compiled(), $detectedSettings);
-
+        foreach ($attributes as $key => $value) {
+            $method = 'split' . Str::camel((string) $key);
+            if (method_exists($model, $method)) {
+                $result = (new $model)->{$method}($value);
+                if (is_string($result)) {
+                    $result = app($result);
+                }
+                if ($result instanceof SettingsUpdaterContract) {
+                    $settings = $result->updateSettings($settings, (string) $key);
+                }
+            }
+        }
         return new Settings($settings, $this->remoteRepository->defaults());
     }
 
@@ -115,6 +129,7 @@ final class LocalFactory
 
             $attributes = method_exists($instance, 'toSearchableArray') ? $instance->toSearchableArray() :
                 $instance->toArray();
+
         }
 
         return $attributes;
