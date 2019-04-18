@@ -20,9 +20,9 @@ interface SettingsUpdaterContract
      *
      * @param array $settings
      *
-     * @param string $key
+     * @param string $attribute
      *
      * @return array
      */
-    public function updateSettings(array $settings, string $key): array;
+    public function updateSettings(array $settings, string $attribute): array;
 }

@@ -26,12 +26,9 @@ final class NodeCollection
     private $nodes = [];
 
     /**
-     * Clone of \Algolia\ScoutExtended\Splitters\HtmlSplitter\NodeCollection.
-     *
-     * @var array
+     * @var \Algolia\ScoutExtended\Splitters\HtmlSplitter\NodesCollection.
      */
-    private $cloneNodes = [];
-
+    private $nodesCollection;
     /**
      * The list of html tags.
      *
@@ -39,10 +36,6 @@ final class NodeCollection
      */
     private $tags = [];
 
-    /**
-     * String.
-     */
-    private const IMPORTANCE = 'importance';
 
     /**
      * String.
@@ -53,12 +46,22 @@ final class NodeCollection
      * NodeCollection constructor.
      *
      * @param array|null $tags
+     * @param \Algolia\ScoutExtended\Splitters\HtmlSplitter\NodesCollection $nodesCollection
      */
-    public function __construct(array $tags = null)
+    public function __construct(array $tags = null, NodesCollection $nodesCollection)
     {
         if ($tags !== null) {
             $this->tags = $tags;
         }
+        $this->nodesCollection = $nodesCollection;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNodes(): array
+    {
+        return $this->nodes;
     }
 
     /**
@@ -70,10 +73,10 @@ final class NodeCollection
     {
         if ($this->lengthNodes() === 0) {
             $this->nodes[] = $node;
-            $this->cloneNodes();
-        } elseif ($this->findWeight($node) > $this->findWeight(end($this->nodes))) {
+            $this->nodesCollection->push($this);
+        } else if ($this->findWeight($node) > $this->findWeight($this->last(0))) {
             $this->nodes[] = $node;
-            $this->cloneNodes();
+            $this->nodesCollection->push($this);
         } else {
             array_pop($this->nodes);
             $this->push($node);
@@ -81,54 +84,33 @@ final class NodeCollection
     }
 
     /**
-     * Convert to array.
+     * Return the last element of the collection
+     * Give integer as pointer from the end.
      *
-     * @return array
-     */
-    public function toArray(): array
-    {
-        $array = [];
-        foreach ($this->cloneNodes as $nodes) {
-            foreach ($nodes as $node) {
-                if ($node instanceof Node) {
-                    $object[$node->getTag()] = $node->getContent();
-                } else {
-                    $object[self::IMPORTANCE] = $node;
-                    $array[] = $object;
-                    $object = [];
-                }
-            }
-        }
-
-        return $array;
-    }
-
-    /**
-     * Importance need to be add after to avoid polluted queue.
+     * @param int $position
      *
-     * @return void
+     * @return \Algolia\ScoutExtended\Splitters\HtmlSplitter\Node
      */
-    private function cloneNodes(): void
+    public function last(int $position): Node
     {
-        $this->cloneNodes[] = $this->nodes;
-        $this->cloneNodes[] = [self::IMPORTANCE => $this->importanceWeight(end($this->nodes))];
+        return $this->nodes[$this->lengthNodes() - $position - 1];
     }
 
     /**
      * Importance formula.
      * Give integer from tags ranking.
      *
-     * @param Node $node
+     * @param \Algolia\ScoutExtended\Splitters\HtmlSplitter\Node $node
      *
      * @return int
      */
-    private function importanceWeight(Node $node): int
+    public function importanceWeight(Node $node): int
     {
         if ($node->getTag() === self::PARAGRAPH) {
-            $object = prev($this->nodes);
-            if (empty(end($this->nodes)) || $this->lengthNodes() === 1) {
+            if ($this->last(1) === null || $this->lengthNodes() === 1) {
                 return 0;
             }
+            $object = $this->last(1);
 
             return (count($this->tags) - 1) + $this->findWeight($object);
         }
@@ -139,7 +121,7 @@ final class NodeCollection
     /**
      * Find weight of current nodes.
      *
-     * @param Node $node
+     * @param \Algolia\ScoutExtended\Splitters\HtmlSplitter\Node $node
      *
      * @return int
      */

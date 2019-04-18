@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Splitters;
 
+use Algolia\ScoutExtended\Splitters\HtmlSplitter\NodesCollection;
 use DOMXPath;
 use DOMDocument;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
@@ -83,26 +84,27 @@ final class HtmlSplitter implements SplitterContract, SettingsUpdaterContract
         $xpath = new DOMXpath($dom);
         $xpathQuery = '//'.implode(' | //', $this->tags);
         $nodes = $xpath->query($xpathQuery);
-        $nodeCollection = new NodeCollection($this->tags);
+        $nodesCollection = new NodesCollection();
+        $nodeCollection = new NodeCollection($this->tags,$nodesCollection);
 
         foreach ($nodes as $node) {
             $nodeCollection->push(new Node($node->nodeName, $node->textContent));
         }
 
-        return $nodeCollection->toArray();
+        return $nodesCollection->toArray();
     }
 
     /**
      * Returns the updated version of the given settings.
      *
      * @param array $settings
-     * @param string $key
+     * @param string $attribute
      *
      * @return array
      */
-    public function updateSettings(array $settings, string $key): array
+    public function updateSettings(array $settings, string $attribute): array
     {
-        $settings['customRanking'][] = 'asc('.$key.'.importance)';
+        $settings['customRanking'][] = 'asc('.$attribute.'.importance)';
 
         return $settings;
     }

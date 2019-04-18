@@ -36,7 +36,7 @@ final class SplittersTest extends TestCase
         ThreadWithSplitterClass::create(['body' => $body]);
     }
 
-    public function testHtmlPageCanBeSPlitted(): void
+    public function testHtmlPageCanBeSplitted(): void
     {
         $file = file_get_contents(__DIR__.'/Fixtures/content/article.html');
         $expectedRecords = require __DIR__.'/Fixtures/content/article.php';
