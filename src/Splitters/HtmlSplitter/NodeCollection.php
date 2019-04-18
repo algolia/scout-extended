@@ -107,7 +107,7 @@ final class NodeCollection
     public function importanceWeight(Node $node): int
     {
         if ($node->getTag() === self::PARAGRAPH) {
-            if ($this->last(1) === null || $this->lengthNodes() === 1) {
+            if ($this->last(0) === null || $this->lengthNodes() === 1) {
                 return 0;
             }
             $object = $this->last(1);
