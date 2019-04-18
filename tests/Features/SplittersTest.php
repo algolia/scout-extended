@@ -57,7 +57,7 @@ final class SplittersTest extends TestCase
         $index = $this->mockIndex(ThreadWithSplitterClass::class);
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 1 &&
-                $argument[0]['body']['h1'] === 'Hello Foo!' && $argument[0]['body']['importance'] === 0 ;
+                $argument[0]['body']['h1'] === 'Hello Foo!' && $argument[0]['body']['importance'] === 0;
         }))->andReturn($this->mockResponse());
         $index->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
@@ -69,12 +69,13 @@ final class SplittersTest extends TestCase
         ]);
         ThreadWithSplitterClass::create(['body' => $body]);
     }
+
     public function testHtmlPageWithOpenTagtCanBeSplitted(): void
     {
         $index = $this->mockIndex(ThreadWithSplitterClass::class);
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 1 &&
-                $argument[0]['body']['h1'] === 'Hello Foo!' && $argument[0]['body']['importance'] === 0 ;
+                $argument[0]['body']['h1'] === 'Hello Foo!' && $argument[0]['body']['importance'] === 0;
         }))->andReturn($this->mockResponse());
         $index->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
@@ -92,7 +93,7 @@ final class SplittersTest extends TestCase
         $index = $this->mockIndex(ThreadWithSplitterClass::class);
         $index->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 1 &&
-                $argument[0]['body']['p'] === 'Hello Foo!' && $argument[0]['body']['importance'] === 0 ;
+                $argument[0]['body']['p'] === 'Hello Foo!' && $argument[0]['body']['importance'] === 0;
         }))->andReturn($this->mockResponse());
         $index->shouldReceive('deleteBy')->once()->with([
             'tagFilters' => [
