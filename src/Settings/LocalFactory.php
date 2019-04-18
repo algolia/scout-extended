@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
-use Algolia\ScoutExtended\Contracts\ModifySettingContract;
-use Algolia\ScoutExtended\Contracts\SettingsUpdaterContract;
-use Illuminate\Support\Str;
 use function in_array;
+use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Illuminate\Database\QueryException;
 use Algolia\ScoutExtended\Searchable\Aggregator;
+use Algolia\ScoutExtended\Contracts\SettingsUpdaterContract;
 use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
 use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
 use Algolia\ScoutExtended\Settings\SettingAttribute\searchableAttribute;
@@ -89,7 +88,7 @@ final class LocalFactory
 
         $settings = array_merge($this->remoteRepository->find($index)->compiled(), $detectedSettings);
         foreach ($attributes as $key => $value) {
-            $method = 'split' . Str::camel((string) $key);
+            $method = 'split'.Str::camel((string) $key);
             if (method_exists($model, $method)) {
                 $result = (new $model)->{$method}($value);
                 if (is_string($result)) {
@@ -100,6 +99,7 @@ final class LocalFactory
                 }
             }
         }
+
         return new Settings($settings, $this->remoteRepository->defaults());
     }
 
@@ -129,7 +129,6 @@ final class LocalFactory
 
             $attributes = method_exists($instance, 'toSearchableArray') ? $instance->toSearchableArray() :
                 $instance->toArray();
-
         }
 
         return $attributes;

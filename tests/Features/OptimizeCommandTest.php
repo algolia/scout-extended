@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use App\Thread;
 use App\User;
-use Tests\Features\Fixtures\ThreadWithSplitterClass;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
+use Tests\Features\Fixtures\ThreadWithSplitterClass;
 
 final class OptimizeCommandTest extends TestCase
 {

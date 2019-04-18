@@ -25,7 +25,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->app->setBasePath(__DIR__ . '/laravel');
+        $this->app->setBasePath(__DIR__.'/laravel');
 
         $this->withFactories(database_path('factories'));
         Artisan::call('migrate:fresh', ['--database' => 'testbench']);
@@ -34,7 +34,7 @@ abstract class TestCase extends BaseTestCase
 
     public function tearDown(): void
     {
-        @unlink(__DIR__ . '/laravel/config/scout-users.php');
+        @unlink(__DIR__.'/laravel/config/scout-users.php');
 
         Mockery::close();
 
@@ -76,7 +76,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function defaults(): array
     {
-        $index = $this->mockIndex('temp-laravel-scout-extended', $defaults = require __DIR__ . '/resources/defaults.php');
+        $index = $this->mockIndex('temp-laravel-scout-extended', $defaults = require __DIR__.'/resources/defaults.php');
         $index->shouldReceive('delete')->zeroOrMoreTimes();
 
         return $defaults;
