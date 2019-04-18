@@ -88,16 +88,28 @@ final class ReImportCommand extends Command
 
             $temporaryIndex = $client->initIndex($temporaryName);
 
-            try {
-                $temporaryIndex->getSettings();
-
-                $response = $client->moveIndex($temporaryName, $index->getIndexName());
-
+            $iterator = $temporaryIndex->browseObjects(['query' => '']);
+            $hits = 0;
+            foreach ($iterator as $hit) {
+                $hits++;
+            }
+            if ($hits === 0) {
+                $response = $index->clearObjects();
                 if ($config->get('scout.synchronous', false)) {
                     $response->wait();
                 }
-            } catch (NotFoundException $e) {
-                $index->setSettings(['attributesForFaceting' => null])->wait();
+            } else {
+                try {
+                    $temporaryIndex->getSettings();
+
+                    $response = $client->moveIndex($temporaryName, $index->getIndexName());
+
+                    if ($config->get('scout.synchronous', false)) {
+                        $response->wait();
+                    }
+                } catch (NotFoundException $e) {
+                    $index->setSettings(['attributesForFaceting' => null])->wait();
+                }
             }
         }
 
