@@ -36,7 +36,6 @@ final class NodeCollection
      */
     private $tags = [];
 
-
     /**
      * String.
      */
@@ -74,7 +73,7 @@ final class NodeCollection
         if ($this->lengthNodes() === 0) {
             $this->nodes[] = $node;
             $this->nodesCollection->push($this);
-        } else if ($this->findWeight($node) > $this->findWeight($this->last(0))) {
+        } elseif ($this->findWeight($node) > $this->findWeight($this->last(0))) {
             $this->nodes[] = $node;
             $this->nodesCollection->push($this);
         } else {
