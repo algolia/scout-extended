@@ -19,7 +19,6 @@ interface SettingsUpdaterContract
      * Returns the updated version of the given settings.
      *
      * @param array $settings
-     *
      * @param string $attribute
      *
      * @return array

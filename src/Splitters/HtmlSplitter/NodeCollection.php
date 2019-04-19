@@ -21,7 +21,7 @@ final class NodeCollection
     /**
      * Collection of \Algolia\ScoutExtended\Splitters\HtmlSplitter\Node.
      *
-     * @var array
+     * @var \Algolia\ScoutExtended\Splitters\HtmlSplitter\Node[]
      */
     private $nodes = [];
 
