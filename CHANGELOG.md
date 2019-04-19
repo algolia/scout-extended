@@ -5,7 +5,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-## [1.7.0] - 2019-04-19
 ### Changed
 -  HtmlSplitter is providing revelancy to splitted content ([#170](https://github.com/algolia/scout-extended/pull/170))
 
