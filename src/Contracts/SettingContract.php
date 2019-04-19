@@ -23,9 +23,9 @@ interface SettingContract
      *
      * @param string $key
      * @param array|null|string $value
-     * @param array $arrayValue
+     * @param array $setting
      *
      * @return array
      */
-    public function getValue(string $key, $value, array $arrayValue): array;
+    public function getValue(string $key, $value, array $setting): array;
 }
