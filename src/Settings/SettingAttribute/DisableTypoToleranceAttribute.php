@@ -16,7 +16,10 @@ namespace Algolia\ScoutExtended\Settings\SettingAttribute;
 use Illuminate\Support\Str;
 use Algolia\ScoutExtended\Contracts\SettingContract;
 
-class DisableTypoToleranceAttribute implements SettingContract
+/*
+ * @internal
+ */
+final class DisableTypoToleranceAttribute implements SettingContract
 {
     /**
      * @var string[]

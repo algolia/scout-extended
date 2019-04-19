@@ -16,7 +16,10 @@ namespace Algolia\ScoutExtended\Settings\SettingAttribute;
 use Illuminate\Support\Str;
 use Algolia\ScoutExtended\Contracts\SettingContract;
 
-class CustomRankingAttribute implements SettingContract
+/*
+ * @internal
+ */
+final class CustomRankingAttribute implements SettingContract
 {
     /**
      * @var string[]

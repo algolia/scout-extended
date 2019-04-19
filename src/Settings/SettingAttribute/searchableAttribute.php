@@ -16,7 +16,10 @@ namespace Algolia\ScoutExtended\Settings\SettingAttribute;
 use Illuminate\Support\Str;
 use Algolia\ScoutExtended\Contracts\SettingContract;
 
-class searchableAttribute implements SettingContract
+/*
+ * @internal
+ */
+final class searchableAttribute implements SettingContract
 {
     /**
      * @var string[]

@@ -76,6 +76,7 @@ final class HtmlSplitter implements SplitterContract, SettingsUpdaterContract
     {
         $dom = new DOMDocument();
         //DOMDocument is only for HTML4, this exception is too avoid errors from HTML5
+
         try {
             $dom->loadHTML($value);
         } catch (\ErrorException $exception) {

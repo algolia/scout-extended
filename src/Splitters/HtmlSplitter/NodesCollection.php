@@ -52,6 +52,7 @@ final class NodesCollection
     public function toArray(): array
     {
         $array = [];
+        $object = [];
         foreach ($this->nodesImportance as $nodes) {
             foreach ($nodes as $node) {
                 if ($node instanceof Node) {

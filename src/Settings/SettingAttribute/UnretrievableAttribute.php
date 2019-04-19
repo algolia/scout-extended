@@ -16,7 +16,10 @@ namespace Algolia\ScoutExtended\Settings\SettingAttribute;
 use Illuminate\Support\Str;
 use Algolia\ScoutExtended\Contracts\SettingContract;
 
-class UnretrievableAttribute implements SettingContract
+/*
+ * @internal
+ */
+final class UnretrievableAttribute implements SettingContract
 {
     /**
      * @var string[]

@@ -44,7 +44,7 @@ final class SplittersTest extends TestCase
         static::assertEquals($expectedRecords, $splitter->split(null, $file));
     }
 
-    public function testHtmlPageWithNoStandardCanBeSPlitted(): void
+    public function testHtmlPageWithNoStandardCanBeSplitted(): void
     {
         $file = file_get_contents(__DIR__.'/Fixtures/content/article2.html');
         $expectedRecords = require __DIR__.'/Fixtures/content/article2.php';

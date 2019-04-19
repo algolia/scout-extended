@@ -16,7 +16,10 @@ namespace Algolia\ScoutExtended\Settings\SettingAttribute;
 use Illuminate\Support\Str;
 use Algolia\ScoutExtended\Contracts\SettingContract;
 
-class attributeForFaceting implements SettingContract
+/*
+ * @internal
+ */
+final class attributeForFaceting implements SettingContract
 {
     /**
      * @var string[]

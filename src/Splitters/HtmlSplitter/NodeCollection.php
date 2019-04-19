@@ -66,14 +66,11 @@ final class NodeCollection
     /**
      * Add object to collection.
      *
-     * @param Node $node
+     * @param \Algolia\ScoutExtended\Splitters\HtmlSplitter\Node $node
      */
     public function push(Node $node): void
     {
-        if ($this->lengthNodes() === 0) {
-            $this->nodes[] = $node;
-            $this->nodesCollection->push($this);
-        } elseif ($this->findWeight($node) > $this->findWeight($this->last(0))) {
+        if ($this->lengthNodes() === 0 || $this->findWeight($node) > $this->findWeight($this->last(0))) {
             $this->nodes[] = $node;
             $this->nodesCollection->push($this);
         } else {
