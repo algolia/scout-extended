@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Changed
--  HtmlSplitter is providing revelancy to splitted content ([#170](https://github.com/algolia/scout-extended/pull/170))
+- HtmlSplitter is providing revelancy to splitted content ([#170](https://github.com/algolia/scout-extended/pull/170))
+- HtmlSplitter can not now being extended 
+
 
 ## [1.6.0] - 2019-03-07
 ### Added

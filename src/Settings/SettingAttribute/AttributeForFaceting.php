@@ -19,7 +19,7 @@ use Algolia\ScoutExtended\Contracts\SettingContract;
 /*
  * @internal
  */
-final class attributeForFaceting implements SettingContract
+final class AttributeForFaceting implements SettingContract
 {
     /**
      * @var string[]

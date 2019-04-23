@@ -19,7 +19,7 @@ use Algolia\ScoutExtended\Contracts\SettingContract;
 /*
  * @internal
  */
-final class searchableAttribute implements SettingContract
+final class SearchableAttribute implements SettingContract
 {
     /**
      * @var string[]

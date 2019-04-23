@@ -21,8 +21,8 @@ use Algolia\ScoutExtended\Searchable\Aggregator;
 use Algolia\ScoutExtended\Contracts\SettingsUpdaterContract;
 use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
 use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
-use Algolia\ScoutExtended\Settings\SettingAttribute\searchableAttribute;
-use Algolia\ScoutExtended\Settings\SettingAttribute\attributeForFaceting;
+use Algolia\ScoutExtended\Settings\SettingAttribute\SearchableAttribute;
+use Algolia\ScoutExtended\Settings\SettingAttribute\AttributeForFaceting;
 use Algolia\ScoutExtended\Settings\SettingAttribute\CustomRankingAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\UnretrievableAttribute;
 use Algolia\ScoutExtended\Settings\SettingAttribute\DisableTypoToleranceAttribute;
@@ -42,8 +42,8 @@ final class LocalFactory
      * @var string[]
      */
     private static $settings = [
-        'searchableAttributes' => searchableAttribute::class,
-        'attributesForFaceting' => attributeForFaceting::class,
+        'searchableAttributes' => SearchableAttribute::class,
+        'attributesForFaceting' => AttributeForFaceting::class,
         'customRanking' => CustomRankingAttribute::class,
         'disableTypoToleranceOnAttributes' => DisableTypoToleranceAttribute::class,
         'unretrievableAttributes' => UnretrievableAttribute::class,
