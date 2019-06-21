@@ -71,7 +71,7 @@ final class SyncCommand extends Command
                     $synchronizer->upload($index);
                     break;
                 case Status::BOTH_ARE_EQUAL:
-                    $this->output->success('Local and remote settings are similar.');
+                    $this->output->success('Local and remote settings match.');
                     break;
                 case Status::LOCAL_GOT_UPDATED:
                     if ($this->output->confirm('Local settings got updated. Wish to upload them?')) {
