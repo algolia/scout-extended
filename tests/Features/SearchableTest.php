@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use App\EmptyItem;
 use Mockery;
 use App\User;
 use Tests\TestCase;
@@ -27,5 +28,20 @@ final class SearchableTest extends TestCase
         }));
 
         $user->searchable();
+    }
+
+    public function testSearchableWithEmptySearchableArray(): void
+    {
+        $item = new EmptyItem([
+            'id' => 1,
+            'title' => 'Example Title',
+        ]);
+
+        $item->pushSoftDeleteMetadata();
+
+        $itemsIndex = $this->mockIndex(EmptyItem::class);
+        $itemsIndex->expects('saveObjects')->once()->with([]);
+
+        $item->searchable();
     }
 }
