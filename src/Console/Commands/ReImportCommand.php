@@ -50,7 +50,7 @@ final class ReImportCommand extends Command
 
         $scoutPrefix = $config->get('scout.prefix');
 
-        $this->output->text('🔎 Importing: <info>[' . implode(',', $searchables) . ']</info>');
+        $this->output->text('🔎 Importing: <info>['.implode(',', $searchables).']</info>');
         $this->output->newLine();
         $this->output->progressStart(count($searchables) * 3);
 
@@ -77,7 +77,7 @@ final class ReImportCommand extends Command
             tap($this->output)->progressAdvance()->text("Importing records to index <info>{$temporaryName}</info>");
 
             try {
-                $config->set('scout.prefix', self::$prefix . '_' . $scoutPrefix);
+                $config->set('scout.prefix', self::$prefix.'_'.$scoutPrefix);
                 $searchable::makeAllSearchable();
             } finally {
                 $config->set('scout.prefix', $scoutPrefix);
@@ -110,7 +110,7 @@ final class ReImportCommand extends Command
             }
         }
 
-        tap($this->output)->success('All [' . implode(',', $searchables) . '] records have been imported')->newLine();
+        tap($this->output)->success('All ['.implode(',', $searchables).'] records have been imported')->newLine();
     }
 
     /**
@@ -122,6 +122,6 @@ final class ReImportCommand extends Command
      */
     private function getTemporaryIndexName(SearchIndex $index): string
     {
-        return self::$prefix . '_' . $index->getIndexName();
+        return self::$prefix.'_'.$index->getIndexName();
     }
 }
