@@ -203,6 +203,8 @@ abstract class Aggregator implements SearchableCountableContract
 
     /**
      * {@inheritdoc}
+     *
+     * @internal
      */
     public function searchable(): void
     {
@@ -211,6 +213,8 @@ abstract class Aggregator implements SearchableCountableContract
 
     /**
      * {@inheritdoc}
+     *
+     * @internal
      */
     public function unsearchable(): void
     {
