@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use App\EmptyItem;
 use App\News;
 use App\User;
 use App\Wall;
 use App\Thread;
+use App\EmptyItem;
 use Tests\TestCase;
 
 final class FlushCommandTest extends TestCase

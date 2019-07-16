@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use App\EmptyItem;
 use Mockery;
 use App\News;
 use App\User;
 use App\Wall;
 use App\Thread;
+use App\EmptyItem;
 use function count;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
