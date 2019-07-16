@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use App\EmptyItem;
 use Mockery;
 use App\News;
 use App\User;
@@ -45,6 +46,9 @@ final class ImportCommandTest extends TestCase
         // Detects searchable models.
         $threadIndexMock = $this->mockIndex(Thread::class);
         $threadIndexMock->expects('clearObjects')->once();
+
+        // Detects searchable models.
+        $this->mockIndex(EmptyItem::class)->expects('clearObjects')->once();
 
         Artisan::call('scout:import');
     }

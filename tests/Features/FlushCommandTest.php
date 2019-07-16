@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use App\EmptyItem;
 use App\News;
 use App\User;
 use App\Wall;
@@ -18,6 +19,7 @@ final class FlushCommandTest extends TestCase
         $this->mockIndex(User::class)->expects('clearObjects')->once();
         $this->mockIndex(Thread::class)->expects('clearObjects')->once();
         $this->mockIndex(Wall::class)->expects('clearObjects')->once();
+        $this->mockIndex(EmptyItem::class)->expects('clearObjects')->once();
 
         /*
          * Detects searchable models.
