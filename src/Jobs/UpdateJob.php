@@ -106,11 +106,11 @@ final class UpdateJob
         foreach ($this->searchables as $key => $searchable) {
             $metadata = Arr::except($searchable->scoutMetadata(), ModelsResolver::$metadata);
 
-            if (empty($searchable->toSearchableArray())) {
+            if (empty($searchableArray = $searchable->toSearchableArray())) {
                 continue;
             }
 
-            $array = array_merge($searchable->toSearchableArray(), $metadata);
+            $array = array_merge($searchableArray, $metadata);
 
             if (! $this->hasToSearchableArray($searchable)) {
                 $array = $searchable->getModel()->transform($array);
