@@ -238,7 +238,7 @@ final class UpdateJob
             $reflectionClass = new ReflectionClass(get_class($searchable));
 
             $this->searchablesWithToSearchableArray[$searchableClass] =
-                ends_with((string) $reflectionClass->getMethod('toSearchableArray')->getFileName(),
+                Str::endsWith((string) $reflectionClass->getMethod('toSearchableArray')->getFileName(),
                     (string) $reflectionClass->getFileName());
         }
 
