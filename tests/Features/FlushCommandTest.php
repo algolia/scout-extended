@@ -8,6 +8,7 @@ use App\News;
 use App\User;
 use App\Wall;
 use App\Thread;
+use App\EmptyItem;
 use Tests\TestCase;
 
 final class FlushCommandTest extends TestCase
@@ -18,6 +19,7 @@ final class FlushCommandTest extends TestCase
         $this->mockIndex(User::class)->expects('clearObjects')->once();
         $this->mockIndex(Thread::class)->expects('clearObjects')->once();
         $this->mockIndex(Wall::class)->expects('clearObjects')->once();
+        $this->mockIndex(EmptyItem::class)->expects('clearObjects')->once();
 
         /*
          * Detects searchable models.
