@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.7.0] - 2019-08-28
+### Added
+- Support to `laravel/framework:^6.0` ([#198](https://github.com/algolia/scout-extended/pull/198))
+
+### Fixed
+- Empty searchable array got indexed when soft delete meta data is enabled ([#193](https://github.com/algolia/scout-extended/pull/193))
+
 ## [1.6.0] - 2019-03-07
 ### Added
 - Allow eager loading relationships on aggregated models ([#131](https://github.com/algolia/scout-extended/pull/131))
