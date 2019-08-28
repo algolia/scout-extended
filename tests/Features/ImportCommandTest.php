@@ -21,7 +21,10 @@ final class ImportCommandTest extends TestCase
         Wall::bootSearchable();
         News::bootSearchable();
 
+        $this->app['config']->set('scout.soft_delete', true);
+
         factory(User::class, 5)->create();
+        factory(EmptyItem::class, 2)->create();
 
         // Detects searchable models.
         $userIndexMock = $this->mockIndex(User::class);
@@ -48,7 +51,9 @@ final class ImportCommandTest extends TestCase
         $threadIndexMock->expects('clearObjects')->once();
 
         // Detects searchable models.
-        $this->mockIndex(EmptyItem::class)->expects('clearObjects')->once();
+        $emptyItemIndexMock = $this->mockIndex(EmptyItem::class);
+        $emptyItemIndexMock->expects('clearObjects')->once();
+        $emptyItemIndexMock->expects('saveObjects')->once()->with([]);
 
         Artisan::call('scout:import');
     }
