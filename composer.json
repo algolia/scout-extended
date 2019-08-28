@@ -62,5 +62,13 @@
     "config": {
         "sort-packages": true,
         "preferred-install": "dist"
+    },
+    "scripts": {
+        "phpstan:test": "phpstan analyse --ansi",
+        "phpunit:test": "phpunit --colors=always",
+        "test": [
+            "@phpstan:test",
+            "@phpunit:test"
+        ]
     }
 }
