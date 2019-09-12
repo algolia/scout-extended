@@ -106,9 +106,11 @@ final class UpdateJob
         foreach ($this->searchables as $key => $searchable) {
             $metadata = Arr::except($searchable->scoutMetadata(), ModelsResolver::$metadata);
 
-            if (empty($array = array_merge($searchable->toSearchableArray(), $metadata))) {
+            if (empty($searchableArray = $searchable->toSearchableArray())) {
                 continue;
             }
+
+            $array = array_merge($searchableArray, $metadata);
 
             if (! $this->hasToSearchableArray($searchable)) {
                 $array = $searchable->getModel()->transform($array);
@@ -236,7 +238,7 @@ final class UpdateJob
             $reflectionClass = new ReflectionClass(get_class($searchable));
 
             $this->searchablesWithToSearchableArray[$searchableClass] =
-                ends_with((string) $reflectionClass->getMethod('toSearchableArray')->getFileName(),
+                Str::endsWith((string) $reflectionClass->getMethod('toSearchableArray')->getFileName(),
                     (string) $reflectionClass->getFileName());
         }
 
