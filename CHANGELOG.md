@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.8.0] - 2019-10-14
+### Added
+- Support to `_snippetResult` in searchable metadata ([#207](https://github.com/algolia/scout-extended/pull/207))
+
 ## [1.7.0] - 2019-08-28
 ### Added
 - Support to `laravel/framework:^6.0` ([#198](https://github.com/algolia/scout-extended/pull/198))
