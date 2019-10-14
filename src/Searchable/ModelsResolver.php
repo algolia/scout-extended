@@ -30,6 +30,7 @@ final class ModelsResolver
      * @var string[]
      */
     public static $metadata = [
+        '_snippetResult',
         '_highlightResult',
         '_rankingInfo',
     ];
