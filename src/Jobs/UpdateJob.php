@@ -106,31 +106,43 @@ final class UpdateJob
         foreach ($this->searchables as $key => $searchable) {
             $metadata = Arr::except($searchable->scoutMetadata(), ModelsResolver::$metadata);
 
-            if (empty($searchableArray = $searchable->toSearchableArray())) {
+            $model = $searchable->getModel();
+            $hasToSearchableRecords = method_exists($model, 'toSearchableRecords');
+
+            if ($hasToSearchableRecords) {
+                $objects = $model->toSearchableRecords();
+            } else {
+                $objects = [$searchable->toSearchableArray()];
+            }
+
+            if (empty($objects) || empty($objects[0])) {
                 continue;
             }
 
-            $array = array_merge($searchableArray, $metadata);
+            foreach ($objects as $part => $object) {
+                $object = array_merge($object, $metadata);
 
-            if (! $this->hasToSearchableArray($searchable)) {
-                $array = $searchable->getModel()->transform($array);
+                if (! $this->hasToSearchableArray($searchable)) {
+                    $object = $model->transform($object);
+                }
+
+                $object['_tags'] = (array) ($object['_tags'] ?? []);
+                $object['_tags'][] = ObjectIdEncrypter::encrypt($searchable);
+                $objects[$part] = $object;
             }
 
-            $array['_tags'] = (array) ($array['_tags'] ?? []);
-
-            $array['_tags'][] = ObjectIdEncrypter::encrypt($searchable);
-
-            if ($this->shouldBeSplitted($searchable)) {
-                $objects = $this->splitSearchable($searchable, $array);
-
+            if ($hasToSearchableRecords || $this->shouldBeSplitted($searchable)) {
+                if (!$hasToSearchableRecords) {
+                    $objects = $this->splitSearchable($searchable, $objects[0]);
+                }
                 foreach ($objects as $part => $object) {
                     $object['objectID'] = ObjectIdEncrypter::encrypt($searchable, (int) $part);
                     $objectsToSave[] = $object;
                 }
                 $searchablesToDelete[] = $searchable;
             } else {
-                $array['objectID'] = ObjectIdEncrypter::encrypt($searchable);
-                $objectsToSave[] = $array;
+                $objects[0]['objectID'] = ObjectIdEncrypter::encrypt($searchable);
+                $objectsToSave[] = $objects[0];
             }
         }
 
