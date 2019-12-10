@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Helpers;
 
+use Error;
 use function in_array;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
@@ -97,7 +98,11 @@ final class SearchableFinder
             $configFiles = Finder::create()->files()->name('*.php')->in($this->app->path());
 
             foreach ($configFiles->files() as $file) {
-                require_once $file;
+                try {
+                    require_once $file;
+                } catch (Error $e) {
+                    // The file could not be loaded due to an error. Continue.
+                }
             }
 
             self::$declaredClasses = get_declared_classes();
