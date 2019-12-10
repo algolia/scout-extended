@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Helpers;
 
+use Error;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use function in_array;
 use Laravel\Scout\Searchable;
 use RuntimeException;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Finder\Finder;
+
+use function in_array;
 
 /**
  * @internal
@@ -58,7 +60,7 @@ final class SearchableFinder
     {
         $searchables = (array) $command->argument('searchable');
 
-        if (empty($searchables) && empty($searchables = $this->find())) {
+        if (empty($searchables) && empty($searchables = $this->find($command))) {
             throw new InvalidArgumentException('No searchable classes found.');
         }
 
@@ -70,14 +72,14 @@ final class SearchableFinder
      *
      * @return string[]
      */
-    public function find(): array
+    public function find(Command $command): array
     {
         [$sources, $namespaces] = $this->inferProjectSourcePaths();
 
         return array_values(array_filter(
-            $this->getProjectClasses($sources), function (string $class) use ($namespaces) {
-                return Str::startsWith($class, $namespaces) && $this->isSearchableModel($class);
-            }
+            $this->getProjectClasses($sources, $command), function (string $class) use ($namespaces) {
+            return Str::startsWith($class, $namespaces) && $this->isSearchableModel($class);
+        }
         ));
     }
 
@@ -93,9 +95,10 @@ final class SearchableFinder
 
     /**
      * @param array $sources
+     * @param Command $command
      * @return array
      */
-    private function getProjectClasses(array $sources): array
+    private function getProjectClasses(array $sources, Command $command): array
     {
         if (self::$declaredClasses === null) {
             $configFiles = Finder::create()
@@ -105,7 +108,12 @@ final class SearchableFinder
                 ->in($sources);
 
             foreach ($configFiles->files() as $file) {
-                require_once $file;
+                try {
+                    require_once $file;
+                } catch (Error $e) {
+                    // log a warning to the user and continue
+                    $command->info("{$file} could not be inspected due to an error being thrown while loading it.");
+                }
             }
 
             self::$declaredClasses = get_declared_classes();
