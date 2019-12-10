@@ -11,9 +11,9 @@ class ThreadWithSearchableRecords extends Thread
     public function toSearchableRecords(): array
     {
         return [
-            array_merge($this->toArray(), [ '_i' => 2 ]),
-            array_merge($this->toArray(), [ '_i' => 4 ]),
-            array_merge($this->toArray(), [ '_i' => 8 ]),
+            array_merge($this->toArray(), ['_i' => 2]),
+            array_merge($this->toArray(), ['_i' => 4]),
+            array_merge($this->toArray(), ['_i' => 8]),
         ];
     }
 }

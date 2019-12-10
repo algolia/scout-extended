@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Mockery;
 use function count;
-use Tests\TestCase;
+use Mockery;
 use Tests\Features\Fixtures\ThreadWithSearchableRecords;
+use Tests\TestCase;
 
 final class SearchableRecordsTest extends TestCase
 {
