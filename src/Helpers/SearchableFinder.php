@@ -37,11 +37,6 @@ final class SearchableFinder
     private $app;
 
     /**
-     * @var \Illuminate\Console\Command
-     */
-    private $command;
-
-    /**
      * SearchableModelsFinder constructor.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
@@ -61,11 +56,9 @@ final class SearchableFinder
      */
     public function fromCommand(Command $command): array
     {
-        $this->command = $command;
-
         $searchables = (array) $command->argument('searchable');
 
-        if (empty($searchables) && empty($searchables = $this->find())) {
+        if (empty($searchables) && empty($searchables = $this->find($command))) {
             throw new InvalidArgumentException('No searchable classes found.');
         }
 
@@ -77,11 +70,11 @@ final class SearchableFinder
      *
      * @return string[]
      */
-    public function find(): array
+    public function find(Command $command): array
     {
         $appNamespace = $this->app->getNamespace();
 
-        return array_values(array_filter($this->getProjectClasses(), function (string $class) use ($appNamespace) {
+        return array_values(array_filter($this->getProjectClasses($command), function (string $class) use ($appNamespace) {
             return Str::startsWith($class, $appNamespace) && $this->isSearchableModel($class);
         }));
     }
@@ -99,7 +92,7 @@ final class SearchableFinder
     /**
      * @return array
      */
-    private function getProjectClasses(): array
+    private function getProjectClasses(Command $command): array
     {
         if (self::$declaredClasses === null) {
             $configFiles = Finder::create()->files()->name('*.php')->in($this->app->path());
@@ -108,9 +101,8 @@ final class SearchableFinder
                 try {
                     require_once $file;
                 } catch (Error $e) {
-                    if (isset($this->command)) {
-                        $this->command->info("{$file} could not be inspected due to an error being thrown while loading it.");
-                    }
+                    // log a warning to the user and continue
+                    $command->info("{$file} could not be inspected due to an error being thrown while loading it.");
                 }
             }
 
