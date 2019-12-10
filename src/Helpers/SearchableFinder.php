@@ -37,6 +37,11 @@ final class SearchableFinder
     private $app;
 
     /**
+     * @var \Illuminate\Console\Command
+     */
+    private $command;
+
+    /**
      * SearchableModelsFinder constructor.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
@@ -56,6 +61,8 @@ final class SearchableFinder
      */
     public function fromCommand(Command $command): array
     {
+        $this->command = $command;
+
         $searchables = (array) $command->argument('searchable');
 
         if (empty($searchables) && empty($searchables = $this->find())) {
@@ -101,7 +108,9 @@ final class SearchableFinder
                 try {
                     require_once $file;
                 } catch (Error $e) {
-                    // The file could not be loaded due to an error. Continue.
+                    if (isset($this->command)) {
+                        $this->command->info("{$file} could not be inspected due to an error being thrown while loading it.");
+                    }
                 }
             }
 
