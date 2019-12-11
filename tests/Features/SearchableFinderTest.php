@@ -18,8 +18,12 @@ final class SearchableFinderTest extends TestCase
         );
 
         $this->artisan('scout:sync')->expectsOutput("{$filePath} could not be inspected due to an error being thrown while loading it.");
+    }
 
-        // remove the file again
-        unlink($filePath);
+    public function tearDown(): void
+    {
+        \unlink(\base_path('app/UnresolvableClass.php'));
+
+        parent::tearDown();
     }
 }
