@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Searchable;
 
-use function in_array;
-use Laravel\Scout\Builder;
-use Illuminate\Support\Arr;
 use function call_user_func;
-use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
+use function in_array;
+use Laravel\Scout\Builder;
+use Laravel\Scout\Searchable;
 
 /**
  * @internal

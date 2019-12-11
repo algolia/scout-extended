@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Engines;
 
-use function is_array;
-use Laravel\Scout\Builder;
-use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Jobs\DeleteJob;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
+use Illuminate\Support\Str;
+use function is_array;
+use Laravel\Scout\Builder;
 use Laravel\Scout\Engines\AlgoliaEngine as BaseAlgoliaEngine;
 
 class AlgoliaEngine extends BaseAlgoliaEngine

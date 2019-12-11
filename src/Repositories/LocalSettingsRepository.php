@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
 use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Settings\Settings;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 /**
  * @internal

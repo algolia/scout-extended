@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Searchable;
 
+use Algolia\ScoutExtended\Exceptions\ShouldReimportSearchableException;
 use function count;
 use function get_class;
-use Algolia\ScoutExtended\Exceptions\ShouldReimportSearchableException;
 
 /**
  * @internal

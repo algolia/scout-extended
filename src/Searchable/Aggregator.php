@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Searchable;
 
-use function in_array;
-use Illuminate\Support\Str;
-use Laravel\Scout\Searchable;
-use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Events\ModelsImported;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
 use Algolia\ScoutExtended\Exceptions\ModelNotDefinedInAggregatorException;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
+use function in_array;
+use Laravel\Scout\Events\ModelsImported;
+use Laravel\Scout\Searchable;
 
 abstract class Aggregator implements SearchableCountableContract
 {

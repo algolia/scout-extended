@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use DateInterval;
-use function is_string;
 use Algolia\AlgoliaSearch\SearchClient;
+use DateInterval;
 use Illuminate\Contracts\Cache\Repository;
+use function is_string;
 
 /**
  * @internal

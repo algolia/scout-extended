@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Searchable;
 
-use function in_array;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Algolia\ScoutExtended\Contracts\SearchableCountableContract;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use function in_array;
 
 /**
  * @internal
