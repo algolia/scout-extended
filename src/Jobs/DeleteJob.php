@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Jobs;
 
-use Illuminate\Support\Collection;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
+use Illuminate\Support\Collection;
 
 /**
  * @internal

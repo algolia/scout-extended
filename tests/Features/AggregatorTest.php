@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Mockery;
+use Algolia\ScoutExtended\Searchable\AggregatorCollection;
 use App\News;
 use App\Post;
+use App\Thread;
 use App\User;
 use App\Wall;
-use App\Thread;
+use Mockery;
 use Tests\TestCase;
-use Algolia\ScoutExtended\Searchable\AggregatorCollection;
 
 final class AggregatorTest extends TestCase
 {

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
-use LogicException;
-use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\SearchIndex;
-use Algolia\ScoutExtended\Repositories\UserDataRepository;
 use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
+use Algolia\ScoutExtended\Repositories\UserDataRepository;
+use Illuminate\Support\Str;
+use LogicException;
 
 /**
  * @internal

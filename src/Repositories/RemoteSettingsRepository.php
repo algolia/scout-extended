@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use Algolia\AlgoliaSearch\SearchIndex;
-use Algolia\AlgoliaSearch\SearchClient;
-use Algolia\ScoutExtended\Settings\Settings;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
+use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\ScoutExtended\Settings\Settings;
 
 /**
  * @internal

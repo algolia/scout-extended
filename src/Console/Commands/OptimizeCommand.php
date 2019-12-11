@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Illuminate\Console\Command;
 use Algolia\ScoutExtended\Algolia;
+use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
+use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Settings\LocalFactory;
-use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
-use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
+use Illuminate\Console\Command;
 
 final class OptimizeCommand extends Command
 {

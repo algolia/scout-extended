@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Riimu\Kit\PHPEncoder\PHPEncoder;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
  * @internal

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
+use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
+use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use function count;
 use Illuminate\Console\Command;
-use Algolia\AlgoliaSearch\SearchIndex;
-use Algolia\AlgoliaSearch\SearchClient;
-use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 
 final class ReImportCommand extends Command
 {

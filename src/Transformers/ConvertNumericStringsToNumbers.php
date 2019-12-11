@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Transformers;
 
-use function is_string;
 use Algolia\ScoutExtended\Contracts\TransformerContract;
+use function is_string;
 
 final class ConvertNumericStringsToNumbers implements TransformerContract
 {

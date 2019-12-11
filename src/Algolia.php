@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
-use function is_string;
-use Algolia\AlgoliaSearch\SearchIndex;
-use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\AlgoliaSearch\AnalyticsClient;
-use Illuminate\Contracts\Container\Container;
+use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Repositories\ApiKeysRepository;
+use Illuminate\Contracts\Container\Container;
+use function is_string;
 
 final class Algolia
 {

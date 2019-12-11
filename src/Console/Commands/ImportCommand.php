@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
-use Laravel\Scout\Events\ModelsImported;
-use Illuminate\Contracts\Events\Dispatcher;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
+use Illuminate\Console\Command;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Collection;
+use Laravel\Scout\Events\ModelsImported;
 
 final class ImportCommand extends Command
 {
