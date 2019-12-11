@@ -6,10 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [1.8.1] - 2019-12-11
-### Fixed
-- Searchable finder with unparsable php files ([#214](https://github.com/algolia/scout-extended/pull/214))
-
 ## [1.8.0] - 2019-10-14
 ### Added
 - Support to `_snippetResult` in searchable metadata ([#207](https://github.com/algolia/scout-extended/pull/207))
