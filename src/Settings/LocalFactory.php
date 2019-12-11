@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
-use function in_array;
-use function is_string;
-use Illuminate\Support\Str;
 use Algolia\AlgoliaSearch\SearchIndex;
-use Illuminate\Database\QueryException;
-use Algolia\ScoutExtended\Searchable\Aggregator;
 use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
 use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
+use Algolia\ScoutExtended\Searchable\Aggregator;
 use Illuminate\Database\Eloquent\ModelNotFoundException as BaseModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Str;
+use function in_array;
+use function is_string;
 
 /**
  * @internal

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Splitters;
 
-use DOMDocument;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
+use DOMDocument;
 
 class HtmlSplitter implements SplitterContract
 {

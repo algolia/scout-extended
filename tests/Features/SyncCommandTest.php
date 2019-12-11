@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use Algolia\ScoutExtended\Settings\Synchronizer;
 use App\User;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\Features\Fixtures\FakeException;
-use Algolia\ScoutExtended\Settings\Synchronizer;
+use Tests\TestCase;
 
 final class SyncCommandTest extends TestCase
 {

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Searchable;
 
 use function get_class;
-use Illuminate\Support\Collection;
-use Illuminate\Queue\SerializesAndRestoresModelIdentifiers;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Queue\SerializesAndRestoresModelIdentifiers;
+use Illuminate\Support\Collection;
 
 /**
  * @method static string searchable()

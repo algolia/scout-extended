@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
-use Algolia\AlgoliaSearch\SearchClient;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Scout\ScoutServiceProvider;
-use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\AlgoliaSearch\AnalyticsClient;
-use Algolia\ScoutExtended\Engines\AlgoliaEngine;
-use Algolia\ScoutExtended\Managers\EngineManager;
-use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Console\Commands\SyncCommand;
+use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Console\Commands\FlushCommand;
-use Algolia\ScoutExtended\Searchable\AggregatorObserver;
 use Algolia\ScoutExtended\Console\Commands\ImportCommand;
-use Algolia\ScoutExtended\Console\Commands\StatusCommand;
+use Algolia\ScoutExtended\Console\Commands\MakeAggregatorCommand;
 use Algolia\ScoutExtended\Console\Commands\OptimizeCommand;
 use Algolia\ScoutExtended\Console\Commands\ReImportCommand;
-use Algolia\ScoutExtended\Console\Commands\MakeAggregatorCommand;
+use Algolia\ScoutExtended\Console\Commands\StatusCommand;
+use Algolia\ScoutExtended\Console\Commands\SyncCommand;
+use Algolia\ScoutExtended\Engines\AlgoliaEngine;
+use Algolia\ScoutExtended\Helpers\SearchableFinder;
+use Algolia\ScoutExtended\Jobs\UpdateJob;
+use Algolia\ScoutExtended\Managers\EngineManager;
+use Algolia\ScoutExtended\Searchable\AggregatorObserver;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Scout\ScoutServiceProvider;
 
 final class ScoutExtendedServiceProvider extends ServiceProvider
 {

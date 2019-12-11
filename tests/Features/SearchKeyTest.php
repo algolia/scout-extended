@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use Algolia\ScoutExtended\Facades\Algolia;
 use App\User;
 use App\Wall;
 use Tests\TestCase;
-use Algolia\ScoutExtended\Facades\Algolia;
 
 final class SearchKeyTest extends TestCase
 {

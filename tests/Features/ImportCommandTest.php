@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Mockery;
+use App\EmptyItem;
 use App\News;
+use App\Thread;
 use App\User;
 use App\Wall;
-use App\Thread;
-use App\EmptyItem;
 use function count;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
+use Mockery;
+use Tests\TestCase;
 
 final class ImportCommandTest extends TestCase
 {

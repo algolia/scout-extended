@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use App\User;
-use App\Thread;
-use Tests\TestCase;
 use Algolia\ScoutExtended\Exceptions\ShouldReimportSearchableException;
+use App\Thread;
+use App\User;
+use Tests\TestCase;
 
 final class SearchTest extends TestCase
 {

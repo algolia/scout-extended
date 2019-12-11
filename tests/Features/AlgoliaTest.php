@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use Algolia\AlgoliaSearch\AnalyticsClient;
+use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\ScoutExtended\Algolia;
 use App\User;
 use Tests\TestCase;
-use Algolia\ScoutExtended\Algolia;
-use Algolia\AlgoliaSearch\SearchIndex;
-use Algolia\AlgoliaSearch\SearchClient;
-use Algolia\AlgoliaSearch\AnalyticsClient;
 
 final class AlgoliaTest extends TestCase
 {
