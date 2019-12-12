@@ -1,9 +1,11 @@
+dist: bionic
 language: php
 
 php:
   - 7.1
   - 7.2
   - 7.3
+  - 7.4
   - nightly
 
 cache:
@@ -18,6 +20,4 @@ before_script:
     - travis_retry composer self-update
     - travis_retry composer update --no-interaction --no-suggest --prefer-source
 
-script:
-    - vendor/bin/phpunit --testdox
-    - vendor/bin/phpstan analyse
+script: composer test
