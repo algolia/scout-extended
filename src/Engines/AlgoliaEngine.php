@@ -63,7 +63,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function update($models)
     {
@@ -71,7 +71,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function delete($models)
     {

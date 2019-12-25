@@ -34,7 +34,7 @@ final class OptimizeCommand extends Command
     protected $description = 'Optimize the given searchable creating a settings file';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function handle(
         Algolia $algolia,
