@@ -4,6 +4,7 @@ parameters:
     level: max
     paths:
         - src
+    checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - '#Using \$this in static method Algolia\\ScoutExtended\\Searchable\\Aggregator::bootSearchable\(\).#'
@@ -15,3 +16,4 @@ parameters:
         - '#Cannot call static method create\(\) on string|null#'
         - '#Cannot call method newCollection\(\) on mixed.#'
         - '#Casting to string something that#'
+        - '#Unsafe usage of new static#'

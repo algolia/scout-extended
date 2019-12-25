@@ -63,31 +63,31 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function update($searchables)
+    public function update($models)
     {
-        dispatch_now(new UpdateJob($searchables));
+        dispatch_now(new UpdateJob($models));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function delete($models)
+    {
+        dispatch_now(new DeleteJob($models));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function delete($searchables)
-    {
-        dispatch_now(new DeleteJob($searchables));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function map(Builder $builder, $results, $searchable)
+    public function map(Builder $builder, $results, $model)
     {
         if (count($results['hits']) === 0) {
-            return $searchable->newCollection();
+            return $model->newCollection();
         }
 
-        return app(ModelsResolver::class)->from($builder, $searchable, $results);
+        return app(ModelsResolver::class)->from($builder, $model, $results);
     }
 
     /**

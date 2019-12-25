@@ -34,7 +34,7 @@ final class OptimizeCommand extends Command
     protected $description = 'Optimize the given searchable creating a settings file';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function handle(
         Algolia $algolia,
@@ -42,7 +42,7 @@ final class OptimizeCommand extends Command
         Compiler $compiler,
         SearchableFinder $searchableFinder,
         LocalSettingsRepository $localRepository
-    ) {
+    ): int {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
             $index = $algolia->index($searchable);
@@ -63,5 +63,7 @@ final class OptimizeCommand extends Command
                     'the Artisan command `scout:sync`.');
             }
         }
+
+        return 0;
     }
 }

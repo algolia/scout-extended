@@ -31,9 +31,8 @@
     "require-dev": {
         "fzaninotto/faker": "^1.8",
         "mockery/mockery": "^1.1",
-        "nunomaduro/larastan": "^0.4",
+        "nunomaduro/larastan": "^0.5",
         "orchestra/testbench": "^3.0",
-        "phpstan/phpstan": "^0.11",
         "phpunit/phpunit": "^7.0|^8.0"
     },
     "autoload-dev": {
