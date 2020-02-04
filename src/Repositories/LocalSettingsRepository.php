@@ -31,7 +31,7 @@ class LocalSettingsRepository
     /**
      * @var \Illuminate\Filesystem\Filesystem
      */
-    private $files;
+    protected $files;
 
     /**
      * LocalRepository constructor.
