@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 /**
  * @internal
  */
-final class LocalSettingsRepository
+class LocalSettingsRepository
 {
     /**
      * @var \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository
