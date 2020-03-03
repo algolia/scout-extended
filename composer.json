@@ -14,16 +14,16 @@
         }
     ],
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.2",
         "ext-json": "*",
-        "algolia/algoliasearch-client-php": "^2.0",
-        "illuminate/console": "5.6.*|5.7.*|5.8.*|^6.0",
-        "illuminate/contracts": "5.6.*|5.7.*|5.8.*|^6.0",
-        "illuminate/database": "5.6.*|5.7.*|5.8.*|^6.0",
-        "illuminate/filesystem": "5.6.*|5.7.*|5.8.*|^6.0",
-        "illuminate/support": "5.6.*|5.7.*|5.8.*|^6.0",
-        "laravel/scout": "^6.1.1|^7.0",
-        "riimu/kit-phpencoder": "^2.3"
+        "algolia/algoliasearch-client-php": "^2.5.1",
+        "illuminate/console": "^6.0|^7.0",
+        "illuminate/contracts": "^6.0|^7.0",
+        "illuminate/database": "^6.0|^7.0",
+        "illuminate/filesystem": "^6.0|^7.0",
+        "illuminate/support": "^6.0|^7.0",
+        "laravel/scout": "^7.0",
+        "riimu/kit-phpencoder": "^2.4"
     },
     "suggest": {
         "ext-dom": "Required to use the HTML Splitter."
@@ -31,10 +31,10 @@
     "require-dev": {
         "fzaninotto/faker": "^1.8",
         "mockery/mockery": "^1.1",
-        "nunomaduro/larastan": "^0.4",
-        "orchestra/testbench": "^3.0",
-        "phpstan/phpstan": "^0.11",
-        "phpunit/phpunit": "^7.0|^8.0"
+        "nunomaduro/larastan": "^0.5",
+        "orchestra/testbench": "^4.0|^5.0",
+        "phpstan/phpstan": "^0.12.14",
+        "phpunit/phpunit": "^8.0|^9.0"
     },
     "autoload-dev": {
         "psr-4": {
@@ -64,7 +64,7 @@
         "preferred-install": "dist"
     },
     "scripts": {
-        "phpstan:test": "phpstan analyse --ansi",
+        "phpstan:test": "phpstan analyse --ansi --memory-limit=-1",
         "phpunit:test": "phpunit --colors=always",
         "test": [
             "@phpstan:test",
