@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Helpers;
 
-use Error;
+use Throwable;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use function in_array;
@@ -100,7 +100,7 @@ final class SearchableFinder
             foreach ($configFiles->files() as $file) {
                 try {
                     require_once $file;
-                } catch (Error $e) {
+                } catch (Throwable $e) {
                     // log a warning to the user and continue
                     $command->info("{$file} could not be inspected due to an error being thrown while loading it.");
                 }
