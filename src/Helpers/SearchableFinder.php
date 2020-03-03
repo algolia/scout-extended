@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Helpers;
 
-use function in_array;
-use Illuminate\Support\Str;
-use Laravel\Scout\Searchable;
 use Illuminate\Console\Command;
-use Symfony\Component\Finder\Finder;
+use Illuminate\Support\Str;
+use function in_array;
+use Laravel\Scout\Searchable;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @internal
