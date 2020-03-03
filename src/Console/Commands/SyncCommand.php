@@ -90,9 +90,12 @@ final class SyncCommand extends Command
                 case Status::BOTH_GOT_UPDATED:
                     $options = ['none', 'local', 'remote'];
 
+                    /** @var string $keep */
+                    $keep = $this->option('keep');
+
                     $choice =
                         $this->output->choice('Remote & Local settings got updated. Which one you want to preserve?',
-                            $options, $this->option('keep'));
+                            $options, $keep);
 
                     switch ($choice) {
                         case 'local':
