@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.9.0] - 2020-03-03
 ### Added
 - Support to Laravel 7 ([#225](https://github.com/algolia/scout-extended/pull/225))
 
