@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Helpers;
 
-use Error;
-use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 use function in_array;
+use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Illuminate\Console\Command;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * @internal
@@ -58,7 +57,7 @@ final class SearchableFinder
     {
         $searchables = (array) $command->argument('searchable');
 
-        if (empty($searchables) && empty($searchables = $this->find($command))) {
+        if (empty($searchables) && empty($searchables = $this->find())) {
             throw new InvalidArgumentException('No searchable classes found.');
         }
 
@@ -70,11 +69,11 @@ final class SearchableFinder
      *
      * @return string[]
      */
-    public function find(Command $command): array
+    public function find(): array
     {
         $appNamespace = $this->app->getNamespace();
 
-        return array_values(array_filter($this->getProjectClasses($command), function (string $class) use ($appNamespace) {
+        return array_values(array_filter($this->getProjectClasses(), function (string $class) use ($appNamespace) {
             return Str::startsWith($class, $appNamespace) && $this->isSearchableModel($class);
         }));
     }
@@ -92,18 +91,13 @@ final class SearchableFinder
     /**
      * @return array
      */
-    private function getProjectClasses(Command $command): array
+    private function getProjectClasses(): array
     {
         if (self::$declaredClasses === null) {
             $configFiles = Finder::create()->files()->name('*.php')->in($this->app->path());
 
             foreach ($configFiles->files() as $file) {
-                try {
-                    require_once $file;
-                } catch (Error $e) {
-                    // log a warning to the user and continue
-                    $command->info("{$file} could not be inspected due to an error being thrown while loading it.");
-                }
+                require_once $file;
             }
 
             self::$declaredClasses = get_declared_classes();
