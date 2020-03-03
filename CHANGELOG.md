@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Support to Laravel 7 ([#225](https://github.com/algolia/scout-extended/pull/225))
+
+### Changed
+- Drops PHP `7.1` and Laravel `5.x` series ([#225](https://github.com/algolia/scout-extended/pull/225))
+
 ## [1.8.0] - 2019-10-14
 ### Added
 - Support to `_snippetResult` in searchable metadata ([#207](https://github.com/algolia/scout-extended/pull/207))
