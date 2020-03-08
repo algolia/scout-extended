@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Mockery;
 use function count;
-use Tests\TestCase;
+use Mockery;
 use Tests\Features\Fixtures\ThreadMultipleSplits;
 use Tests\Features\Fixtures\ThreadWithSplitterClass;
-use Tests\Features\Fixtures\ThreadWithValueReturned;
 use Tests\Features\Fixtures\ThreadWithSplitterInstance;
+use Tests\Features\Fixtures\ThreadWithValueReturned;
+use Tests\TestCase;
 
 final class SplittersTest extends TestCase
 {

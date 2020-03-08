@@ -2,8 +2,8 @@
 
 namespace Tests\Features\Fixtures;
 
-use App\Thread;
 use Algolia\ScoutExtended\Splitters\HtmlSplitter;
+use App\Thread;
 
 class ThreadWithSplitterInstance extends Thread
 {

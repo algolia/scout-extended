@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Exceptions;
 
-use Throwable;
 use RuntimeException;
+use Throwable;
 
 final class ModelNotDefinedInAggregatorException extends RuntimeException
 {

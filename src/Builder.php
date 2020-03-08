@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
-use function is_callable;
 use function func_num_args;
+use function is_callable;
 use Laravel\Scout\Builder as BaseBuilder;
 
 final class Builder extends BaseBuilder

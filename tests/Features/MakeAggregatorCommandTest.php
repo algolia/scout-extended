@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
+use Tests\TestCase;
 
 final class MakeAggregatorCommandTest extends TestCase
 {
