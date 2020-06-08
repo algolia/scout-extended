@@ -40,7 +40,8 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "App\\": "tests/laravel/app"
+            "App\\": "tests/laravel/app",
+            "Modules\\": "tests/laravel/modules"
         },
         "files": [
             "vendor/mockery/mockery/library/helpers.php"
