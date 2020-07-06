@@ -88,7 +88,7 @@ return [
     |
     | This is particularly important for security or business reasons, where some attributes are
     | used only for ranking or other technical purposes, but should never be seen by your end
-    | users, such us: total_sales, permissions, stock_count, and other private information.
+    | users, such as: total_sales, permissions, stock_count, and other private information.
     |
     | Supported: Null, Array
     | Example: ['total_sales', 'permissions', 'stock_count',]
