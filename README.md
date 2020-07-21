@@ -50,5 +50,9 @@ For full documentation, visit the **[Scout Extended documentation](https://algol
 
 Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's **free** up to a certain number of records and operations.
 
+## Troubleshooting
+
+Encountering an issue? Before reaching out to support, we recommend heading to our [FAQ](https://www.algolia.com/doc/framework-integration/laravel/troubleshooting/faq/) where you will find answers for the most common issues and gotchas with the package.
+
 ## 🆓 License
 Scout Extended is an open-sourced software licensed under the [MIT license](LICENSE.md).
