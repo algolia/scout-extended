@@ -11,7 +11,18 @@
     <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/v/stable.svg" alt="Latest Version"></a>
     <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/license.svg" alt="License"></a>
   </p>
+  
+  <p align="center">
+    <a href="https://www.algolia.com/doc/framework-integration/laravel/getting-started/introduction-to-scout-extended/" target="_blank">Documentation</a>  •
+    <a href="https://discourse.algolia.com" target="_blank">Community Forum</a>  •
+    <a href="http://stackoverflow.com/questions/tagged/algolia" target="_blank">Stack Overflow</a>  •
+    <a href="https://github.com/algolia/scout-extended/issues" target="_blank">Report a bug</a>  •
+    <a href="https://www.algolia.com/doc/framework-integration/laravel/troubleshooting/faq/" target="_blank">FAQ</a>  •
+    <a href="https://www.algolia.com/support" target="_blank">Support</a>
+  </p>
 </p>
+
+
 
 **To dig right in, visit the [Scout Extended documentation](https://algolia.com/doc/framework-integration/laravel)**.
 
@@ -38,6 +49,10 @@ For full documentation, visit the **[Scout Extended documentation](https://algol
 > **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to **read the Scout documentation first**. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
 
 Because everyone should be able to build great search, you can use Algolia's basic [Community Plan](https://www.algolia.com/users/sign_up/hacker). It's **free** up to a certain number of records and operations.
+
+## Troubleshooting
+
+Encountering an issue? Before reaching out to support, we recommend heading to our [FAQ](https://www.algolia.com/doc/framework-integration/laravel/troubleshooting/faq/) where you will find answers for the most common issues and gotchas with the package.
 
 ## 🆓 License
 Scout Extended is an open-sourced software licensed under the [MIT license](LICENSE.md).
