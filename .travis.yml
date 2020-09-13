@@ -10,6 +10,7 @@ env:
   matrix:
     - LARAVEL=^6.0
     - LARAVEL=^7.0
+    - LARAVEL=^8.0
 
 matrix:
   fast_finish: true
@@ -18,3 +19,8 @@ install:
   - travis_retry composer require "illuminate/contracts=${LARAVEL}" --dev --prefer-dist --no-interaction --no-suggest
 
 script: composer test
+
+jobs:
+  exclude:
+    - LARAVEL=^8.0
+      php: 7.2
