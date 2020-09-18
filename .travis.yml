@@ -10,6 +10,12 @@ env:
   matrix:
     - LARAVEL=^6.0
     - LARAVEL=^7.0
+    - LARAVEL=^8.0
+
+jobs:
+  exclude:
+    - php: 7.2
+      env: LARAVEL=^8.0
 
 matrix:
   fast_finish: true
