@@ -2,7 +2,6 @@ dist: bionic
 language: php
 
 php:
-  - 7.2
   - 7.3
   - 7.4
 
@@ -14,9 +13,6 @@ env:
 
 matrix:
   fast_finish: true
-  exclude:
-    - php: 7.2
-      env: LARAVEL=^8.0
 
 install:
   - travis_retry composer require "illuminate/contracts=${LARAVEL}" --dev --prefer-dist --no-interaction --no-suggest
