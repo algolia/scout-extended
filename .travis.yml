@@ -12,13 +12,11 @@ env:
     - LARAVEL=^7.0
     - LARAVEL=^8.0
 
-jobs:
+matrix:
+  fast_finish: true
   exclude:
     - php: 7.2
       env: LARAVEL=^8.0
-
-matrix:
-  fast_finish: true
 
 install:
   - travis_retry composer require "illuminate/contracts=${LARAVEL}" --dev --prefer-dist --no-interaction --no-suggest
