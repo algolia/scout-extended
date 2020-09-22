@@ -22,7 +22,6 @@
         "illuminate/database": "^6.0|^7.0|^8.0",
         "illuminate/filesystem": "^6.0|^7.0|^8.0",
         "illuminate/support": "^6.0|^7.0|^8.0",
-        "laravel/legacy-factories": "^1.0",
         "laravel/scout": "^8.0",
         "riimu/kit-phpencoder": "^2.4"
     },
@@ -35,7 +34,8 @@
         "nunomaduro/larastan": "^0.6",
         "orchestra/testbench": "^4.0|^5.0|^6.0",
         "phpstan/phpstan": "^0.12.14",
-        "phpunit/phpunit": "^8.0|^9.0"
+        "phpunit/phpunit": "^8.0|^9.0",
+        "laravel/legacy-factories": "^1.0"
     },
     "autoload-dev": {
         "psr-4": {
