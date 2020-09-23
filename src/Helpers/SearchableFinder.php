@@ -94,7 +94,7 @@ final class SearchableFinder
     private function getProjectClasses(): array
     {
         if (self::$declaredClasses === null) {
-            $configFiles = Finder::create()->files()->name('*.php')->in($this->app->path());
+            $configFiles = Finder::create()->files()->name('*.php')->in(app('path'));
 
             foreach ($configFiles->files() as $file) {
                 require_once $file;

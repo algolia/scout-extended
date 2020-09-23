@@ -43,6 +43,6 @@ final class OptimizeCommandTest extends TestCase
 
         Artisan::call('scout:optimize', ['searchable' => User::class]);
 
-        $this->assertFileNotExists(config_path('scout-users.php'));
+        $this->assertFileDoesNotExist(config_path('scout-users.php'));
     }
 }
