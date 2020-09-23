@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.10.0](https://github.com/algolia/scout-extended/compare/v1.9.0...v1.10.0) - 2020-09-23
+### Added
+- Support to Laravel 8 ([#248](https://github.com/algolia/scout-extended/pull/248))
+
 ## [1.9.0](https://github.com/algolia/scout-extended/compare/v1.8.0...v1.9.0) - 2020-03-03
 ### Added
 - Support to Laravel 7 ([#225](https://github.com/algolia/scout-extended/pull/225))
@@ -16,7 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.8.0](https://github.com/algolia/scout-extended/compare/v1.7.0...v1.8.0) - 2019-10-14
 ### Added
 - Support to `_snippetResult` in searchable metadata ([#207](https://github.com/algolia/scout-extended/pull/207))
-
+EngineManager
 ## [1.7.0](https://github.com/algolia/scout-extended/compare/v1.6.0...v1.7.0) - 2019-08-28
 ### Added
 - Support to `laravel/framework:^6.0` ([#198](https://github.com/algolia/scout-extended/pull/198))
