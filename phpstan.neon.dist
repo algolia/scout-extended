@@ -6,14 +6,10 @@ parameters:
         - src
     checkMissingIterableValueType: false
     ignoreErrors:
-        - '#Using \$this in static method Algolia\\ScoutExtended\\Searchable\\Aggregator::bootSearchable\(\).#'
-        - '#Method Algolia\\ScoutExtended\\Engines\\AlgoliaEngine::map\(\) should return Illuminate\\Database\\Eloquent\\Collection but returns Illuminate\\Support\\Collection.#'
-        - '#Algolia\\ScoutExtended\\Engines\\AlgoliaEngine::__construct\(\) does not call parent constructor from Laravel\\Scout\\Engines\\AlgoliaEngine.#'
         - '#Illuminate\\Database\\Eloquent\\Model::searchableAs\(\)#'
         - '#Property Laravel\\Scout\\Builder::\$callback \(string\) does not accept Closure\(mixed, mixed, mixed\): mixed.#'
         - '#Algolia\\ScoutExtended\\ScoutExtendedServiceProvider::getModel\(\)#'
         - '#Cannot call static method create\(\) on string\|null#'
-        - '#Cannot call method newCollection\(\) on mixed.#'
-        - '#Casting to string something that#'
         - '#Unsafe usage of new static#'
         - '#Method Algolia\\ScoutExtended\\Console\\Commands\\OptimizeCommand::handle\(\) has no return typehint specified.#'
+        - '#Call to an undefined method Illuminate\\Support\\HigherOrderCollectionProxy::pushSoftDeleteMetadata\(\)#'
