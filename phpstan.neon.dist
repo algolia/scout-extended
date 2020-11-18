@@ -7,7 +7,6 @@ parameters:
     checkMissingIterableValueType: false
     ignoreErrors:
         - '#Illuminate\\Database\\Eloquent\\Model::searchableAs\(\)#'
-        - '#Property Laravel\\Scout\\Builder::\$callback \(string\) does not accept Closure\(mixed, mixed, mixed\): mixed.#'
         - '#Algolia\\ScoutExtended\\ScoutExtendedServiceProvider::getModel\(\)#'
         - '#Cannot call static method create\(\) on string\|null#'
         - '#Unsafe usage of new static#'
