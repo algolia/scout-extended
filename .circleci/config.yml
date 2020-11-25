@@ -17,8 +17,8 @@ aliases:
   - &save_cache
     name: save Composer cache
     key: composer-deps-<<parameters.version>>-{{ checksum "composer.json" }}
-      paths:
-        - ./vendor
+    paths:
+      - ./vendor
 
   - &credentials
     name: Get API Key Dealer client
@@ -36,8 +36,7 @@ aliases:
         export CI_PROJ_USERNAME=$CIRCLE_PROJECT_USERNAME
         export CI_PROJ_REPONAME=$CIRCLE_PROJECT_REPONAME
 
-        eval $(./algolia-keys export)
-        composer test
+        eval $(./algolia-keys export) && composer test
       fi
 
 executors:
