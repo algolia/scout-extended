@@ -1,7 +1,7 @@
 In this page you will find our recommended way of installing Docker on your machine. 
 This guide is made for OSX users.
 
-## Install docker
+## Install Docker
 
 First install Docker using [Homebrew](https://brew.sh/)
 ```
@@ -10,7 +10,7 @@ $ brew install docker
 
 You can then install [Docker Desktop](https://docs.docker.com/get-docker/) if you wish, or use `docker-machine`. As we prefer the second option, we will only document this one.
 
-## Setup your docker
+## Setup your Docker
 
 Install `docker-machine`
 ```
