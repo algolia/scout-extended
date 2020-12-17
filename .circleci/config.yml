@@ -33,8 +33,9 @@ aliases:
       then
         composer test
       else
-        export CI_PROJ_USERNAME=$CIRCLE_PR_USERNAME
-        export CI_PROJ_REPONAME=$CIRCLE_PR_REPONAME
+        export CI_PROJ_USERNAME=$CIRCLE_PROJECT_USERNAME
+        export CI_PROJ_REPONAME=$CIRCLE_PROJECT_REPONAME
+        export TRAVIS_REPO_SLUG="$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 
         eval $(./algolia-keys export) && composer test
       fi
