@@ -12,7 +12,7 @@ aliases:
 
   - &install_dependencies
     name: Install Composer dependencies
-    command: COMPOSER_MEMORY_LIMIT=-1 composer require "illuminate/contracts=<<parameters.laravel>>" --dev --prefer-dist --no-interaction --no-suggest
+    command: COMPOSER_MEMORY_LIMIT=-1 composer require "illuminate/contracts=<<parameters.laravel>>" --dev --prefer-dist --no-interaction
 
   - &save_cache
     name: save Composer cache
@@ -80,5 +80,5 @@ workflows:
       - test:
           matrix:
             parameters:
-              version: ['7.3', '7.4']
+              version: ['7.3', '7.4', '8.0']
               laravel: ['^6.0', '^7.0', '^8.0']

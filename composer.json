@@ -14,9 +14,9 @@
         }
     ],
     "require": {
-        "php": "^7.3",
+        "php": "^7.3|^8.0",
         "ext-json": "*",
-        "algolia/algoliasearch-client-php": "^2.5.1",
+        "algolia/algoliasearch-client-php": "^2.7.3",
         "illuminate/console": "^6.0|^7.0|^8.0",
         "illuminate/contracts": "^6.0|^7.0|^8.0",
         "illuminate/database": "^6.0|^7.0|^8.0",
@@ -29,13 +29,13 @@
         "ext-dom": "Required to use the HTML Splitter."
     },
     "require-dev": {
-        "fzaninotto/faker": "^1.8",
-        "mockery/mockery": "^1.1",
+        "fakerphp/faker": "^1.13",
+        "mockery/mockery": "^1.4",
         "nunomaduro/larastan": "^0.6",
         "orchestra/testbench": "^4.9|^5.9|^6.6",
         "phpstan/phpstan": "^0.12.14",
         "phpunit/phpunit": "^8.0|^9.0",
-        "laravel/legacy-factories": "^1.0"
+        "laravel/legacy-factories": "^1.1"
     },
     "autoload-dev": {
         "psr-4": {
