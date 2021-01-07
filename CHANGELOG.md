@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.12.0](https://github.com/algolia/scout-extended/compare/v1.11.0...v1.12.0) - 2021-01-07
+### Added
+- Support for `SearchableFinder` to find `Searchable` classes outside of `app/` ([#175](https://github.com/algolia/scout-extended/pull/175))
+
 ## [1.11.0](https://github.com/algolia/scout-extended/compare/v1.10.2...v1.11.0) - 2021-01-04
 ### Added
 - Support for PHP 8 ([#256](https://github.com/algolia/scout-extended/pull/256))
@@ -163,4 +167,4 @@ EngineManager
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.9.0...HEAD
+[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.12.0...HEAD
