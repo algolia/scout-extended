@@ -77,9 +77,10 @@ final class SearchableFinder
         [$sources, $namespaces] = $this->inferProjectSourcePaths();
 
         return array_values(array_filter(
-            $this->getProjectClasses($sources, $command), function (string $class) use ($namespaces) {
-            return Str::startsWith($class, $namespaces) && $this->isSearchableModel($class);
-        }
+            $this->getProjectClasses($sources, $command),
+            function (string $class) use ($namespaces) {
+                return Str::startsWith($class, $namespaces) && $this->isSearchableModel($class);
+            }
         ));
     }
 
