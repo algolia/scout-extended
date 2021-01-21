@@ -31,7 +31,7 @@ final class SearchableFinder
     /**
      * @var array
      */
-    private static $declaredClasses;
+    private $declaredClasses;
 
     /**
      * @var \Illuminate\Contracts\Foundation\Application
@@ -101,7 +101,7 @@ final class SearchableFinder
      */
     private function getProjectClasses(array $sources, Command $command): array
     {
-        if (self::$declaredClasses === null) {
+        if ($this->declaredClasses === null) {
             $configFiles = Finder::create()
                 ->files()
                 ->notName('*.blade.php')
@@ -117,10 +117,10 @@ final class SearchableFinder
                 }
             }
 
-            self::$declaredClasses = get_declared_classes();
+            $this->declaredClasses = get_declared_classes();
         }
 
-        return self::$declaredClasses;
+        return $this->declaredClasses;
     }
 
     /**
