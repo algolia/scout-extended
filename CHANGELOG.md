@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.13.0](https://github.com/algolia/scout-extended/compare/v1.12.0...v1.13.0) - 2021-01-22
+### Fixed
+- Ignore import errors when scannig for searchables ([#262](https://github.com/algolia/scout-extended/pull/262))
+
+
 ## [1.12.0](https://github.com/algolia/scout-extended/compare/v1.11.0...v1.12.0) - 2021-01-07
 ### Added
 - Support for `SearchableFinder` to find `Searchable` classes outside of `app/` ([#175](https://github.com/algolia/scout-extended/pull/175))
@@ -167,4 +172,4 @@ EngineManager
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.12.0...HEAD
+[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.13.0...HEAD
