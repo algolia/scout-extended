@@ -23,7 +23,8 @@ final class SearchableFinderTest extends TestCase
         );
 
         $this->artisan('scout:sync')
-            ->expectsOutput("{$filePath} could not be inspected due to an error being thrown while loading it.");
+            ->expectsOutput("{$filePath} could not be inspected due to an error being thrown while loading it.")
+            ->expectsQuestion('Wish to optimize the search experience based on information from the searchable class?', true);
     }
 
     public function tearDown(): void
