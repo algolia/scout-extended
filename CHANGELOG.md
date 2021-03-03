@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.13.0](https://github.com/algolia/scout-extended/compare/v1.12.0...v1.13.0) - 2021-01-22
+### Fixed
+- Ignore import errors when scannig for searchables ([#262](https://github.com/algolia/scout-extended/pull/262))
+
+
+## [1.12.0](https://github.com/algolia/scout-extended/compare/v1.11.0...v1.12.0) - 2021-01-07
+### Added
+- Support for `SearchableFinder` to find `Searchable` classes outside of `app/` ([#175](https://github.com/algolia/scout-extended/pull/175))
+
+## [1.11.0](https://github.com/algolia/scout-extended/compare/v1.10.2...v1.11.0) - 2021-01-04
+### Added
+- Support for PHP 8 ([#256](https://github.com/algolia/scout-extended/pull/256))
+
+### Changed
+- Migrated from Travis CI to CircleCI ([#255](https://github.com/algolia/scout-extended/pull/255))
+
+## [1.10.2](https://github.com/algolia/scout-extended/compare/v1.10.1...v1.10.2) - 2020-11-24
+### Chore
+- Containerize repo ([#252](https://github.com/algolia/scout-extended/pull/252))
+
 ## [1.10.1](https://github.com/algolia/scout-extended/compare/v1.10.0...v1.10.1) - 2020-09-23
 ### Added
 - Support for Laravel 6 & 7 for the latest versions ([#250](https://github.com/algolia/scout-extended/pull/250))
@@ -152,4 +172,4 @@ EngineManager
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.9.0...HEAD
+[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.13.0...HEAD

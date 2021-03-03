@@ -4,7 +4,7 @@
   </a>
 
   <p align="center">
-    <a href="https://travis-ci.org/algolia/scout-extended"><img src="https://img.shields.io/travis/algolia/scout-extended/master.svg" alt="Build Status"></img></a>
+    <a href="https://circleci.com/gh/algolia/scout-extended"><img src="https://circleci.com/gh/algolia/scout-extended.svg?style=shield" alt="CircleCI" /></a>
     <a href="https://scrutinizer-ci.com/g/algolia/scout-extended"><img src="https://img.shields.io/scrutinizer/g/algolia/scout-extended.svg" alt="Quality Score"></img></a>
     <a href="https://scrutinizer-ci.com/g/algolia/scout-extended"><img src="https://scrutinizer-ci.com/g/algolia/scout-extended/badges/coverage.png?b=master" alt="Coverage"></img></a>
     <a href="https://packagist.org/packages/algolia/scout-extended"><img src="https://poser.pugx.org/algolia/scout-extended/d/total.svg" alt="Total Downloads"></a>
@@ -53,6 +53,10 @@ Because everyone should be able to build great search, you can use Algolia's bas
 ## Troubleshooting
 
 Encountering an issue? Before reaching out to support, we recommend heading to our [FAQ](https://www.algolia.com/doc/framework-integration/laravel/troubleshooting/faq/) where you will find answers for the most common issues and gotchas with the package.
+
+## Use the Dockerfile
+
+If you want to contribute to this project without installing all its dependencies, you can use our Docker image. Please check our [dedicated guide](DOCKER_README.MD) to learn more.
 
 ## 🆓 License
 Scout Extended is an open-sourced software licensed under the [MIT license](LICENSE.md).
