@@ -12,3 +12,6 @@ parameters:
         - '#Unsafe usage of new static#'
         - '#Method Algolia\\ScoutExtended\\Console\\Commands\\OptimizeCommand::handle\(\) has no return typehint specified.#'
         - '#Call to an undefined method Illuminate\\Support\\HigherOrderCollectionProxy::pushSoftDeleteMetadata\(\)#'
+        - '#Cannot call method withScoutMetadata\(\) on class-string\|object.#'
+        - '#Cannot call method getScoutKey\(\) on class-string\|object.#'
+        - '#Cannot call method toSearchableArray\(\) on class-string\|object.#'
