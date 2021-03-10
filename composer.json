@@ -14,14 +14,14 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.3|^8.0",
         "ext-json": "*",
-        "algolia/algoliasearch-client-php": "^2.5.1",
-        "illuminate/console": "^6.0|^7.0",
-        "illuminate/contracts": "^6.0|^7.0",
-        "illuminate/database": "^6.0|^7.0",
-        "illuminate/filesystem": "^6.0|^7.0",
-        "illuminate/support": "^6.0|^7.0",
+        "algolia/algoliasearch-client-php": "^2.7.3",
+        "illuminate/console": "^6.0|^7.0|^8.0",
+        "illuminate/contracts": "^6.0|^7.0|^8.0",
+        "illuminate/database": "^6.0|^7.0|^8.0",
+        "illuminate/filesystem": "^6.0|^7.0|^8.0",
+        "illuminate/support": "^6.0|^7.0|^8.0",
         "laravel/scout": "^8.0",
         "riimu/kit-phpencoder": "^2.4"
     },
@@ -29,17 +29,19 @@
         "ext-dom": "Required to use the HTML Splitter."
     },
     "require-dev": {
-        "fzaninotto/faker": "^1.8",
-        "mockery/mockery": "^1.1",
-        "nunomaduro/larastan": "^0.5",
-        "orchestra/testbench": "^4.0|^5.0",
+        "fakerphp/faker": "^1.13",
+        "mockery/mockery": "^1.4",
+        "nunomaduro/larastan": "^0.6",
+        "orchestra/testbench": "^4.9|^5.9|^6.6",
         "phpstan/phpstan": "^0.12.14",
-        "phpunit/phpunit": "^8.0|^9.0"
+        "phpunit/phpunit": "^8.0|^9.0",
+        "laravel/legacy-factories": "^1.1"
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "App\\": "tests/laravel/app"
+            "App\\": "tests/laravel/app",
+            "Modules\\": "tests/laravel/modules"
         },
         "files": [
             "vendor/mockery/mockery/library/helpers.php"

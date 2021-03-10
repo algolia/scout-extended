@@ -12,6 +12,7 @@ use App\Wall;
 use function count;
 use Illuminate\Support\Facades\Artisan;
 use Mockery;
+use Modules\Taxonomy\Term;
 use Tests\TestCase;
 
 final class ImportCommandTest extends TestCase
@@ -54,6 +55,9 @@ final class ImportCommandTest extends TestCase
         $emptyItemIndexMock = $this->mockIndex(EmptyItem::class);
         $emptyItemIndexMock->expects('clearObjects')->once();
         $emptyItemIndexMock->expects('saveObjects')->once()->with([]);
+
+        $termIndexMock = $this->mockIndex(Term::class);
+        $termIndexMock->expects('clearObjects')->once();
 
         Artisan::call('scout:import');
     }

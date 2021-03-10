@@ -1,0 +1,84 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2.1
+
+aliases:
+  - &restore_cache
+    name: restore Composer cache
+    keys:
+      - composer-deps-<<parameters.version>>-{{ checksum "composer.json" }}
+
+  - &install_dependencies
+    name: Install Composer dependencies
+    command: COMPOSER_MEMORY_LIMIT=-1 composer require "illuminate/contracts=<<parameters.laravel>>" --dev --prefer-dist --no-interaction
+
+  - &save_cache
+    name: save Composer cache
+    key: composer-deps-<<parameters.version>>-{{ checksum "composer.json" }}
+    paths:
+      - ./vendor
+
+  - &credentials
+    name: Get API Key Dealer client
+    command: wget https://alg.li/algolia-keys && chmod +x algolia-keys
+
+  - &test
+    name: Run tests
+    command: |
+      export CI_BUILD_NUM=$CIRCLE_BUILD_NUM
+      export COMPOSER_PROCESS_TIMEOUT=900
+      if [ -z ${CIRCLE_PR_REPONAME+x} ]
+      then
+        composer test
+      else
+        export CI_PROJ_USERNAME=$CIRCLE_PROJECT_USERNAME
+        export CI_PROJ_REPONAME=$CIRCLE_PROJECT_REPONAME
+        export TRAVIS_REPO_SLUG="$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
+
+        eval $(./algolia-keys export) && composer test
+      fi
+
+executors:
+  php-docker: # declares a reusable executor
+    parameters:
+      version:
+        description: "PHP version tag"
+        type: string
+    docker:
+        - image: circleci/php:<<parameters.version>>
+
+jobs:
+  test:
+    parameters:
+      version:
+        description: "PHP version tag"
+        type: string
+      laravel:
+        description: "Laravel version tag"
+        type: string
+
+    executor:
+      name: php-docker
+      version: <<parameters.version>>
+
+    steps:
+      - checkout
+
+      - run: sudo apt update
+      - run: sudo docker-php-ext-install zip
+      - restore_cache: *restore_cache
+      - run: *install_dependencies
+      - save_cache: *save_cache
+      - run: *credentials
+      - run: *test
+
+workflows:
+  workflow:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              version: ['7.3', '7.4', '8.0']
+              laravel: ['^6.0', '^7.0', '^8.0']
