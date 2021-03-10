@@ -102,9 +102,13 @@ final class Builder extends BaseBuilder
      */
     public function whereIn($field, array $values): self
     {
-        $wheres = array_map(function ($value) use ($field) {
-            return "$field={$this->transform($value)}";
-        }, array_values($values));
+        if(! empty($values)) {
+            $wheres = array_map(function ($value) use ($field) {
+                return "$field={$this->transform($value)}";
+            }, array_values($values));
+        } else {
+            $wheres = ['0 = 1'];
+        }
 
         $this->wheres[] = $wheres;
 

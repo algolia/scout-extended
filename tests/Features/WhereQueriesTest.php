@@ -89,6 +89,17 @@ final class WhereQueriesTest extends TestCase
         User::search('foo')->whereIn('id', [1, 2, 3, 4])->get();
     }
 
+    public function testWhereInEmptyArray(): void
+    {
+        $this->mockIndex(User::class)->shouldReceive('search')->once()->with('foo', [
+            'numericFilters' => [
+                ['0 = 1'],
+            ],
+        ])->andReturn(['hits' => []]);
+
+        User::search('foo')->whereIn('id', [])->get();
+    }
+
     public function testMultipleWheres(): void
     {
         $this->mockIndex(User::class)->shouldReceive('search')->once()->with('foo', [
