@@ -28,7 +28,7 @@ class Aggregators extends Aggregator
 
         foreach ($searchables as $searchable) {
             foreach ((new $searchable)->getModels() as $model) {
-                $models[$model][] = $searchable;
+                $models[(string) $model][] = $searchable;
             }
         }
 
