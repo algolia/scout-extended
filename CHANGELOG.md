@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.14.0](https://github.com/algolia/scout-extended/compare/v1.13.0...v1.14.0) - 2021-03-12
+### Added
+- Documentation on running the test suite locally ([#267](https://github.com/algolia/scout-extended/pull/267))
+
+### Fixed
+- Bug with empty array when using `whereIn` method ([#265](https://github.com/algolia/scout-extended/pull/265))
+- Failing test in `SearchableFinderTest` ([#264](https://github.com/algolia/scout-extended/pull/264))
+
+
 ## [1.13.0](https://github.com/algolia/scout-extended/compare/v1.12.0...v1.13.0) - 2021-01-22
 ### Fixed
 - Ignore import errors when scannig for searchables ([#262](https://github.com/algolia/scout-extended/pull/262))
