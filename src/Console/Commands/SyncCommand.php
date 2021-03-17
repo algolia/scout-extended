@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Console\Commands;
 
 use Algolia\ScoutExtended\Algolia;
+use Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 use Algolia\ScoutExtended\Settings\Status;
 use Algolia\ScoutExtended\Settings\Synchronizer;
 use Illuminate\Console\Command;
@@ -41,7 +41,7 @@ final class SyncCommand extends Command
         Algolia $algolia,
         Synchronizer $synchronizer,
         SearchableFinder $searchableFinder,
-        LocalSettingsRepository $localRepository
+        LocalSettingsRepositoryContract $localRepository
     ): void {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Analysing settings from: <info>['.$searchable.']</info>');

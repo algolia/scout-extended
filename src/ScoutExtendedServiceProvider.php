@@ -22,10 +22,12 @@ use Algolia\ScoutExtended\Console\Commands\OptimizeCommand;
 use Algolia\ScoutExtended\Console\Commands\ReImportCommand;
 use Algolia\ScoutExtended\Console\Commands\StatusCommand;
 use Algolia\ScoutExtended\Console\Commands\SyncCommand;
+use Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\ScoutExtended\Managers\EngineManager;
+use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 use Algolia\ScoutExtended\Searchable\AggregatorObserver;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
@@ -94,6 +96,8 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         $this->app->bind(SearchableFinder::class, function () {
             return new SearchableFinder($this->app);
         });
+
+        $this->app->singleton(LocalSettingsRepositoryContract::class, LocalSettingsRepository::class);
     }
 
     /**

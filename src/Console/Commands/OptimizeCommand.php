@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Console\Commands;
 
 use Algolia\ScoutExtended\Algolia;
+use Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract;
 use Algolia\ScoutExtended\Exceptions\ModelNotFoundException;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
-use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
 use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Settings\LocalFactory;
 use Illuminate\Console\Command;
@@ -41,7 +41,7 @@ final class OptimizeCommand extends Command
         LocalFactory $localFactory,
         Compiler $compiler,
         SearchableFinder $searchableFinder,
-        LocalSettingsRepository $localRepository
+        LocalSettingsRepositoryContract $localRepository
     ) {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
