@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.15.0](https://github.com/algolia/scout-extended/compare/v1.14.0...v1.15.0) - 2021-03-12
+### Added
+- Add support for custom binding of `LocalSettingsRepository` using `LocalSettingsRepositoryContract` ([#272](https://github.com/algolia/scout-extended/pull/272))
+
+### Fixed
+- Set the correct permission for `LICENSE.md` ([#271](https://github.com/algolia/scout-extended/pull/271))
+
 ## [1.14.0](https://github.com/algolia/scout-extended/compare/v1.13.0...v1.14.0) - 2021-03-12
 ### Added
 - Documentation on running the test suite locally ([#267](https://github.com/algolia/scout-extended/pull/267))
