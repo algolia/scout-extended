@@ -40,6 +40,8 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'algolia');
+        $this->registerCommands();
+        $this->registerMacros();
     }
 
     /**
@@ -50,8 +52,6 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         $this->app->register(ScoutServiceProvider::class);
 
         $this->registerBinds();
-        $this->registerCommands();
-        $this->registerMacros();
     }
 
     /**
