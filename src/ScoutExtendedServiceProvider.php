@@ -61,8 +61,8 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
      */
     private function registerBinds(): void
     {
-        $this->app->bind(Algolia::class, function () {
-            return new Algolia($this->app);
+        $this->app->bind(Algolia::class, function ($app) {
+            return new Algolia($app);
         });
 
         $this->app->alias(Algolia::class, 'algolia');
@@ -73,13 +73,13 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
 
         $this->app->alias(EngineManager::class, \Laravel\Scout\EngineManager::class);
 
-        $this->app->bind(AlgoliaEngine::class, function (): AlgoliaEngine {
-            return $this->app->make(\Laravel\Scout\EngineManager::class)->createAlgoliaDriver();
+        $this->app->bind(AlgoliaEngine::class, function ($app): AlgoliaEngine {
+            return $app->make(\Laravel\Scout\EngineManager::class)->createAlgoliaDriver();
         });
 
         $this->app->alias(AlgoliaEngine::class, 'algolia.engine');
-        $this->app->bind(SearchClient::class, function (): SearchClient {
-            return $this->app->make('algolia.engine')->getClient();
+        $this->app->bind(SearchClient::class, function ($app): SearchClient {
+            return $app->make('algolia.engine')->getClient();
         });
 
         $this->app->alias(SearchClient::class, 'algolia.client');
@@ -93,8 +93,8 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         $this->app->singleton(AggregatorObserver::class, AggregatorObserver::class);
         $this->app->bind(\Laravel\Scout\Builder::class, Builder::class);
 
-        $this->app->bind(SearchableFinder::class, function () {
-            return new SearchableFinder($this->app);
+        $this->app->bind(SearchableFinder::class, function ($app) {
+            return new SearchableFinder($app);
         });
 
         $this->app->singleton(LocalSettingsRepositoryContract::class, LocalSettingsRepository::class);
