@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.17.0](https://github.com/algolia/scout-extended/compare/v1.16.0...v1.17.0) - 2021-04-14
+### Changed
+- Update the Algolia API client version ([#277](https://github.com/algolia/scout-extended/pull/277))
+
 ## [1.16.0](https://github.com/algolia/scout-extended/compare/v1.15.0...v1.16.0) - 2021-04-08
 ### Added
 - Prepare support for Laravel Octance ([#275](https://github.com/algolia/scout-extended/pull/275))
