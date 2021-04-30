@@ -22,7 +22,7 @@
         "illuminate/database": "^6.0|^7.0|^8.0",
         "illuminate/filesystem": "^6.0|^7.0|^8.0",
         "illuminate/support": "^6.0|^7.0|^8.0",
-        "laravel/scout": "^8.0",
+        "laravel/scout": "^8.0|^9.0",
         "riimu/kit-phpencoder": "^2.4"
     },
     "suggest": {
