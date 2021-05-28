@@ -107,17 +107,15 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
      */
     private function registerCommands(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                MakeAggregatorCommand::class,
-                ImportCommand::class,
-                FlushCommand::class,
-                OptimizeCommand::class,
-                ReImportCommand::class,
-                StatusCommand::class,
-                SyncCommand::class,
-            ]);
-        }
+        $this->commands([
+            MakeAggregatorCommand::class,
+            ImportCommand::class,
+            FlushCommand::class,
+            OptimizeCommand::class,
+            ReImportCommand::class,
+            StatusCommand::class,
+            SyncCommand::class,
+        ]);
     }
 
     /**
