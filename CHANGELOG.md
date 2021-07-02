@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.19.0](https://github.com/algolia/scout-extended/compare/v1.18.0...v1.19.0) - 2021-07-02
+### Fixed
+- Allow `toSearchableArray` on traits ([#283](https://github.com/algolia/scout-extended/pull/283))
+
 ## [1.18.0](https://github.com/algolia/scout-extended/compare/v1.17.0...v1.18.0) - 2021-04-29
 ### Changed
 - Add support for laravel/scout v9.0 ([#278](https://github.com/algolia/scout-extended/pull/278))
@@ -203,4 +207,4 @@ EngineManager
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.13.0...HEAD
+[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.19.0...HEAD
