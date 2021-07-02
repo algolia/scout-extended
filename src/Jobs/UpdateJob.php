@@ -19,6 +19,7 @@ use Algolia\ScoutExtended\Searchable\ModelsResolver;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
 use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
+use Laravel\Scout\Searchable;
 use function get_class;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -233,13 +234,17 @@ final class UpdateJob
     private function hasToSearchableArray($searchable): bool
     {
         $searchableClass = get_class($searchable);
+        $scoutTraitFileName = (new ReflectionClass(Searchable::class))->getFileName();
 
         if (! array_key_exists($searchableClass, $this->searchablesWithToSearchableArray)) {
             $reflectionClass = new ReflectionClass(get_class($searchable));
 
-            $this->searchablesWithToSearchableArray[$searchableClass] =
-                Str::endsWith((string) $reflectionClass->getMethod('toSearchableArray')->getFileName(),
-                    (string) $reflectionClass->getFileName());
+            // File where the method `toSearchableArray` is defined.
+            $methodDefinitionFileName = $reflectionClass->getMethod('toSearchableArray')->getFileName();
+
+            // If the method toSearchableArray is defined in the Scout's
+            // trait, then the Model doesn't have a custom toSearchableArray.
+            $this->searchablesWithToSearchableArray[$searchableClass] = $methodDefinitionFileName !== $scoutTraitFileName;
         }
 
         return $this->searchablesWithToSearchableArray[$searchableClass];
