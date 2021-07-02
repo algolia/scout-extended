@@ -30,10 +30,16 @@ final class BuilderTest extends TestCase
     {
         $this->mockIndex(User::class)
             ->expects('search')
-            ->with('foo', Mockery::subset(['optionalFilters' => 'sub1.id:1,sub2.name:hello']))
+            ->with(
+                'foo',
+                Mockery::subset([
+                    'optionalFilters' => 'sub1.id:1,sub2.name:hello',
+                    'queryLanguages' => ['fr', 'nl'],
+                ]))
             ->andReturn(['hits' => []]);
 
         User::search('foo')
+            ->with(['queryLanguages' => ['fr', 'nl']])
             ->whereOptional('sub1.id', 1)
             ->whereOptional('sub2.name', 'hello')
             ->get();
@@ -43,14 +49,20 @@ final class BuilderTest extends TestCase
     {
         $this->mockIndex(User::class)
             ->expects('search')
-            ->with('foo', Mockery::subset(['optionalFilters' => 'price:100']))
+            ->with(
+                'foo',
+                Mockery::subset([
+                    'optionalFilters' => 'price:100',
+                    'queryLanguages' => ['fr', 'nl'],
+                ]))
             ->andReturn(['hits' => []]);
 
         User::search('foo')
             ->whereOptional('sub1.id', 1)
             ->whereOptional('sub2.name', 'hello')
             ->with([
-                'optionalFilters' => 'price:100'
+                'optionalFilters' => 'price:100',
+                'queryLanguages' => ['fr', 'nl'],
             ])
             ->get();
     }
@@ -59,12 +71,18 @@ final class BuilderTest extends TestCase
     {
         $this->mockIndex(User::class)
             ->expects('search')
-            ->with('foo', Mockery::subset(['optionalFilters' => 'sub1.id:1,sub2.name:hello']))
+            ->with(
+                'foo',
+                Mockery::subset([
+                    'optionalFilters' => 'sub1.id:1,sub2.name:hello',
+                    'queryLanguages' => ['fr', 'nl'],
+                ]))
             ->andReturn(['hits' => []]);
 
         User::search('foo')
             ->with([
-                'optionalFilters' => 'price:100'
+                'optionalFilters' => 'price:100',
+                'queryLanguages' => ['fr', 'nl'],
             ])
             ->whereOptional('sub1.id', 1)
             ->whereOptional('sub2.name', 'hello')
