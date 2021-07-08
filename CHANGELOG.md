@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-- Add `whereOptional` helper to send optional filters
+
+## [1.20.0](https://github.com/algolia/scout-extended/compare/v1.19.0...v1.20.0) - 2021-07-08
+### Added
+- Add `whereOptional` helper to send optional filters ([#284](https://github.com/algolia/scout-extended/pull/284))
 
 ## [1.19.0](https://github.com/algolia/scout-extended/compare/v1.18.0...v1.19.0) - 2021-07-02
 ### Fixed
