@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Settings;
 
 use Algolia\AlgoliaSearch\SearchIndex;
-use Algolia\ScoutExtended\Repositories\LocalSettingsRepository;
+use Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract;
 use Algolia\ScoutExtended\Repositories\RemoteSettingsRepository;
 use Algolia\ScoutExtended\Repositories\UserDataRepository;
 
@@ -34,7 +34,7 @@ class Synchronizer
     private $encrypter;
 
     /**
-     * @var \Algolia\ScoutExtended\Repositories\LocalSettingsRepository
+     * @var \Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract
      */
     private $localRepository;
 
@@ -53,7 +53,7 @@ class Synchronizer
      *
      * @param \Algolia\ScoutExtended\Settings\Compiler $compiler
      * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
-     * @param \Algolia\ScoutExtended\Repositories\LocalSettingsRepository $localRepository
+     * @param \Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract $localRepository
      * @param \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository $remoteRepository
      * @param \Algolia\ScoutExtended\Repositories\UserDataRepository $userDataRepository
      *
@@ -62,7 +62,7 @@ class Synchronizer
     public function __construct(
         Compiler $compiler,
         Encrypter $encrypter,
-        LocalSettingsRepository $localRepository,
+        LocalSettingsRepositoryContract $localRepository,
         RemoteSettingsRepository $remoteRepository,
         UserDataRepository $userDataRepository
     ) {

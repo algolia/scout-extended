@@ -6,6 +6,45 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.20.0](https://github.com/algolia/scout-extended/compare/v1.19.0...v1.20.0) - 2021-07-08
+### Added
+- Add `whereOptional` helper to send optional filters ([#284](https://github.com/algolia/scout-extended/pull/284))
+
+## [1.19.0](https://github.com/algolia/scout-extended/compare/v1.18.0...v1.19.0) - 2021-07-02
+### Fixed
+- Allow `toSearchableArray` on traits ([#283](https://github.com/algolia/scout-extended/pull/283))
+
+## [1.18.0](https://github.com/algolia/scout-extended/compare/v1.17.0...v1.18.0) - 2021-04-29
+### Changed
+- Add support for laravel/scout v9.0 ([#278](https://github.com/algolia/scout-extended/pull/278))
+
+## [1.17.0](https://github.com/algolia/scout-extended/compare/v1.16.0...v1.17.0) - 2021-04-14
+### Changed
+- Update the Algolia API client version ([#277](https://github.com/algolia/scout-extended/pull/277))
+
+## [1.16.0](https://github.com/algolia/scout-extended/compare/v1.15.0...v1.16.0) - 2021-04-08
+### Added
+- Prepare support for Laravel Octance ([#275](https://github.com/algolia/scout-extended/pull/275))
+
+### Fixed
+- Register macros and commands during provider boot ([#274](https://github.com/algolia/scout-extended/pull/274))
+
+## [1.15.0](https://github.com/algolia/scout-extended/compare/v1.14.0...v1.15.0) - 2021-03-12
+### Added
+- Add support for custom binding of `LocalSettingsRepository` using `LocalSettingsRepositoryContract` ([#272](https://github.com/algolia/scout-extended/pull/272))
+
+### Fixed
+- Set the correct permission for `LICENSE.md` ([#271](https://github.com/algolia/scout-extended/pull/271))
+
+## [1.14.0](https://github.com/algolia/scout-extended/compare/v1.13.0...v1.14.0) - 2021-03-12
+### Added
+- Documentation on running the test suite locally ([#267](https://github.com/algolia/scout-extended/pull/267))
+
+### Fixed
+- Bug with empty array when using `whereIn` method ([#265](https://github.com/algolia/scout-extended/pull/265))
+- Failing test in `SearchableFinderTest` ([#264](https://github.com/algolia/scout-extended/pull/264))
+
+
 ## [1.13.0](https://github.com/algolia/scout-extended/compare/v1.12.0...v1.13.0) - 2021-01-22
 ### Fixed
 - Ignore import errors when scannig for searchables ([#262](https://github.com/algolia/scout-extended/pull/262))
@@ -172,4 +211,4 @@ EngineManager
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.13.0...HEAD
+[Unreleased]: https://github.com/algolia/scout-extended/compare/v1.19.0...HEAD

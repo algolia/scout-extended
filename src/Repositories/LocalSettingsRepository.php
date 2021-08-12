@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Repositories;
 
 use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract;
 use Algolia\ScoutExtended\Settings\Settings;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
@@ -21,7 +22,7 @@ use Illuminate\Support\Str;
 /**
  * @internal
  */
-final class LocalSettingsRepository
+final class LocalSettingsRepository implements LocalSettingsRepositoryContract
 {
     /**
      * @var \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository
