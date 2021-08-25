@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Features;
 
 use Algolia\ScoutExtended\Searchable\AggregatorCollection;
+use Algolia\ScoutExtended\Searchable\Aggregators;
+use App\All;
 use App\News;
 use App\Post;
 use App\Thread;
@@ -218,5 +220,51 @@ final class AggregatorTest extends TestCase
 
         $this->assertFalse(Wall::search()->get()->first()->relationLoaded('threads'));
         $this->assertTrue(News::search()->get()->first()->relationLoaded('threads'));
+    }
+
+    public function testAggregatorWithMultipleBoots(): void
+    {
+        Aggregators::bootSearchables([
+            Wall::class,
+            All::class,
+        ]);
+
+        $usersIndexMock = $this->mockIndex('users');
+        $wallIndexMock = $this->mockIndex('wall');
+        $allIndexMock = $this->mockIndex('all');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+        $wallIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+        $allIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+        $user = factory(User::class)->create();
+
+        $usersIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+        ]);
+
+        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+        ]);
+
+        $allIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+        ]);
+
+        $user->delete();
     }
 }
