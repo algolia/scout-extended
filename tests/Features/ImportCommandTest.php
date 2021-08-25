@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use App\All;
 use App\EmptyItem;
 use App\News;
 use App\Thread;
@@ -20,6 +21,7 @@ final class ImportCommandTest extends TestCase
     public function testImport(): void
     {
         Wall::bootSearchable();
+        All::bootSearchable();
         News::bootSearchable();
 
         $this->app['config']->set('scout.soft_delete', true);
@@ -38,6 +40,12 @@ final class ImportCommandTest extends TestCase
         $wallIndexMock = $this->mockIndex(Wall::class);
         $wallIndexMock->expects('clearObjects')->once();
         $wallIndexMock->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';
+        }));
+
+        $allIndexMock = $this->mockIndex(All::class);
+        $allIndexMock->expects('clearObjects')->once();
+        $allIndexMock->expects('saveObjects')->once()->with(Mockery::on(function ($argument) {
             return count($argument) === 5 && $argument[0]['objectID'] === 'App\User::1';
         }));
 
