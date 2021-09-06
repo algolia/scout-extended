@@ -48,6 +48,23 @@ final class AggregatorObserver extends BaseModelObserver
     }
 
     /**
+     * Set multiple aggregators.
+     *
+     * @param string[] $aggregators
+     * @param string $model
+     *
+     * @return void
+     */
+    public function setAggregators(array $aggregators, string $model): void
+    {
+        if (! array_key_exists($model, $this->aggregators)) {
+            $this->aggregators[$model] = [];
+        }
+
+        $this->aggregators[$model] = $aggregators;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function saved($model): void
