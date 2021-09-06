@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Laravel\Scout\Scout;
 use function in_array;
 use Laravel\Scout\Events\ModelsImported;
 use Laravel\Scout\Searchable;
@@ -250,6 +251,21 @@ abstract class Aggregator implements SearchableCountableContract
     public function newCollection(array $searchables = []): Collection
     {
         return new Collection($searchables);
+    }
+
+    /**
+     * Dispatch the job to make the given models unsearchable.
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection  $models
+     * @return void
+     */
+    public function queueRemoveFromSearch($models)
+    {
+        if ($models->isEmpty()) {
+            return;
+        }
+
+        $models->first()->searchableUsing()->delete($models);
     }
 
     /**
