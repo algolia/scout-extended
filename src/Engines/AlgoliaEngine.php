@@ -129,6 +129,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
      */
     public function mapIds($results)
     {
-        return collect($results['hits'])->pluck('objectID')->values()->map([ObjectIdEncrypter::class, 'decryptSearchableKey']);
+        return collect($results['hits'])->pluck('objectID')->values()
+            ->map([ObjectIdEncrypter::class, 'decryptSearchableKey']);
     }
 }
