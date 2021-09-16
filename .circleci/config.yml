@@ -67,7 +67,7 @@ jobs:
       - checkout
 
       - run: sudo apt-get update
-      - run: sudo apt-get install -y php-zip php-sqlite3 php-mysql
+      - run: sudo apt-get install -y php<<parameters.version>>-zip php<<parameters.version>>-sqlite3
       - restore_cache: *restore_cache
       - run: *install_dependencies
       - save_cache: *save_cache
