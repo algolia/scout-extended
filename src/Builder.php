@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
+use Illuminate\Support\Collection;
 use function func_num_args;
 use function is_callable;
 use Laravel\Scout\Builder as BaseBuilder;
 
 final class Builder extends BaseBuilder
 {
+    /**
+     * @var Collection
+     */
+    private $optionalFilters;
+
     /**
      * {@inheritdoc}
      *
@@ -27,6 +33,7 @@ final class Builder extends BaseBuilder
     public function __construct($model, $query, $callback = null, $softDelete = false)
     {
         parent::__construct($model, (string) $query, $callback, $softDelete);
+        $this->optionalFilters = collect();
     }
 
     /**
@@ -113,6 +120,22 @@ final class Builder extends BaseBuilder
         $this->wheres[] = $wheres;
 
         return $this;
+    }
+
+    /**
+     * Add an optional filter to the search parameters.
+     *
+     * @link https://www.algolia.com/doc/api-reference/api-parameters/optionalFilters/
+     *
+     * @param  string $field
+     * @param  mixed $value
+     *
+     * @return  $this
+     */
+    public function whereOptional($field, $value): self
+    {
+        $this->optionalFilters->push("$field:$value");
+        return $this->with(['optionalFilters' => $this->optionalFilters->join(',')]);
     }
 
     /**

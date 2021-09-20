@@ -9,6 +9,7 @@ use Algolia\ScoutExtended\Transformers\ConvertDatesToTimestamps;
 use Algolia\ScoutExtended\Transformers\ConvertNumericStringsToNumbers;
 use App\Thread;
 use App\User;
+use Tests\Features\Fixtures\ThreadWithSearchableArrayOnTrait;
 use function is_int;
 use Tests\Features\Fixtures\ThreadWithSearchableArray;
 use Tests\Features\Fixtures\ThreadWithSearchableArrayUsingTransform;
@@ -39,6 +40,32 @@ final class TransformersTest extends TestCase
         $threadWithSearchableArray->created_at = now();
 
         dispatch(new UpdateJob(collect([$threadWithSearchableArray])));
+    }
+
+    public function testToSearchableArrayCanBeUsedFromTraits(): void
+    {
+        $threadsIndexMock = $this->mockIndex('threads');
+
+        $threadsIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
+            // Assert 'something' doesn't exist.
+            return empty($argument[0]['something']);
+        }));
+
+        $thread = factory(Thread::class)->create();
+
+        $threadWithSearchableArrayOnTrait = new ThreadWithSearchableArrayOnTrait($thread->toArray());
+
+        $threadsIndexMock = $this->mockIndex($threadWithSearchableArrayOnTrait->searchableAs());
+
+        $threadsIndexMock->shouldReceive('saveObjects')->once()->with(\Mockery::on(function ($argument) {
+            // Assert 'something' is defined.
+            return $argument[0]['something'] === 99;
+        }));
+
+        // Update.
+        $threadWithSearchableArrayOnTrait->created_at = now();
+
+        dispatch(new UpdateJob(collect([$threadWithSearchableArrayOnTrait])));
     }
 
     public function testConvertDatesToTimestamps(): void

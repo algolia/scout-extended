@@ -47,7 +47,7 @@ executors:
         description: "PHP version tag"
         type: string
     docker:
-        - image: circleci/php:<<parameters.version>>
+        - image: cimg/php:<<parameters.version>>
 
 jobs:
   test:
@@ -66,8 +66,8 @@ jobs:
     steps:
       - checkout
 
-      - run: sudo apt update
-      - run: sudo docker-php-ext-install zip
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y php<<parameters.version>>-zip php<<parameters.version>>-sqlite3
       - restore_cache: *restore_cache
       - run: *install_dependencies
       - save_cache: *save_cache
