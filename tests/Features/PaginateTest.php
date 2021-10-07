@@ -15,11 +15,13 @@ final class PaginateTest extends TestCase
 
         $users = factory(User::class, 10)->make()->toArray();
         factory(User::class)->createMany($users);
-        $this->mockIndex(User::class, $this->defaults());
     }
 
     public function testPaginationWithCallback(): void
     {
+        $userIndexMock = $this->mockIndex(User::class, $this->defaults());
+        $userIndexMock->expects('search')->once();
+
         $results = User::search('')->query(function ($query) {
             return $query->orderBy('id', 'desc');
         })->paginate(5);
@@ -30,6 +32,9 @@ final class PaginateTest extends TestCase
 
     public function testPaginationWithoutCallback(): void
     {
+        $userIndexMock = $this->mockIndex(User::class, $this->defaults());
+        $userIndexMock->expects('search')->once();
+
         $results = User::search('')->orderBy('id', 'desc')->paginate(5);
 
         $this->assertEquals(10, $results->total());
