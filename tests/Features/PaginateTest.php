@@ -15,9 +15,10 @@ final class PaginateTest extends TestCase
 
         $users = factory(User::class, 10)->make()->toArray();
         factory(User::class)->createMany($users);
+        $this->mockIndex(User::class, $this->defaults());
     }
 
-    public function testPaginationWithCallback()
+    public function testPaginationWithCallback(): void
     {
         $results = User::search('')->query(function ($query) {
             return $query->orderBy('id', 'desc');
@@ -27,7 +28,7 @@ final class PaginateTest extends TestCase
         $this->assertEquals(2, $results->lastPage());
     }
 
-    public function testPaginationWithoutCallback()
+    public function testPaginationWithoutCallback(): void
     {
         $results = User::search('')->orderBy('id', 'desc')->paginate(5);
 
