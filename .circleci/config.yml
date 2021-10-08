@@ -22,7 +22,11 @@ aliases:
 
   - &credentials
     name: Get API Key Dealer client
-    command: wget https://alg.li/algolia-keys && chmod +x algolia-keys
+    command: |
+      if [ "${CIRCLE_PR_REPONAME}" ]
+      then
+        curl -s https://algoliasearch-client-keygen.herokuapp.com | bash >> "$BASH_ENV"
+      fi
 
   - &test
     name: Run tests
