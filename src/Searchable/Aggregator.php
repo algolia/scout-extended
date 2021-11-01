@@ -186,8 +186,10 @@ abstract class Aggregator implements SearchableCountableContract
 
             $softDeletes =
                 in_array(SoftDeletes::class, class_uses_recursive($model)) && config('scout.soft_delete', false);
+            
+            $query = $instance->makeSearchableUsing();
 
-            $instance->newQuery()->when($softDeletes, function ($query) {
+            $query->when($softDeletes, function ($query) {
                 $query->withTrashed();
             })->orderBy($instance->getKeyName())->chunk(config('scout.chunk.searchable', 500), function ($models) {
                 $models = $models->map(function ($model) {
