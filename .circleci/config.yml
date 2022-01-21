@@ -70,6 +70,7 @@ jobs:
     steps:
       - checkout
 
+      - run: sudo add-apt-repository ppa:ondrej/php
       - run: sudo apt-get update
       - run: sudo apt-get install -y php<<parameters.version>>-zip php<<parameters.version>>-sqlite3
       - restore_cache: *restore_cache
