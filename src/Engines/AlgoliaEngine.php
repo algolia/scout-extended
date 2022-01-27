@@ -84,7 +84,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
      */
     public function map(Builder $builder, $results, $searchable)
     {
-        if (count($results['hits']) === 0) {
+        if (isset($results['hits']) && count($results['hits']) === 0) {
             return $searchable->newCollection();
         }
 
