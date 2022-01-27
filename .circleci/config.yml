@@ -70,6 +70,7 @@ jobs:
     steps:
       - checkout
 
+      - run: sudo add-apt-repository ppa:ondrej/php
       - run: sudo apt-get update
       - run: sudo apt-get install -y php<<parameters.version>>-zip php<<parameters.version>>-sqlite3
       - restore_cache: *restore_cache
@@ -84,5 +85,10 @@ workflows:
       - test:
           matrix:
             parameters:
-              version: ['7.3', '7.4', '8.0']
-              laravel: ['^6.0', '^7.0', '^8.0']
+              version: ['7.3', '7.4', '8.0', '8.1']
+              laravel: ['^8.0']
+      - test:
+          matrix:
+            parameters:
+              version: ['8.0', '8.1']
+              laravel: ['^9.0']

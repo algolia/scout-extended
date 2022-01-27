@@ -93,9 +93,7 @@ final class ScoutExtendedServiceProvider extends ServiceProvider
         $this->app->singleton(AggregatorObserver::class, AggregatorObserver::class);
         $this->app->bind(\Laravel\Scout\Builder::class, Builder::class);
 
-        $this->app->bind(SearchableFinder::class, function ($app) {
-            return new SearchableFinder($app);
-        });
+        $this->app->bind(SearchableFinder::class, SearchableFinder::class);
 
         $this->app->singleton(LocalSettingsRepositoryContract::class, LocalSettingsRepository::class);
     }
