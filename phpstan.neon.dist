@@ -1,17 +1,13 @@
 includes:
     - vendor/nunomaduro/larastan/extension.neon
 parameters:
-    level: max
+    level: 5
     paths:
         - src
     checkMissingIterableValueType: false
     ignoreErrors:
         - '#Illuminate\\Database\\Eloquent\\Model::searchableAs\(\)#'
         - '#Algolia\\ScoutExtended\\ScoutExtendedServiceProvider::getModel\(\)#'
-        - '#Cannot call static method create\(\) on string\|null#'
         - '#Unsafe usage of new static#'
-        - '#Method Algolia\\ScoutExtended\\Console\\Commands\\OptimizeCommand::handle\(\) has no return typehint specified.#'
-        - '#Call to an undefined method Illuminate\\Support\\HigherOrderCollectionProxy::pushSoftDeleteMetadata\(\)#'
-        - '#Cannot call method withScoutMetadata\(\) on class-string\|object.#'
-        - '#Cannot call method getScoutKey\(\) on class-string\|object.#'
-        - '#Cannot call method toSearchableArray\(\) on class-string\|object.#'
+        - '#Call to an undefined method Illuminate\\Support\\Collection<int, \$this\(Algolia\\ScoutExtended\\Searchable\\Aggregator\)>::searchable\(\).#'
+        - '#Call to an undefined method Illuminate\\Support\\Collection<int, \$this\(Algolia\\ScoutExtended\\Searchable\\Aggregator\)>::unsearchable\(\).#'
