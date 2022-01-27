@@ -13,8 +13,7 @@ final class PaginateTest extends TestCase
     {
         parent::setUp();
 
-        $users = factory(User::class, 10)->make()->toArray();
-        factory(User::class)->createMany($users);
+        factory(User::class, 10)->create();
     }
 
     public function testPaginationWithCallback(): void
