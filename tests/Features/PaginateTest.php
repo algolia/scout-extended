@@ -13,7 +13,10 @@ final class PaginateTest extends TestCase
     {
         parent::setUp();
 
+        $prevValue = config('scout.synchronous');
+        config(['scout.synchronous' => true]);
         factory(User::class, 10)->create();
+        config(['scout.synchronous' => $prevValue]);
     }
 
     public function testPaginationWithCallback(): void
