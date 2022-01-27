@@ -20,7 +20,7 @@ use function get_class;
 /**
  * @internal
  */
-final class ObjectIdEncrypter
+class ObjectIdEncrypter
 {
     /**
      * Holds the metadata separator.
