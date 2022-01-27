@@ -34,22 +34,6 @@ final class SearchableFinder
     private $declaredClasses;
 
     /**
-     * @var \Illuminate\Contracts\Foundation\Application
-     */
-    private $app;
-
-    /**
-     * SearchableModelsFinder constructor.
-     *
-     * @param \Illuminate\Contracts\Foundation\Application $app
-     * @return void
-     */
-    public function __construct($app)
-    {
-        $this->app = $app;
-    }
-
-    /**
      * Get a list of searchable models from the given command.
      *
      * @param \Illuminate\Console\Command $command
