@@ -17,6 +17,7 @@ use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\ScoutExtended\Jobs\DeleteJob;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
+use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Illuminate\Support\Str;
 use function is_array;
 use Laravel\Scout\Builder;
@@ -118,5 +119,17 @@ class AlgoliaEngine extends BaseAlgoliaEngine
 
             return $value;
         })->values()->all();
+    }
+
+    /**
+     * Pluck and return the primary keys of the given results.
+     *
+     * @param  mixed  $results
+     * @return \Illuminate\Support\Collection
+     */
+    public function mapIds($results)
+    {
+        return collect($results['hits'])->pluck('objectID')->values()
+            ->map([ObjectIdEncrypter::class, 'decryptSearchableKey']);
     }
 }
