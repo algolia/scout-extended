@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.0.1](https://github.com/algolia/scout-extended/compare/v2.0.0...v2.0.1) - 2022-01-31
+### Fixed
+- Fix potential race condition when reimporting large number of records ([#300](https://github.com/algolia/scout-extended/pull/300))
+
 ## [2.0.0](https://github.com/algolia/scout-extended/compare/v1.20.0...v2.0.0) - 2022-01-28
 ### Added
 - Add support for Laravel 9 ([#296](https://github.com/algolia/scout-extended/pull/296))
