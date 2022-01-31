@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.20.1](https://github.com/algolia/scout-extended/compare/v1.20.0...v1.20.1) - 2022-01-31
+### Fixed
+- Fix potential race condition when reimporting large number of records ([#299](https://github.com/algolia/scout-extended/pull/299))
+
 ## [1.20.0](https://github.com/algolia/scout-extended/compare/v1.19.0...v1.20.0) - 2021-07-08
 ### Added
 - Add `whereOptional` helper to send optional filters ([#284](https://github.com/algolia/scout-extended/pull/284))

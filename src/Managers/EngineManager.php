@@ -27,7 +27,7 @@ class EngineManager extends BaseEngineManager
      */
     public function createAlgoliaDriver(): AlgoliaEngine
     {
-        UserAgent::addCustomUserAgent('Laravel Scout Extended', '1.20.0');
+        UserAgent::addCustomUserAgent('Laravel Scout Extended', '1.20.1');
 
         return new AlgoliaEngine(SearchClient::create(config('scout.algolia.id'), config('scout.algolia.secret')));
     }
