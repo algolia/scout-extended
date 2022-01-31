@@ -25,7 +25,7 @@ final class ObjectIdEncrypter
     /**
      * Holds the metadata separator.
      *
-     * @var string
+     * @var non-empty-string
      */
     private static $separator = '::';
 

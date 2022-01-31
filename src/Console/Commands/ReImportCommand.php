@@ -76,12 +76,18 @@ final class ReImportCommand extends Command
 
             tap($this->output)->progressAdvance()->text("Importing records to index <info>{$temporaryName}</info>");
 
+            // Force disable queueing to prevent race conditions in indexing with large number of records.
+            $useQueues = $config->get('scout.queue');
+            $config->set('scout.queue', false);
+
             try {
                 $config->set('scout.prefix', self::$prefix.'_'.$scoutPrefix);
                 $searchable::makeAllSearchable();
             } finally {
                 $config->set('scout.prefix', $scoutPrefix);
             }
+
+            $config->set('scout.queue', $useQueues);
 
             tap($this->output)->progressAdvance()
                 ->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
