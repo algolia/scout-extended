@@ -85,12 +85,14 @@ final class AggregatorObserver extends BaseModelObserver
      */
     public function deleted($model): void
     {
-        if (static::syncingDisabledFor($model)) {
+        if (!$model->wasSearchableBeforeDelete()) {
             return;
         }
 
-        if ($this->usesSoftDelete($model) && config('scout.soft_delete', false)) {
-            $this->saved($model);
+        if ($this->usingSoftDeletes && $this->usesSoftDelete($model)) {
+            $this->whileForcingUpdate(function () use ($model) {
+                $this->saved($model);
+            });
         } else {
             $class = get_class($model);
 
@@ -99,6 +101,9 @@ final class AggregatorObserver extends BaseModelObserver
             }
 
             foreach ($this->aggregators[$class] as $aggregator) {
+                if (static::syncingDisabledFor($aggregator)) {
+                    return;
+                }
                 $aggregator::create($model)->unsearchable();
             }
         }
@@ -107,15 +112,11 @@ final class AggregatorObserver extends BaseModelObserver
     /**
      * Handle the force deleted event for the model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model $model
      * @return void
      */
     public function forceDeleted($model): void
     {
-        if (static::syncingDisabledFor($model)) {
-            return;
-        }
-
         $class = get_class($model);
 
         if (! array_key_exists($class, $this->aggregators)) {
@@ -123,6 +124,9 @@ final class AggregatorObserver extends BaseModelObserver
         }
 
         foreach ($this->aggregators[$class] as $aggregator) {
+            if (static::syncingDisabledFor($aggregator)) {
+                return;
+            }
             $aggregator::create($model)->unsearchable();
         }
     }
