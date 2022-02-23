@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
-use Laravel\Scout\Scout;
 use function in_array;
 use Laravel\Scout\Events\ModelsImported;
 use Laravel\Scout\Searchable;
