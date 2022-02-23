@@ -253,6 +253,21 @@ abstract class Aggregator implements SearchableCountableContract
     }
 
     /**
+     * Dispatch the job to make the given models unsearchable.
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection  $models
+     * @return void
+     */
+    public function queueRemoveFromSearch($models)
+    {
+        if ($models->isEmpty()) {
+            return;
+        }
+
+        $models->first()->searchableUsing()->delete($models);
+    }
+
+    /**
      * Handle dynamic method calls into the model.
      *
      * @param  string $method
