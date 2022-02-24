@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.20.2](https://github.com/algolia/scout-extended/compare/v1.20.1...v1.20.2) - 2022-02-24
+## Fixed
+- Fixed bug where queued aggregator deletes failed ([#303](https://github.com/algolia/scout-extended/pull/303))
+
 ## [1.20.1](https://github.com/algolia/scout-extended/compare/v1.20.0...v1.20.1) - 2022-01-31
 ### Fixed
 - Fix potential race condition when reimporting large number of records ([#299](https://github.com/algolia/scout-extended/pull/299))
