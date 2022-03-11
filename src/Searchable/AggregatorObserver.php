@@ -89,7 +89,7 @@ final class AggregatorObserver extends BaseModelObserver
             return;
         }
 
-        if ($this->usingSoftDeletes && $this->usesSoftDelete($model)) {
+        if (config('scout.soft_delete', false) && $this->usesSoftDelete($model)) {
             $this->whileForcingUpdate(function () use ($model) {
                 $this->saved($model);
             });
