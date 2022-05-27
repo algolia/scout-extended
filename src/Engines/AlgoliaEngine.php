@@ -94,6 +94,14 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     /**
      * {@inheritdoc}
      */
+    public function lazyMap(Builder $builder, $results, $searchable)
+    {
+        return $this->map($builder, $results, $searchable);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function flush($model)
     {
         $index = $this->algolia->initIndex($model->searchableAs());
