@@ -20,7 +20,6 @@ use Illuminate\Support\Collection;
 
 /**
  * @method static string searchable()
- * @method static string unsearchable()
  */
 final class AggregatorCollection extends Collection
 {
@@ -32,6 +31,18 @@ final class AggregatorCollection extends Collection
      * @var string|null
      */
     public $aggregator;
+
+    /**
+     * Make all the models in this collection unsearchable.
+     *
+     * @return void
+     */
+    public function unsearchable(): void
+    {
+        $aggregator = get_class($this->first());
+
+        (new $aggregator)->queueRemoveFromSearch($this);
+    }
 
     /**
      * Prepare the instance for serialization.

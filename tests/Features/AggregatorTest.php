@@ -287,9 +287,10 @@ final class AggregatorTest extends TestCase
 
         // Because the Thread model had not been booted yet, booting `All` above caused it to
         // boot, which in turn booted its Searchable trait and re-registered Scout's base
-        // Collection macros, overriding the aggregator. Calling `unsearchable` on an
-        // Aggregator will now incorrectly end up calling `queueRemoveFromSearch`
-        // on the Thread model, dispatching the job above.
+        // Collection macros, overriding the aggregator.
+
+        // Calling `unsearchable` on an Aggregator should bypass these macros and still end
+        // up calling `queueRemoveFromSearch` on the Aggregator, not dispatching any jobs.
 
         $user->delete();
     }
