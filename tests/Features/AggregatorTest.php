@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use Algolia\ScoutExtended\Searchable\Aggregator;
 use Algolia\ScoutExtended\Searchable\AggregatorCollection;
 use Algolia\ScoutExtended\Searchable\Aggregators;
 use App\All;
@@ -12,7 +13,9 @@ use App\Post;
 use App\Thread;
 use App\User;
 use App\Wall;
+use Laravel\Scout\Scout;
 use Mockery;
+use RuntimeException;
 use Tests\TestCase;
 
 final class AggregatorTest extends TestCase
@@ -266,5 +269,47 @@ final class AggregatorTest extends TestCase
         ]);
 
         $user->delete();
+    }
+
+    public function testWhenAggregatorIsBootedBeforePlainScoutSearchableTrait(): void
+    {
+        config(['scout.queue' => true]);
+
+        // Scout's base `queueRemoveFromSearch` method dispatches this job to remove models from
+        // search, but Scout Extended's Aggregator class overrides that method, so this job
+        // should never be dispatched for an Aggregator even when 'scout.queue' is true
+        Scout::$removeFromSearchJob = DummyRemoveFromSearch::class;
+
+        $user = factory(User::class)->create();
+
+        // Boot the aggregator, which registers its own Collection macros, overriding Scout's
+        All::bootSearchable();
+
+        // Because the Thread model had not been booted yet, booting `All` above caused it to
+        // boot, which in turn booted its Searchable trait and re-registered Scout's base
+        // Collection macros, overriding the aggregator. Calling `unsearchable` on an
+        // Aggregator will now incorrectly end up calling `queueRemoveFromSearch`
+        // on the Thread model, dispatching the job above.
+
+        $user->delete();
+    }
+}
+
+class DummyRemoveFromSearch {
+    public function __construct($models)
+    {
+        if ($models->first() instanceof Aggregator) {
+            throw new RuntimeException('Scout::$removeFromSearchJob dispatched with Aggregator');
+        }
+    }
+    public function __invoke()
+    {
+    }
+    public function onQueue()
+    {
+        return $this;
+    }
+    public function onConnection()
+    {
     }
 }
