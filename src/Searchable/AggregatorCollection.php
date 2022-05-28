@@ -19,7 +19,7 @@ use Illuminate\Queue\SerializesAndRestoresModelIdentifiers;
 use Illuminate\Support\Collection;
 
 /**
- * @method static string searchable()
+ * @method static void searchable()
  */
 final class AggregatorCollection extends Collection
 {
