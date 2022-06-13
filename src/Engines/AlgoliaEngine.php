@@ -18,6 +18,7 @@ use Algolia\ScoutExtended\Jobs\DeleteJob;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
+use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
 use function is_array;
 use Laravel\Scout\Builder;
@@ -89,6 +90,14 @@ class AlgoliaEngine extends BaseAlgoliaEngine
         }
 
         return app(ModelsResolver::class)->from($builder, $searchable, $results);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function lazyMap(Builder $builder, $results, $searchable)
+    {
+        return LazyCollection::make($this->map($builder, $results, $searchable));
     }
 
     /**

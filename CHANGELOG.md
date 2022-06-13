@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Implement `lazyMap` method ([#307](https://github.com/algolia/scout-extended/pull/307))
+
 ## [2.0.2](https://github.com/algolia/scout-extended/compare/v2.0.1...v2.0.2) - 2022-02-24
 ### Fixed
 - Fixed bug where queued aggregator deletes failed ([#287](https://github.com/algolia/scout-extended/pull/287))
-
 
 ## [2.0.1](https://github.com/algolia/scout-extended/compare/v2.0.0...v2.0.1) - 2022-01-31
 ### Fixed
