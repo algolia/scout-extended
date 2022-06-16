@@ -6,8 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-### Changed
+## [2.0.3](https://github.com/algolia/scout-extended/compare/v2.0.2...v2.0.3) - 2022-06-16
+
+### Added
 - Implement `lazyMap` method ([#307](https://github.com/algolia/scout-extended/pull/307))
+
+### Fixed
+- Aggregator collection macros being overwritten by models ([#308](https://github.com/algolia/scout-extended/pull/308))
 
 ## [2.0.2](https://github.com/algolia/scout-extended/compare/v2.0.1...v2.0.2) - 2022-02-24
 ### Fixed
