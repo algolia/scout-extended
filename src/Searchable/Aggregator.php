@@ -62,6 +62,7 @@ abstract class Aggregator implements SearchableCountableContract
      */
     public static function bootSearchable(): void
     {
+        ($self = new static)->registerSearchableMacros(); 
         $observer = tap(app(AggregatorObserver::class))->setAggregator(static::class, $models = (new static)->getModels());
 
         foreach ($models as $model) {
