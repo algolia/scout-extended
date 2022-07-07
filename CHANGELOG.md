@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Remove `final` keyword from `Algolia\ScoutExtended\Searchable\AggregatorObserver` ([#312](https://github.com/algolia/scout-extended/pull/312))
 
 ## [2.0.4](https://github.com/algolia/scout-extended/compare/v2.0.3...v2.0.4) - 2022-06-20
 ### Fixed
