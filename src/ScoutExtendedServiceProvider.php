@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
-use Algolia\AlgoliaSearch\AnalyticsClient;
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\AnalyticsClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use Algolia\ScoutExtended\Console\Commands\FlushCommand;
 use Algolia\ScoutExtended\Console\Commands\ImportCommand;
 use Algolia\ScoutExtended\Console\Commands\MakeAggregatorCommand;

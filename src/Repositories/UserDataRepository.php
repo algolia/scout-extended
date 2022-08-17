@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 
 /**
  * @internal
@@ -26,23 +26,31 @@ final class UserDataRepository
     private $remoteRepository;
 
     /**
+     * @var \Algolia\AlgoliaSearch\Api\SearchClient
+     */
+    private $client;
+
+
+    /**
      * UserDataRepository constructor.
      *
      * @param \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository $remoteRepository
+     * @param \Algolia\AlgoliaSearch\Api\SearchClient $client
      */
-    public function __construct(RemoteSettingsRepository $remoteRepository)
+    public function __construct(RemoteSettingsRepository $remoteRepository, SearchClient $client)
     {
         $this->remoteRepository = $remoteRepository;
+        $this->client = $client;
     }
 
     /**
      * Find the User Data of the given Index.
      *
-     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      *
      * @return array
      */
-    public function find(SearchIndex $index): array
+    public function find($index): array
     {
         $settings = $this->remoteRepository->getSettingsRaw($index);
 
@@ -56,28 +64,29 @@ final class UserDataRepository
     /**
      * Save the User Data of the given Index.
      *
-     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      * @param  array $userData
      *
      * @return void
      */
-    public function save(SearchIndex $index, array $userData): void
+    public function save($index, array $userData): void
     {
         $currentUserData = $this->find($index);
 
         $userDataJson = json_encode(array_merge($currentUserData, $userData));
 
-        $index->setSettings(['userData' => $userDataJson])->wait();
+        $result = $this->client->setSettings($index, ['userData' => $userDataJson]);
+        $this->client->waitForTask($index, $result['taskID']);
     }
 
     /**
      * Get the settings hash.
      *
-     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      *
      * @return string
      */
-    public function getSettingsHash(SearchIndex $index): string
+    public function getSettingsHash($index): string
     {
         $userData = $this->find($index);
 

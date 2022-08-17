@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Algolia\ScoutExtended\Console\Commands;
 
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
-use Algolia\AlgoliaSearch\SearchClient;
-use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use function count;
 use Illuminate\Console\Command;
@@ -55,21 +54,27 @@ final class ReImportCommand extends Command
         $this->output->progressStart(count($searchables) * 3);
 
         foreach ($searchables as $searchable) {
-            $index = $client->initIndex((new $searchable)->searchableAs());
+            $index = (new $searchable)->searchableAs();
             $temporaryName = $this->getTemporaryIndexName($index);
 
             tap($this->output)->progressAdvance()->text("Creating temporary index <info>{$temporaryName}</info>");
 
             try {
-                $index->getSettings();
+                $client->getSettings($index);
 
-                $client->copyIndex($index->getIndexName(), $temporaryName, [
-                    'scope' => [
-                        'settings',
-                        'synonyms',
-                        'rules',
-                    ],
-                ])->wait();
+                $response = $client->operationIndex(
+                    $index,
+                    [
+                        'operation' => 'copy',
+                        'destination' => $temporaryName,
+                        'scope' => [
+                            'settings',
+                            'synonyms',
+                            'rules',
+                        ],
+                    ]
+                );
+                $client->waitForTask($index, $response['taskID']);
             } catch (NotFoundException $e) {
                 // ..
             }
@@ -92,18 +97,23 @@ final class ReImportCommand extends Command
             tap($this->output)->progressAdvance()
                 ->text("Replacing index <info>{$index->getIndexName()}</info> by index <info>{$temporaryName}</info>");
 
-            $temporaryIndex = $client->initIndex($temporaryName);
-
             try {
-                $temporaryIndex->getSettings();
+                $client->getSettings($temporaryName);
 
-                $response = $client->moveIndex($temporaryName, $index->getIndexName());
+                $response = $client->operationIndex(
+                    $temporaryName,
+                    [
+                        'operation' => 'move',
+                        'destination' => $index,
+                    ]
+                );
 
                 if ($config->get('scout.synchronous', false)) {
-                    $response->wait();
+                    $client->waitForTask($temporaryName, $response['taskID']);
                 }
             } catch (NotFoundException $e) {
-                $index->setSettings(['attributesForFaceting' => null])->wait();
+                $response = $client->setSettings($index, ['attributesForFaceting' => null]);
+                $client->waitForTask($index, $response['taskID']);
             }
         }
 
@@ -113,12 +123,12 @@ final class ReImportCommand extends Command
     /**
      * Get a temporary index name.
      *
-     * @param \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      *
      * @return string
      */
-    private function getTemporaryIndexName(SearchIndex $index): string
+    private function getTemporaryIndexName(string $index): string
     {
-        return self::$prefix.'_'.$index->getIndexName();
+        return self::$prefix.'_'.$index;
     }
 }

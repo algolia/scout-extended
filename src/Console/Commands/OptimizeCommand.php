@@ -45,7 +45,7 @@ final class OptimizeCommand extends Command
     ) {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Optimizing search experience in: <info>['.$searchable.']</info>');
-            $index = $algolia->index($searchable);
+            $index = $searchable->searchableAs();
             if (! $localRepository->exists($index) ||
                 $this->confirm('Local settings already exists, do you wish to overwrite?')) {
                 try {

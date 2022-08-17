@@ -45,7 +45,7 @@ final class SyncCommand extends Command
     ): void {
         foreach ($searchableFinder->fromCommand($this) as $searchable) {
             $this->output->text('🔎 Analysing settings from: <info>['.$searchable.']</info>');
-            $status = $synchronizer->analyse($index = $algolia->index($searchable));
+            $status = $synchronizer->analyse($index = $searchable->searchableAs());
             $path = $localRepository->getPath($index);
 
             switch ($status->toString()) {

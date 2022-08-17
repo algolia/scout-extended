@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Jobs;
 
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use Algolia\ScoutExtended\Contracts\SplitterContract;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
@@ -85,7 +85,7 @@ final class UpdateJob
     }
 
     /**
-     * @param \Algolia\AlgoliaSearch\SearchClient $client
+     * @param \Algolia\AlgoliaSearch\Api\SearchClient $client
      *
      * @return void
      */
@@ -98,8 +98,6 @@ final class UpdateJob
         if (config('scout.soft_delete', false) && $this->usesSoftDelete($this->searchables->first())) {
             $this->searchables->each->pushSoftDeleteMetadata();
         }
-
-        $index = $client->initIndex($this->searchables->first()->searchableAs());
 
         $objectsToSave = [];
         $searchablesToDelete = [];
@@ -137,9 +135,21 @@ final class UpdateJob
 
         dispatch_now(new DeleteJob(collect($searchablesToDelete)));
 
-        $result = $index->saveObjects($objectsToSave);
+        $requests = [];
+        foreach ($objectsToSave as $objectToSave) {
+            $requests += [
+                'action' => 'addObject',
+                'body' => $objectToSave
+            ];
+        }
+
+        $result = $client->batch(
+            $this->searchables->first()->searchableAs(),
+            ['requests' => $requests]
+        );
+
         if (config('scout.synchronous', false)) {
-            $result->wait();
+            $client->waitForTask($this->searchables->first()->searchableAs(), $result['taskID']);
         }
     }
 

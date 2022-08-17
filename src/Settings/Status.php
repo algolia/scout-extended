@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Settings;
 
-use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract;
 use Algolia\ScoutExtended\Repositories\UserDataRepository;
 use Illuminate\Support\Str;
@@ -45,7 +44,7 @@ final class Status
     private $remoteSettings;
 
     /**
-     * @var \Algolia\AlgoliaSearch\SearchIndex
+     * @var string
      */
     private $index;
 
@@ -67,7 +66,7 @@ final class Status
      * @param \Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract $localRepository
      * @param \Algolia\ScoutExtended\Settings\Encrypter $encrypter
      * @param \Algolia\ScoutExtended\Settings\Settings $remoteSettings
-     * @param \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      *
      * @return void
      */
@@ -76,7 +75,7 @@ final class Status
         UserDataRepository $userDataRepository,
         Encrypter $encrypter,
         Settings $remoteSettings,
-        SearchIndex $index
+        string $index
     ) {
         $this->encrypter = $encrypter;
         $this->localRepository = $localRepository;

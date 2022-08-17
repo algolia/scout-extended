@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Contracts;
 
-use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Settings\Settings;
 
 interface LocalSettingsRepositoryContract
@@ -21,27 +20,27 @@ interface LocalSettingsRepositoryContract
     /**
      * Checks if the given index settings exists.
      *
-     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      *
      * @return bool
      */
-    public function exists(SearchIndex $index): bool;
+    public function exists($index): bool;
 
     /**
      * Get the settings path of the given index name.
      *
-     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      *
      * @return string
      */
-    public function getPath(SearchIndex $index): string;
+    public function getPath($index): string;
 
     /**
      * Find the settings of the given Index.
      *
-     * @param \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      *
      * @return \Algolia\ScoutExtended\Settings\Settings
      */
-    public function find(SearchIndex $index): Settings;
+    public function find($index): Settings;
 }

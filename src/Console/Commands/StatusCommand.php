@@ -52,7 +52,7 @@ final class StatusCommand extends Command
         foreach ($searchables as $searchable) {
             $row = [];
             $instance = $this->laravel->make($searchable);
-            $index = $algolia->index($instance);
+            $index = $instance->searchableAs();
             $row[] = $searchable;
             $row[] = $instance->searchableAs();
 

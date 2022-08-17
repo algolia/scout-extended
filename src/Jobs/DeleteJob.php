@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Jobs;
 
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Illuminate\Support\Collection;
 
@@ -40,7 +40,7 @@ final class DeleteJob
     }
 
     /**
-     * @param \Algolia\AlgoliaSearch\SearchClient $client
+     * @param \Algolia\AlgoliaSearch\Api\SearchClient $client
      *
      * @return void
      */
@@ -50,18 +50,19 @@ final class DeleteJob
             return;
         }
 
-        $index = $client->initIndex($this->searchables->first()->searchableAs());
-
-        $result = $index->deleteBy([
-            'tagFilters' => [
-                $this->searchables->map(function ($searchable) {
-                    return ObjectIdEncrypter::encrypt($searchable);
-                })->toArray(),
-            ],
-        ]);
+        $result = $client->deleteBy(
+            $this->searchables->first()->searchableAs(),
+            [
+                'tagFilters' => [
+                    $this->searchables->map(function ($searchable) {
+                        return ObjectIdEncrypter::encrypt($searchable);
+                    })->toArray(),
+                ],
+            ]
+        );
 
         if (config('scout.synchronous', false)) {
-            $result->wait();
+            $client->waitForTask($this->searchables->first()->searchableAs(), $result['taskID']);
         }
     }
 }

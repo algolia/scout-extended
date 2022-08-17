@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use Algolia\AlgoliaSearch\SearchIndex;
 use Algolia\ScoutExtended\Contracts\LocalSettingsRepositoryContract;
 use Algolia\ScoutExtended\Settings\Settings;
 use Illuminate\Filesystem\Filesystem;
@@ -49,11 +48,11 @@ final class LocalSettingsRepository implements LocalSettingsRepositoryContract
     /**
      * Checks if the given index settings exists.
      *
-     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      *
      * @return bool
      */
-    public function exists(SearchIndex $index): bool
+    public function exists($index): bool
     {
         return $this->files->exists($this->getPath($index));
     }
@@ -61,13 +60,13 @@ final class LocalSettingsRepository implements LocalSettingsRepositoryContract
     /**
      * Get the settings path of the given index name.
      *
-     * @param  \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param string $index
      *
      * @return string
      */
-    public function getPath(SearchIndex $index): string
+    public function getPath($index): string
     {
-        $name = str_replace('_', '-', $index->getIndexName());
+        $name = str_replace('_', '-', $index);
 
         $name = is_array($name) ? current($name) : $name;
 
@@ -88,11 +87,11 @@ final class LocalSettingsRepository implements LocalSettingsRepositoryContract
     /**
      * Find the settings of the given Index.
      *
-     * @param \Algolia\AlgoliaSearch\SearchIndex $index
+     * @param $index
      *
      * @return \Algolia\ScoutExtended\Settings\Settings
      */
-    public function find(SearchIndex $index): Settings
+    public function find($index): Settings
     {
         return new Settings(($this->exists($index) ? require $this->getPath($index) : []),
             $this->remoteRepository->defaults());

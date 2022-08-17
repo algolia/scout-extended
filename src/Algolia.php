@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended;
 
-use Algolia\AlgoliaSearch\AnalyticsClient;
-use Algolia\AlgoliaSearch\SearchClient;
-use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\AlgoliaSearch\Api\AnalyticsClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use Algolia\ScoutExtended\Repositories\ApiKeysRepository;
 use Illuminate\Contracts\Container\Container;
 use function is_string;
@@ -40,23 +39,9 @@ final class Algolia
     }
 
     /**
-     * Get a index instance.
-     *
-     * @param  string|object $searchable
-     *
-     * @return \Algolia\AlgoliaSearch\SearchIndex
-     */
-    public function index($searchable): SearchIndex
-    {
-        $searchable = is_string($searchable) ? new $searchable : $searchable;
-
-        return $this->client()->initIndex($searchable->searchableAs());
-    }
-
-    /**
      * Get a client instance.
      *
-     * @return \Algolia\AlgoliaSearch\SearchClient
+     * @return \Algolia\AlgoliaSearch\Api\SearchClient
      */
     public function client(): SearchClient
     {
@@ -66,7 +51,7 @@ final class Algolia
     /**
      * Get a analytics instance.
      *
-     * @return \Algolia\AlgoliaSearch\AnalyticsClient
+     * @return \Algolia\AlgoliaSearch\Api\AnalyticsClient
      */
     public function analytics(): AnalyticsClient
     {

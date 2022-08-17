@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Repositories;
 
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use DateInterval;
 use Illuminate\Contracts\Cache\Repository;
 use function is_string;
@@ -34,7 +34,7 @@ final class ApiKeysRepository
     private $cache;
 
     /**
-     * @var \Algolia\AlgoliaSearch\SearchClient
+     * @var \Algolia\AlgoliaSearch\Api\SearchClient
      */
     private $client;
 
@@ -42,7 +42,7 @@ final class ApiKeysRepository
      * ApiKeysRepository constructor.
      *
      * @param \Illuminate\Contracts\Cache\Repository $cache
-     * @param \Algolia\AlgoliaSearch\SearchClient $client
+     * @param \Algolia\AlgoliaSearch\Api\SearchClient $client
      *
      * @return void
      */
@@ -78,17 +78,20 @@ final class ApiKeysRepository
                 }
             }
 
-            $searchKey = $searchKey ?? $this->client->addApiKey(['search'], [
+            $searchKey = $searchKey ?? $this->client->addApiKey(['acl' => ['search']], [
                 'description' => config('app.name').'::searchKey',
-            ])->getBody()['key'];
+            ])['key'];
 
             // Key will be valid for 25 hours.
             $validUntil = time() + (3600 * 25);
 
-            $securedSearchKey = $this->client::generateSecuredApiKey($searchKey, [
+            $urlEncodedRestrictions = \Algolia\AlgoliaSearch\Support\Helpers::buildQuery([
                 'restrictIndices' => $searchableAs,
                 'validUntil' => $validUntil,
             ]);
+
+            $content = hash_hmac('sha256', $urlEncodedRestrictions, $searchKey).$urlEncodedRestrictions;
+            $securedSearchKey =  base64_encode($content);
 
             $this->cache->put(
                 self::SEARCH_KEY.'.'.$searchableAs, $securedSearchKey, DateInterval::createFromDateString('24 hours')

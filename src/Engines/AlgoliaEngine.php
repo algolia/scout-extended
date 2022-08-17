@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Engines;
 
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use Algolia\ScoutExtended\Jobs\DeleteJob;
 use Algolia\ScoutExtended\Jobs\UpdateJob;
 use Algolia\ScoutExtended\Searchable\ModelsResolver;
@@ -29,14 +29,14 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     /**
      * The Algolia client.
      *
-     * @var \Algolia\AlgoliaSearch\SearchClient
+     * @var \Algolia\AlgoliaSearch\Api\SearchClient
      */
     protected $algolia;
 
     /**
      * Create a new engine instance.
      *
-     * @param  \Algolia\AlgoliaSearch\SearchClient $algolia
+     * @param  \Algolia\AlgoliaSearch\Api\SearchClient $algolia
      * @return void
      */
     public function __construct(SearchClient $algolia)
@@ -45,7 +45,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     }
 
     /**
-     * @param \Algolia\AlgoliaSearch\SearchClient $algolia
+     * @param \Algolia\AlgoliaSearch\Api\SearchClient $algolia
      *
      * @return void
      */
@@ -57,7 +57,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
     /**
      * Get the client.
      *
-     * @return \Algolia\AlgoliaSearch\SearchClient $algolia
+     * @return \Algolia\AlgoliaSearch\Api\SearchClient $algolia
      */
     public function getClient(): SearchClient
     {
@@ -105,9 +105,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
      */
     public function flush($model)
     {
-        $index = $this->algolia->initIndex($model->searchableAs());
-
-        $index->clearObjects();
+        $this->algolia->clearObjects($model->searchableAs());
     }
 
     /**
