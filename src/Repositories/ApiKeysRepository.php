@@ -85,11 +85,13 @@ final class ApiKeysRepository
             // Key will be valid for 25 hours.
             $validUntil = time() + (3600 * 25);
 
+            $replicas = config('scout-'.str_replace('_', '-', $searchableAs).'.replicas', []);
+            $restrictIndices = join(',', [$searchableAs, ...$replicas]);
+
             $securedSearchKey = $this->client::generateSecuredApiKey($searchKey, [
-                'restrictIndices' => $searchableAs,
+                'restrictIndices' => $restrictIndices,
                 'validUntil' => $validUntil,
             ]);
-
             $this->cache->put(
                 self::SEARCH_KEY.'.'.$searchableAs, $securedSearchKey, DateInterval::createFromDateString('24 hours')
             );
