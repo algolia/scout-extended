@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Settings;
 /**
  * @internal
  */
-final class Encrypter
+class Encrypter
 {
     /**
      * @param  \Algolia\ScoutExtended\Settings\Settings $settings

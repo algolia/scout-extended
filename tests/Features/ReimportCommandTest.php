@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Mockery;
 use Tests\TestCase;
 
-final class ReimportCommandTest extends TestCase
+class ReimportCommandTest extends TestCase
 {
     public function testReimport(): void
     {

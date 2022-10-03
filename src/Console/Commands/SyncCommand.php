@@ -20,7 +20,7 @@ use Algolia\ScoutExtended\Settings\Status;
 use Algolia\ScoutExtended\Settings\Synchronizer;
 use Illuminate\Console\Command;
 
-final class SyncCommand extends Command
+class SyncCommand extends Command
 {
     /**
      * {@inheritdoc}

@@ -22,7 +22,7 @@ use LogicException;
 /**
  * @internal
  */
-final class Status
+class Status
 {
     /**
      * @var \Algolia\ScoutExtended\Settings\Encrypter

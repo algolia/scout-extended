@@ -7,7 +7,7 @@ namespace Tests\Features;
 use App\User;
 use Tests\TestCase;
 
-final class UnsearchableTest extends TestCase
+class UnsearchableTest extends TestCase
 {
     public function testUnsearchable(): void
     {

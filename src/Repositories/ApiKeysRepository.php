@@ -21,7 +21,7 @@ use function is_string;
 /**
  * @internal
  */
-final class ApiKeysRepository
+class ApiKeysRepository
 {
     /**
      * Holds the search key.

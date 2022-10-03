@@ -21,7 +21,7 @@ use Algolia\ScoutExtended\Settings\Compiler;
 use Algolia\ScoutExtended\Settings\LocalFactory;
 use Illuminate\Console\Command;
 
-final class OptimizeCommand extends Command
+class OptimizeCommand extends Command
 {
     /**
      * {@inheritdoc}

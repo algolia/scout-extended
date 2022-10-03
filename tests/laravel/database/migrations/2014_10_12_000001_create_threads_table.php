@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-final class CreateThreadsTable extends Migration
+class CreateThreadsTable extends Migration
 {
     public function up(): void
     {

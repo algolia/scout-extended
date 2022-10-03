@@ -8,7 +8,7 @@ use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
-final class StatusCommandTest extends TestCase
+class StatusCommandTest extends TestCase
 {
     public function testStatus(): void
     {

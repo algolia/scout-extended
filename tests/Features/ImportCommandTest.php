@@ -16,7 +16,7 @@ use Mockery;
 use Modules\Taxonomy\Term;
 use Tests\TestCase;
 
-final class ImportCommandTest extends TestCase
+class ImportCommandTest extends TestCase
 {
     public function testImport(): void
     {

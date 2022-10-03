@@ -21,7 +21,7 @@ use Riimu\Kit\PHPEncoder\PHPEncoder;
 /**
  * @internal
  */
-final class Compiler
+class Compiler
 {
     /**
      * Array of opening and closing tags for raw echos.

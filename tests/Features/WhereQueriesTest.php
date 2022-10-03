@@ -7,7 +7,7 @@ namespace Tests\Features;
 use App\User;
 use Tests\TestCase;
 
-final class WhereQueriesTest extends TestCase
+class WhereQueriesTest extends TestCase
 {
     public function testExplicitOperator(): void
     {

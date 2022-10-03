@@ -17,7 +17,7 @@ use Algolia\ScoutExtended\Algolia;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use Illuminate\Console\Command;
 
-final class FlushCommand extends Command
+class FlushCommand extends Command
 {
     /**
      * {@inheritdoc}

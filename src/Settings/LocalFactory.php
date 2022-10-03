@@ -26,7 +26,7 @@ use function is_string;
 /**
  * @internal
  */
-final class LocalFactory
+class LocalFactory
 {
     /**
      * @var \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository

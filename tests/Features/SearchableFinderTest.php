@@ -11,7 +11,7 @@ use function file_get_contents;
 use function file_put_contents;
 use function unlink;
 
-final class SearchableFinderTest extends TestCase
+class SearchableFinderTest extends TestCase
 {
     public function testWhenThereIsAnUnresolvableClass(): void
     {

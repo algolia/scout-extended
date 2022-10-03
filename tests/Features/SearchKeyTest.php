@@ -9,7 +9,7 @@ use App\User;
 use App\Wall;
 use Tests\TestCase;
 
-final class SearchKeyTest extends TestCase
+class SearchKeyTest extends TestCase
 {
     public function testWhenSearchApiDontExists(): void
     {

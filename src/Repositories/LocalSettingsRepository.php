@@ -22,7 +22,7 @@ use Illuminate\Support\Str;
 /**
  * @internal
  */
-final class LocalSettingsRepository implements LocalSettingsRepositoryContract
+class LocalSettingsRepository implements LocalSettingsRepositoryContract
 {
     /**
      * @var \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository

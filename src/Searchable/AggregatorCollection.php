@@ -21,7 +21,7 @@ use Illuminate\Support\Collection;
 /**
  * @method static void searchable()
  */
-final class AggregatorCollection extends Collection
+class AggregatorCollection extends Collection
 {
     use SerializesAndRestoresModelIdentifiers;
 

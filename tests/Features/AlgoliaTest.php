@@ -11,7 +11,7 @@ use Algolia\ScoutExtended\Algolia;
 use App\User;
 use Tests\TestCase;
 
-final class AlgoliaTest extends TestCase
+class AlgoliaTest extends TestCase
 {
     public $algolia;
 

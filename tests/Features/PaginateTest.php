@@ -7,7 +7,7 @@ namespace Tests\Features;
 use App\User;
 use Tests\TestCase;
 
-final class PaginateTest extends TestCase
+class PaginateTest extends TestCase
 {
     public function setUp(): void
     {

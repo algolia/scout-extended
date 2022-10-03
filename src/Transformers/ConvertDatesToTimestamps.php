@@ -15,7 +15,7 @@ namespace Algolia\ScoutExtended\Transformers;
 
 use Algolia\ScoutExtended\Contracts\TransformerContract;
 
-final class ConvertDatesToTimestamps implements TransformerContract
+class ConvertDatesToTimestamps implements TransformerContract
 {
     /**
      * Converts the given array numeric strings to numbers.

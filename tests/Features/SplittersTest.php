@@ -12,7 +12,7 @@ use Tests\Features\Fixtures\ThreadWithSplitterInstance;
 use Tests\Features\Fixtures\ThreadWithValueReturned;
 use Tests\TestCase;
 
-final class SplittersTest extends TestCase
+class SplittersTest extends TestCase
 {
     public function testRecordsAreSplittedByASplitter(): void
     {

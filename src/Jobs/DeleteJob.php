@@ -20,7 +20,7 @@ use Illuminate\Support\Collection;
 /**
  * @internal
  */
-final class DeleteJob
+class DeleteJob
 {
     /**
      * @var \Illuminate\Support\Collection

@@ -13,7 +13,7 @@ use App\Wall;
 use Modules\Taxonomy\Term;
 use Tests\TestCase;
 
-final class FlushCommandTest extends TestCase
+class FlushCommandTest extends TestCase
 {
     public function testClearsIndex(): void
     {

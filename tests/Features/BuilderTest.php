@@ -8,7 +8,7 @@ use App\User;
 use Mockery;
 use Tests\TestCase;
 
-final class BuilderTest extends TestCase
+class BuilderTest extends TestCase
 {
     public function testCount(): void
     {

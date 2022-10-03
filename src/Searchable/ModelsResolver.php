@@ -24,7 +24,7 @@ use Laravel\Scout\Searchable;
 /**
  * @internal
  */
-final class ModelsResolver
+class ModelsResolver
 {
     /**
      * @var string[]

@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-final class CreatePostsTable extends Migration
+class CreatePostsTable extends Migration
 {
     public function up(): void
     {

@@ -8,7 +8,7 @@ use Algolia\ScoutExtended\Algolia;
 use Algolia\ScoutExtended\Facades\Algolia as AlgoliaFacade;
 use Tests\TestCase;
 
-final class FacadeTest extends TestCase
+class FacadeTest extends TestCase
 {
     public function testFacadeResolvedService(): void
     {

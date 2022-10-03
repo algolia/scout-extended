@@ -8,7 +8,7 @@ use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
-final class OptimizeCommandTest extends TestCase
+class OptimizeCommandTest extends TestCase
 {
     public function testCreationOfLocalSettings(): void
     {
