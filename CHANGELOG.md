@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.0](https://github.com/algolia/scout-extended/compare/v2.0.4...v2.1.0) - 2022-10-21
+### Changed
+- Removed `final` from all classes ([#317](https://github.com/algolia/scout-extended/pull/317))
+
 ## [2.0.4](https://github.com/algolia/scout-extended/compare/v2.0.3...v2.0.4) - 2022-06-20
 ### Fixed
 - Fix bug where aggregators with models without the `Searchable` model caused error ([#310](https://github.com/algolia/scout-extended/pull/310))
