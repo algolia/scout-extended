@@ -32,7 +32,7 @@ use Algolia\ScoutExtended\Searchable\AggregatorObserver;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
 
-final class ScoutExtendedServiceProvider extends ServiceProvider
+class ScoutExtendedServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritdoc}

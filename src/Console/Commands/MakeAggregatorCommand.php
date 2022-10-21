@@ -15,7 +15,7 @@ namespace Algolia\ScoutExtended\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
-final class MakeAggregatorCommand extends GeneratorCommand
+class MakeAggregatorCommand extends GeneratorCommand
 {
     /**
      * {@inheritdoc}

@@ -20,7 +20,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Events\ModelsImported;
 
-final class ImportCommand extends Command
+class ImportCommand extends Command
 {
     /**
      * {@inheritdoc}

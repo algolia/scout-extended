@@ -4,7 +4,7 @@ namespace App;
 
 use Algolia\ScoutExtended\Searchable\Aggregator;
 
-final class All extends Aggregator
+class All extends Aggregator
 {
     protected $models = [
         User::class,

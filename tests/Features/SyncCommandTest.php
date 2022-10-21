@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Tests\Features\Fixtures\FakeException;
 use Tests\TestCase;
 
-final class SyncCommandTest extends TestCase
+class SyncCommandTest extends TestCase
 {
     public function testModelsAreDiscovered(): void
     {

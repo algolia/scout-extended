@@ -18,7 +18,7 @@ use Mockery;
 use RuntimeException;
 use Tests\TestCase;
 
-final class AggregatorTest extends TestCase
+class AggregatorTest extends TestCase
 {
     public function testWhenAggregagorIsNotBooted(): void
     {

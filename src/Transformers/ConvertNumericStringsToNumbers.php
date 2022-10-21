@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Transformers;
 use Algolia\ScoutExtended\Contracts\TransformerContract;
 use function is_string;
 
-final class ConvertNumericStringsToNumbers implements TransformerContract
+class ConvertNumericStringsToNumbers implements TransformerContract
 {
     /**
      * Converts the given array numeric strings to numbers.

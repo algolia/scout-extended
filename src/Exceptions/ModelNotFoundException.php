@@ -18,7 +18,7 @@ use RuntimeException;
 /**
  * @internal
  */
-final class ModelNotFoundException extends RuntimeException
+class ModelNotFoundException extends RuntimeException
 {
     /**
      * Name of the affected model.

@@ -20,7 +20,7 @@ use Algolia\ScoutExtended\Settings\Synchronizer;
 use function count;
 use Illuminate\Console\Command;
 
-final class StatusCommand extends Command
+class StatusCommand extends Command
 {
     /**
      * {@inheritdoc}

@@ -15,7 +15,7 @@ use Tests\Features\Fixtures\ThreadWithSearchableArray;
 use Tests\Features\Fixtures\ThreadWithSearchableArrayUsingTransform;
 use Tests\TestCase;
 
-final class TransformersTest extends TestCase
+class TransformersTest extends TestCase
 {
     public function testAppliedByDefault(): void
     {

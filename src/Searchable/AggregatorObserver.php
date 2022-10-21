@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Searchable;
 use function get_class;
 use Laravel\Scout\ModelObserver as BaseModelObserver;
 
-final class AggregatorObserver extends BaseModelObserver
+class AggregatorObserver extends BaseModelObserver
 {
     /**
      * @var array [

@@ -18,7 +18,7 @@ use Algolia\AlgoliaSearch\SearchIndex;
 /**
  * @internal
  */
-final class UserDataRepository
+class UserDataRepository
 {
     /**
      * @var \Algolia\ScoutExtended\Repositories\RemoteSettingsRepository

@@ -21,7 +21,7 @@ use Algolia\ScoutExtended\Settings\Settings;
 /**
  * @internal
  */
-final class RemoteSettingsRepository
+class RemoteSettingsRepository
 {
     /**
      * Settings that may be know by other names.

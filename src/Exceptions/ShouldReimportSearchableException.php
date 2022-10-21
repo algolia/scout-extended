@@ -15,6 +15,6 @@ namespace Algolia\ScoutExtended\Exceptions;
 
 use RuntimeException;
 
-final class ShouldReimportSearchableException extends RuntimeException
+class ShouldReimportSearchableException extends RuntimeException
 {
 }

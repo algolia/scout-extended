@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Exceptions;
 use Exception;
 use Throwable;
 
-final class SettingsNotFound extends Exception
+class SettingsNotFound extends Exception
 {
     /**
      * {@inheritdoc}

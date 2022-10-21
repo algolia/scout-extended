@@ -34,7 +34,7 @@ use ReflectionClass;
 /**
  * @internal
  */
-final class UpdateJob
+class UpdateJob
 {
     /**
      * Contains a list of splittables searchables.

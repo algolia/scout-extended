@@ -11,7 +11,7 @@ use Illuminate\Support\Arr;
 use Mockery;
 use Tests\TestCase;
 
-final class SearchableTest extends TestCase
+class SearchableTest extends TestCase
 {
     public function testSearchable(): void
     {

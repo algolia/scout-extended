@@ -9,7 +9,7 @@ use App\Thread;
 use App\User;
 use Tests\TestCase;
 
-final class SearchTest extends TestCase
+class SearchTest extends TestCase
 {
     public function testSearchEmpty(): void
     {

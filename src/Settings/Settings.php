@@ -18,7 +18,7 @@ use function in_array;
 /**
  * @internal
  */
-final class Settings
+class Settings
 {
     /**
      * @var array

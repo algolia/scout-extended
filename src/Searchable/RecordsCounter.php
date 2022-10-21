@@ -20,7 +20,7 @@ use function in_array;
 /**
  * @internal
  */
-final class RecordsCounter
+class RecordsCounter
 {
     /**
      * Get the number of local searchable records of

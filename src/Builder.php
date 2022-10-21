@@ -18,7 +18,7 @@ use function func_num_args;
 use function is_callable;
 use Laravel\Scout\Builder as BaseBuilder;
 
-final class Builder extends BaseBuilder
+class Builder extends BaseBuilder
 {
     /**
      * @var Collection

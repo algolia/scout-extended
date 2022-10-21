@@ -20,7 +20,7 @@ use Algolia\ScoutExtended\Repositories\ApiKeysRepository;
 use Illuminate\Contracts\Container\Container;
 use function is_string;
 
-final class Algolia
+class Algolia
 {
     /**
      * @var \Illuminate\Contracts\Container\Container

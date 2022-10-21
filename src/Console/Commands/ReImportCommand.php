@@ -20,7 +20,7 @@ use Algolia\ScoutExtended\Helpers\SearchableFinder;
 use function count;
 use Illuminate\Console\Command;
 
-final class ReImportCommand extends Command
+class ReImportCommand extends Command
 {
     /**
      * {@inheritdoc}

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
-final class EmptyItem extends Model
+class EmptyItem extends Model
 {
     use SoftDeletes, Searchable;
 

@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Facade;
  *
  * @see \Algolia\ScoutExtended\Algolia
  */
-final class Algolia extends Facade
+class Algolia extends Facade
 {
     /**
      * {@inheritdoc}

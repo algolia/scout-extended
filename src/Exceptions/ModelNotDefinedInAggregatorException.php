@@ -16,7 +16,7 @@ namespace Algolia\ScoutExtended\Exceptions;
 use RuntimeException;
 use Throwable;
 
-final class ModelNotDefinedInAggregatorException extends RuntimeException
+class ModelNotDefinedInAggregatorException extends RuntimeException
 {
     /**
      * {@inheritdoc}
