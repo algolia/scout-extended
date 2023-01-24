@@ -135,7 +135,7 @@ class UpdateJob
             }
         }
 
-        dispatch_now(new DeleteJob(collect($searchablesToDelete)));
+        dispatch_sync(new DeleteJob(collect($searchablesToDelete)));
 
         $result = $index->saveObjects($objectsToSave);
         if (config('scout.synchronous', false)) {
