@@ -69,7 +69,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
      */
     public function update($searchables)
     {
-        dispatch_now(new UpdateJob($searchables));
+        dispatch_sync(new UpdateJob($searchables));
     }
 
     /**
@@ -77,7 +77,7 @@ class AlgoliaEngine extends BaseAlgoliaEngine
      */
     public function delete($searchables)
     {
-        dispatch_now(new DeleteJob($searchables));
+        dispatch_sync(new DeleteJob($searchables));
     }
 
     /**
