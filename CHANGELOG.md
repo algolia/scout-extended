@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.0](https://github.com/algolia/scout-extended/compare/v2.1.0...v3.0.0) - 2022-02-06
+### Added
+- Laravel 10 support ([#320](https://github.com/algolia/scout-extended/pull/320))
+
 ## [2.1.0](https://github.com/algolia/scout-extended/compare/v2.0.4...v2.1.0) - 2022-10-21
 ### Changed
 - Removed `final` from all classes ([#317](https://github.com/algolia/scout-extended/pull/317))
