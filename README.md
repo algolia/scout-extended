@@ -44,7 +44,7 @@ great features, and at the same time leverage the complete set of Algolia’s se
 
 ## 💡 Documentation
 
-For full documentation, visit the **[Scout Extended documentation](https://algolia.com/doc/framework-integration/laravel)**.
+For the full documentation, visit the **[Scout Extended documentation](https://algolia.com/doc/framework-integration/laravel)**.
 
 > **Note:** This package adds functionalities to [Laravel Scout](https://github.com/laravel/scout), and for this reason, we encourage you to **read the Scout documentation first**. Documentation for Scout can be found on the [Laravel website](https://github.com/laravel/scout).
 
