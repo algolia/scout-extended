@@ -7,5 +7,6 @@ parameters:
     checkMissingIterableValueType: false
     ignoreErrors:
         - '#Illuminate\\Database\\Eloquent\\Model::searchableAs\(\)#'
+        - '#Illuminate\\Database\\Eloquent\\Model::searchableUsing\(\)#'
         - '#Algolia\\ScoutExtended\\ScoutExtendedServiceProvider::getModel\(\)#'
         - '#Unsafe usage of new static#'
