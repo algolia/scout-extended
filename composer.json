@@ -42,10 +42,7 @@
             "Tests\\": "tests/",
             "App\\": "tests/laravel/app",
             "Modules\\": "tests/laravel/modules"
-        },
-        "files": [
-            "vendor/mockery/mockery/library/helpers.php"
-        ]
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
