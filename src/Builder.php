@@ -182,4 +182,15 @@ class Builder extends BaseBuilder
 
         return $value;
     }
+
+    /**
+     * Get the total number of results from the engine.
+     *
+     * @param  mixed  $results
+     * @return int
+     */
+    protected function getTotalCount($results)
+    {
+        return $this->engine()->getTotalCount($results);
+    }
 }
