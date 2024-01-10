@@ -52,13 +52,28 @@ class DeleteJob
 
         $index = $client->initIndex($this->searchables->first()->searchableAs());
 
-        $result = $index->deleteBy([
+        // First fetch all object IDs by tags.
+        $objects = $index->browseObjects([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 $this->searchables->map(function ($searchable) {
                     return ObjectIdEncrypter::encrypt($searchable);
                 })->toArray(),
             ],
         ]);
+
+        // The ObjectIterator will fetch all pages for us automatically.
+        $objectIds = [];
+        foreach ($objects as $object) {
+            if (isset($object['objectID'])) {
+                $objectIds[] = $object['objectID'];
+            }
+        }
+
+        // Then delete the objects using their object IDs.
+        $result = $index->deleteObjects($objectIds);
 
         if (config('scout.synchronous', false)) {
             $result->wait();
