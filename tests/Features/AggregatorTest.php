@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
+use Algolia\AlgoliaSearch\RetryStrategy\ApiWrapper;
+use Algolia\AlgoliaSearch\Iterators\ObjectIterator;
 use Algolia\ScoutExtended\Searchable\Aggregator;
 use Algolia\ScoutExtended\Searchable\AggregatorCollection;
 use Algolia\ScoutExtended\Searchable\Aggregators;
@@ -31,10 +33,20 @@ class AggregatorTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $usersIndexMock->shouldReceive('deleteBy')->once()->with([
+        $usersIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\User::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $usersIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\User::1',
         ]);
 
         $user->delete();
@@ -57,16 +69,36 @@ class AggregatorTest extends TestCase
         }));
         $user = factory(User::class)->create();
 
-        $usersIndexMock->shouldReceive('deleteBy')->once()->with([
+        $usersIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\User::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $usersIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\User::1',
         ]);
 
-        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+        $wallIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\User::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $wallIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\User::1',
         ]);
 
         $user->delete();
@@ -86,17 +118,38 @@ class AggregatorTest extends TestCase
         }));
         $thread = factory(Thread::class)->create();
 
-        $threadIndexMock->shouldReceive('deleteBy')->once()->with([
+        $threadIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\Thread::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\Thread::1'],
+        ]);
+        $threadIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\Thread::1',
         ]);
 
-        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+        $wallIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\Thread::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\Thread::1'],
         ]);
+        $wallIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\Thread::1',
+        ]);
+
         $thread->delete();
     }
 
@@ -111,10 +164,20 @@ class AggregatorTest extends TestCase
             return count($argument) === 1 && array_key_exists('subject', $argument[0]) &&
                 $argument[0]['objectID'] === 'App\Post::1';
         }));
-        $wallIndexMock->shouldReceive('deleteBy')->times(3)->with([
+        $wallIndexMock->shouldReceive('browseObjects')->times(3)->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\Post::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\Post::1'],
+        ]);
+        $wallIndexMock->shouldReceive('deleteObjects')->times(3)->with([
+            'App\Post::1',
         ]);
         $post = factory(Post::class)->create();
         $post->delete();
@@ -138,11 +201,22 @@ class AggregatorTest extends TestCase
         $post = factory(Post::class)->create();
         $post->delete();
 
-        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+        $wallIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\Post::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\Post::1'],
         ]);
+        $wallIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\Post::1',
+        ]);
+
         $post->forceDelete();
     }
 
@@ -250,22 +324,52 @@ class AggregatorTest extends TestCase
         }));
         $user = factory(User::class)->create();
 
-        $usersIndexMock->shouldReceive('deleteBy')->once()->with([
+        $usersIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\User::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $usersIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\User::1',
         ]);
 
-        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+        $wallIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\User::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $wallIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\User::1',
         ]);
 
-        $allIndexMock->shouldReceive('deleteBy')->once()->with([
+        $allIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['App\User::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $allIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\User::1',
         ]);
 
         $user->delete();

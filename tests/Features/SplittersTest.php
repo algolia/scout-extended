@@ -25,10 +25,20 @@ class SplittersTest extends TestCase
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
 
-        $index->shouldReceive('deleteBy')->once()->with([
+        $index->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['Tests\Features\Fixtures\ThreadWithSplitterClass::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'Tests\Features\Fixtures\ThreadWithSplitterClass::1'],
+        ]);
+        $index->shouldReceive('deleteObjects')->once()->with([
+            'Tests\Features\Fixtures\ThreadWithSplitterClass::1',
         ]);
 
         $body = implode('', [
@@ -50,10 +60,20 @@ class SplittersTest extends TestCase
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
 
-        $index->shouldReceive('deleteBy')->with([
+        $index->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['Tests\Features\Fixtures\ThreadWithValueReturned::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'Tests\Features\Fixtures\ThreadWithValueReturned::1'],
+        ]);
+        $index->shouldReceive('deleteObjects')->once()->with([
+            'Tests\Features\Fixtures\ThreadWithValueReturned::1',
         ]);
 
         $body = implode(',', [
@@ -75,10 +95,20 @@ class SplittersTest extends TestCase
                 $argument[0]['body'] === 'Hello Foo!' && $argument[1]['body'] === 'Hello Bar!';
         }))->andReturn($this->mockResponse());
 
-        $index->shouldReceive('deleteBy')->with([
+        $index->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['Tests\Features\Fixtures\ThreadWithSplitterInstance::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'Tests\Features\Fixtures\ThreadWithSplitterInstance::1'],
+        ]);
+        $index->shouldReceive('deleteObjects')->once()->with([
+            'Tests\Features\Fixtures\ThreadWithSplitterInstance::1',
         ]);
 
         $body = implode('', [
@@ -116,10 +146,20 @@ class SplittersTest extends TestCase
                 $argument[7]['slug'] === 'second' && $argument[7]['description_at_the_letter'] === 2;
         }))->andReturn($this->mockResponse());
 
-        $index->shouldReceive('deleteBy')->with([
+        $index->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
             'tagFilters' => [
                 ['Tests\Features\Fixtures\ThreadMultipleSplits::1'],
             ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'Tests\Features\Fixtures\ThreadMultipleSplits::1'],
+        ]);
+        $index->shouldReceive('deleteObjects')->once()->with([
+            'Tests\Features\Fixtures\ThreadMultipleSplits::1',
         ]);
 
         $body = implode('', [
@@ -139,7 +179,10 @@ class SplittersTest extends TestCase
         $index = $this->mockIndex(ThreadWithValueReturned::class);
 
         $index->shouldReceive('saveObjects')->twice();
-        $index->shouldReceive('deleteBy')->twice();
+        // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+        //       but mocking that class is not feasible as it has been declared `final`.
+        $index->shouldReceive('browseObjects')->twice()->andReturn([]);
+        $index->shouldReceive('deleteObjects')->twice();
 
         $body = implode('', [
             '<h1>Hello <strong>Foo!</strong></h1>',
