@@ -24,6 +24,8 @@ class AggregatorTest extends TestCase
 {
     public function testWhenAggregagorIsNotBooted(): void
     {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
         $usersIndexMock = $this->mockIndex('users');
 
         $usersIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
@@ -52,8 +54,30 @@ class AggregatorTest extends TestCase
         $user->delete();
     }
 
+    public function testWhenAggregagorIsNotBootedWithDeprecatedDeleteBy(): void
+    {
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+
+        $user = factory(User::class)->create();
+
+        $usersIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+        ]);
+
+        $user->delete();
+    }
+
     public function testAggregatorWithSearchableModel(): void
     {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
         Wall::bootSearchable();
 
         $usersIndexMock = $this->mockIndex('users');
@@ -104,8 +128,42 @@ class AggregatorTest extends TestCase
         $user->delete();
     }
 
+    public function testAggregatorWithSearchableModelWithDeprecatedDeleteBy(): void
+    {
+        Wall::bootSearchable();
+
+        $usersIndexMock = $this->mockIndex('users');
+        $wallIndexMock = $this->mockIndex('wall');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+        $wallIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+        $user = factory(User::class)->create();
+
+        $usersIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+        ]);
+
+        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+        ]);
+
+        $user->delete();
+    }
+
     public function testAggregatorWithNonSearchableModel(): void
     {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
         Wall::bootSearchable();
 
         $threadIndexMock = $this->mockIndex(Thread::class);
@@ -153,8 +211,38 @@ class AggregatorTest extends TestCase
         $thread->delete();
     }
 
+    public function testAggregatorWithNonSearchableModelWithDeprecatedDeleteBy(): void
+    {
+        Wall::bootSearchable();
+
+        $threadIndexMock = $this->mockIndex(Thread::class);
+        $wallIndexMock = $this->mockIndex('wall');
+
+        $threadIndexMock->shouldReceive('saveObjects')->once();
+        $wallIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('body', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\Thread::1';
+        }));
+        $thread = factory(Thread::class)->create();
+
+        $threadIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\Thread::1'],
+            ],
+        ]);
+
+        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\Thread::1'],
+            ],
+        ]);
+        $thread->delete();
+    }
+
     public function testAggregatorSoftDeleteModelWithoutSoftDeletesOnIndex(): void
     {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
         Wall::bootSearchable();
 
         $wallIndexMock = $this->mockIndex('wall');
@@ -185,8 +273,32 @@ class AggregatorTest extends TestCase
         $post->forceDelete();
     }
 
+    public function testAggregatorSoftDeleteModelWithoutSoftDeletesOnIndexWithDeprecatedDeleteBy(): void
+    {
+        Wall::bootSearchable();
+
+        $wallIndexMock = $this->mockIndex('wall');
+
+        // Laravel Scout restore calls twice the save objects.
+        $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('subject', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\Post::1';
+        }));
+        $wallIndexMock->shouldReceive('deleteBy')->times(3)->with([
+            'tagFilters' => [
+                ['App\Post::1'],
+            ],
+        ]);
+        $post = factory(Post::class)->create();
+        $post->delete();
+        $post->restore();
+        $post->forceDelete();
+    }
+
     public function testAggregatorSoftDeleteModelWithSoftDeletesOnIndex(): void
     {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
         Wall::bootSearchable();
 
         $this->app['config']->set('scout.soft_delete', true);
@@ -217,6 +329,30 @@ class AggregatorTest extends TestCase
             'App\Post::1',
         ]);
 
+        $post->forceDelete();
+    }
+
+    public function testAggregatorSoftDeleteModelWithSoftDeletesOnIndexWithDeprecatedDeleteBy(): void
+    {
+        Wall::bootSearchable();
+
+        $this->app['config']->set('scout.soft_delete', true);
+
+        $wallIndexMock = $this->mockIndex('wall');
+
+        // Laravel Scout force Delete calls once the save() method.
+        $wallIndexMock->shouldReceive('saveObjects')->times(3)->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('subject', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\Post::1';
+        }));
+        $post = factory(Post::class)->create();
+        $post->delete();
+
+        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\Post::1'],
+            ],
+        ]);
         $post->forceDelete();
     }
 
@@ -301,6 +437,8 @@ class AggregatorTest extends TestCase
 
     public function testAggregatorWithMultipleBoots(): void
     {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
         Aggregators::bootSearchables([
             Wall::class,
             All::class,
@@ -370,6 +508,52 @@ class AggregatorTest extends TestCase
         ]);
         $allIndexMock->shouldReceive('deleteObjects')->once()->with([
             'App\User::1',
+        ]);
+
+        $user->delete();
+    }
+
+    public function testAggregatorWithMultipleBootsWithDeprecatedDeleteBy(): void
+    {
+        Aggregators::bootSearchables([
+            Wall::class,
+            All::class,
+        ]);
+
+        $usersIndexMock = $this->mockIndex('users');
+        $wallIndexMock = $this->mockIndex('wall');
+        $allIndexMock = $this->mockIndex('all');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+        $wallIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+        $allIndexMock->shouldReceive('saveObjects')->once()->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+        $user = factory(User::class)->create();
+
+        $usersIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+        ]);
+
+        $wallIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+        ]);
+
+        $allIndexMock->shouldReceive('deleteBy')->once()->with([
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
         ]);
 
         $user->delete();
