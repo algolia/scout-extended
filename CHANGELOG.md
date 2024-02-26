@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [3.0.0](https://github.com/algolia/scout-extended/compare/v2.1.0...v3.0.0) - 2022-02-06
+## [3.0.1](https://github.com/algolia/scout-extended/compare/v3.0.0...v3.0.1) - 2024-02-26
+### Added
+- Add configuration option to not use `deleteBy` ([#334](https://github.com/algolia/scout-extended/pull/334))
+
+## [3.0.0](https://github.com/algolia/scout-extended/compare/v2.1.0...v3.0.0) - 2023-02-06
 ### Added
 - Laravel 10 support ([#320](https://github.com/algolia/scout-extended/pull/320))
 
