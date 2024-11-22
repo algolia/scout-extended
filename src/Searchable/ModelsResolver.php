@@ -85,18 +85,16 @@ class ModelsResolver
 
         $result = $searchable->newCollection();
 
+        $instances = $instances->keyBy(fn ($i) => ObjectIdEncrypter::encrypt($i));
         foreach ($hits as $id => $hit) {
-            foreach ($instances as $instance) {
-                if (ObjectIdEncrypter::encrypt($instance) === ObjectIdEncrypter::withoutPart((string) $id)) {
-                    if (method_exists($instance, 'withScoutMetadata')) {
-                        foreach (Arr::only($hit, self::$metadata) as $metadataKey => $metadataValue) {
-                            $instance->withScoutMetadata($metadataKey, $metadataValue);
-                        }
+            if ($i = $instances->get(ObjectIdEncrypter::withoutPart((string) $id))) {
+                if (method_exists($i, 'withScoutMetadata')) {
+                    foreach (Arr::only($hit, self::$metadata) as $metadataKey => $metadataValue) {
+                        $i->withScoutMetadata($metadataKey, $metadataValue);
                     }
-
-                    $result->push($instance);
-                    break;
                 }
+
+                $result->push($i);
             }
         }
 
