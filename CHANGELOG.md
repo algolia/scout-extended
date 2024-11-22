@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.1](https://github.com/algolia/scout-extended/compare/v3.1.0...v3.1.2) - 2024-03-21
+### Fixed
+- Conflict with `laravel/scout v10.11.6` and up ([#348](https://github.com/algolia/scout-extended/pull/348))
+
 ## [3.1.0](https://github.com/algolia/scout-extended/compare/v3.0.1...v3.1.0) - 2024-03-21
 ### Added
 - Laravel 11 support ([#339](https://github.com/algolia/scout-extended/pull/339))
