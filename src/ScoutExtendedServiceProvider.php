@@ -125,7 +125,7 @@ class ScoutExtendedServiceProvider extends ServiceProvider
      */
     private function registerMacros(): void
     {
-        \Illuminate\Database\Eloquent\Builder::macro('transform', function (array $array, array $transformers = null) {
+        \Illuminate\Database\Eloquent\Builder::macro('transform', function (array $array, ?array $transformers = null) {
             foreach ($transformers ?? UpdateJob::getTransformers() as $transformer) {
                 $array = app($transformer)->transform($this->getModel(), $array);
             }

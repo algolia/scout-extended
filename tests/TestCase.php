@@ -81,7 +81,7 @@ abstract class TestCase extends BaseTestCase
         return $defaults;
     }
 
-    protected function assertLocalHas(array $settings, string $settingsPath = null): void
+    protected function assertLocalHas(array $settings, ?string $settingsPath = null): void
     {
         if ($settingsPath === null) {
             $settingsPath = config_path('scout-users.php');
@@ -145,7 +145,7 @@ abstract class TestCase extends BaseTestCase
         return $clientMock;
     }
 
-    protected function mockIndex(string $model, array $settings = [], array $userData = null): MockInterface
+    protected function mockIndex(string $model, array $settings = [], ?array $userData = null): MockInterface
     {
         $indexMock = mock(SearchIndex::class);
         $indexName = class_exists($model) ? (new $model)->searchableAs() : $model;
@@ -173,7 +173,7 @@ abstract class TestCase extends BaseTestCase
         return $indexMock;
     }
 
-    protected function assertSettingsSet($indexMock, array $settings, array $userData = null): void
+    protected function assertSettingsSet($indexMock, array $settings, ?array $userData = null): void
     {
         if (! empty($settings)) {
             $indexMock->shouldReceive('setSettings')->once()->with($settings)->andReturn($this->mockResponse());

@@ -39,7 +39,7 @@ class HtmlSplitter implements SplitterContract
      *
      * @return void
      */
-    public function __construct(array $tags = null)
+    public function __construct(?array $tags = null)
     {
         if ($tags !== null) {
             $this->tags = $tags;
