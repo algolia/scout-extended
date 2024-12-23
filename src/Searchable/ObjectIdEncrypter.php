@@ -37,7 +37,7 @@ class ObjectIdEncrypter
      *
      * @return string
      */
-    public static function encrypt($searchable, int $part = null): string
+    public static function encrypt($searchable, ?int $part = null): string
     {
         $scoutKey = method_exists($searchable, 'getScoutKey') ? $searchable->getScoutKey() : $searchable->getKey();
 
