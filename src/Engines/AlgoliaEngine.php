@@ -20,9 +20,18 @@ use Algolia\ScoutExtended\Searchable\ModelsResolver;
 use Algolia\ScoutExtended\Searchable\ObjectIdEncrypter;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
+use Laravel\Scout\Engines\Algolia3Engine;
+use Laravel\Scout\Scout;
 use function is_array;
 use Laravel\Scout\Builder;
-use Laravel\Scout\Engines\AlgoliaEngine as BaseAlgoliaEngine;
+
+if (Scout::VERSION >= '10.11.6') {
+    // New Laravel Scout base class for Algolia
+    class_alias(Algolia3Engine::class, BaseAlgoliaEngine::class);
+} else {
+    // Legacy Laravel Scout class
+    class_alias(\Laravel\Scout\Engines\AlgoliaEngine::class, BaseAlgoliaEngine::class);
+}
 
 class AlgoliaEngine extends BaseAlgoliaEngine
 {
