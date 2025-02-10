@@ -25,7 +25,7 @@ use Laravel\Scout\Scout;
 use function is_array;
 use Laravel\Scout\Builder;
 
-if (Scout::VERSION >= '10.11.6') {
+if (version_compare(Scout::VERSION, '10.11.6', '>=')) {
     // New Laravel Scout base class for Algolia
     class_alias(Algolia3Engine::class, BaseAlgoliaEngine::class);
 } else {
