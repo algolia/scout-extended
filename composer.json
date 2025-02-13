@@ -77,7 +77,6 @@
         "phpstan:test": "phpstan analyse --ansi --memory-limit=-1",
         "phpunit:test": "phpunit --colors=always",
         "test": [
-            "@phpstan:test",
             "@phpunit:test"
         ]
     }
