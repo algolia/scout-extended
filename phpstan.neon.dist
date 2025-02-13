@@ -4,7 +4,10 @@ parameters:
     level: 5
     paths:
         - src
-    checkMissingIterableValueType: false
+    treatPhpDocTypesAsCertain: false
+    excludePaths:
+            - src/Engines/AlgoliaEngine.php
     ignoreErrors:
         - '#Illuminate\\Database\\Eloquent\\Model::(searchableAs|searchableUsing)\(\)#'
         - '#Unsafe usage of new static#'
+        - '#Return type \(Algolia\\ScoutExtended\\Engines\\AlgoliaEngine\) of method Algolia\\ScoutExtended\\Managers\\EngineManager::createAlgoliaDriver\(\) should be compatible with return type \(Laravel\\Scout\\Engines\\AlgoliaEngine\) of method Laravel\\Scout\\EngineManager::createAlgoliaDriver\(\)#'
