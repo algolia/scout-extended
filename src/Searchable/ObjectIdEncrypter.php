@@ -37,7 +37,7 @@ class ObjectIdEncrypter
      *
      * @return string
      */
-    public static function encrypt($searchable, int $part = null): string
+    public static function encrypt($searchable, ?int $part = null): string
     {
         $scoutKey = method_exists($searchable, 'getScoutKey') ? $searchable->getScoutKey() : $searchable->getKey();
 
@@ -89,7 +89,7 @@ class ObjectIdEncrypter
     {
         $parts = explode(self::$separator, $objectId);
 
-        if (! is_array($parts) || count($parts) < 2) {
+        if (count($parts) < 2) {
             throw new ShouldReimportSearchableException('ObjectID seems invalid. You may need to
                 re-import your data using the `scout-reimport` Artisan command.');
         }
