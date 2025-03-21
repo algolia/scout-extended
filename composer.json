@@ -24,7 +24,7 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "algolia/algoliasearch-client-php": "^3.0.0|^4.15",
+        "algolia/algoliasearch-client-php": "^3.0.0",
         "illuminate/console": "^9.0|^10.0|^11.0|^12.0",
         "illuminate/contracts": "^9.0|^10.0|^11.0|^12.0",
         "illuminate/database": "^9.0|^10.0|^11.0|^12.0",

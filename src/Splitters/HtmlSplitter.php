@@ -35,11 +35,11 @@ class HtmlSplitter implements SplitterContract
     /**
      * Creates a new instance of the class.
      *
-     * @param array $tags
+     * @param array|null $tags
      *
      * @return void
      */
-    public function __construct(array $tags = null)
+    public function __construct(?array $tags = null)
     {
         if ($tags !== null) {
             $this->tags = $tags;

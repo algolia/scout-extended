@@ -223,7 +223,7 @@ class LocalFactory
      */
     public function isDisableTypoToleranceOnAttributes(string $key, $value): bool
     {
-        return is_string($key) && Str::is(self::$disableTypoToleranceOnAttributesKeys, $key);
+        return Str::is(self::$disableTypoToleranceOnAttributesKeys, $key);
     }
 
     /**
@@ -236,7 +236,7 @@ class LocalFactory
      */
     public function isUnretrievableAttributes(string $key, $value): bool
     {
-        return is_string($key) && Str::is(self::$unretrievableAttributes, $key);
+        return Str::is(self::$unretrievableAttributes, $key);
     }
 
     /**

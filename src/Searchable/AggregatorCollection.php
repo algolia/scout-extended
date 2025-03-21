@@ -47,7 +47,7 @@ class AggregatorCollection extends Collection
     /**
      * Prepare the instance for serialization.
      *
-     * @return array []string
+     * @return string[]
      */
     public function __sleep()
     {
