@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [3.1.2](https://github.com/algolia/scout-extended/compare/v3.1.2...v3.1.3) - 2025-02-13
+## [3.2.0](https://github.com/algolia/scout-extended/compare/v3.1.3...v3.2.0) - 2025-03-21
+### Added
+- Laravel 12 support ([#355](https://github.com/algolia/scout-extended/pull/355))
+
+## [3.1.3](https://github.com/algolia/scout-extended/compare/v3.1.2...v3.1.3) - 2025-02-13
 ### Fixed
 - Fix definition of `WhereIn`
 
