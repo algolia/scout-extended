@@ -40,4 +40,31 @@ class ReimportCommandTest extends TestCase
 
         Artisan::call('scout:reimport', ['searchable' => User::class]);
     }
+
+    public function testEmptyReimport(): void
+    {
+        factory(User::class, 0)->create();
+
+        $client = $this->mockClient();
+
+        $userIndex = $this->mockIndex(User::class);
+
+        $userTemporaryIndex = $this->mockIndex('temp_'.(new User())->searchableAs());
+
+        $client->shouldReceive('copyIndex')->with((new User())->searchableAs(), $userTemporaryIndex->getIndexName(), [
+            'scope' => [
+                'settings',
+                'synonyms',
+                'rules',
+            ],
+        ])->andReturn($this->mockResponse());
+
+        $userTemporaryIndex->shouldReceive('search')->andReturn(['nbHits' => 0]);
+
+        $userIndex->shouldReceive('clearObjects')->andReturn(['nbHits' => 0]);
+
+        $client->shouldReceive('clearObjects')->andReturn($this->mockResponse());
+
+        Artisan::call('scout:reimport', ['searchable' => User::class]);
+    }
 }
