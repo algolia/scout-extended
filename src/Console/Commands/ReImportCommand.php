@@ -103,7 +103,9 @@ class ReImportCommand extends Command
                     $response->wait();
                 }
             } catch (NotFoundException $e) {
-                $index->setSettings(['attributesForFaceting' => null])->wait();
+                if (!$index->exists()) {
+                    $index->setSettings(['attributesForFaceting' => null])->wait();
+                }
             }
         }
 
