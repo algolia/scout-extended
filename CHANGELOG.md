@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.2.1](https://github.com/algolia/scout-extended/compare/v3.2.0...v3.2.1) - 2025-04-16
+### Fixed
+- Check if index exists before force creating ([#357](https://github.com/algolia/scout-extended/pull/357))
+
 ## [3.2.0](https://github.com/algolia/scout-extended/compare/v3.1.3...v3.2.0) - 2025-03-21
 ### Added
 - Laravel 12 support ([#355](https://github.com/algolia/scout-extended/pull/355))
