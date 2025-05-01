@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Algolia\ScoutExtended\Managers;
 
+use Algolia\AlgoliaSearch\Config\SearchConfig;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\AlgoliaSearch\Support\UserAgent;
 use Algolia\ScoutExtended\Engines\AlgoliaEngine;
@@ -29,6 +30,29 @@ class EngineManager extends BaseEngineManager
     {
         UserAgent::addCustomUserAgent('Laravel Scout Extended', '3.2.1');
 
-        return new AlgoliaEngine(SearchClient::create(config('scout.algolia.id'), config('scout.algolia.secret')));
+        $config = SearchConfig::create(
+            config('scout.algolia.id'),
+            config('scout.algolia.secret')
+        )->setDefaultHeaders(
+            $this->defaultAlgoliaHeaders()
+        );
+
+        if (is_int($connectTimeout = config('scout.algolia.connect_timeout'))) {
+            $config->setConnectTimeout($connectTimeout);
+        }
+
+        if (is_int($readTimeout = config('scout.algolia.read_timeout'))) {
+            $config->setReadTimeout($readTimeout);
+        }
+
+        if (is_int($writeTimeout = config('scout.algolia.write_timeout'))) {
+            $config->setWriteTimeout($writeTimeout);
+        }
+
+        if (is_int($batchSize = config('scout.algolia.batch_size'))) {
+            $config->setBatchSize($batchSize);
+        }
+
+        return new AlgoliaEngine(SearchClient::createWithConfig($config));
     }
 }
