@@ -15,6 +15,7 @@ use App\Post;
 use App\Thread;
 use App\User;
 use App\Wall;
+use Laravel\Scout\ModelObserver;
 use Laravel\Scout\Scout;
 use Mockery;
 use RuntimeException;
@@ -581,6 +582,149 @@ class AggregatorTest extends TestCase
         // up calling `queueRemoveFromSearch` on the Aggregator, not dispatching any jobs.
 
         $user->delete();
+    }
+
+    public function testSkipDeletedWhenDisableSyncingFor(): void
+    {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
+        $wallIndexMock = $this->mockIndex('wall');
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')
+            ->once()
+            ->with(Mockery::on(function ($argument) {
+            return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                $argument[0]['objectID'] === 'App\User::1';
+        }));
+
+        $user = factory(User::class)->create();
+
+        ModelObserver::disableSyncingFor(User::class);
+
+        Wall::bootSearchable();
+
+        $wallIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $wallIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\User::1',
+        ]);
+
+        $usersIndexMock->shouldNotReceive('browseObjects')->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $usersIndexMock->shouldNotReceive('deleteObjects')->with([
+            'App\User::1',
+        ]);
+
+        $user->delete();
+    }
+    public function testSkipForceDeletedWhenDisableSyncingFor(): void
+    {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
+        $wallIndexMock = $this->mockIndex('wall');
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')
+            ->once()
+            ->with(Mockery::on(function ($argument) {
+                return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                    $argument[0]['objectID'] === 'App\User::1';
+            }));
+
+        $user = factory(User::class)->create();
+
+        ModelObserver::disableSyncingFor(User::class);
+
+        Wall::bootSearchable();
+
+        $wallIndexMock->shouldReceive('browseObjects')->once()->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $wallIndexMock->shouldReceive('deleteObjects')->once()->with([
+            'App\User::1',
+        ]);
+
+        $usersIndexMock->shouldNotReceive('browseObjects')->with([
+            'attributesToRetrieve' => [
+                'objectID',
+            ],
+            'tagFilters' => [
+                ['App\User::1'],
+            ],
+            // NOTE: This _should_ ideally return an instance of `\Algolia\AlgoliaSearch\Iterators\ObjectIterator`
+            //       but mocking that class is not feasible as it has been declared `final`.
+        ])->andReturn([
+            ['objectID' => 'App\User::1'],
+        ]);
+        $usersIndexMock->shouldNotReceive('deleteObjects')->with([
+            'App\User::1',
+        ]);
+
+        $user->forceDelete();
+    }
+
+    public function testSkipSavedWhenDisableSyncingFor(): void
+    {
+        $wallIndexMock = $this->mockIndex('wall');
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')
+            ->once()
+            ->with(Mockery::on(function ($argument) {
+                return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                    $argument[0]['objectID'] === 'App\User::1';
+            }));
+
+        $user = factory(User::class)->create();
+
+        ModelObserver::disableSyncingFor(User::class);
+
+        $wallIndexMock->shouldReceive('saveObjects')
+            ->once()
+            ->with(Mockery::on(function ($argument) {
+                return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                    $argument[0]['objectID'] === 'App\User::1';
+            }));
+
+        $usersIndexMock->shouldNotReceive('saveObjects')
+            ->with(Mockery::on(function ($argument) {
+                return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                    $argument[0]['objectID'] === 'App\User::1';
+            }));
+
+        Wall::bootSearchable();
+
+        $user->save();
     }
 }
 
