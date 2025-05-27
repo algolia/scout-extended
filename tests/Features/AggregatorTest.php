@@ -8,6 +8,7 @@ use Algolia\AlgoliaSearch\RetryStrategy\ApiWrapper;
 use Algolia\AlgoliaSearch\Iterators\ObjectIterator;
 use Algolia\ScoutExtended\Searchable\Aggregator;
 use Algolia\ScoutExtended\Searchable\AggregatorCollection;
+use Algolia\ScoutExtended\Searchable\AggregatorObserver;
 use Algolia\ScoutExtended\Searchable\Aggregators;
 use App\All;
 use App\News;
@@ -687,6 +688,115 @@ class AggregatorTest extends TestCase
             ModelObserver::enableSyncingFor(User::class);
         }
     }
+
+    public function testSkipSavedWhenDisableSyncingForAggregator(): void
+    {
+        $wallIndexMock = $this->mockIndex('wall');
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once();
+
+        $user = factory(User::class)->create();
+
+        AggregatorObserver::disableSyncingFor(Wall::class);
+
+        Wall::bootSearchable();
+        try {
+            // Ensure saveObjects is NOT called for the wall index (aggregator)
+            $wallIndexMock->shouldNotReceive('saveObjects')
+                ->with(Mockery::on(function ($argument) {
+                    return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                        $argument[0]['objectID'] === 'App\User::1';
+                }));
+
+            // Expect saveObjects to be called once for the user index
+            $usersIndexMock->shouldReceive('saveObjects')
+                ->once()
+                ->with(Mockery::on(function ($argument) {
+                    return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                        $argument[0]['objectID'] === 'App\User::1';
+                }));
+
+            Wall::bootSearchable();
+
+            $user->save();
+        } finally {
+            AggregatorObserver::enableSyncingFor(User::class);
+        }
+    }
+
+    public function testSkipDeletedWhenDisableSyncingForAggregator(): void
+    {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
+        $wallIndexMock = $this->mockIndex('wall');
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once();
+
+        $user = factory(User::class)->create();
+
+        AggregatorObserver::disableSyncingFor(Wall::class);
+
+        Wall::bootSearchable();
+
+        try {
+            // Ensure saveObjects is NOT called for the wall index (aggregator)
+            $wallIndexMock->shouldNotReceive('browseObjects')->with([
+                'attributesToRetrieve' => ['objectID'],
+                'tagFilters' => [['App\User::1']],
+            ])->andReturn([['objectID' => 'App\User::1']]);
+            $wallIndexMock->shouldNotReceive('deleteObjects')->with(['App\User::1']);
+
+            // Expect browseObjects and deleteObjects to be called on the users index
+            $usersIndexMock->shouldReceive('browseObjects')->once()->with([
+                'attributesToRetrieve' => ['objectID'],
+                'tagFilters' => [['App\User::1']],
+            ])->andReturn([['objectID' => 'App\User::1']]);
+            $usersIndexMock->shouldReceive('deleteObjects')->once()->with(['App\User::1']);
+
+            $user->delete();
+        } finally {
+            AggregatorObserver::enableSyncingFor(Wall::class);
+        }
+    }
+
+    public function testSkipForceDeletedWhenDisableSyncingForAggregator(): void
+    {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
+        $wallIndexMock = $this->mockIndex('wall');
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once();
+
+        $user = factory(User::class)->create();
+
+        AggregatorObserver::disableSyncingFor(Wall::class);
+
+        Wall::bootSearchable();
+
+        try {
+            // Ensure saveObjects is NOT called for the wall index (aggregator)
+            $wallIndexMock->shouldNotReceive('browseObjects')->with([
+                'attributesToRetrieve' => ['objectID'],
+                'tagFilters' => [['App\User::1']],
+            ])->andReturn([['objectID' => 'App\User::1']]);
+            $wallIndexMock->shouldNotReceive('deleteObjects')->with(['App\User::1']);
+
+            // Expect browseObjects and deleteObjects to be called on the users index
+            $usersIndexMock->shouldReceive('browseObjects')->once()->with([
+                'attributesToRetrieve' => ['objectID'],
+                'tagFilters' => [['App\User::1']],
+            ])->andReturn([['objectID' => 'App\User::1']]);
+            $usersIndexMock->shouldReceive('deleteObjects')->once()->with(['App\User::1']);
+
+            $user->forceDelete();
+        } finally {
+            AggregatorObserver::enableSyncingFor(Wall::class);
+        }
+    }
+
 }
 
 class DummyRemoveFromSearch {
