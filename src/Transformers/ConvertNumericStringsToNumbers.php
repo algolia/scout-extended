@@ -33,7 +33,17 @@ class ConvertNumericStringsToNumbers implements TransformerContract
              * Casts numeric strings to integers/floats.
              */
             if (is_string($value) && is_numeric($value)) {
-                $array[$key] = ctype_digit($value) ? (int) $value : (float) $value;
+                $number = ctype_digit($value) ? (int) $value : (float) $value;
+
+                if ($number === INF) {
+                    continue;
+                }
+
+                if (is_nan($number)) {
+                    continue;
+                }
+
+                $array[$key] = $number;
             }
         }
 
