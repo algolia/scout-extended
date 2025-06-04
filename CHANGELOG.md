@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.2.2](https://github.com/algolia/scout-extended/compare/v3.2.1...v3.2.2) - 2025-06-04
+### Fixed
+- Fix AggregatorObserver sync status ([#356](https://github.com/algolia/scout-extended/pull/356))
+
 ## [3.2.1](https://github.com/algolia/scout-extended/compare/v3.2.0...v3.2.1) - 2025-04-16
 ### Fixed
 - Check if index exists before force creating ([#357](https://github.com/algolia/scout-extended/pull/357))
