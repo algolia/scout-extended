@@ -85,10 +85,6 @@ class AggregatorObserver extends BaseModelObserver
      */
     public function deleted($model): void
     {
-        if (static::syncingDisabledFor($model)) {
-            return;
-        }
-
         if ($this->usesSoftDelete($model) && config('scout.soft_delete', false)) {
             $this->saved($model);
         } else {
@@ -112,10 +108,6 @@ class AggregatorObserver extends BaseModelObserver
      */
     public function forceDeleted($model): void
     {
-        if (static::syncingDisabledFor($model)) {
-            return;
-        }
-
         $class = get_class($model);
 
         if (! array_key_exists($class, $this->aggregators)) {

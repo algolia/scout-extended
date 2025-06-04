@@ -15,6 +15,7 @@ use App\Post;
 use App\Thread;
 use App\User;
 use App\Wall;
+use Laravel\Scout\ModelObserver;
 use Laravel\Scout\Scout;
 use Mockery;
 use RuntimeException;
@@ -581,6 +582,110 @@ class AggregatorTest extends TestCase
         // up calling `queueRemoveFromSearch` on the Aggregator, not dispatching any jobs.
 
         $user->delete();
+    }
+
+    public function testSkipDeletedWhenDisableSyncingFor(): void
+    {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
+        $wallIndexMock = $this->mockIndex('wall');
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once();
+        $user = factory(User::class)->create();
+
+        ModelObserver::disableSyncingFor(User::class);
+
+        Wall::bootSearchable();
+
+        try {
+            // Expect browseObjects and deleteObjects to be called on the wall index
+            $wallIndexMock->shouldReceive('browseObjects')->once()->with([
+                'attributesToRetrieve' => ['objectID'],
+                'tagFilters' => [['App\User::1']],
+            ])->andReturn([['objectID' => 'App\User::1']]);
+            $wallIndexMock->shouldReceive('deleteObjects')->once()->with(['App\User::1']);
+
+            // Ensure browseObjects and deleteObjects are NOT called on the users index
+            $usersIndexMock->shouldNotReceive('browseObjects')->with([
+                'attributesToRetrieve' => ['objectID'],
+                'tagFilters' => [['App\User::1']],
+            ])->andReturn([['objectID' => 'App\User::1']]);
+            $usersIndexMock->shouldNotReceive('deleteObjects')->with(['App\User::1']);
+
+            $user->delete();
+        } finally {
+            ModelObserver::enableSyncingFor(User::class);
+        }
+    }
+
+    public function testSkipForceDeletedWhenDisableSyncingFor(): void
+    {
+        $this->app['config']->set('scout.algolia.use_deprecated_delete_by', false);
+
+        $wallIndexMock = $this->mockIndex('wall');
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once();
+        $user = factory(User::class)->create();
+
+        ModelObserver::disableSyncingFor(User::class);
+
+        Wall::bootSearchable();
+
+        try {
+            // Expect browseObjects and deleteObjects to be called on the wall index
+            $wallIndexMock->shouldReceive('browseObjects')->once()->with([
+                'attributesToRetrieve' => ['objectID',],
+                'tagFilters' => [['App\User::1'],],
+            ])->andReturn([['objectID' => 'App\User::1']]);
+            $wallIndexMock->shouldReceive('deleteObjects')->once()->with(['App\User::1']);
+
+            // Ensure browseObjects and deleteObjects are NOT called on the users index
+            $usersIndexMock->shouldNotReceive('browseObjects')->with([
+                'attributesToRetrieve' => ['objectID'],
+                'tagFilters' => [['App\User::1']],
+            ])->andReturn([['objectID' => 'App\User::1']]);
+            $usersIndexMock->shouldNotReceive('deleteObjects')->with(['App\User::1']);
+
+            $user->forceDelete();
+        } finally {
+            ModelObserver::enableSyncingFor(User::class);
+        }
+    }
+
+    public function testSkipSavedWhenDisableSyncingFor(): void
+    {
+        $wallIndexMock = $this->mockIndex('wall');
+        $usersIndexMock = $this->mockIndex('users');
+
+        $usersIndexMock->shouldReceive('saveObjects')->once();
+        $user = factory(User::class)->create();
+
+        ModelObserver::disableSyncingFor(User::class);
+
+        try {
+            // Expect saveObjects to be called once for the wall index
+            $wallIndexMock->shouldReceive('saveObjects')
+                ->once()
+                ->with(Mockery::on(function ($argument) {
+                    return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                        $argument[0]['objectID'] === 'App\User::1';
+                }));
+
+            // Ensure saveObjects is NOT called for the users index
+            $usersIndexMock->shouldNotReceive('saveObjects')
+                ->with(Mockery::on(function ($argument) {
+                    return count($argument) === 1 && array_key_exists('email', $argument[0]) &&
+                        $argument[0]['objectID'] === 'App\User::1';
+                }));
+
+            Wall::bootSearchable();
+
+            $user->save();
+        } finally {
+            ModelObserver::enableSyncingFor(User::class);
+        }
     }
 }
 
