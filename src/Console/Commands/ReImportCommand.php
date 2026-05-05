@@ -15,7 +15,6 @@ namespace Algolia\ScoutExtended\Console\Commands;
 
 use Algolia\AlgoliaSearch\Api\SearchClient;
 use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
-use Algolia\AlgoliaSearch\Model\Search\OperationIndexParams;
 use Algolia\AlgoliaSearch\Model\Search\OperationType;
 use Algolia\AlgoliaSearch\Model\Search\ScopeType;
 use Algolia\ScoutExtended\Helpers\SearchableFinder;
@@ -65,13 +64,11 @@ class ReImportCommand extends Command
             try {
                 $client->getSettings($indexName);
 
-                $response = $client->operationIndex(
-                    $indexName,
-                    (new OperationIndexParams())
-                        ->setOperation(OperationType::COPY) // @phpstan-ignore argument.type (generated client uses string constants typed as class)
-                        ->setDestination($temporaryName)
-                        ->setScope([ScopeType::SETTINGS, ScopeType::SYNONYMS, ScopeType::RULES]) // @phpstan-ignore argument.type (generated client uses string constants typed as class)
-                );
+                $response = $client->operationIndex($indexName, [
+                    'operation' => OperationType::COPY,
+                    'destination' => $temporaryName,
+                    'scope' => [ScopeType::SETTINGS, ScopeType::SYNONYMS, ScopeType::RULES],
+                ]);
                 $client->waitForTask($temporaryName, $response['taskID']);
             } catch (NotFoundException $e) {
                 // ..
@@ -98,12 +95,10 @@ class ReImportCommand extends Command
             try {
                 $client->getSettings($temporaryName);
 
-                $response = $client->operationIndex(
-                    $temporaryName,
-                    (new OperationIndexParams())
-                        ->setOperation(OperationType::MOVE) // @phpstan-ignore argument.type (generated client uses string constants typed as class)
-                        ->setDestination($indexName)
-                );
+                $response = $client->operationIndex($temporaryName, [
+                    'operation' => OperationType::MOVE,
+                    'destination' => $indexName,
+                ]);
 
                 if ($config->get('scout.synchronous', false)) {
                     $client->waitForTask($indexName, $response['taskID']);

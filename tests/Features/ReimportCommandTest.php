@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Features;
 
-use Algolia\AlgoliaSearch\Model\Search\OperationIndexParams;
+use Algolia\AlgoliaSearch\Model\Search\OperationType;
+use Algolia\AlgoliaSearch\Model\Search\ScopeType;
 use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Mockery;
@@ -27,13 +28,22 @@ class ReimportCommandTest extends TestCase
         // getSettings for temp index (called after import to verify it exists)
         $client->shouldReceive('getSettings')->with($temporaryName)->andReturn([]);
 
-        // operationIndex handles both copy and move
+        // operationIndex: copy settings from main to temp
         $client->shouldReceive('operationIndex')
-            ->with($indexName, Mockery::type(OperationIndexParams::class))
+            ->with($indexName, Mockery::on(function ($params) use ($temporaryName) {
+                return is_array($params)
+                    && $params['operation'] === OperationType::COPY
+                    && $params['destination'] === $temporaryName
+                    && $params['scope'] === [ScopeType::SETTINGS, ScopeType::SYNONYMS, ScopeType::RULES];
+            }))
             ->andReturn(['taskID' => 1]);
 
         $client->shouldReceive('operationIndex')
-            ->with($temporaryName, Mockery::type(OperationIndexParams::class))
+            ->with($temporaryName, Mockery::on(function ($params) use ($indexName) {
+                return is_array($params)
+                    && $params['operation'] === OperationType::MOVE
+                    && $params['destination'] === $indexName;
+            }))
             ->andReturn(['taskID' => 1]);
 
         // saveObjects called by makeAllSearchable() via UpdateJob for the temp index
