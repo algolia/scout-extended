@@ -76,6 +76,9 @@ class AggregatorObserver extends BaseModelObserver
         }
 
         foreach ($this->aggregators[$class] as $aggregator) {
+            if (static::syncingDisabledFor($aggregator)) {
+                continue;
+            }
             parent::saved($aggregator::create($model));
         }
     }
@@ -95,6 +98,9 @@ class AggregatorObserver extends BaseModelObserver
             }
 
             foreach ($this->aggregators[$class] as $aggregator) {
+                if (static::syncingDisabledFor($aggregator)) {
+                    continue;
+                }
                 $aggregator::create($model)->unsearchable();
             }
         }
@@ -115,6 +121,9 @@ class AggregatorObserver extends BaseModelObserver
         }
 
         foreach ($this->aggregators[$class] as $aggregator) {
+            if (static::syncingDisabledFor($aggregator)) {
+                continue;
+            }
             $aggregator::create($model)->unsearchable();
         }
     }
