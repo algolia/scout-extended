@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Filter values are now formatted according to Algolia's filter grammar ([#368](https://github.com/algolia/scout-extended/pull/368)). Strings use the quoted facet form (`where('group', 'primary-vehicle')` → `group:'primary-vehicle'`, with quotes/backslashes escaped), booleans use `field:true` / `field:false`, and numbers keep `=` / `!=`. `whereNotIn` now emits one `NOT` clause per value instead of the invalid `NOT (... OR ...)` form.
 
 ## [5.0.0](https://github.com/algolia/scout-extended/compare/v4.0.0...v5.0.0) - 2026-04-28
 ### Changed
