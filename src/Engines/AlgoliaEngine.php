@@ -91,24 +91,66 @@ class AlgoliaEngine extends Algolia4Engine
         foreach ($builder->whereIns as $field => $values) {
             $parts[] = empty($values)
                 ? '(0 = 1)'
-                : '('.implode(' OR ', array_map(fn ($v) => "$field=$v", $values)).')';
+                : '('.implode(' OR ', array_map(fn ($value) => $this->formatFilter($field, $value), $values)).')';
         }
 
         foreach ($builder->whereNotIns as $field => $values) {
-            if (! empty($values)) {
-                $parts[] = 'NOT ('.implode(' OR ', array_map(fn ($v) => "$field=$v", $values)).')';
+            // Algolia's filter grammar cannot negate a parenthesized group:
+            // NOT binds to a single clause, so each value is negated individually.
+            foreach ($values as $value) {
+                $parts[] = 'NOT '.$this->formatFilter($field, $value);
             }
         }
 
         foreach ($builder->wheres as ['field' => $field, 'operator' => $operator, 'value' => $value]) {
             $parts[] = match ($operator) {
                 ':' => "$field: {$value[0]} TO {$value[1]}",
-                '=' => "$field=$value",
+                '=' => $this->formatFilter($field, $value),
+                '!=' => $this->formatNegatedFilter($field, $value),
                 default => "$field $operator $value",
             };
         }
 
         return implode(' AND ', $parts);
+    }
+
+    /**
+     * Format an equality filter in Algolia's filter syntax.
+     *
+     * Algolia reserves "=" for numeric comparisons, so strings and booleans
+     * must use the facet form "field:value", with string values quoted and
+     * escaped. Numeric values (including numeric strings, which Algolia
+     * compares numerically) keep the "=" operator.
+     */
+    private function formatFilter(string $field, mixed $value): string
+    {
+        if (is_bool($value)) {
+            return $field.':'.($value ? 'true' : 'false');
+        }
+
+        if ($this->isNonNumericString($value)) {
+            return $field.":'".str_replace(['\\', "'"], ['\\\\', "\\'"], $value)."'";
+        }
+
+        return "$field=$value";
+    }
+
+    /**
+     * Format a negated equality filter, keeping Algolia's native "!="
+     * operator for numeric values.
+     */
+    private function formatNegatedFilter(string $field, mixed $value): string
+    {
+        if (is_bool($value) || $this->isNonNumericString($value)) {
+            return 'NOT '.$this->formatFilter($field, $value);
+        }
+
+        return "$field != $value";
+    }
+
+    private function isNonNumericString(mixed $value): bool
+    {
+        return is_string($value) && ! is_numeric($value);
     }
 
     /**
