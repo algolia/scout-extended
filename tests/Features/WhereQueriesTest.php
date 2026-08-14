@@ -95,9 +95,86 @@ class WhereQueriesTest extends TestCase
         $this->mockIndex(User::class)
             ->shouldReceive('searchSingleIndex')
             ->once()
-            ->with('users', Mockery::subset(['query' => 'foo', 'filters' => '(id=1 OR id=2) AND key=value']))
+            ->with('users', Mockery::subset(['query' => 'foo', 'filters' => "(id=1 OR id=2) AND key:'value'"]))
             ->andReturn(['hits' => []]);
 
         User::search('foo')->whereIn('id', [1, 2])->where('key', 'value')->get();
+    }
+
+    public function testWhereWithStringValue(): void
+    {
+        $this->mockIndex(User::class)
+            ->shouldReceive('searchSingleIndex')
+            ->once()
+            ->with('users', Mockery::subset(['query' => 'foo', 'filters' => "group:'primary-vehicle'"]))
+            ->andReturn(['hits' => []]);
+
+        User::search('foo')->where('group', 'primary-vehicle')->get();
+    }
+
+    public function testWhereWithStringValueEscapesQuotesAndBackslashes(): void
+    {
+        $this->mockIndex(User::class)
+            ->shouldReceive('searchSingleIndex')
+            ->once()
+            ->with('users', Mockery::subset(['query' => 'foo', 'filters' => "name:'O\\'Brian \\\\ Co'"]))
+            ->andReturn(['hits' => []]);
+
+        User::search('foo')->where('name', "O'Brian \\ Co")->get();
+    }
+
+    public function testWhereWithBooleanValue(): void
+    {
+        $this->mockIndex(User::class)
+            ->shouldReceive('searchSingleIndex')
+            ->once()
+            ->with('users', Mockery::subset(['query' => 'foo', 'filters' => 'active:true AND archived:false']))
+            ->andReturn(['hits' => []]);
+
+        User::search('foo')->where('active', true)->where('archived', false)->get();
+    }
+
+    public function testWhereNotEqualWithStringValue(): void
+    {
+        $this->mockIndex(User::class)
+            ->shouldReceive('searchSingleIndex')
+            ->once()
+            ->with('users', Mockery::subset(['query' => 'foo', 'filters' => "NOT group:'witness'"]))
+            ->andReturn(['hits' => []]);
+
+        User::search('foo')->where('group', '!=', 'witness')->get();
+    }
+
+    public function testWhereInWithStringValues(): void
+    {
+        $this->mockIndex(User::class)
+            ->shouldReceive('searchSingleIndex')
+            ->once()
+            ->with('users', Mockery::subset(['query' => 'foo', 'filters' => "(visible_by:'workspace/80' OR visible_by:'workspace/64')"]))
+            ->andReturn(['hits' => []]);
+
+        User::search('foo')->whereIn('visible_by', ['workspace/80', 'workspace/64'])->get();
+    }
+
+    public function testWhereNotIn(): void
+    {
+        $this->mockIndex(User::class)
+            ->shouldReceive('searchSingleIndex')
+            ->once()
+            ->with('users', Mockery::subset(['query' => 'foo', 'filters' => 'NOT id=1 AND NOT id=2']))
+            ->andReturn(['hits' => []]);
+
+        User::search('foo')->whereNotIn('id', [1, 2])->get();
+    }
+
+    public function testWhereNotInWithStringValues(): void
+    {
+        $this->mockIndex(User::class)
+            ->shouldReceive('searchSingleIndex')
+            ->once()
+            ->with('users', Mockery::subset(['query' => 'foo', 'filters' => "NOT group:'witness' AND NOT group:'third-party'"]))
+            ->andReturn(['hits' => []]);
+
+        User::search('foo')->whereNotIn('group', ['witness', 'third-party'])->get();
     }
 }
