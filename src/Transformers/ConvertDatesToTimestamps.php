@@ -18,7 +18,7 @@ use Algolia\ScoutExtended\Contracts\TransformerContract;
 class ConvertDatesToTimestamps implements TransformerContract
 {
     /**
-     * Converts the given array numeric strings to numbers.
+     * Converts model date attributes in the given array to Unix timestamps.
      *
      * @param object $searchable
      * @param array $array
